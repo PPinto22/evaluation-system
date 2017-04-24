@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Licensee: Universidade do Minho
+License Type: Academic
+-->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="Class" table="Class" lazy="false">
+		<id name="attribute" column="Attribute" type="integer" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+		<property name="ID" column="ID" type="integer" length="10" not-null="true" lazy="false"/>
+		<property name="name" column="Name" type="string" length="255" not-null="false" lazy="false"/>
+		<property name="abbreviation" column="Abbreviation" type="string" length="255" not-null="false" lazy="false"/>
+		<many-to-one name="_teacher" cascade="lock" column="UserAttribute2" class="Teacher" not-null="true" lazy="proxy" access="field">
+		</many-to-one>
+		<set name="ORM__question" lazy="true" cascade="save-update,lock" inverse="true">
+			<key column="ClassAttribute" not-null="true"/>
+			<one-to-many class="Question"/>
+		</set>
+	</class>
+</hibernate-mapping>
