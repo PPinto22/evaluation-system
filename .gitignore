@@ -5,7 +5,9 @@
 *.vpp.working-journal
 *.lock
 *.bak*
+*.vux
 tmp/*
+
 
 # Intellij
 out/
