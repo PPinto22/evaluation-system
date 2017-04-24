@@ -4,6 +4,7 @@
 *.vpp.working
 *.vpp.working-journal
 *.lock
+*.bak*
 tmp/*
 
 # Intellij
