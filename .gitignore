@@ -1,6 +1,5 @@
 # Base de dados
 BD/evalsys/
-BD/generated
 
 # Visual Paradigm
 .vpprefdata/
@@ -20,3 +19,4 @@ out/
 *.ipr
 *.iws
 *.iml
+target/
