@@ -1,0 +1,11 @@
+-- SETUP --
+initdb -D evalsys
+postgres -D evalsys/ -k. -p 3456 &
+createuser -h localhost -p 3456 evalsys
+createdb -h localhost -p 3456 evalsys -O evalsys
+psql -h localhost -p 3456 -d evalsys -U evalsys -a -f setup.sql
+
+-- INIT + PSQL --
+postgres -D evalsys/ -k. -p 3456 &
+psql -h localhost -p 3456 -d evalsys -U evalsys
+

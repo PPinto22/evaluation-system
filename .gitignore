@@ -1,9 +1,14 @@
+# Base de dados
+BD/evalsys/
+BD/generated
+
 # Visual Paradigm
 .vpprefdata/
 *.vpp~*
 *.vpp.working
 *.vpp.working-journal
 *.lock
+*.lck
 *.bak*
 *.vux
 tmp/*
