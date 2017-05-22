@@ -1,0 +1,49 @@
+POST /login
+POST /signup
+
+GET 	/exams/:id
+GET	 	/exams?user,class,upcoming,history
+
+GET 	/classes/:id
+GET	 	/classes?user
+POST 	/classes
+PUT  	/classes/:id
+DELETE	/classes/:id
+
+GET 	/classes/:class_id/questions
+GET 	/classes/:class_id/questions/:question_id
+POST 	/classes/:class_id/questions
+PUT 	/classes/:class_id/questions/:question_id # Melhoria
+DELETE	/classes/:class_id/questions/:id
+
+GET		/classes/:class_id/categories
+
+GET 	/groups/:id
+POST	/groups
+PUT		/groups/:id
+DELETE 	/groups/:id
+
+GET 	/groups/:group_id/exams?upcoming,history
+POST 	/groups/:group_id/exams
+DELETE	/groups/:group_id/exams/:id
+POST 	/groups/:group_id/exams/generate
+
+GET 	/groups/:group_id/scores
+GET 	/groups/:group_id/exams/:exam_id/scores
+GET 	/groups/:group_id/exams/:exam_id/submissions/:submission_id
+
+POST 	/groups/:group_id/exams/:exam_id/submit?user # Array de respostas
+
+GET 	/groups/:group_id/students
+POST 	/groups/:group_id/students
+DELETE	/groups/:group_id/students/:id
+
+
+GET 	/users/:user_id
+POST 	/users
+PUT 	/users/:user_id
+DELETE 	/users/:user_id
+
+GET 	/users/:user_id/scores
+
+GET 	/users/:user_id/notifications
