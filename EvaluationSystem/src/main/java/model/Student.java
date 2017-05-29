@@ -7,6 +7,10 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
+import dao.GroupStudentSetCollection;
+import dao.ORMConstants;
+import dao.SubmissionSetCollection;
+
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic

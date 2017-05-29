@@ -1,4 +1,4 @@
-package model; /**
+package dao; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -11,6 +11,8 @@ package model; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import dao.ClassesPersistentManager;
+import model.Question;
 import org.orm.*;
 
 public class QuestionSetCollection extends org.orm.util.ORMSet {

@@ -1,4 +1,4 @@
-package model; /**
+package dao; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -11,11 +11,18 @@ package model; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import model.Notification;
+import model.Student;
+import model.Teacher;
+import model.User;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public class UserDAOImpl implements UserDAO {
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(UserDAOImpl.class);
 	public User loadUserByORMID(int ID) throws PersistentException {

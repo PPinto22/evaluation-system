@@ -8,7 +8,7 @@ import org.orm.PersistentException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService{
 
     private StudentDAO studentDAO;
     private UserDAO userDAO;

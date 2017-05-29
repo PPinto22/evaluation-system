@@ -1,19 +1,19 @@
-ALTER TABLE Class DROP CONSTRAINT IF EXISTS "teacher-classes";
-ALTER TABLE Question DROP CONSTRAINT IF EXISTS "class-questions";
-ALTER TABLE Answer DROP CONSTRAINT IF EXISTS answers;
-ALTER TABLE GroupStudent DROP CONSTRAINT IF EXISTS "group-students";
-ALTER TABLE "Group" DROP CONSTRAINT IF EXISTS "class-groups";
-ALTER TABLE QuestionScore DROP CONSTRAINT IF EXISTS "exam-questions";
-ALTER TABLE Exam DROP CONSTRAINT IF EXISTS "group-exams";
-ALTER TABLE QuestionScore DROP CONSTRAINT IF EXISTS question;
-ALTER TABLE Submission DROP CONSTRAINT IF EXISTS "student-submission";
-ALTER TABLE Submission DROP CONSTRAINT IF EXISTS "resolution-exam";
-ALTER TABLE QuestionSubmission DROP CONSTRAINT IF EXISTS "question-submissions";
-ALTER TABLE QuestionSubmission DROP CONSTRAINT IF EXISTS "questionSubmission-question";
-ALTER TABLE QuestionSubmission DROP CONSTRAINT IF EXISTS "questionSubmission-Answer";
-ALTER TABLE Notification DROP CONSTRAINT IF EXISTS "user-notifications";
-ALTER TABLE Notification DROP CONSTRAINT IF EXISTS groupInvitations;
-ALTER TABLE GroupStudent DROP CONSTRAINT IF EXISTS "student-groups";
+ALTER TABLE Class DROP CONSTRAINT "teacher-classes";
+ALTER TABLE Question DROP CONSTRAINT "class-questions";
+ALTER TABLE Answer DROP CONSTRAINT answers;
+ALTER TABLE GroupStudent DROP CONSTRAINT "group-students";
+ALTER TABLE "Group" DROP CONSTRAINT "class-groups";
+ALTER TABLE QuestionScore DROP CONSTRAINT "exam-questions";
+ALTER TABLE Exam DROP CONSTRAINT "group-exams";
+ALTER TABLE QuestionScore DROP CONSTRAINT question;
+ALTER TABLE Submission DROP CONSTRAINT "student-submission";
+ALTER TABLE Submission DROP CONSTRAINT "resolution-exam";
+ALTER TABLE QuestionSubmission DROP CONSTRAINT "question-submissions";
+ALTER TABLE QuestionSubmission DROP CONSTRAINT "questionSubmission-question";
+ALTER TABLE QuestionSubmission DROP CONSTRAINT "questionSubmission-Answer";
+ALTER TABLE Notification DROP CONSTRAINT "user-notifications";
+ALTER TABLE Notification DROP CONSTRAINT groupInvitations;
+ALTER TABLE GroupStudent DROP CONSTRAINT "student-groups";
 DROP TABLE IF EXISTS "User" CASCADE;
 DROP TABLE IF EXISTS Class CASCADE;
 DROP TABLE IF EXISTS Question CASCADE;
@@ -27,19 +27,19 @@ DROP TABLE IF EXISTS Notification CASCADE;
 DROP TABLE IF EXISTS GroupStudent CASCADE;
 CREATE TABLE "User" (
   ID               SERIAL NOT NULL, 
-  Email            varchar(255) NOT NULL, 
-  Password         varchar(255) NOT NULL, 
-  FirstName        varchar(255) NOT NULL, 
-  LastName         varchar(255) NOT NULL, 
-  Registered       bool NOT NULL, 
-  Deleted          bool NOT NULL, 
+  Email            varchar(255), 
+  Password         varchar(255), 
+  FirstName        varchar(255), 
+  LastName         varchar(255), 
+  Registered       bool, 
+  Deleted          bool, 
   RegistrationCode varchar(255), 
   Discriminator    varchar(255) NOT NULL, 
   PRIMARY KEY (ID));
 CREATE TABLE Class (
   ID           SERIAL NOT NULL, 
   UserID       int4 NOT NULL, 
-  Name         varchar(255) NOT NULL, 
+  Name         varchar(255), 
   Abbreviation varchar(255), 
   PRIMARY KEY (ID));
 CREATE TABLE Question (
@@ -58,13 +58,13 @@ CREATE TABLE Answer (
 CREATE TABLE "Group" (
   ID      SERIAL NOT NULL, 
   ClassID int4 NOT NULL, 
-  Name    varchar(255) NOT NULL, 
+  Name    varchar(255), 
   PRIMARY KEY (ID));
 CREATE TABLE Exam (
   ID        SERIAL NOT NULL, 
   GroupID   int4 NOT NULL, 
-  BeginDate date NOT NULL, 
-  Duration  date NOT NULL, 
+  BeginDate timestamp, 
+  Duration  timestamp, 
   PRIMARY KEY (ID));
 CREATE TABLE QuestionScore (
   ID         SERIAL NOT NULL, 

@@ -1,4 +1,4 @@
-/**
+package model; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -7,11 +7,34 @@
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
+import dao.ORMConstants;
+import dao.QuestionScoreSetCollection;
+import dao.SubmissionSetCollection;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+//FIXME Duracao do exame nao pode ser um Timestamp; aparece como 1970-01-01 02:30:00 na BD
 public class Exam {
+
+	/////////// Nosso Codigo ////////////////
+	public String getBeginDateAsString() {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return df.format(this.getBeginDate());
+	}
+
+	public String getDurationAsString() {
+		DateFormat df = new SimpleDateFormat("HH:mm");
+		return df.format(this.getDuration());
+	}
+
+
+
+	/////////// Codigo Gerado ////////////////
 	public Exam() {
 	}
 	
@@ -32,7 +55,7 @@ public class Exam {
 		}
 	}
 	
-	org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
+	public org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
 		public java.util.Set getSet(int key) {
 			return this_getSet(key);
 		}
@@ -140,5 +163,4 @@ public class Exam {
 	public String toString() {
 		return String.valueOf(getID());
 	}
-	
 }

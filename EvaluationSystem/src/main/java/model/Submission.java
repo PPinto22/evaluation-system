@@ -7,6 +7,9 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
+import dao.ORMConstants;
+import dao.QuestionSubmissionSetCollection;
+
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic
@@ -33,7 +36,7 @@ public class Submission {
 		}
 	}
 	
-	org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
+	public org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
 		public java.util.Set getSet(int key) {
 			return this_getSet(key);
 		}

@@ -7,7 +7,12 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import dao.NotificationSetCollection;
+import dao.ORMConstants;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Licensee: Universidade do Minho
@@ -71,10 +76,9 @@ public class User {
 	}
 	
 	public void setPassword(String value) {
-		this.password = value;
+		this.password = this.encrypt(value);
 	}
 
-	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
@@ -99,7 +103,6 @@ public class User {
 		this.registered = value;
 	}
 
-	@JsonIgnore
 	public boolean getRegistered() {
 		return registered;
 	}
@@ -108,7 +111,6 @@ public class User {
 		this.deleted = value;
 	}
 
-	@JsonIgnore
 	public boolean getDeleted() {
 		return deleted;
 	}
@@ -117,7 +119,6 @@ public class User {
 		this.registrationCode = value;
 	}
 
-	@JsonIgnore
 	public String getRegistrationCode() {
 		return registrationCode;
 	}
@@ -134,6 +135,23 @@ public class User {
 	
 	public String toString() {
 		return String.valueOf(getID());
+	}
+
+	private String encrypt(String data){
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			md.update(data.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		byte[] digest = md.digest();
+		return new String(digest);
 	}
 	
 }

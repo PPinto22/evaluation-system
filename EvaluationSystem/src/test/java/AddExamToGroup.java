@@ -4,11 +4,9 @@ import dao.GroupDAO;
 import dao.GroupDAOImpl;
 import model.Exam;
 import model.Group;
-import org.assertj.core.util.Compatibility;
 import org.orm.PersistentException;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,7 +15,6 @@ public class AddExamToGroup {
     public static void main(String[] args) {
         Exam exam = new Exam();
         exam.setBeginDate(new Timestamp(System.currentTimeMillis()));
-
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Date parsedDate = null;
@@ -28,10 +25,6 @@ public class AddExamToGroup {
         }
         Timestamp timestamp = new Timestamp(parsedDate.getTime());
         exam.setDuration(timestamp);
-
-
-        System.out.println(exam.getBeginDateAsString());
-        System.out.println(exam.getDurationAsString());
 
         GroupDAO groupDAO = new GroupDAOImpl();
         Group group = null;

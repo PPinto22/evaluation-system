@@ -7,6 +7,8 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
+import dao.ORMConstants;
+
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic
@@ -25,7 +27,7 @@ public class GroupStudent {
 		}
 	}
 	
-	org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
+	public org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
 		public void setOwner(Object owner, int key) {
 			this_setOwner(owner, key);
 		}

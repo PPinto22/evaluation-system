@@ -7,6 +7,9 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
+import dao.ClassSetCollection;
+import dao.ORMConstants;
+
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic

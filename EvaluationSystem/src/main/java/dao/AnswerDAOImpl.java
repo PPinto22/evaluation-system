@@ -1,4 +1,4 @@
-package model; /**
+package dao; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -11,11 +11,16 @@ package model; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import model.Answer;
+import model.QuestionSubmission;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public class AnswerDAOImpl implements AnswerDAO {
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(AnswerDAOImpl.class);
 	public Answer loadAnswerByORMID(int ID) throws PersistentException {
