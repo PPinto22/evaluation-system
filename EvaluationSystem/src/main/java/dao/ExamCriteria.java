@@ -1,4 +1,4 @@
-package model; /**
+/**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -20,8 +20,8 @@ public class ExamCriteria extends AbstractORMCriteria {
 	public final IntegerExpression ID;
 	public final IntegerExpression _groupId;
 	public final AssociationExpression _group;
-	public final DateExpression beginDate;
-	public final DateExpression duration;
+	public final TimestampExpression beginDate;
+	public final TimestampExpression duration;
 	public final CollectionExpression _submissions;
 	public final CollectionExpression _questions;
 	
@@ -30,8 +30,8 @@ public class ExamCriteria extends AbstractORMCriteria {
 		ID = new IntegerExpression("ID", this);
 		_groupId = new IntegerExpression("_group.ID", this);
 		_group = new AssociationExpression("_group", this);
-		beginDate = new DateExpression("beginDate", this);
-		duration = new DateExpression("duration", this);
+		beginDate = new TimestampExpression("beginDate", this);
+		duration = new TimestampExpression("duration", this);
 		_submissions = new CollectionExpression("ORM__submissions", this);
 		_questions = new CollectionExpression("ORM__questions", this);
 	}

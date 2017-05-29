@@ -5,22 +5,22 @@ License Type: Academic
 -->
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="model.Exam" table="Exam" lazy="false">
+	<class name="Exam" table="Exam" lazy="false">
 		<id name="ID" column="ID" type="integer" unsaved-value="0">
 			<generator class="native">
 			</generator>
 		</id>
-		<many-to-one name="_group" cascade="lock" column="GroupID" class="model.Group" not-null="true" lazy="proxy" access="field">
+		<many-to-one name="_group" cascade="lock" column="GroupID" class="Group" not-null="true" lazy="proxy" access="field">
 		</many-to-one>
-		<property name="beginDate" column="BeginDate" type="date" not-null="true" lazy="false"/>
-		<property name="duration" column="Duration" type="date" not-null="true" lazy="false"/>
+		<property name="beginDate" column="BeginDate" type="timestamp" not-null="false" lazy="false"/>
+		<property name="duration" column="Duration" type="timestamp" not-null="false" lazy="false"/>
 		<set name="ORM__submissions" lazy="true" cascade="save-update,lock" inverse="true">
 			<key column="ExamID" not-null="true"/>
-			<one-to-many class="model.Submission"/>
+			<one-to-many class="Submission"/>
 		</set>
 		<set name="ORM__questions" lazy="true" cascade="save-update,lock" inverse="false">
 			<key column="ExamID" not-null="true"/>
-			<one-to-many class="model.QuestionScore"/>
+			<one-to-many class="QuestionScore"/>
 		</set>
 	</class>
 </hibernate-mapping>

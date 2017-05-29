@@ -1,4 +1,4 @@
-package model; /**
+/**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -47,9 +47,9 @@ public class Exam {
 	
 	private Group _group;
 	
-	private java.util.Date beginDate;
+	private java.sql.Timestamp beginDate;
 	
-	private java.util.Date duration;
+	private java.sql.Timestamp duration;
 	
 	private java.util.Set ORM__submissions = new java.util.HashSet();
 	
@@ -67,19 +67,19 @@ public class Exam {
 		return getID();
 	}
 	
-	public void setBeginDate(java.util.Date value) {
+	public void setBeginDate(java.sql.Timestamp value) {
 		this.beginDate = value;
 	}
 	
-	public java.util.Date getBeginDate() {
+	public java.sql.Timestamp getBeginDate() {
 		return beginDate;
 	}
 	
-	public void setDuration(java.util.Date value) {
+	public void setDuration(java.sql.Timestamp value) {
 		this.duration = value;
 	}
 	
-	public java.util.Date getDuration() {
+	public java.sql.Timestamp getDuration() {
 		return duration;
 	}
 	

@@ -1,4 +1,4 @@
-package model; /**
+/**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -20,8 +20,8 @@ public class ExamDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression ID;
 	public final IntegerExpression _groupId;
 	public final AssociationExpression _group;
-	public final DateExpression beginDate;
-	public final DateExpression duration;
+	public final TimestampExpression beginDate;
+	public final TimestampExpression duration;
 	public final CollectionExpression _submissions;
 	public final CollectionExpression _questions;
 	
@@ -30,8 +30,8 @@ public class ExamDetachedCriteria extends AbstractORMDetachedCriteria {
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
 		_groupId = new IntegerExpression("_group.ID", this.getDetachedCriteria());
 		_group = new AssociationExpression("_group", this.getDetachedCriteria());
-		beginDate = new DateExpression("beginDate", this.getDetachedCriteria());
-		duration = new DateExpression("duration", this.getDetachedCriteria());
+		beginDate = new TimestampExpression("beginDate", this.getDetachedCriteria());
+		duration = new TimestampExpression("duration", this.getDetachedCriteria());
 		_submissions = new CollectionExpression("ORM__submissions", this.getDetachedCriteria());
 		_questions = new CollectionExpression("ORM__questions", this.getDetachedCriteria());
 	}
@@ -41,8 +41,8 @@ public class ExamDetachedCriteria extends AbstractORMDetachedCriteria {
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
 		_groupId = new IntegerExpression("_group.ID", this.getDetachedCriteria());
 		_group = new AssociationExpression("_group", this.getDetachedCriteria());
-		beginDate = new DateExpression("beginDate", this.getDetachedCriteria());
-		duration = new DateExpression("duration", this.getDetachedCriteria());
+		beginDate = new TimestampExpression("beginDate", this.getDetachedCriteria());
+		duration = new TimestampExpression("duration", this.getDetachedCriteria());
 		_submissions = new CollectionExpression("ORM__submissions", this.getDetachedCriteria());
 		_questions = new CollectionExpression("ORM__questions", this.getDetachedCriteria());
 	}
