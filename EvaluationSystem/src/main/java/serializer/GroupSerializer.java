@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-//TODO
 @Service
 public class GroupSerializer extends Serializer<Group, GroupSerializationMode>{
 
@@ -29,33 +28,39 @@ public class GroupSerializer extends Serializer<Group, GroupSerializationMode>{
     }
 
     @Override
-    public String serialize(Group group, GroupSerializationMode mode) {
+    public String serialize(Group group, GroupSerializationMode... serializationMode) throws IOException{
+        GroupSerializationMode mode = GroupSerializationMode.GROUP;
+        if(serializationMode.length >= 1){
+            mode = serializationMode[0];
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode groupNode = mapper.createObjectNode();
 
         groupNode.put("id", group.getID());
         groupNode.put("name",group.getName());
-        if(mode != GroupSerializationMode.MINIMUM) {
-            serializeClass(mapper, groupNode, group);
-            switch (mode) {
-                case FULL:
-                    serializeStudents(mapper, groupNode, group);
-                    serializeExams(mapper, groupNode, group);
-            }
+        switch (mode) {
+            case CLASS_STUDENTS_EXAMS:
+                serializeClass(mapper, groupNode, group);
+                serializeStudents(mapper, groupNode, group);
+                serializeExams(mapper, groupNode, group);
+                break;
+            case CLASS:
+                serializeClass(mapper, groupNode, group);
         }
 
         return groupNode.toString();
     }
 
-    private void serializeExams(ObjectMapper mapper, ObjectNode groupNode, Group group) {
+    private void serializeExams(ObjectMapper mapper, ObjectNode groupNode, Group group) throws IOException{
         //TODO
     }
 
-    private void serializeStudents(ObjectMapper mapper, ObjectNode groupNode, Group group) {
+    private void serializeStudents(ObjectMapper mapper, ObjectNode groupNode, Group group) throws IOException{
         //TODO
     }
 
-    private void serializeClass(ObjectMapper mapper, ObjectNode groupNode, Group group) {
+    private void serializeClass(ObjectMapper mapper, ObjectNode groupNode, Group group) throws IOException{
         Class cl = group.get_class();
         try {
             JsonNode classNode = mapper.readTree(this.classSerializer.serialize(cl,ClassSerializationMode.TEACHER));
@@ -67,7 +72,7 @@ public class GroupSerializer extends Serializer<Group, GroupSerializationMode>{
 
 
     @Override
-    public Group deserialize(String json) {
+    public Group deserialize(String json) throws IOException {
         return null;
     }
 }

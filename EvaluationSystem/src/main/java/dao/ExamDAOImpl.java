@@ -152,7 +152,7 @@ public class ExamDAOImpl implements ExamDAO {
 	}
 	
 	public List queryExam(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Exam as model.Exam");
+		StringBuffer sb = new StringBuffer("From Exam as Exam");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -168,14 +168,14 @@ public class ExamDAOImpl implements ExamDAO {
 	}
 	
 	public List queryExam(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Exam as model.Exam");
+		StringBuffer sb = new StringBuffer("From Exam as Exam");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Exam", lockMode);
+			query.setLockMode("Exam", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -267,7 +267,7 @@ public class ExamDAOImpl implements ExamDAO {
 	}
 	
 	public java.util.Iterator iterateExamByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Exam as model.Exam");
+		StringBuffer sb = new StringBuffer("From Exam as Exam");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -283,14 +283,14 @@ public class ExamDAOImpl implements ExamDAO {
 	}
 	
 	public java.util.Iterator iterateExamByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Exam as model.Exam");
+		StringBuffer sb = new StringBuffer("From Exam as Exam");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Exam", lockMode);
+			query.setLockMode("Exam", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -309,7 +309,7 @@ public class ExamDAOImpl implements ExamDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.Exam exam)", e);
+			_logger.error("save(Exam exam)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -320,7 +320,7 @@ public class ExamDAOImpl implements ExamDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.Exam exam)", e);
+			_logger.error("delete(Exam exam)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -372,7 +372,7 @@ public class ExamDAOImpl implements ExamDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.Exam exam)", e);
+			_logger.error("refresh(Exam exam)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -383,7 +383,7 @@ public class ExamDAOImpl implements ExamDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.Exam exam)", e);
+			_logger.error("evict(Exam exam)", e);
 			throw new PersistentException(e);
 		}
 	}

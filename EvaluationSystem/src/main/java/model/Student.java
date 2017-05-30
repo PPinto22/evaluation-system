@@ -18,8 +18,12 @@ import dao.SubmissionSetCollection;
 public class Student extends User {
 	public Student() {
 	}
-	
-	private java.util.Set this_getSet (int key) {
+
+	public Student(User user) {
+		super(user);
+	}
+
+    private java.util.Set this_getSet (int key) {
 		if (key == ORMConstants.KEY_STUDENT__SUBMISSIONS) {
 			return ORM__submissions;
 		}

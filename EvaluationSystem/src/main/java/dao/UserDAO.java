@@ -16,6 +16,10 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface UserDAO {
+	// Nosso codigo
+	public User loadUserByEmail(String emai) throws PersistentException;
+
+	// Codigo Gerado
 	public User loadUserByORMID(int ID) throws PersistentException;
 	public User getUserByORMID(int ID) throws PersistentException;
 	public User loadUserByORMID(int ID, LockMode lockMode) throws PersistentException;

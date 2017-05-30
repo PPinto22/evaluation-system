@@ -17,8 +17,12 @@ import dao.ORMConstants;
 public class Teacher extends User {
 	public Teacher() {
 	}
-	
-	private java.util.Set this_getSet (int key) {
+
+    public Teacher(User user) {
+		super(user);
+    }
+
+    private java.util.Set this_getSet (int key) {
 		if (key == ORMConstants.KEY_TEACHER__CLASSES) {
 			return ORM__classes;
 		}

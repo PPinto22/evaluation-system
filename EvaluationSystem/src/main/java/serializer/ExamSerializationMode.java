@@ -4,7 +4,7 @@ public enum ExamSerializationMode {
     /**
      * model.Exam only
      */
-    MINIMUM,
+    EXAM,
 
     /**
      * model.Exam + Group + Class + Teacher

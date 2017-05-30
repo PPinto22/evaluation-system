@@ -19,9 +19,50 @@ import java.security.NoSuchAlgorithmException;
  * License Type: Academic
  */
 public class User {
+
+	/////// Nosso codigo //////
+	public User(User user) {
+		this.ID = user.getID();
+		this.email = user.getEmail();
+		this.password = user.getPassword();
+		this.firstName = user.getFirstName();
+		this.lastName = user.getLastName();
+		this.registered = user.getRegistered();
+		this.deleted = user.getDeleted();
+		this.registrationCode = user.getRegistrationCode();
+		this.ORM__notifications = user.getORM__notifications();
+	}
+
+	public void hashPassword(){
+		this.setPassword(hash(this.getPassword()));
+	}
+
+	public String getPasswordHash(){
+		return this.hash(this.getPassword());
+	}
+
+	private String hash(String s){
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			md.update(s.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		byte[] digest = md.digest();
+		return new String(digest);
+	}
+
+
+	////// Codigo gerado //////
 	public User() {
 	}
-	
+
 	private java.util.Set this_getSet (int key) {
 		if (key == ORMConstants.KEY_USER__NOTIFICATIONS) {
 			return ORM__notifications;
@@ -74,9 +115,9 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
-	
-	public void setPassword(String value) {
-		this.password = this.encrypt(value);
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getPassword() {
@@ -135,23 +176,6 @@ public class User {
 	
 	public String toString() {
 		return String.valueOf(getID());
-	}
-
-	private String encrypt(String data){
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("SHA-256");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			md.update(data.getBytes("UTF-8")); // Change this to "UTF-16" if needed
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		byte[] digest = md.digest();
-		return new String(digest);
 	}
 	
 }

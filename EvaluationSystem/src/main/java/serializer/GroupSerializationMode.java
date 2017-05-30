@@ -5,15 +5,15 @@ public enum GroupSerializationMode {
     /**
      * Group only
      */
-    MINIMUM,
+    GROUP,
 
     /**
      * Group + Class + Teacher
      */
-    DEFAULT,
+    CLASS,
 
     /**
      * Group + Class + Teacher + Students + Exams
      */
-    FULL,
+    CLASS_STUDENTS_EXAMS,
 }

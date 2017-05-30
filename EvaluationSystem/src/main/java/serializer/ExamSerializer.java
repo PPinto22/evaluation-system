@@ -22,11 +22,15 @@ public class ExamSerializer extends Serializer<Exam, ExamSerializationMode>{
     }
 
     @Override
-    public String serialize(Exam exam, ExamSerializationMode mode) {
+    public String serialize(Exam exam, ExamSerializationMode... serializationMode) throws IOException {
+        ExamSerializationMode mode = ExamSerializationMode.EXAM;
+        if(serializationMode.length >= 1){
+            mode = serializationMode[0];
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode examNode = mapper.createObjectNode();
         examNode.put("id", exam.getID());
-        // FIXME - Tempo nao funciona (00:00)
         examNode.put("date", exam.getBeginDateAsString());
         examNode.put("duration", exam.getDurationAsString());
 
@@ -38,18 +42,14 @@ public class ExamSerializer extends Serializer<Exam, ExamSerializationMode>{
         return examNode.toString();
     }
 
-    private void serializeClass(ObjectMapper mapper, ObjectNode examNode, Exam exam) {
+    private void serializeClass(ObjectMapper mapper, ObjectNode examNode, Exam exam) throws IOException {
         Group group = exam.get_group();
-        try {
-            JsonNode groupNode = mapper.readTree(groupSerializer.serialize(group, GroupSerializationMode.DEFAULT));
-            examNode.set("group", groupNode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JsonNode groupNode = mapper.readTree(groupSerializer.serialize(group, GroupSerializationMode.CLASS));
+        examNode.set("group", groupNode);
     }
 
     @Override
-    public Exam deserialize(String json) {
+    public Exam deserialize(String json) throws IOException {
         return null;
     }
 }

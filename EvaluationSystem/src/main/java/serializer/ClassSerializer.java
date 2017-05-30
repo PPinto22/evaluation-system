@@ -29,13 +29,18 @@ public class ClassSerializer extends Serializer<Class, ClassSerializationMode> {
     }
 
     @Override
-    public String serialize(Class cl, ClassSerializationMode mode) {
+    public String serialize(Class cl, ClassSerializationMode... serializationMode) throws IOException{
+        ClassSerializationMode mode = ClassSerializationMode.CLASS;
+        if(serializationMode.length >= 1){
+            mode = serializationMode[0];
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode classNode = mapper.createObjectNode();
         classNode.put("id", cl.getID());
         classNode.put("name", cl.getName());
         classNode.put("abbreviation", cl.getAbbreviation());
-        if(mode != ClassSerializationMode.MINIMUM){
+        if(mode != ClassSerializationMode.CLASS){
             switch (mode){
                 case TEACHER:
                     serializeTeacher(mapper, classNode, cl);
@@ -48,31 +53,23 @@ public class ClassSerializer extends Serializer<Class, ClassSerializationMode> {
         return classNode.toString();
     }
 
-    private void serializeGroups(ObjectMapper mapper, ObjectNode classNode, Class cl) {
+    private void serializeGroups(ObjectMapper mapper, ObjectNode classNode, Class cl) throws IOException{
         Group[] groups = cl._groups.toArray();
         ArrayNode groupsNode = classNode.putArray("groups");
         for(Group group: cl._groups.toArray()){
-            try {
-                JsonNode groupNode = mapper.readTree(groupSerializer.serialize(group,GroupSerializationMode.MINIMUM));
-                groupsNode.add(groupNode);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            JsonNode groupNode = mapper.readTree(groupSerializer.serialize(group,GroupSerializationMode.GROUP));
+            groupsNode.add(groupNode);
         }
     }
 
-    private void serializeTeacher(ObjectMapper mapper, ObjectNode classNode, Class cl) {
+    private void serializeTeacher(ObjectMapper mapper, ObjectNode classNode, Class cl) throws IOException{
         Teacher teacher = cl.get_teacher();
-        try {
-            JsonNode teacherNode = mapper.readTree(userSerializer.serialize(teacher,UserSerializationMode.USER));
-            classNode.set("teacher", teacherNode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JsonNode teacherNode = mapper.readTree(userSerializer.serialize(teacher,UserSerializationMode.USER));
+        classNode.set("teacher", teacherNode);
     }
 
     @Override
-    public Class deserialize(String json) {
+    public Class deserialize(String json) throws IOException {
         return null;
     }
 }

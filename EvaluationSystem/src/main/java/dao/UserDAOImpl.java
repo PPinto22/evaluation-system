@@ -24,6 +24,15 @@ import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
+
+	// Nosso codigo
+	public User loadUserByEmail(String email) throws PersistentException {
+		UserCriteria criteria = new UserCriteria();
+		criteria.email.eq(email);
+		return this.loadUserByCriteria(criteria);
+	}
+
+	// Codigo gerado
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(UserDAOImpl.class);
 	public User loadUserByORMID(int ID) throws PersistentException {
 		try {

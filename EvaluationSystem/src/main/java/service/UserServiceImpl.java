@@ -20,33 +20,37 @@ public class UserServiceImpl implements UserService{
         this.teacherDAO = teacherDAO;
     }
 
-    public void addUser(User user){
-        try {
-            userDAO.save(user);
-        } catch (PersistentException e) {
-            e.printStackTrace();
-        }
+//    public Student[] getStudents() throws PersistentException {
+//        Student[] students = new Student[0];
+//        StudentCriteria criteria = new StudentCriteria();
+//        students = studentDAO.listStudentByCriteria(criteria);
+//        return students;
+//    }
+//
+//    public Teacher[] getTeachers() throws PersistentException {
+//        Teacher[] teachers = new Teacher[0];
+//        TeacherCriteria criteria = new TeacherCriteria();
+//        teachers = teacherDAO.listTeacherByCriteria(criteria);
+//        return teachers;
+//    }
+
+    @Override
+    public void addStudent(Student student) throws PersistentException {
+        // TODO - Validar informacoes, verificar nao repetido, etc...
+        student.hashPassword();
+        studentDAO.save(student);
     }
 
-    public Student[] getStudents(){
-        Student[] students = new Student[0];
-        try {
-            StudentCriteria criteria = new StudentCriteria();
-            students = studentDAO.listStudentByCriteria(criteria);
-        } catch (PersistentException e) {
-            e.printStackTrace();
-        }
-        return students;
+    @Override
+    public void addTeacher(Teacher teacher) throws PersistentException {
+        // TODO - Validar informacoes, verificar nao repetido, etc...
+        teacher.hashPassword();
+        teacherDAO.save(teacher);
     }
 
-    public Teacher[] getTeachers(){
-        Teacher[] teachers = new Teacher[0];
-        try {
-            TeacherCriteria criteria = new TeacherCriteria();
-            teachers = teacherDAO.listTeacherByCriteria(criteria);
-        } catch (PersistentException e) {
-            e.printStackTrace();
-        }
-        return teachers;
+    @Override
+    public boolean authenticate(User user) throws PersistentException {
+        User persistedUser = userDAO.loadUserByEmail(user.getEmail());
+        return user.getPasswordHash().equals(persistedUser.getPassword());
     }
 }

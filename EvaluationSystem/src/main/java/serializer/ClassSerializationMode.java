@@ -4,7 +4,7 @@ public enum  ClassSerializationMode {
     /**
      * Class only
      */
-    MINIMUM,
+    CLASS,
 
     /**
      * Class + Teacher

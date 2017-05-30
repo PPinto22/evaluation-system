@@ -18,10 +18,9 @@ import java.text.SimpleDateFormat;
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-//FIXME Duracao do exame nao pode ser um Timestamp; aparece como 1970-01-01 02:30:00 na BD
 public class Exam {
 
-	/////////// Nosso Codigo ////////////////
+	// Nosso Codigo
 	public String getBeginDateAsString() {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return df.format(this.getBeginDate());
@@ -32,9 +31,18 @@ public class Exam {
 		return df.format(this.getDuration());
 	}
 
+	public float getAverageScore() {
+		//TODO: Implement Method
+		throw new UnsupportedOperationException();
+	}
+
+	public int getApprovalRate() {
+		//TODO: Implement Method
+		throw new UnsupportedOperationException();
+	}
 
 
-	/////////// Codigo Gerado ////////////////
+	// Codigo Gerado
 	public Exam() {
 	}
 	
@@ -72,7 +80,7 @@ public class Exam {
 	
 	private java.sql.Timestamp beginDate;
 	
-	private java.sql.Timestamp duration;
+	private java.sql.Time duration;
 	
 	private java.util.Set ORM__submissions = new java.util.HashSet();
 	
@@ -98,11 +106,11 @@ public class Exam {
 		return beginDate;
 	}
 	
-	public void setDuration(java.sql.Timestamp value) {
+	public void setDuration(java.sql.Time value) {
 		this.duration = value;
 	}
 	
-	public java.sql.Timestamp getDuration() {
+	public java.sql.Time getDuration() {
 		return duration;
 	}
 	
@@ -150,17 +158,8 @@ public class Exam {
 	
 	public final QuestionScoreSetCollection _questions = new QuestionScoreSetCollection(this, _ormAdapter, ORMConstants.KEY_EXAM__QUESTIONS, ORMConstants.KEY_MUL_ONE_TO_MANY);
 	
-	public float getAverageScore() {
-		//TODO: Implement Method
-		throw new UnsupportedOperationException();
-	}
-	
-	public int getApprovalRate() {
-		//TODO: Implement Method
-		throw new UnsupportedOperationException();
-	}
-	
 	public String toString() {
 		return String.valueOf(getID());
 	}
+	
 }
