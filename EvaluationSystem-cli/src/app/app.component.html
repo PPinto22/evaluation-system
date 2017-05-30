@@ -1,0 +1,36 @@
+
+<!-- main app container -->
+<nav class="navbar navbar-default navbar-fixed-top navbar-custom" >
+  <div class="container">
+    <div class="navbar-header page-scroll">
+      <a class="navbar-brand" [routerLink]="['/']" routerLinkActive="active">Evaluation System</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a [routerLink]="['/classes']" *ngIf="isLogged()">Classes</a></li>
+        <li><a [routerLink]="['/schedule']" *ngIf="isLogged()">Schedule</a></li>
+        <li><a [routerLink]="['/results']" *ngIf="isLogged()">Results</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" *ngIf="isLogged()">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{getUserName()}} <span class="caret"></span></a>
+          <ul class="dropdown-menu" >
+            <li><a [routerLink]="['/profile', 1]" ><span class="glyphicon glyphicon-user"></span>Profile</a></li>
+            <li><a [routerLink]="['/register']" (click)="logout()" ><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+          </ul>
+        </li>
+        <li><a [routerLink]="['/login']"  *ngIf="!isLogged()"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
+        <li><a [routerLink]="['/']"  *ngIf="!isLogged()"><span class="glyphicon glyphicon-log-in"></span> Sign Up</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="row bd">
+  <div class="col-md-12">
+    <router-outlet></router-outlet>
+  </div>
+</div>
