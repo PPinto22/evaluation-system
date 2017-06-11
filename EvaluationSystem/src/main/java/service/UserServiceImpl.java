@@ -1,6 +1,7 @@
 package service;
 
 import dao.*;
+import exception.*;
 import model.Student;
 import model.Teacher;
 import model.User;
@@ -20,37 +21,60 @@ public class UserServiceImpl implements UserService{
         this.teacherDAO = teacherDAO;
     }
 
-//    public Student[] getStudents() throws PersistentException {
-//        Student[] students = new Student[0];
-//        StudentCriteria criteria = new StudentCriteria();
-//        students = studentDAO.listStudentByCriteria(criteria);
-//        return students;
-//    }
-//
-//    public Teacher[] getTeachers() throws PersistentException {
-//        Teacher[] teachers = new Teacher[0];
-//        TeacherCriteria criteria = new TeacherCriteria();
-//        teachers = teacherDAO.listTeacherByCriteria(criteria);
-//        return teachers;
-//    }
-
     @Override
-    public void addStudent(Student student) throws PersistentException {
-        // TODO - Validar informacoes, verificar nao repetido, etc...
-        student.hashPassword();
-        studentDAO.save(student);
+    public User getUserByID(int userID) throws PersistentException {
+        return userDAO.getUserByORMID(userID);
     }
 
     @Override
-    public void addTeacher(Teacher teacher) throws PersistentException {
-        // TODO - Validar informacoes, verificar nao repetido, etc...
-        teacher.hashPassword();
-        teacherDAO.save(teacher);
+    public Student[] getStudents() throws PersistentException {
+        Student[] students = new Student[0];
+        StudentCriteria criteria = new StudentCriteria();
+        students = studentDAO.listStudentByCriteria(criteria);
+        return students;
     }
 
     @Override
-    public boolean authenticate(User user) throws PersistentException {
-        User persistedUser = userDAO.loadUserByEmail(user.getEmail());
-        return user.getPasswordHash().equals(persistedUser.getPassword());
+    public Teacher[] getTeachers() throws PersistentException {
+        Teacher[] teachers = new Teacher[0];
+        TeacherCriteria criteria = new TeacherCriteria();
+        teachers = teacherDAO.listTeacherByCriteria(criteria);
+        return teachers;
+    }
+
+
+    @Override
+    public User login(String email, String password) throws PersistentException, UnconfirmedEmailException, InvalidUserException {
+        password = User.getHash(password);
+        User user = userDAO.loadUserByAuthentication(email,password);
+        return user;
+    }
+
+    @Override
+    public User signup(User userDetails, String type)
+            throws PersistentException, MissingInformationException, ExistentUserException, InvalidUserTypeException {
+        if(userDetails.isMissingInformation() || type == null){
+            throw new MissingInformationException();
+        }
+
+        userDetails.setDeleted(false);
+        userDetails.setRegistered(true); // TODO se for para implementar a verificacao de email, por isto a false
+        userDetails.hashPassword();
+        if(!userDAO.exists(userDetails.getEmail())){
+            switch (type){
+                case "student":
+                    Student student = new Student(userDetails);
+                    studentDAO.save(student);
+                    return student;
+                case "teacher":
+                    Teacher teacher = new Teacher(userDetails);
+                    teacherDAO.save(teacher);
+                    return teacher;
+                default:
+                    throw new InvalidUserTypeException();
+            }
+        }
+        else
+            throw new ExistentUserException();
     }
 }

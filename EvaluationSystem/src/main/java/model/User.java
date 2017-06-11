@@ -34,14 +34,10 @@ public class User {
 	}
 
 	public void hashPassword(){
-		this.setPassword(hash(this.getPassword()));
+		this.setPassword(getHash(this.getPassword()));
 	}
 
-	public String getPasswordHash(){
-		return this.hash(this.getPassword());
-	}
-
-	private String hash(String s){
+	public static String getHash(String s){
 		MessageDigest md = null;
 		try {
 			md = MessageDigest.getInstance("SHA-256");
@@ -58,6 +54,25 @@ public class User {
 		return new String(digest);
 	}
 
+	public boolean isMissingInformation(){
+		return 	this.getEmail() == null 	|| this.getEmail().isEmpty() 	||
+				this.getPassword() == null 	|| this.getPassword().isEmpty() ||
+				this.getFirstName() == null || this.getFirstName().isEmpty()||
+				this.getLastName() == null 	|| this.getLastName().isEmpty();
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"ID=" + ID +
+				", email='" + email + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", registered=" + registered +
+				", deleted=" + deleted +
+				", registrationCode='" + registrationCode + '\'' +
+				'}';
+	}
 
 	////// Codigo gerado //////
 	public User() {
@@ -173,9 +188,5 @@ public class User {
 	}
 	
 	public final NotificationSetCollection _notifications = new NotificationSetCollection(this, _ormAdapter, ORMConstants.KEY_USER__NOTIFICATIONS, ORMConstants.KEY_NOTIFICATION__USER, ORMConstants.KEY_MUL_ONE_TO_MANY);
-	
-	public String toString() {
-		return String.valueOf(getID());
-	}
-	
+
 }

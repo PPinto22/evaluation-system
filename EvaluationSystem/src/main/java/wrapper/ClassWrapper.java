@@ -1,16 +1,16 @@
-package view;
+package wrapper;
 
 import model.Class;
 
-public class ClassView {
+public class ClassWrapper {
 
     private int ID;
     private String name;
     private String abbreviation;
 
-    public ClassView(){}
+    public ClassWrapper(){}
 
-    public ClassView(Class cl){
+    public ClassWrapper(Class cl){
      this.setID(cl.getID());
      this.setName(cl.getName());
      this.setAbbreviation(cl.getAbbreviation());

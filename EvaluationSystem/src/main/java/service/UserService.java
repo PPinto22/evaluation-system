@@ -1,5 +1,6 @@
 package service;
 
+import exception.*;
 import model.Student;
 import model.Teacher;
 import model.User;
@@ -11,7 +12,8 @@ public interface UserService {
     Student[] getStudents() throws PersistentException;
     Teacher[] getTeachers() throws PersistentException;
 
-    void addStudent(Student student) throws PersistentException;
-    void addTeacher(Teacher teacher) throws PersistentException;
-    boolean authenticate(User user) throws PersistentException;
+    User login(String email, String password) throws PersistentException, UnconfirmedEmailException, InvalidUserException;
+    User signup(User userDetails, String type) throws PersistentException, MissingInformationException, ExistentUserException, InvalidUserTypeException;
+
+    User getUserByID(int userID) throws PersistentException;
 }

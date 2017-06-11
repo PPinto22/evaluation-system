@@ -1,26 +1,25 @@
-package view;
+package wrapper;
 
 import model.User;
 
-public class UserView {
+public class UserWrapper{
 
     private int ID;
+    private String email;
     private String firstName;
     private String lastName;
-    private String email;
-    private String password;
     private String type;
 
-    public UserView() {
+    public UserWrapper() {
+        super();
     }
 
-    public UserView(User user){
+    public UserWrapper(User user){
+        this.setEmail(user.getEmail());
         this.setID(user.getID());
         this.setFirstName(user.getFirstName());
         this.setLastName(user.getLastName());
-        this.setEmail(user.getEmail());
-        this.setPassword(user.getPassword());
-        switch (User.class.getCanonicalName()){
+        switch (user.getClass().getSimpleName()){
             case "Student":
                 this.type = "student";
                 break;
@@ -28,6 +27,14 @@ public class UserView {
                 this.type = "teacher";
                 break;
         }
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getType() {
@@ -60,21 +67,5 @@ public class UserView {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

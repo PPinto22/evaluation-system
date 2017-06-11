@@ -1,17 +1,17 @@
-package view;
+package wrapper;
 
 import model.Group;
 
-public class GroupView {
+public class GroupWrapper {
 
     private int ID;
     private String name;
 
-    public GroupView() {
+    public GroupWrapper() {
 
     }
 
-    public GroupView(Group group) {
+    public GroupWrapper(Group group) {
         this.setID(group.getID());
         this.setName(group.getName());
     }

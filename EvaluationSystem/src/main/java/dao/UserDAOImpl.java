@@ -11,6 +11,8 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import exception.InvalidUserException;
+import exception.UnconfirmedEmailException;
 import model.Notification;
 import model.Student;
 import model.Teacher;
@@ -26,10 +28,30 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
 	// Nosso codigo
-	public User loadUserByEmail(String email) throws PersistentException {
+	@Override
+	public User loadUserByAuthentication(String email, String password) throws PersistentException, InvalidUserException, UnconfirmedEmailException {
 		UserCriteria criteria = new UserCriteria();
 		criteria.email.eq(email);
-		return this.loadUserByCriteria(criteria);
+		criteria.password.eq(password);
+		criteria.deleted.eq(false);
+		User[] users = this.listUserByCriteria(criteria);
+		if(users.length == 0){
+			throw new InvalidUserException();
+		}
+		for(int i = 0; i<users.length; i++){
+			if(users[i].getRegistered())
+				return users[i];
+		}
+		throw new UnconfirmedEmailException();
+	}
+
+	@Override
+	public boolean exists(String email) throws PersistentException {
+		UserCriteria criteria = new UserCriteria();
+		criteria.email.eq(email);
+		criteria.registered.eq(true);
+		criteria.deleted.eq(false);
+		return this.loadUserByCriteria(criteria) != null;
 	}
 
 	// Codigo gerado
