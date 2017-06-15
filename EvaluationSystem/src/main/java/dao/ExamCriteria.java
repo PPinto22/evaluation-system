@@ -22,7 +22,7 @@ public class ExamCriteria extends AbstractORMCriteria {
 	public final IntegerExpression _groupId;
 	public final AssociationExpression _group;
 	public final TimestampExpression beginDate;
-	public final TimestampExpression duration;
+	public final TimeExpression duration;
 	public final CollectionExpression _submissions;
 	public final CollectionExpression _questions;
 	
@@ -32,7 +32,7 @@ public class ExamCriteria extends AbstractORMCriteria {
 		_groupId = new IntegerExpression("_group.ID", this);
 		_group = new AssociationExpression("_group", this);
 		beginDate = new TimestampExpression("beginDate", this);
-		duration = new TimestampExpression("duration", this);
+		duration = new TimeExpression("duration", this);
 		_submissions = new CollectionExpression("ORM__submissions", this);
 		_questions = new CollectionExpression("ORM__questions", this);
 	}

@@ -11,6 +11,8 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import exception.InvalidUserException;
+import exception.UnconfirmedEmailException;
 import model.Notification;
 import model.Student;
 import model.Teacher;
@@ -24,6 +26,35 @@ import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
+
+	// Nosso codigo
+	@Override
+	public User loadUserByAuthentication(String email, String password) throws PersistentException, InvalidUserException, UnconfirmedEmailException {
+		UserCriteria criteria = new UserCriteria();
+		criteria.email.eq(email);
+		criteria.password.eq(password);
+		criteria.deleted.eq(false);
+		User[] users = this.listUserByCriteria(criteria);
+		if(users.length == 0){
+			throw new InvalidUserException();
+		}
+		for(int i = 0; i<users.length; i++){
+			if(users[i].getRegistered())
+				return users[i];
+		}
+		throw new UnconfirmedEmailException();
+	}
+
+	@Override
+	public boolean exists(String email) throws PersistentException {
+		UserCriteria criteria = new UserCriteria();
+		criteria.email.eq(email);
+		criteria.registered.eq(true);
+		criteria.deleted.eq(false);
+		return this.loadUserByCriteria(criteria) != null;
+	}
+
+	// Codigo gerado
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(UserDAOImpl.class);
 	public User loadUserByORMID(int ID) throws PersistentException {
 		try {

@@ -23,7 +23,7 @@ public class ExamDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression _groupId;
 	public final AssociationExpression _group;
 	public final TimestampExpression beginDate;
-	public final TimestampExpression duration;
+	public final TimeExpression duration;
 	public final CollectionExpression _submissions;
 	public final CollectionExpression _questions;
 	
@@ -33,7 +33,7 @@ public class ExamDetachedCriteria extends AbstractORMDetachedCriteria {
 		_groupId = new IntegerExpression("_group.ID", this.getDetachedCriteria());
 		_group = new AssociationExpression("_group", this.getDetachedCriteria());
 		beginDate = new TimestampExpression("beginDate", this.getDetachedCriteria());
-		duration = new TimestampExpression("duration", this.getDetachedCriteria());
+		duration = new TimeExpression("duration", this.getDetachedCriteria());
 		_submissions = new CollectionExpression("ORM__submissions", this.getDetachedCriteria());
 		_questions = new CollectionExpression("ORM__questions", this.getDetachedCriteria());
 	}
@@ -44,7 +44,7 @@ public class ExamDetachedCriteria extends AbstractORMDetachedCriteria {
 		_groupId = new IntegerExpression("_group.ID", this.getDetachedCriteria());
 		_group = new AssociationExpression("_group", this.getDetachedCriteria());
 		beginDate = new TimestampExpression("beginDate", this.getDetachedCriteria());
-		duration = new TimestampExpression("duration", this.getDetachedCriteria());
+		duration = new TimeExpression("duration", this.getDetachedCriteria());
 		_submissions = new CollectionExpression("ORM__submissions", this.getDetachedCriteria());
 		_questions = new CollectionExpression("ORM__questions", this.getDetachedCriteria());
 	}

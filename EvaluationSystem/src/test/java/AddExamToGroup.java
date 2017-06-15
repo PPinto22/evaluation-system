@@ -6,6 +6,7 @@ import model.Exam;
 import model.Group;
 import org.orm.PersistentException;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,8 +24,8 @@ public class AddExamToGroup {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Timestamp timestamp = new Timestamp(parsedDate.getTime());
-        exam.setDuration(timestamp);
+        Time time = new Time(parsedDate.getTime());
+        exam.setDuration(time);
 
         GroupDAO groupDAO = new GroupDAOImpl();
         Group group = null;

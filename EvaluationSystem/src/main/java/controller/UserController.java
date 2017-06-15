@@ -1,56 +1,75 @@
 package controller;
 
-import model.*;
+import exception.InvalidClaimsException;
+import io.jsonwebtoken.Claims;
+import model.Student;
+import model.Teacher;
+import model.User;
+import org.orm.PersistentException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import serializer.UserSerializationMode;
-import serializer.UserSerializer;
+import security.JwtService;
 import service.UserService;
+import wrapper.StudentGroupsWrapper;
+import wrapper.TeacherClassesWrapper;
 
-import java.util.Arrays;
-import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping("/users")
-// TODO - Não definitivo; para experiencias.
+@RequestMapping("/api/users")
 public class UserController {
 
     private UserService userService;
-    private UserSerializer userSerializer;
+    private JwtService jwtService;
 
-    public UserController(UserService userService, UserSerializer userSerializer){
+    public UserController(UserService userService, JwtService jwtService) {
         this.userService = userService;
-        this.userSerializer = userSerializer;
-    }
-
-    @RequestMapping(value = "/teachers/add", method = RequestMethod.GET)
-    public void addUser(){
-        Teacher teacher = new Teacher();
-        teacher.setEmail("john@gmail.com");
-        teacher.setFirstName("Teacher");
-        teacher.setLastName("1");
-        teacher.setPassword("password");
-        teacher.setDeleted(false);
-        teacher.setRegistered(true);
-        teacher.setRegistrationCode(UUID.randomUUID().toString());
-
-        model.Class cl = new model.Class();
-        cl.setAbbreviation("AA");
-        cl.setName("Arquiteturas Aplicacionais");
-        cl.set_teacher(teacher);
-
-        userService.addUser(teacher);
+        this.jwtService = jwtService;
     }
 
     @RequestMapping(value = "/students", method = RequestMethod.GET)
-    public Student[] getStudents(){
-        return userService.getStudents();
+    // FIXME: Metodo para testes
+    public ResponseEntity<List<StudentGroupsWrapper>> getStudents(HttpServletRequest request){
+        // Exemplo de como retirar o user a partir do token
+        try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
+            System.out.println(user.toString());
+        } catch (InvalidClaimsException e) {
+            e.printStackTrace();
+        } catch (PersistentException e) {
+            e.printStackTrace();
+        }
+
+        List<StudentGroupsWrapper> views = new ArrayList<>();
+        try{
+            Student[] students = userService.getStudents();
+            for(Student student: students){
+                views.add(new StudentGroupsWrapper(student));
+            }
+            return new ResponseEntity<>(views, HttpStatus.OK);
+        }catch (PersistentException e){
+            return new ResponseEntity<>(views, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "/teachers", method = RequestMethod.GET)
-    public String getTeachers(){
-        Teacher[] teachers = userService.getTeachers();
-        return userSerializer.serialize(Arrays.asList(teachers), UserSerializationMode.DEFAULT);
+    // FIXME: Metodo para testes
+    public ResponseEntity<List<TeacherClassesWrapper>> getTeachers(){
+        List<TeacherClassesWrapper> views = new ArrayList<>();
+        try {
+            Teacher[] teachers = userService.getTeachers();
+            for (Teacher teacher : teachers) {
+                views.add(new TeacherClassesWrapper(teacher));
+            }
+            return new ResponseEntity<>(views, HttpStatus.OK);
+        }catch (PersistentException e){
+            return new ResponseEntity<>(views, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 }

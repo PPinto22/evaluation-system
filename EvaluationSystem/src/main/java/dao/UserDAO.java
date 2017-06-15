@@ -11,11 +11,19 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import exception.InvalidUserException;
+import exception.UnconfirmedEmailException;
 import model.User;
 import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface UserDAO {
+	// Nosso codigo
+	public User loadUserByAuthentication(String email, String password)
+			throws PersistentException, InvalidUserException, UnconfirmedEmailException;
+	public boolean exists(String email) throws PersistentException;
+
+	// Codigo Gerado
 	public User loadUserByORMID(int ID) throws PersistentException;
 	public User getUserByORMID(int ID) throws PersistentException;
 	public User loadUserByORMID(int ID, LockMode lockMode) throws PersistentException;
