@@ -14,19 +14,19 @@ export class AppComponent {
 
   }
 
-  isLogged():boolean{
+  isLogged(): boolean {
     return this.authentication.isLogged();
   }
 
-  logout():void{
+  logout(): void {
     this.authentication.logout();
   }
 
-  isTeacher():boolean{
+  isTeacher(): boolean {
     return localStorage['currentUser'].isTeacher();
   }
 
-  getUserName():string{
+  getUserName(): string {
     return this.authentication.getUserName();
   }
 

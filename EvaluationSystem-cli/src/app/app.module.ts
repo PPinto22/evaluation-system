@@ -9,13 +9,16 @@ import { RegisterComponent } from './components/register/register.component';
 import {routing} from "./app.routes";
 import {AuthenticationService} from "./services/authentication.service";
 import { HomeComponent } from './components/home/home.component';
+import {LoginGuardService} from "./services/login-guard.service";
+import { ClassesComponent } from './components/classes/classes.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    ClassesComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,8 @@ import { HomeComponent } from './components/home/home.component';
     routing
   ],
   providers: [
-    AuthenticationService
+    AuthenticationService,
+    LoginGuardService
   ],
   bootstrap: [AppComponent]
 })
