@@ -1,40 +1,50 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="panel panel-login">
-        <div class="panel-body">
-          <div class="row">
-            <h1>Sign Up</h1>
+<div class="login-container">
 
-            <div class="col-lg-12 col-md-12 col-sm-12">
-              <form name="loginForm" (onSubmit)="register()" #logForm="ngForm">
-
-                <div class="row form-group" >
-                  <input type="text" name="username" id="username" [(ngModel)]="model.username" tabindex="1" class="form-control" placeholder="Username" value="" #username="ngModel" required />
-                </div>
-
-                <div class="row form-group">
-                  <input type="text" id="email" name="email" class="form-control"  [(ngModel)]="model.email" tabindex="1"  placeholder="E-mail" value="" #email="ngModel" required>
-                </div>
-
-                <div class="row form-group">
-                  <input type="password" id="password" name="password" class="form-control" [(ngModel)]="model.password"  tabindex="2"  placeholder="Password" #password="ngModel" required>
-                </div>
-
-                <div class="row form-group">
-                  <input type="password" name="confirmpassword" id="confirmpassword" tabindex="2" class="form-control" placeholder="Confirm Password"  [(ngModel)]="model.confirmpassword" #confirmpassword="ngModel" required >
-                </div>
-
-                <div class="row form-group" >
-                  <button [disabled]="loading" name="login-submit" id="login-submit" class="form-control btn-primary">Sign Up</button>
-                </div>
-
-              </form>
-
-            </div>
+  <div class="login-box animated fadeInDown">
+    <div class="login-body">
+      <div class="login-title"><strong>Welcome</strong>, Please login</div>
+      <form action="index.html" class="form-horizontal" method="post">
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="text" class="form-control" placeholder="Name"/>
           </div>
         </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="text" class="form-control" placeholder="Username"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="password" class="form-control" placeholder="Password"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="password" class="form-control" placeholder="Confirm Password"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-6">
+            <button [routerLink]="['/']" class="btn btn-danger btn-block">Cancel</button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-info btn-block">Log In</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="login-footer">
+      <div class="pull-left">
+        &copy; 2017 Evaluation System
+      </div>
+      <div class="pull-right">
+        <a href="#portefolio">Portefolio</a> |
+        <a href="#about">About</a> |
+        <a href="#contact">Contact Us</a>
       </div>
     </div>
   </div>
+
 </div>

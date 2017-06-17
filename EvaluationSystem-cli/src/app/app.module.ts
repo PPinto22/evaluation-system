@@ -6,11 +6,11 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import {routing} from "./app.routes";
-import {AuthenticationService} from "./services/authentication.service";
+import {routing} from './app.routes';
+import {AuthenticationService} from './services/authentication.service';
 import { HomeComponent } from './components/home/home.component';
-import {LoginGuardService} from "./services/login-guard.service";
-import { ClassesComponent } from './components/classes/classes.component';
+import {LoginGuardService} from './services/login-guard.service';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { ClassesComponent } from './components/classes/classes.component';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    ClassesComponent
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

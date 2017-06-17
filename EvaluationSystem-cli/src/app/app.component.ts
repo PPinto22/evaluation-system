@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AuthenticationService} from "./services/authentication.service";
+import {AuthenticationService} from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent {
   }
 
   isLogged(): boolean {
-    return this.authentication.isLogged();
+    return false; // this.authentication.isLogged();
   }
 
   logout(): void {
