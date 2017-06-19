@@ -11,9 +11,9 @@ License Type: Academic
    	<!-- properties -->
 		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="connection.driver_class">org.postgresql.Driver</property>
-		<property name="connection.url">jdbc:postgresql://localhost:3456/evalsys</property>
+		<property name="connection.url">jdbc:postgresql://192.168.43.91:5432/evalsys</property>
 		<property name="connection.username">evalsys</property>
-		<property name="connection.password"></property>
+		<property name="connection.password">evalsys</property>
 		<property name="hibernate.connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</property>
 		<property name="hibernate.c3p0.acquire_increment">1</property>
 		<property name="hibernate.c3p0.idle_test_period">0</property>
