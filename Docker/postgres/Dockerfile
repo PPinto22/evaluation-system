@@ -19,6 +19,8 @@ RUN apt-get update && apt-get install -y python-software-properties software-pro
 
 # Note: The official Debian and Ubuntu images automatically ``apt-get clean``
 # after each ``apt-get``
+ADD files/setup.sql /tmp/
+
 
 # Run the rest of the commands as the ``postgres`` user created by the ``postgres-9.3`` package when it was ``apt-get installed``
 USER postgres
@@ -27,11 +29,14 @@ USER postgres
 # then create a database `docker` owned by the ``docker`` role.
 # Note: here we use ``&&\`` to run commands one after the other - the ``\``
 #       allows the RUN command to span multiple lines.
-RUN    initdb -D evalsys &&\
-    postgres -D evalsys/ -k. -p 3456 & &&\
-    createuser -h localhost -p 3456 evalsys &&\
-    createdb -h localhost -p 3456 evalsys -O evalsys &&\
-    psql -h localhost -p 3456 -d evalsys -U evalsys -a -f setup.sql
+RUN    /etc/init.d/postgresql start &&\
+    psql --command "CREATE USER evalsys WITH SUPERUSER PASSWORD 'evalsys';" &&\
+    createdb -O evalsys evalsys &&\
+    export PGPASSWORD='evalsys' &&\
+    psql -h 127.0.0.1 -p 5432 -d evalsys -U evalsys -a -f /tmp/setup.sql
+
+    #psql --command "CREATE USER evalsys WITH SUPERUSER PASSWORD 'evalsys';" &&\
+
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
@@ -41,7 +46,7 @@ RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.co
 RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
 
 # Expose the PostgreSQL port
-EXPOSE 3456
+EXPOSE 5432
 
 # Add VOLUMEs to allow backup of config, logs and databases
 VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
