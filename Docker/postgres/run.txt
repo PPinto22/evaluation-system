@@ -1,0 +1,5 @@
+—- Create Container Image —-
+docker build -t eg_postgresql .
+
+—- Run Container Image —- 
+docker run --net="bridge" -p 5432:5432 --rm -P --name pg_test eg_postgresql
