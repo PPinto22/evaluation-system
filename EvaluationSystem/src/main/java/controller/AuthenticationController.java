@@ -4,6 +4,7 @@ import exception.*;
 import model.User;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,32 +27,8 @@ public class AuthenticationController {
         this.jwtService = jwtService;
     }
 
-    /**
-     *
-     * @param userLogin
-     * {
-     *  "email": "something@something",
-     *  "password": "some_password"
-     * }
-     * @return
-     * HttpStatus:
-     * - OK
-     * - INTERNAL_SERVER_ERROR
-     * - UNAUTHORIZED (Invalid authentication, or Unconfirmed email)
-     * response format:
-     * {
-     *  "token": "header.body.signature",
-     *  "user":{
-     *      "email": "something@something",
-     *      "firstName": "Foo",
-     *      "lastName": "Bar",
-     *      "type": "student" or "teacher",
-     *      "id": id (integer)
-     *  }
-     * }
-     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<Object> login(LoginWrapper userLogin){
+    public ResponseEntity<Object> login(@RequestBody LoginWrapper userLogin){
         try {
             User user = userService.login(userLogin.getEmail(), userLogin.getPassword());
             String token = jwtService.createToken(user.getID());
@@ -65,33 +42,8 @@ public class AuthenticationController {
         }
     }
 
-
-    /**
-     *
-     * @param userSignup
-     * {
-     *  "email": "something@something",
-     *  "password": "some_password",
-     *  "firstName": "Foo",
-     *  "lastName": "Bar",
-     *  "type": "student" or "teacher"
-     * }
-     * @return
-     * HttpStatus:
-     * - OK
-     * - INTERNAL_SERVER_ERROR
-     * - NOT_ACCEPTABLE (Missing information, Email already in use, or Invalid user type)
-     * Response Format:
-     * {
-     *  "email": "something@something",
-     *  "firstName": "Foo",
-     *  "lastName": "Bar",
-     *  "type": "student" or "teacher",
-     *  "id": id (integer)
-     * }
-     */
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<Object> signup(SignupWrapper userSignup){
+    public ResponseEntity<Object> signup(@RequestBody SignupWrapper userSignup){
         User userDetails = new User();
         userDetails.setEmail(userSignup.getEmail());
         userDetails.setPassword(userSignup.getPassword());

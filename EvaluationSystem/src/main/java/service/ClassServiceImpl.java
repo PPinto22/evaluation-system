@@ -4,6 +4,7 @@ import dao.ClassDAO;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
 import model.Class;
+import model.Group;
 import model.Teacher;
 import org.orm.PersistentException;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,11 @@ public class ClassServiceImpl implements ClassService{
         if(cl.missingInformation())
             throw new MissingInformationException();
         this.classDAO.save(cl);
+    }
+
+    @Override
+    public void addGroupToClass(Class cl, Group group) {
+
     }
 
     @Override
