@@ -13,25 +13,28 @@ export class AuthenticationService {
 
   constructor( private router: Router,
                private http: Http,
-               private httpUtil: HttpUtilService) { }
+               private httpUtil: HttpUtilService) {
+    if ( localStorage['currentUser'] !== undefined) {
+      const userJson = JSON.parse(localStorage['currentUser']);
+      this.userLogged = new User(userJson._id, userJson._email, userJson._firstName, userJson._lastName, userJson._type, userJson._token );
+    }
+  }
 
 
-  // LOGIN
   login(email: string, pass: string): Observable<any> {
     return this.http.post( this.httpUtil.url('/auth/login'), JSON.stringify({ email: email, password: pass }), this.httpUtil.headers()).map(
         (response: any) => {
           const data: any = response.json();
           if (data && data.token && data.user) {
             const user: any = data.user;
-            localStorage.setItem('currentUser', data.token);
-            localStorage.setItem('currentUserId', data.user.id);
             this.userLogged = new User(user.id, user.email, user.firstName, user.lastName, user.type, data.token );
+            localStorage.setItem('currentUser', JSON.stringify( this.userLogged ) );
+            console.log(JSON.stringify( this.userLogged ));
           }
         }
       );
   }
 
-  // REGISTER
   register(email: string, password: string, firstName: string, lastName: string, type: string): Observable<any> {
     return this.http.post( this.httpUtil.url('/auth/signup'),
       JSON.stringify({
@@ -51,12 +54,11 @@ export class AuthenticationService {
   logout() {
     this.userLogged = null;
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('currentUserId');
 
   }
 
   isLogged(): boolean {
-    return localStorage['currentUser'] != null ? true : false;
+    return this.userLogged != null ? true : false;
   }
 
   isTeacher() {

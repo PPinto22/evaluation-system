@@ -22,16 +22,15 @@ export class RegisterComponent implements OnInit {
 
   private register() {
     this.loading = true;
-    console.log(this.user);
     this.authentication.register(this.user.email, this.user.password, this.user.firstName, this.user.lastName, User._Teacher).subscribe(
       result => {
-        console.log(result);
         this.router.navigate(['/dashboard']);
       },
       error => {
         console.log(error);
       }
     );
+    this.loading = false;
   }
 
   onSubmit(): void {

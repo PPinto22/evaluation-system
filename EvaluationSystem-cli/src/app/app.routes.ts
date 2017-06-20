@@ -11,9 +11,9 @@ import {LoginGuardService} from './services/login-guard.service';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: '', component: HomeComponent , pathMatch: 'full'  },
+  { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuardService] },
+  { path: 'register', component: RegisterComponent, canActivate: [LoginGuardService] },
   { path: 'dashboard', component: DashboardComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
