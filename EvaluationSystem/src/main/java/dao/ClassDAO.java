@@ -11,6 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import exception.NonExistentEntityException;
 import model.Class;
 import org.orm.*;
 import org.hibernate.LockMode;
@@ -19,6 +20,8 @@ public interface ClassDAO {
 
 	//Nosso codigo
 	boolean exists(int ID) throws PersistentException;
+	boolean exists(int teacherID, String className) throws PersistentException;
+	Class getClassByName(int teacherID, String className) throws PersistentException, NonExistentEntityException;
 
 	//Codigo gerado
 	public Class loadClassByORMID(int ID) throws PersistentException;

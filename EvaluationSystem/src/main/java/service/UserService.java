@@ -16,7 +16,9 @@ public interface UserService {
     User signup(User userDetails, String type) throws PersistentException, MissingInformationException, ExistentEntityException, InvalidUserTypeException;
     void delete(User user) throws PersistentException;
 
-    User getUserByID(int userID) throws PersistentException;
+    User getUserByID(int userID) throws PersistentException, NonExistentEntityException;
     User getUserByEmail(String email) throws NonExistentEntityException, PersistentException;
 
+    boolean exists(int ID) throws PersistentException;
+    boolean exists(String email) throws PersistentException;
 }

@@ -1,6 +1,7 @@
 package security;
 
 import exception.InvalidClaimsException;
+import exception.NonExistentEntityException;
 import io.jsonwebtoken.*;
 import model.User;
 import org.orm.PersistentException;
@@ -39,11 +40,9 @@ public class JwtService {
         int userID;
         try{
             userID = Integer.parseInt(claims.getSubject());
-        }
-        catch (Exception e){
+            return userService.getUserByID(userID);
+        } catch (NonExistentEntityException e) {
             throw new InvalidClaimsException();
         }
-
-        return userService.getUserByID(userID);
     }
 }

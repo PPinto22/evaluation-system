@@ -16,6 +16,14 @@ import dao.QuestionSetCollection;
  * License Type: Academic
  */
 public class Class {
+	// Nosso codigo
+	public boolean missingInformation(){
+		return 	this.getName() == null || this.getName().equals("") ||
+				this.getAbbreviation() == null || this.getAbbreviation().equals("");
+	}
+
+
+	// Codigo Gerado
 	public Class() {
 	}
 	
