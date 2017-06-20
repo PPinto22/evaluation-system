@@ -22,7 +22,7 @@
             <button [routerLink]="['/']" class="btn btn-danger btn-block">Cancel</button>
           </div>
           <div class="col-md-6">
-            <button [disabled]="!f_login.form.valid" class="btn btn-info btn-block">Log In</button>
+            <button type="submit" [disabled]="!f_login.form.valid" class="btn btn-info btn-block">Log In</button>
           </div>
         </div>
       </form>

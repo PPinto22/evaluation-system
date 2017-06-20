@@ -37,7 +37,7 @@ export class AuthenticationService {
       JSON.stringify({
         email: email,
         password: password,
-        fristName: firstName,
+        firstName: firstName,
         lastName: lastName,
         type: type
       }), this.httpUtil.headers())
