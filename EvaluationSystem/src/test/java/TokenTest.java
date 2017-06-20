@@ -23,15 +23,17 @@ public class TokenTest{
 
     @Test
     public void testTokenCreation() throws PersistentException, InvalidClaimsException {
-//        User[] users = userService.getStudents();
-//        int id = users[0].getID();
-//
-//        String token = jwtService.createToken(id);
-//        Claims claims = jwtService.getClaims(token);
-//        User user = jwtService.getUser(claims);
-//
-//        Assert.assertNotNull(token);
-//        Assert.assertTrue(claims.getSubject().equals(String.valueOf(id)));
-//        Assert.assertTrue(claims.getSubject().equals(String.valueOf(user.getID())));
+        User[] users = userService.getStudents();
+        if(users.length > 0) {
+            int id = users[0].getID();
+
+            String token = jwtService.createToken(id);
+            Claims claims = jwtService.getClaims(token);
+            User user = jwtService.getUser(claims);
+
+            Assert.assertNotNull(token);
+            Assert.assertTrue(claims.getSubject().equals(String.valueOf(id)));
+            Assert.assertTrue(claims.getSubject().equals(String.valueOf(user.getID())));
+        }
     }
 }

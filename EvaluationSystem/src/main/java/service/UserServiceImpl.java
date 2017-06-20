@@ -27,6 +27,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User getUserByEmail(String email) throws NonExistentEntityException, PersistentException {
+        if(!this.userDAO.exists(email))
+            throw new NonExistentEntityException();
+
+        return this.userDAO.loadUserByEmail(email);
+    }
+
+    @Override
     public Student[] getStudents() throws PersistentException {
         Student[] students = new Student[0];
         StudentCriteria criteria = new StudentCriteria();
@@ -52,7 +60,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User signup(User userDetails, String type)
-            throws PersistentException, MissingInformationException, ExistentUserException, InvalidUserTypeException {
+            throws PersistentException, MissingInformationException, ExistentEntityException, InvalidUserTypeException {
         if(userDetails.isMissingInformation() || type == null){
             throw new MissingInformationException();
         }
@@ -75,6 +83,11 @@ public class UserServiceImpl implements UserService{
             }
         }
         else
-            throw new ExistentUserException();
+            throw new ExistentEntityException();
+    }
+
+    @Override
+    public void delete(User user) throws PersistentException {
+        userDAO.delete(user);
     }
 }

@@ -5,7 +5,6 @@ GET     /exams/:id
 GET     /exams?user,class,upcoming,history
 
 GET     /classes/:id
-GET     /classes?user
 POST    /classes
 PUT     /classes/:id
 DELETE  /classes/:id
@@ -44,6 +43,6 @@ POST    /users
 PUT     /users/:user_id
 DELETE  /users/:user_id
 
+GET     /users/:user_id/classes
 GET     /users/:user_id/scores
-
 GET     /users/:user_id/notifications

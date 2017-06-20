@@ -13,7 +13,10 @@ public interface UserService {
     Teacher[] getTeachers() throws PersistentException;
 
     User login(String email, String password) throws PersistentException, UnconfirmedEmailException, InvalidUserException;
-    User signup(User userDetails, String type) throws PersistentException, MissingInformationException, ExistentUserException, InvalidUserTypeException;
+    User signup(User userDetails, String type) throws PersistentException, MissingInformationException, ExistentEntityException, InvalidUserTypeException;
+    void delete(User user) throws PersistentException;
 
     User getUserByID(int userID) throws PersistentException;
+    User getUserByEmail(String email) throws NonExistentEntityException, PersistentException;
+
 }

@@ -23,6 +23,16 @@ import java.util.List;
 
 @Repository
 public class ClassDAOImpl implements ClassDAO {
+
+	// Nosso codigo
+	@Override
+	public boolean exists(int ID) throws PersistentException {
+		ClassCriteria criteria = new ClassCriteria();
+		criteria.ID.eq(ID);
+		return this.loadClassByCriteria(criteria) != null;
+	}
+
+	// Codigo gerado
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(ClassDAOImpl.class);
 	public Class loadClassByORMID(int ID) throws PersistentException {
 		try {

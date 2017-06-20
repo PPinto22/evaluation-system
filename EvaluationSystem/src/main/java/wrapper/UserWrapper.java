@@ -11,7 +11,6 @@ public class UserWrapper{
     private String type;
 
     public UserWrapper() {
-        super();
     }
 
     public UserWrapper(User user){

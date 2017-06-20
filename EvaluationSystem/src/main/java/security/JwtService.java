@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtService {
 
     private static final String signingKey = "Hello :)";
-    private static final int expirationTime = 30 * 60 * 1000; // 30 minutos
+    private static final int expirationTime = 60 * 60 * 1000; // 1 hora
 
     private UserService userService;
 

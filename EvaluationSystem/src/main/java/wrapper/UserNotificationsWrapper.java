@@ -11,7 +11,9 @@ public class UserNotificationsWrapper extends UserWrapper {
 
     private List<NotificationWrapper> notifications;
 
-    public UserNotificationsWrapper(){}
+    public UserNotificationsWrapper(){
+        super();
+    }
 
     public UserNotificationsWrapper(User user){
         super(user);

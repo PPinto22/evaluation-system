@@ -3,7 +3,6 @@ package controller;
 import exception.*;
 import model.User;
 import org.orm.PersistentException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -106,7 +105,7 @@ public class AuthenticationController {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (MissingInformationException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(MISSING_INFORMATION), NOT_ACCEPTABLE);
-        } catch (ExistentUserException e) {
+        } catch (ExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(EMAIL_IN_USE), NOT_ACCEPTABLE);
         } catch (InvalidUserTypeException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_USER_TYPE), NOT_ACCEPTABLE);

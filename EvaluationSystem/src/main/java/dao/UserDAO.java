@@ -21,6 +21,8 @@ public interface UserDAO {
 	// Nosso codigo
 	public User loadUserByAuthentication(String email, String password)
 			throws PersistentException, InvalidUserException, UnconfirmedEmailException;
+	public User loadUserByEmail(String email) throws PersistentException;
+	public boolean exists(int ID) throws PersistentException;
 	public boolean exists(String email) throws PersistentException;
 
 	// Codigo Gerado

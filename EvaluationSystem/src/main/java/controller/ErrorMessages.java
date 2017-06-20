@@ -9,4 +9,5 @@ public class ErrorMessages {
     public static final String MISSING_INFORMATION = "Missing information";
     public static final String INVALID_USER_TYPE = "Invalid user type";
     public static final String EMAIL_IN_USE = "Email already in use";
+    public static final String NO_SUCH_CLASS = "No such class";
 }

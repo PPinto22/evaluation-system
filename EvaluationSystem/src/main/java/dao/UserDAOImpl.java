@@ -46,9 +46,27 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
+	public User loadUserByEmail(String email) throws PersistentException {
+		UserCriteria criteria = new UserCriteria();
+		criteria.email.eq(email);
+		criteria.deleted.eq(false);
+		criteria.registered.eq(true);
+		return this.loadUserByCriteria(criteria);
+	}
+
+	@Override
 	public boolean exists(String email) throws PersistentException {
 		UserCriteria criteria = new UserCriteria();
 		criteria.email.eq(email);
+		criteria.registered.eq(true);
+		criteria.deleted.eq(false);
+		return this.loadUserByCriteria(criteria) != null;
+	}
+
+	@Override
+	public boolean exists(int ID) throws PersistentException {
+		UserCriteria criteria = new UserCriteria();
+		criteria.ID.eq(ID);
 		criteria.registered.eq(true);
 		criteria.deleted.eq(false);
 		return this.loadUserByCriteria(criteria) != null;

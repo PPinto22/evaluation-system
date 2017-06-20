@@ -16,6 +16,11 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface ClassDAO {
+
+	//Nosso codigo
+	boolean exists(int ID) throws PersistentException;
+
+	//Codigo gerado
 	public Class loadClassByORMID(int ID) throws PersistentException;
 	public Class getClassByORMID(int ID) throws PersistentException;
 	public Class loadClassByORMID(int ID, LockMode lockMode) throws PersistentException;
