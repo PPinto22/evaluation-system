@@ -19,8 +19,12 @@ import service.ClassService;
 import wrapper.ClassTeacherWrapper;
 import wrapper.ErrorWrapper;
 import wrapper.GroupClassWrapper;
+import wrapper.GroupWrapper;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
@@ -52,7 +56,6 @@ public class ClassController {
         return new ResponseEntity<Object>(new ClassTeacherWrapper(cl),OK);
     }
 
-    // TODO - Testar e Documentar no readme
     @RequestMapping(value = "/{classID:[\\d]+}/groups", method = POST)
     public ResponseEntity<Object> postGroup(@PathVariable int classID, @RequestBody Group group, HttpServletRequest request){
         try {
@@ -71,6 +74,22 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(GROUP_EXISTS), NOT_ACCEPTABLE);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        }
+    }
+    
+    @RequestMapping(value = "/{classID:[\\d]+}/groups", method = GET)
+    public ResponseEntity<Object> postGroup(@PathVariable int classID){
+        try {
+            Class cl = classService.getClassByID(classID);
+            List<GroupWrapper> groups = new ArrayList<>();
+            for(Group group: cl._groups.toArray()){
+                groups.add(new GroupWrapper(group));
+            }
+            return new ResponseEntity<Object>(groups, OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
         }
     }
 

@@ -115,7 +115,25 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 #### ~~DELETE /classes/{class_id}/questions/{id}~~
 #### ~~GET /classes/{class_id}/categories~~
 
-#### ~~GET /classes/{class_id}/groups~~
+#### GET /classes/{class_id}/groups
+### Response
+```json
+[
+  {
+    "name": "class1",
+    "id": 1
+  },
+  {
+    "name": "class2",
+    "id": 2
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such class*
+---
 
 #### POST /classes/{class_id}/groups
 ### Body
@@ -144,14 +162,13 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
     "id": 1
 }
 ```
----
-
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
 - **NOT_ACCEPTABLE (406)** - *Group already exists*
 - **UNAUTHORIZED (401)** - *No permission*
+---
 
 #### ~~GET /groups/{id}~~
 #### ~~PUT /groups/{id}~~
