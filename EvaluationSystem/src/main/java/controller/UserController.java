@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import security.JwtService;
 import service.TeacherService;
 import service.UserService;
-import wrapper.ClassWrapper;
-import wrapper.ErrorWrapper;
-import wrapper.StudentGroupsWrapper;
-import wrapper.TeacherClassesWrapper;
+import wrapper.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 import static controller.ErrorMessages.*;
 
 @RestController
-@RequestMapping("users") //TODO api/
+@RequestMapping("api/users")
 public class UserController {
 
     private UserService userService;
@@ -46,8 +43,17 @@ public class UserController {
     }
 
 
-
-
+    @RequestMapping(value = "/{id:[\\d]+}", method = GET)
+    public ResponseEntity<Object> getUser(@PathVariable int id){
+        try {
+            User user = userService.getUserByID(id);
+            return new ResponseEntity<Object>(new UserWrapper(user), OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
+        }
+    }
 
 
     // Testes...
