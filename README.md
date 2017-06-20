@@ -114,7 +114,61 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 #### ~~PUT /classes/{class_id}/questions/{question_id}~~
 #### ~~DELETE /classes/{class_id}/questions/{id}~~
 #### ~~GET /classes/{class_id}/categories~~
-#### ~~POST /classes/{class_id}/groups~~
+
+#### GET /classes/{class_id}/groups
+### Response
+```json
+[
+  {
+    "name": "class1",
+    "id": 1
+  },
+  {
+    "name": "class2",
+    "id": 2
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such class*
+---
+
+#### POST /classes/{class_id}/groups
+### Body
+```json
+{
+  "name": "Turma 16/17"
+}
+```
+
+### Response
+```json
+{
+    "name": "Turma 16/17",
+    "_class": {
+        "name": "Arquiteturas Aplicacionais",
+        "abbreviation": "AA",
+        "teacher": {
+            "email": "teacher@teacher",
+            "firstName": "John",
+            "lastName": "Doe",
+            "type": "teacher",
+            "id": 1
+        },
+        "id": 1
+    },
+    "id": 1
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such class*
+- **NOT_ACCEPTABLE (406)** - *Group already exists*
+- **UNAUTHORIZED (401)** - *No permission*
+---
 
 #### ~~GET /groups/{id}~~
 #### ~~PUT /groups/{id}~~
@@ -202,5 +256,5 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such teacher*
-- **NOT_ACCEPTABLE (406)** - *Missing information*
+- **NOT_ACCEPTABLE (406)** - *Missing information*, *Class already exists*
 ---

@@ -69,7 +69,9 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public void addClassToTeacher(Teacher teacher, Class cl) throws PersistentException, MissingInformationException {
+    public void addClassToTeacher(Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException {
+        if(classService.exists(teacher, cl.getName()))
+            throw new ExistentEntityException();
         cl.set_teacher(teacher);
         classService.addClass(cl);
     }

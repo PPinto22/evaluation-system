@@ -14,6 +14,7 @@ package dao; /**
 import model.Exam;
 import model.Group;
 import model.GroupStudent;
+import model.Class;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -23,6 +24,28 @@ import java.util.List;
 
 @Repository
 public class GroupDAOImpl implements GroupDAO {
+	@Override
+	public boolean exists(int ID) throws PersistentException {
+		GroupCriteria criteria = new GroupCriteria();
+		criteria.ID.eq(ID);
+		Group group = this.loadGroupByCriteria(criteria);
+		return group != null;
+	}
+
+	@Override
+	public boolean exists(Class cl, String name) throws PersistentException {
+		return this.loadGroupByName(cl,name) != null;
+	}
+
+	@Override
+	public Group loadGroupByName(Class cl, String name) throws PersistentException {
+		GroupCriteria criteria = new GroupCriteria();
+		criteria.name.eq(name);
+		criteria._classId.eq(cl.getID());
+		Group group = this.loadGroupByCriteria(criteria);
+		return group;
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(GroupDAOImpl.class);
 	public Group loadGroupByORMID(int ID) throws PersistentException {
 		try {

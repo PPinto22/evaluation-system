@@ -1,6 +1,7 @@
 package service;
 
 import dao.ClassDAO;
+import exception.ExistentEntityException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
 import model.Class;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class ClassServiceImpl implements ClassService{
 
     ClassDAO classDAO;
+    GroupService groupService;
 
-    public ClassServiceImpl(ClassDAO classDAO) {
+    public ClassServiceImpl(ClassDAO classDAO, GroupService groupService) {
         this.classDAO = classDAO;
+        this.groupService = groupService;
     }
 
     @Override
@@ -41,8 +44,13 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public void addGroupToClass(Class cl, Group group) {
+    public void addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException {
+        if(this.groupService.exists(cl, group.getName()))
+            throw new ExistentEntityException();
 
+        cl._groups.add(group);
+        group.set_class(cl);
+        this.groupService.addGroup(group);
     }
 
     @Override

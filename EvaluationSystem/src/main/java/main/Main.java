@@ -25,7 +25,7 @@ public class Main {
     public FilterRegistrationBean filterRegistrationBean() {
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(jwtFilter);
-        registrationBean.addUrlPatterns("/api/**");
+        registrationBean.addUrlPatterns("/api/*");
 
         return registrationBean;
     }
