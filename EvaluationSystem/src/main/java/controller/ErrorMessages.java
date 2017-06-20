@@ -11,5 +11,10 @@ public class ErrorMessages {
     public static final String INVALID_USER_TYPE = "Invalid user type";
     public static final String EMAIL_IN_USE = "Email already in use";
     public static final String NO_SUCH_CLASS = "No such class";
+    public static final String NO_SUCH_GROUP = "No such group";
+    public static final String NO_SUCH_USER = "No such user";
     public static final String NO_SUCH_TEACHER = "No such teacher";
+    public static final String NO_SUCH_STUDENT = "No such student";
+    public static final String NO_SUCH_EXAM = "No such exam";
+    public static final String NO_SUCH_SUBMISSION = "No such submission";
 }

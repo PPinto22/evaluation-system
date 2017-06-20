@@ -8,6 +8,7 @@ import model.Teacher;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import security.JwtService;
@@ -22,9 +23,10 @@ import java.util.List;
 import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping(value = "teachers") //TODO - api/
+@RequestMapping(value = "api/teachers")
 public class TeacherController {
 
     JwtService jwtService;
@@ -37,23 +39,8 @@ public class TeacherController {
         this.classService = classService;
     }
 
-    /**
-     *
-     * @param teacherID
-     * @param cl
-     * {
-     *  "name": "class1",
-     *  "abbreviation": "cl1",
-     * }
-     * @return
-     * HttpStatus:
-     * - OK
-     * - INTERNAL_SERVER_ERROR
-     * - NOT_FOUND ("No such teacher")
-     * - NOT_ACCEPTABLE ("Missing information")
-     */
-    @RequestMapping(value = "/{teacherID:[\\d]+}/classes")
-    public ResponseEntity<Object> postClass(@PathVariable int teacherID, Class cl){
+    @RequestMapping(value = "/{teacherID:[\\d]+}/classes", method = POST)
+    public ResponseEntity<Object> postClass(@PathVariable int teacherID, @RequestBody Class cl){
         try {
             Teacher teacher = teacherService.getTeacherByID(teacherID);
             teacherService.addClassToTeacher(teacher, cl);
@@ -67,22 +54,6 @@ public class TeacherController {
         }
     }
 
-    /**
-     * @param teacherID
-     * @return
-     * HttpStatus:
-     * - OK
-     * - INTERNAL_SERVER_ERROR
-     * - NOT_FOUND
-     * response format:
-     * [
-     *  {
-     *      "name": "class1",
-     *      "abbreviation": "cl1",
-     *      "id": 1
-     *  }
-     * ]
-     */
     @RequestMapping(value = "/{teacherID:[\\d]+}/classes", method = GET)
     public ResponseEntity<Object> getClasses(@PathVariable int teacherID){
         try {
@@ -94,9 +65,7 @@ public class TeacherController {
             return new ResponseEntity<Object>(classWrappers, OK);
         } catch (PersistentException e){
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
-        } catch (InvalidUserTypeException e) {
-            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_USER_TYPE), NOT_FOUND);
-        } catch (NonExistentEntityException e) {
+        } catch (InvalidUserTypeException | NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_TEACHER), NOT_FOUND);
         }
     }

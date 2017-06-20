@@ -25,7 +25,7 @@ public class Main {
     public FilterRegistrationBean filterRegistrationBean() {
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(jwtFilter);
-        registrationBean.addUrlPatterns("/api/*");
+        registrationBean.addUrlPatterns("/api/**");
 
         return registrationBean;
     }
@@ -35,7 +35,7 @@ public class Main {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/*").allowedOrigins("*");
+                registry.addMapping("/**");
             }
         };
     }
