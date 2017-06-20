@@ -18,7 +18,7 @@ import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping(value = "/api/classes")
+@RequestMapping(value = "classes") // TODO - api/
 public class ClassController {
 
     ClassService classService;
@@ -28,10 +28,8 @@ public class ClassController {
     }
 
 // TODO
-// GET     /classes?user
-// POST    /classes
-// PUT     /classes/:id
-// DELETE  /classes/:id
+// PUT     /classes/{id}
+// DELETE  /classes/{id}
 
     @RequestMapping(value = "/{id:[\\d]+}", method = GET)
     public ResponseEntity<Object> getClass(@PathVariable int id){
@@ -45,5 +43,6 @@ public class ClassController {
         }
         return new ResponseEntity<Object>(new ClassTeacherWrapper(cl),OK);
     }
+
 
 }

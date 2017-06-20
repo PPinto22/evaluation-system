@@ -22,7 +22,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUserByID(int userID) throws PersistentException {
+    public User getUserByID(int userID) throws PersistentException, NonExistentEntityException {
+        if(!this.userDAO.exists(userID))
+            throw new NonExistentEntityException();
+
         return userDAO.getUserByORMID(userID);
     }
 
@@ -89,5 +92,15 @@ public class UserServiceImpl implements UserService{
     @Override
     public void delete(User user) throws PersistentException {
         userDAO.delete(user);
+    }
+
+    @Override
+    public boolean exists(int ID) throws PersistentException {
+        return this.userDAO.exists(ID);
+    }
+
+    @Override
+    public boolean exists(String email) throws PersistentException {
+        return this.userDAO.exists(email);
     }
 }

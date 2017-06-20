@@ -2,6 +2,7 @@ package controller;
 
 public class ErrorMessages {
 
+    public static final String INVALID_TOKEN = "Invalid authentication token";
     public static final String INTERNAL_ERROR = "Internal error";
     public static final String PERSISTENT_ERROR = "Internal error";
     public static final String UNCONFIRMED_EMAIL = "Unconfirmed email";
@@ -10,4 +11,5 @@ public class ErrorMessages {
     public static final String INVALID_USER_TYPE = "Invalid user type";
     public static final String EMAIL_IN_USE = "Email already in use";
     public static final String NO_SUCH_CLASS = "No such class";
+    public static final String NO_SUCH_TEACHER = "No such teacher";
 }

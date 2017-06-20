@@ -11,6 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import exception.NonExistentEntityException;
 import model.Class;
 import model.Group;
 import model.Question;
@@ -30,6 +31,26 @@ public class ClassDAOImpl implements ClassDAO {
 		ClassCriteria criteria = new ClassCriteria();
 		criteria.ID.eq(ID);
 		return this.loadClassByCriteria(criteria) != null;
+	}
+
+	@Override
+	public boolean exists(int teacherID, String className) throws PersistentException {
+		ClassCriteria criteria = new ClassCriteria();
+		criteria._teacherId.eq(teacherID);
+		criteria.name.eq(className);
+		return this.loadClassByCriteria(criteria) != null;
+	}
+
+	@Override
+	public Class getClassByName(int teacherID, String className) throws PersistentException, NonExistentEntityException {
+		ClassCriteria criteria = new ClassCriteria();
+		criteria._teacherId.eq(teacherID);
+		criteria.name.eq(className);
+		Class cl = this.loadClassByCriteria(criteria);
+		if(cl == null)
+			throw new NonExistentEntityException();
+		else
+			return cl;
 	}
 
 	// Codigo gerado
