@@ -13,7 +13,9 @@ export class HttpUtilService {
 
   headers() {
     const headersParams = {
-      'Content-Type': 'application/json; charset=utf-8'
+      'Content-Type': 'application/json;charset=UTF-8'
+        // 'Content-Type': 'application/x-www-form-urlencoded'
+
     };
     if (localStorage['currentUser']) {
       headersParams['Authorization'] = 'Bearer ' + localStorage['currentUser'];

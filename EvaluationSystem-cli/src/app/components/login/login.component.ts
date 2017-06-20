@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     let res: boolean;
     console.log(this.user);
-    this.authentication.login( this.user.email, encodeURIComponent(this.user.password) ).subscribe(
+    this.authentication.login( this.user.email, this.user.password ).subscribe(
       result => {
         this.router.navigate(['/dashboard']);
         res = true;

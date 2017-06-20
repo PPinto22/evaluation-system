@@ -18,10 +18,9 @@ export class AuthenticationService {
 
   // LOGIN
   login(email: string, pass: string): Observable<any> {
-    return this.http.post( this.httpUtil.url('/auth/login'), JSON.stringify({ email: email, password: pass })).map(
+    return this.http.post( this.httpUtil.url('/auth/login'), JSON.stringify({ email: email, password: pass }), this.httpUtil.headers()).map(
         (response: any) => {
           const data: any = response.json();
-          console.log(data);
           if (data && data.token && data.user) {
             const user: any = data.user;
             localStorage.setItem('currentUser', data.token);
