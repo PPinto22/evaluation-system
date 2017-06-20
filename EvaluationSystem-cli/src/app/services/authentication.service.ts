@@ -5,14 +5,14 @@ import {Router} from '@angular/router';
 @Injectable()
 export class AuthenticationService {
 
-  userLogged: User; //User with login ok
+  userLogged: User; // User with login ok
 
   constructor( private router: Router ) { }
 
   login(email: string, pass: string): boolean{
     console.log('email:' + email + '->' + 'pass:' + pass);
     this.userLogged = new User(1, 'rui', 'rui', '', '');
-    localStorage['currentUser'] = this.userLogged; //passar a ser o token
+    localStorage['currentUser'] = this.userLogged; // passar a ser o token
     return false;
   }
 
