@@ -17,7 +17,6 @@ public class TokenTest{
 
     @Autowired
     JwtService jwtService;
-
     @Autowired
     UserService userService;
 

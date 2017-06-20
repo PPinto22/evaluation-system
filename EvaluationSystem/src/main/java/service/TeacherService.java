@@ -16,5 +16,5 @@ public interface TeacherService {
     Teacher getTeacherByID(int ID) throws PersistentException, NonExistentEntityException, InvalidUserTypeException;
     Teacher getTeacherByEmail(String email) throws NonExistentEntityException, PersistentException, InvalidUserTypeException;
     List<Class> getClasses(Teacher teacher);
-    void addClassToTeacher(Teacher teacher, Class cl) throws PersistentException, MissingInformationException;
+    void addClassToTeacher(Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException;
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ExistentEntityException;
 import exception.InvalidUserTypeException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
@@ -39,6 +40,7 @@ public class TeacherController {
         this.classService = classService;
     }
 
+    // TODO - verificar que emissor e' o professor
     @RequestMapping(value = "/{teacherID:[\\d]+}/classes", method = POST)
     public ResponseEntity<Object> postClass(@PathVariable int teacherID, @RequestBody Class cl){
         try {
@@ -51,6 +53,8 @@ public class TeacherController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_TEACHER), NOT_FOUND);
         } catch (MissingInformationException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(MISSING_INFORMATION), NOT_ACCEPTABLE);
+        } catch (ExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(CLASS_EXISTS), NOT_ACCEPTABLE);
         }
     }
 

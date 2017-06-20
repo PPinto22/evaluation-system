@@ -38,8 +38,12 @@ public class JwtService {
 
     public User getUser(Claims claims) throws InvalidClaimsException, PersistentException {
         int userID;
-        try{
+        try {
             userID = Integer.parseInt(claims.getSubject());
+        }catch (Exception e){
+            throw new InvalidClaimsException();
+        }
+        try{
             return userService.getUserByID(userID);
         } catch (NonExistentEntityException e) {
             throw new InvalidClaimsException();

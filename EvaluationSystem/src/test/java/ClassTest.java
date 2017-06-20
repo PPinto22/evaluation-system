@@ -83,6 +83,5 @@ public class ClassTest {
     public void cleanup() throws PersistentException {
         classService.delete(cl);
         userService.delete(teacher);
-
     }
 }

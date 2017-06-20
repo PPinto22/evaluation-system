@@ -1,5 +1,6 @@
 package service;
 
+import exception.ExistentEntityException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
 import model.Class;
@@ -16,5 +17,5 @@ public interface ClassService {
     boolean exists(int id) throws PersistentException;
     boolean exists(Teacher teacher, String className) throws PersistentException;
 
-    void addGroupToClass(Class cl, Group group);
+    void addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException;
 }
