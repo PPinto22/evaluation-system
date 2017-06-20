@@ -29,12 +29,13 @@ export class LoginComponent implements OnInit {
       result => {
         this.router.navigate(['/dashboard']);
         res = true;
+        this.loading = false;
       },
       error => {
         res = true;
+        this.loading = false;
       }
     );
-    this.router.navigate(['/dashboard']);
     return res;
   }
 }
