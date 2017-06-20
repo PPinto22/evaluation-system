@@ -14,7 +14,7 @@ export class HttpUtilService {
   headers() {
     const headersParams = { 'Content-Type': 'application/json' };
     if (localStorage['currentUser']) {
-      headersParams['Authorization'] = localStorage['currentUser'];
+      headersParams['Authorization'] = 'Bearer ' + localStorage['currentUser'];
     }
     const headers = new Headers(headersParams);
     const options = new RequestOptions({ headers: headers });

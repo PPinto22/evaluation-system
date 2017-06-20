@@ -2,28 +2,32 @@
  * Created by rjaf on 30/05/2017.
  */
 export class User {
-  private static _Teacher:string = "teacher";
+  public static _Teacher = 'teacher';
+  public static _Student = 'student';
 
   private _id: number;
   private _email: string;
-  private _password:string;
-  private _name:string;
-  private _type: string
-  private _token: string
+  private _firstName: string;
+  private _lastName: string;
+  private _type: string;
+  private _token: string;
 
-  constructor(id: number, email:string, name:string, type:string, token:string) {
+  constructor(id: number, email: string, firstName: string, lastName: string, type: string, token: string) {
     this._id = id;
     this._email = email;
-    this._password = "teste";
-    this._name = name;
+    this._firstName = firstName;
+    this._lastName = lastName;
     this._type = type;
     this._token = token;
   }
 
-  isTeacher():boolean{
+  isTeacher(): boolean {
     return this._type === User._Teacher ? true : false;
   }
 
+  isStudent(): boolean {
+    return this._type === User._Student ? true : false;
+  }
 
   get id(): number {
     return this._id;
@@ -41,22 +45,6 @@ export class User {
     this._email = value;
   }
 
-  get password(): string {
-    return this._password;
-  }
-
-  set password(value: string) {
-    this._password = value;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  set name(value: string) {
-    this._name = value;
-  }
-
   get type(): string {
     return this._type;
   }
@@ -71,5 +59,22 @@ export class User {
 
   set token(value: string) {
     this._token = value;
+  }
+
+
+  get firstName(): string {
+    return this._firstName;
+  }
+
+  set firstName(value: string) {
+    this._firstName = value;
+  }
+
+  get lastName(): string {
+    return this._lastName;
+  }
+
+  set lastName(value: string) {
+    this._lastName = value;
   }
 }

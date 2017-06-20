@@ -11,6 +11,7 @@ import {AuthenticationService} from './services/authentication.service';
 import { HomeComponent } from './components/home/home.component';
 import {LoginGuardService} from './services/login-guard.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import {HttpUtilService} from "./services/http-util.service";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     routing
   ],
   providers: [
+    HttpUtilService,
     AuthenticationService,
     LoginGuardService
   ],
