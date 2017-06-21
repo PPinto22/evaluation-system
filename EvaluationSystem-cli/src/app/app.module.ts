@@ -12,6 +12,7 @@ import { HomeComponent } from './components/home/home.component';
 import {LoginGuardService} from './services/login-guard.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import {HttpUtilService} from './services/http-util.service';
+import { TeacherComponent } from './components/dashboard/teacher/teacher.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {HttpUtilService} from './services/http-util.service';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    TeacherComponent
   ],
   imports: [
     BrowserModule,

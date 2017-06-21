@@ -15,8 +15,19 @@ export class AuthenticationService {
                private http: Http,
                private httpUtil: HttpUtilService) {
     if ( localStorage['currentUser'] !== undefined) {
-      const userJson = JSON.parse(localStorage['currentUser']);
-      this.userLogged = new User(userJson._id, userJson._email, userJson._firstName, userJson._lastName, userJson._type, userJson._token );
+      try {
+        const userJson = JSON.parse(localStorage['currentUser']);
+        this.userLogged = new User(
+          userJson._id,
+          userJson._email,
+          userJson._firstName,
+          userJson._lastName,
+          userJson._type,
+          userJson._token );
+      } catch ( error ) {
+        localStorage.removeItem('currentUser');
+      }
+
     }
   }
 
@@ -54,7 +65,6 @@ export class AuthenticationService {
   logout() {
     this.userLogged = null;
     localStorage.removeItem('currentUser');
-
   }
 
   isLogged(): boolean {
