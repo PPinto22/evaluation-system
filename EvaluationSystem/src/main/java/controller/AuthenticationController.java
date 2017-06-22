@@ -35,9 +35,9 @@ public class AuthenticationController {
             return new ResponseEntity<Object>(new LoginResponseWrapper(token, user), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
-        } catch (UnconfirmedEmailException e) {
+        } catch (UnconfirmedRegistrationException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(UNCONFIRMED_EMAIL), UNAUTHORIZED);
-        } catch (InvalidUserException e) {
+        } catch (InvalidAuthenticationException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
         }
     }
@@ -51,7 +51,7 @@ public class AuthenticationController {
         userDetails.setLastName(userSignup.getLastName());
 
         try {
-            User user = userService.signup(userDetails, userSignup.getType());
+            User user = userService.signup(userDetails, userSignup.getType(), true);
             return new ResponseEntity<Object>(new UserWrapper(user), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);

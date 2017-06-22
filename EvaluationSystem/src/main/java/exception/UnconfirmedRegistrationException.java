@@ -1,12 +1,12 @@
 package exception;
 
-public class UnconfirmedEmailException extends Exception {
+public class UnconfirmedRegistrationException extends Exception {
 
-    public UnconfirmedEmailException() {
+    public UnconfirmedRegistrationException() {
         super();
     }
 
-    public UnconfirmedEmailException(String message) {
+    public UnconfirmedRegistrationException(String message) {
         super(message);
     }
 }

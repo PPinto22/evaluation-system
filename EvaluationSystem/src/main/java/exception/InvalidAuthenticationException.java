@@ -1,12 +1,12 @@
 package exception;
 
-public class InvalidUserException extends Exception {
+public class InvalidAuthenticationException extends Exception {
 
-    public InvalidUserException() {
+    public InvalidAuthenticationException() {
         super();
     }
 
-    public InvalidUserException(String message) {
+    public InvalidAuthenticationException(String message) {
         super(message);
     }
 }

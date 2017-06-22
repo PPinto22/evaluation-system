@@ -49,7 +49,7 @@ public class TeacherController {
             return new ResponseEntity<Object>(new ClassWrapper(cl), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
-        } catch (NonExistentEntityException | InvalidUserTypeException e) {
+        } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_TEACHER), NOT_FOUND);
         } catch (MissingInformationException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(MISSING_INFORMATION), NOT_ACCEPTABLE);
@@ -69,7 +69,7 @@ public class TeacherController {
             return new ResponseEntity<Object>(classWrappers, OK);
         } catch (PersistentException e){
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
-        } catch (InvalidUserTypeException | NonExistentEntityException e) {
+        } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_TEACHER), NOT_FOUND);
         }
     }

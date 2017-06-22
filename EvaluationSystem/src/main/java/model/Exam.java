@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
  */
 public class Exam {
 
-	// Nosso Codigo
 	public String getBeginDateAsString() {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return df.format(this.getBeginDate());
@@ -41,8 +40,6 @@ public class Exam {
 		throw new UnsupportedOperationException();
 	}
 
-
-	// Codigo Gerado
 	public Exam() {
 	}
 	

@@ -5,7 +5,7 @@
 ## Backend
 
 ### Build and Run
----
+___
 ```
 cd EvaluationSystem/
 mvn package
@@ -18,13 +18,26 @@ docker run --net="bridge" -p 8080:8080 evalsys-backend
 
 
 ### Authentication
-Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
+Após fazer login e receber o **token**, deve ser enviado no cabeçalho HTTP:
 
 > Authorization = "Bearer TOKEN"
 
+O servidor pode responder a qualquer pedido (excepto de autenticação) com um código HTTP **UNAUTHORIZED (401)**, caso o **token** seja inválido ou tenha expirado.
+```json
+{
+  "message": "Invalid token"
+}
+```
+```json
+{
+  "message": "Token expired"
+}
+```
+
+
 ### API
 
-#### POST auth/login
+#### POST   /auth/login
 
 ##### Body
 ```json
@@ -42,6 +55,7 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
      "firstName": "Foo",
      "lastName": "Bar",
      "type": "student | teacher",
+     "active": true,
      "id": 1
  }
 }
@@ -51,9 +65,9 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **UNAUTHORIZED (401)** - *Invalid authentication*, or *Unconfirmed email*
----
 
-#### POST auth/signup
+
+#### POST   /auth/signup
 
 ##### Body
 ```json
@@ -73,6 +87,7 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
   "firstName": "Foo",
   "lastName": "Bar",
   "type": "student | teacher",
+  "active": true,
   "id": 1
 }
 ```
@@ -81,9 +96,9 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_ACCEPTABLE (406)** - *Missing information*, *Email already in use*, *Invalid user type*
----
+___
 
-#### GET /classes/{id}
+#### GET    /api/classes/{id}
 ### Response
 ```json
 {
@@ -95,6 +110,7 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
       "firstName": "Foo",
       "lastName": "Bar",
       "type": "student | teacher",
+      "active": true,
       "id": 1
   }
 }
@@ -103,19 +119,15 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
----
 
-#### ~~PUT /classes/{id}~~
-#### ~~DELETE /classes/{id}~~
+#### ~~PUT    /api/classes/{id}~~
+#### ~~DELETE /api/classes/{id}~~
 
-#### ~~GET /classes/{class_id}/questions~~
-#### ~~GET /classes/{class_id}/questions/{question_id}~~
-#### ~~POST /classes/{class_id}/questions~~
-#### ~~PUT /classes/{class_id}/questions/{question_id}~~
-#### ~~DELETE /classes/{class_id}/questions/{id}~~
-#### ~~GET /classes/{class_id}/categories~~
+#### ~~GET    /api/classes/{class_id}/questions~~
+#### ~~POST   /api/classes/{class_id}/questions~~
+#### ~~GET    /api/classes/{class_id}/categories~~
 
-#### GET /classes/{class_id}/groups
+#### GET      /api/classes/{class_id}/groups
 ### Response
 ```json
 [
@@ -133,16 +145,14 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
----
 
-#### POST /classes/{class_id}/groups
+#### POST     /api/classes/{class_id}/groups
 ### Body
 ```json
 {
   "name": "Turma 16/17"
 }
 ```
-
 ### Response
 ```json
 {
@@ -155,6 +165,7 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
             "firstName": "John",
             "lastName": "Doe",
             "type": "teacher",
+            "active": true,
             "id": 1
         },
         "id": 1
@@ -168,33 +179,107 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 - **NOT_FOUND (404)** - *No such class*
 - **NOT_ACCEPTABLE (406)** - *Group already exists*
 - **UNAUTHORIZED (401)** - *No permission*
----
+___
 
-#### ~~GET /groups/{id}~~
-#### ~~PUT /groups/{id}~~
-#### ~~DELETE /groups/{id}~~
+#### ~~GET    /api/questions/{question_id}~~
+#### ~~PUT    /api/questions/{question_id}~~
+#### ~~DELETE /api/questions/{question_id}~~
+___
 
-#### ~~GET /groups/{group_id}/exams?upcoming,history~~
-#### ~~POST /groups/{group_id}/exams~~
-#### ~~DELETE /groups/{group_id}/exams/{id}~~
-#### ~~POST /groups/{group_id}/exams/generate~~
+#### GET    /api/groups/{id}
+### Response
+```json
+{
+    "name": "Name2",
+    "_class": {
+        "name": "Name1",
+        "abbreviation": "Abbreviation1",
+        "teacher": {
+            "email": "email2",
+            "firstName": "firstName2",
+            "lastName": "lastName2",
+            "type": "teacher",
+            "active": true,
+            "id": 2
+        },
+        "id": 1
+    },
+    "id": 2
+}
+```
 
-#### ~~GET /groups/{group_id}/scores~~
-#### ~~GET /groups/{group_id}/exams/{exam_id}/scores~~
-#### ~~GET /groups/{group_id}/exams/{exam_id}/submissions/{submission_id}~~
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such group*
 
-#### ~~POST /groups/{group_id}/exams/{exam_id}/submit?user # Array de respostas~~
+#### ~~PUT    /api/groups/{id}~~
+#### ~~DELETE /api/groups/{id}~~
 
-#### ~~GET /exams/{id}~~
-#### ~~GET /exams?user,class,upcoming,history~~
+#### ~~GET    /api/groups/{group_id}/students~~
+#### POST   /api/groups/{group_id}/students
+### Body
+```json
+[
+  {
+    "email": "email1@email.com"
+  },
+  {
+    "email": "email2@email.com"
+  }
+]
+```
+### Response
+```json
+[
+  {
+    "email": "email1@email.com",
+    "user": {
+      "email": "email1@email.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "type": "student",
+      "active": true,
+      "id": 1
+    }
+  }
+  {
+    "email": "email2@email.com",
+    "message": "User is a teacher | Student has already been added to the group"
+  }
+]
+```
+> Nota: Os utilizadores, mesmo que não existam, são adicionados. Nestes casos, a variável "active" toma o valor falso.
 
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **UNAUTHORIZED (401)**
+- **NOT FOUND (404)**
 
-#### ~~GET /groups/{group_id}/students~~
-#### ~~POST /groups/{group_id}/students~~
-#### ~~DELETE /groups/{group_id}/students/{id}~~
+#### ~~DELETE /api/groups/{group_id}/students/{id}~~
 
+#### ~~GET    /api/groups/{group_id}/exams?upcoming,history~~
+#### ~~POST   /api/groups/{group_id}/exams~~
+#### ~~POST   /api/groups/{group_id}/exams/generate~~
 
-#### GET /users/{user_id}
+#### ~~GET    /api/groups/{group_id}/scores~~
+___
+
+#### ~~GET    /api/exams/{id}~~
+#### ~~DELETE /api/exams/{id}~~
+#### ~~PUT    /api/exams/{id}~~
+#### ~~GET    /api/exams?user,class,upcoming,history~~
+#### ~~GET    /api/exams/{exam_id}/scores~~
+#### ~~POST   /api/exams/{exam_id}/submissions  (Array de respostas)~~
+___
+
+#### ~~GET    /api/submissions/{submission_id}~~
+#### ~~PUT    /api/submissions/{submission_id}~~
+#### ~~DELETE /api/submissions/{submission_id}~~
+
+___
+#### GET      /api/users/{user_id}
 ### Response
 ```json
 {
@@ -202,6 +287,7 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
   "firstName": "Foo",
   "lastName": "Bar",
   "type": "student | teacher",
+  "active": true,
   "id": 1
 }
 ```
@@ -210,15 +296,21 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such user*
----
 
-#### ~~PUT /users/{user_id}~~
-#### ~~DELETE /users/{user_id}~~
-#### ~~GET /users/{user_id}/notifications~~
+#### ~~PUT    /api/users/{user_id}~~
+#### ~~DELETE /api/users/{user_id}~~
+#### ~~GET    /api/users/{user_id}/notifications~~
+___
 
-#### ~~GET /students/{student_id}/scores~~
+#### ~~GET    /api/invitations/{invitation_id}/accept~~
+#### ~~GET    /api/invitations/{invitation_id}/decline~~
+___
 
-#### GET /teachers/{teacher_id}/classes
+#### ~~GET    /api/students/{student_id}/scores~~
+#### ~~GET    /api/students/{student_id}/exams?upcoming,history~~
+___
+
+#### GET      /api/teachers/{teacher_id}/classes
 ### Response
 ```json
 [
@@ -257,4 +349,4 @@ Após fazer login e receber o **token**, enviar no cabeçalho HTTP:
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such teacher*
 - **NOT_ACCEPTABLE (406)** - *Missing information*, *Class already exists*
----
+___

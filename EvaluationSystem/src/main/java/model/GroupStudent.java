@@ -58,7 +58,7 @@ public class GroupStudent {
 		this.accepted = value;
 	}
 	
-	public boolean getAccepted() {
+	public boolean isAccepted() {
 		return accepted;
 	}
 	

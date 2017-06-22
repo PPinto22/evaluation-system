@@ -1,7 +1,20 @@
 package wrapper;
 
-/**
- * Created by pedro on 22-06-2017.
- */
 public class EmailWrapper {
+
+    private String email;
+
+    public EmailWrapper(){}
+
+    public EmailWrapper(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

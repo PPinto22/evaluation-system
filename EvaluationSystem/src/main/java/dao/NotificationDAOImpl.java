@@ -22,6 +22,11 @@ import java.util.List;
 
 @Repository
 public class NotificationDAOImpl implements NotificationDAO {
+	@Override
+	public boolean exists(int ID) throws PersistentException {
+		return this.getNotificationByORMID(ID) != null;
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(NotificationDAOImpl.class);
 	public Notification loadNotificationByORMID(int ID) throws PersistentException {
 		try {

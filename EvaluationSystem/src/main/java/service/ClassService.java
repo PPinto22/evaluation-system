@@ -12,10 +12,10 @@ public interface ClassService {
 
     Class getClassByID(int id) throws PersistentException, NonExistentEntityException;
     Class getClassByName(Teacher teacher, String className) throws PersistentException, NonExistentEntityException;
-    void addClass(Class cl) throws PersistentException, MissingInformationException;
+    Class addClass(Class cl) throws PersistentException, MissingInformationException;
     void delete(Class cl) throws PersistentException;
     boolean exists(int id) throws PersistentException;
     boolean exists(Teacher teacher, String className) throws PersistentException;
 
-    void addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException;
+    Group addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException;
 }

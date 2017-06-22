@@ -7,10 +7,10 @@ import exception.InvalidUserTypeException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
 import model.Class;
-import model.Student;
 import model.Teacher;
 import model.User;
 import org.orm.PersistentException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -23,44 +23,44 @@ public class TeacherServiceImpl implements TeacherService{
     private ClassService classService;
     private TeacherDAO teacherDAO;
 
-    public TeacherServiceImpl(UserService userService, ClassService classService, TeacherDAO teacherDAO) {
+    @Autowired
+    public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+    @Autowired
+    public void setClassService(ClassService classService) {
         this.classService = classService;
+    }
+
+    public TeacherServiceImpl(TeacherDAO teacherDAO) {
         this.teacherDAO = teacherDAO;
     }
 
     @Override
-    public void addTeacher(Teacher teacher) throws MissingInformationException, PersistentException, ExistentEntityException {
-        if(teacher.isMissingInformation()){
-            throw new MissingInformationException();
+    public Teacher addTeacher(Teacher teacher, boolean register) throws MissingInformationException, PersistentException, ExistentEntityException {
+        Teacher addedTeacher = null;
+        try {
+            addedTeacher = (Teacher) userService.signup(teacher, "teacher", register);
+        } catch (InvalidUserTypeException e) {
+            e.printStackTrace();
         }
-
-        teacher.setDeleted(false);
-        teacher.setRegistered(true); // TODO se for para implementar a verificacao de email, por isto a false
-        teacher.hashPassword();
-        if(!userService.exists(teacher.getEmail())){
-            teacherDAO.save(teacher);
-        }
-        else
-            throw new ExistentEntityException();
+        return addedTeacher;
     }
 
     @Override
-    public Teacher getTeacherByID(int ID) throws PersistentException, NonExistentEntityException, InvalidUserTypeException {
-        User user = this.userService.getUserByID(ID);
-        if(!user.getClass().getSimpleName().equals("Teacher"))
-            throw new InvalidUserTypeException();
+    public Teacher getTeacherByID(int ID) throws PersistentException, NonExistentEntityException {
+        if(!this.teacherDAO.exists(ID))
+            throw new NonExistentEntityException();
 
-        return (Teacher)user;
+        return this.teacherDAO.loadTeacherByORMID(ID);
     }
 
     @Override
-    public Teacher getTeacherByEmail(String email) throws NonExistentEntityException, PersistentException, InvalidUserTypeException {
-        User user = this.userService.getUserByEmail(email);
-        if(!user.getClass().getSimpleName().equals("Teacher"))
-            throw new InvalidUserTypeException();
+    public Teacher getTeacherByEmail(String email) throws NonExistentEntityException, PersistentException {
+        if(!this.teacherDAO.exists(email))
+            throw new NonExistentEntityException();
 
-        return (Teacher)user;
+        return this.teacherDAO.loadTeacherByEmail(email);
     }
 
     @Override
@@ -69,10 +69,25 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public void addClassToTeacher(Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException {
+    public Class addClassToTeacher(Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException {
         if(classService.exists(teacher, cl.getName()))
             throw new ExistentEntityException();
         cl.set_teacher(teacher);
-        classService.addClass(cl);
+        return classService.addClass(cl);
+    }
+
+    @Override
+    public boolean exists(int ID) throws PersistentException {
+        return this.teacherDAO.exists(ID);
+    }
+
+    @Override
+    public boolean exists(String email) throws PersistentException {
+        return this.teacherDAO.exists(email);
+    }
+
+    @Override
+    public boolean existsActive(String email) throws PersistentException {
+        return this.teacherDAO.existsActive(email);
     }
 }
