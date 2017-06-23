@@ -16,6 +16,11 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface GroupStudentDAO {
+	boolean exists(int id) throws PersistentException;
+	boolean exists(int groupID, int studentID) throws PersistentException;
+	GroupStudent loadGroupStudentByGroupAndStudent(int groupID, int studentID) throws PersistentException;
+
+
 	public GroupStudent loadGroupStudentByORMID(int ID) throws PersistentException;
 	public GroupStudent getGroupStudentByORMID(int ID) throws PersistentException;
 	public GroupStudent loadGroupStudentByORMID(int ID, LockMode lockMode) throws PersistentException;

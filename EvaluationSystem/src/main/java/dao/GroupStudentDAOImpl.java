@@ -12,6 +12,7 @@ package dao; /**
  * License Type: Academic
  */
 import model.GroupStudent;
+import org.hibernate.Criteria;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -21,6 +22,28 @@ import java.util.List;
 
 @Repository
 public class GroupStudentDAOImpl implements GroupStudentDAO {
+
+	@Override
+	public GroupStudent loadGroupStudentByGroupAndStudent(int groupID, int studentID) throws PersistentException {
+		GroupStudentCriteria criteria = new GroupStudentCriteria();
+		criteria._groupId.eq(groupID);
+		criteria._studentId.eq(studentID);
+		return this.loadGroupStudentByCriteria(criteria);
+	}
+
+	@Override
+	public boolean exists(int id) throws PersistentException {
+		return this.getGroupStudentByORMID(id) != null;
+	}
+
+	@Override
+	public boolean exists(int groupID, int studentID) throws PersistentException {
+		GroupStudentCriteria criteria = new GroupStudentCriteria();
+		criteria._groupId.eq(groupID);
+		criteria._studentId.eq(studentID);
+		return this.loadGroupStudentByCriteria(criteria) != null;
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(GroupStudentDAOImpl.class);
 	public GroupStudent loadGroupStudentByORMID(int ID) throws PersistentException {
 		try {

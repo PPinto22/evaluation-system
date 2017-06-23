@@ -13,6 +13,9 @@ import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class GroupServiceImpl implements GroupService{
 
@@ -70,6 +73,11 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
+    public List<GroupStudent> getGroupStudents(Group group) {
+        return Arrays.asList(group._students.toArray());
+    }
+
+    @Override
     public GroupStudent addStudentToGroupByEmail(Group group, String email)
             throws PersistentException, InvalidUserTypeException, ExistentEntityException {
         Student student = null;
@@ -78,7 +86,7 @@ public class GroupServiceImpl implements GroupService{
                 try {
                     student = studentService.createStudent();
                     student.setEmail(email);
-                    studentService.addStudent(student, false);
+                    student = studentService.addStudent(student, false);
                 } catch (MissingInformationException e) {
                     e.printStackTrace(); // Nunca acontece
                 } catch (ExistentEntityException e) {
@@ -98,10 +106,6 @@ public class GroupServiceImpl implements GroupService{
             if(studentService.existsActive(email)) {
                 try {
                     student = studentService.getStudentByEmail(email);
-                    for(GroupStudent groupStudent: group._students.toArray()){
-                        if(student.getID() == groupStudent.get_student().getID())
-                            throw new ExistentEntityException();
-                    }
                 } catch (NonExistentEntityException e) {
                     e.printStackTrace(); // Nunca deve acontecer
                 }
@@ -110,6 +114,8 @@ public class GroupServiceImpl implements GroupService{
                 throw new InvalidUserTypeException();
         }
 
+        if(groupStudentDAO.exists(group.getID(), student.getID()))
+            throw new ExistentEntityException();
         return this.addStudentToGroup(group,student);
     }
 
@@ -118,6 +124,19 @@ public class GroupServiceImpl implements GroupService{
         this.groupStudentDAO.save(groupStudent);
         this.notificationService.addGroupInvitation(group, student);
         return groupStudent;
+    }
+
+    @Override
+    public void removeStudentFromGroup(Group group, Student student) throws PersistentException, NonExistentEntityException {
+        GroupStudent groupStudent = this.groupStudentDAO.loadGroupStudentByGroupAndStudent(
+                group.getID(), student.getID());
+        if(groupStudent == null)
+            throw new NonExistentEntityException();
+
+        group._students.remove(groupStudent);
+        this.groupStudentDAO.delete(groupStudent);
+        GroupInvitation groupInvitation = notificationService.getGroupInvitation(group,student);
+        notificationService.removeGroupInvitation(groupInvitation);
     }
 
     private GroupStudent createGroupStudent(Group group, Student student){

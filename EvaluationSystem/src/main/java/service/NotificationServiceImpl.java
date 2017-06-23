@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class NotificationServiceImpl implements NotificationService{
 
     NotificationDAO notificationDAO;
+    GroupInvitationDAO groupInvitationDAO;
 
-    public NotificationServiceImpl(NotificationDAO notificationDAO) {
+    public NotificationServiceImpl(NotificationDAO notificationDAO, GroupInvitationDAO groupInvitationDAO) {
         this.notificationDAO = notificationDAO;
+        this.groupInvitationDAO = groupInvitationDAO;
     }
 
     @Override
@@ -28,17 +30,37 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public GroupInvitation addGroupInvitation(Group group, Student student) {
-        return null;
+    public GroupInvitation addGroupInvitation(Group group, Student student) throws PersistentException {
+        GroupInvitation groupInvitation = new GroupInvitation();
+        groupInvitation.set_group(group);
+        groupInvitation.set_user(student);
+        notificationDAO.save(groupInvitation);
+        return groupInvitation;
+    }
+
+    @Override
+    public GroupInvitation getGroupInvitation(Group group, Student student) throws PersistentException, NonExistentEntityException {
+        GroupInvitation groupInvitation = this.groupInvitationDAO.loadGroupInvitationByGroupAndStudent(group,student);
+        if(groupInvitation == null)
+            throw new NonExistentEntityException();
+
+        return groupInvitation;
+    }
+
+    @Override
+    public void removeGroupInvitation(GroupInvitation groupInvitation) throws PersistentException {
+        Student student = (Student)groupInvitation.get_user();
+        student._notifications.remove(groupInvitation);
+        this.groupInvitationDAO.delete(groupInvitation);
     }
 
     @Override
     public void acceptInvitation(GroupInvitation groupInvitation) {
-
+        // TODO acceptInvitation
     }
 
     @Override
     public void declineInvitation(GroupInvitation groupInvitation) {
-
+        // TODO declineInvitation
     }
 }

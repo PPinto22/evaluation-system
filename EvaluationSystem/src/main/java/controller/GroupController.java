@@ -5,8 +5,8 @@ import exception.InvalidClaimsException;
 import exception.InvalidUserTypeException;
 import exception.NonExistentEntityException;
 import io.jsonwebtoken.Claims;
-import model.*;
 import model.Class;
+import model.*;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import security.JwtService;
 import service.GroupService;
 import service.StudentService;
-import wrapper.*;
+import wrapper.ErrorWrapper;
+import wrapper.GroupClassWrapper;
+import wrapper.GroupStudentPOSTWrapper;
+import wrapper.GroupStudentWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
@@ -37,9 +38,10 @@ public class GroupController {
     GroupService groupService;
     StudentService studentService;
 
-    public GroupController(JwtService jwtService, GroupService groupService) {
+    public GroupController(JwtService jwtService, GroupService groupService, StudentService studentService) {
         this.jwtService = jwtService;
         this.groupService = groupService;
+        this.studentService = studentService;
     }
 
     @RequestMapping(value = "/{id:[\\d]+}", method = GET)
@@ -55,8 +57,7 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/{groupID:[\\d]+}/students", method = POST)
-    // TODO - Notificacoes
-    public ResponseEntity<Object> postStudents(@PathVariable int groupID, @RequestBody EmailWrapper[] studentEmails,
+    public ResponseEntity<Object> postStudents(@PathVariable int groupID, @RequestBody String[] studentEmails,
                                                HttpServletRequest request){
         try {
             User user = jwtService.getUser((Claims)request.getAttribute("claims"));
@@ -67,8 +68,7 @@ public class GroupController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
             List<GroupStudentPOSTWrapper> groupStudents = new ArrayList<>();
-            for(EmailWrapper emailWrapper: studentEmails){
-                String email = emailWrapper.getEmail();
+            for(String email: studentEmails){
                 try {
                     GroupStudent groupStudent = this.groupService.addStudentToGroupByEmail(group, email);
                     groupStudents.add(new GroupStudentPOSTWrapper(groupStudent));
@@ -88,9 +88,37 @@ public class GroupController {
         }
     }
 
-    @RequestMapping(value = "/{groupID:[\\d]+/students", method = GET)
+    @RequestMapping(value = "/{groupID:[\\d]+}/students", method = GET)
     public ResponseEntity<Object> getStudents(@PathVariable int groupID){
-        // TODO
-        return null;
+        try {
+            Group group = groupService.getGroupByID(groupID);
+            List<GroupStudentWrapper> groupStudents = new ArrayList<>();
+            for(GroupStudent groupStudent: this.groupService.getGroupStudents(group)){
+                groupStudents.add(new GroupStudentWrapper(groupStudent));
+            }
+            return new ResponseEntity<Object>(groupStudents, OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/{groupID:[\\d]+}/students/{studentID:[\\d]+}")
+    public ResponseEntity<Object> removeStudent(@PathVariable int groupID, @PathVariable int studentID){
+        Group group = null;
+        try {
+            group = groupService.getGroupByID(groupID);
+            Student student = studentService.getStudentByID(studentID);
+            groupService.removeStudentFromGroup(group,student);
+            return new ResponseEntity<Object>(OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            if(group == null)
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+            else
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_STUDENT), NOT_FOUND);
+        }
     }
 }

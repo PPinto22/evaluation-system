@@ -216,17 +216,45 @@ ___
 #### ~~PUT    /api/groups/{id}~~
 #### ~~DELETE /api/groups/{id}~~
 
-#### ~~GET    /api/groups/{group_id}/students~~
+#### GET    /api/groups/{group_id}/students
+### Response
+```json
+[
+  {
+    "accepted": false,
+    "user": {
+      "email": "email999",
+      "firstName": "ND",
+      "lastName": "ND",
+      "type": "student",
+      "active": false,
+      "id": 21
+    }
+  },
+  {
+    "accepted": false,
+    "user": {
+      "email": "email1",
+      "firstName": "firstName1",
+      "lastName": "lastName1",
+      "type": "student",
+      "active": true,
+      "id": 1
+    }
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)**
+
 #### POST   /api/groups/{group_id}/students
 ### Body
 ```json
 [
-  {
-    "email": "email1@email.com"
-  },
-  {
-    "email": "email2@email.com"
-  }
+  "email1@email.com",
+  "email2@email.com"
 ]
 ```
 ### Response
@@ -257,7 +285,11 @@ ___
 - **UNAUTHORIZED (401)**
 - **NOT FOUND (404)**
 
-#### ~~DELETE /api/groups/{group_id}/students/{id}~~
+#### DELETE /api/groups/{group_id}/students/{id}
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such group*, *No such student*
 
 #### ~~GET    /api/groups/{group_id}/exams?upcoming,history~~
 #### ~~POST   /api/groups/{group_id}/exams~~
@@ -299,7 +331,39 @@ ___
 
 #### ~~PUT    /api/users/{user_id}~~
 #### ~~DELETE /api/users/{user_id}~~
-#### ~~GET    /api/users/{user_id}/notifications~~
+#### GET    /api/users/{user_id}/notifications
+### Response
+```json
+[
+  {
+    "type": "Group invitation",
+    "group": {
+      "name": "Name1",
+      "_class": {
+        "name": "Name1",
+        "abbreviation": "Abbreviation1",
+        "teacher": {
+          "email": "email16",
+          "firstName": "firstName16",
+          "lastName": "lastName16",
+          "type": "Teacher",
+          "active": true,
+          "id": 16
+        },
+        "id": 1
+      },
+      "id": 1
+    },
+    "id": 0
+  }
+]
+```
+
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)**
+- **UNAUTHORIZED (401)**
 ___
 
 #### ~~GET    /api/invitations/{invitation_id}/accept~~

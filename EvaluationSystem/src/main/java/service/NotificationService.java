@@ -10,7 +10,9 @@ import org.orm.PersistentException;
 public interface NotificationService {
 
     Notification getNotificationByID(int id) throws PersistentException, NonExistentEntityException;
-    GroupInvitation addGroupInvitation(Group group, Student student);
+    GroupInvitation getGroupInvitation(Group group, Student student) throws PersistentException, NonExistentEntityException;
+    GroupInvitation addGroupInvitation(Group group, Student student) throws PersistentException;
+    void removeGroupInvitation(GroupInvitation groupInvitation) throws PersistentException;
     void acceptInvitation(GroupInvitation groupInvitation);
     void declineInvitation(GroupInvitation groupInvitation);
 

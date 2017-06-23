@@ -20,14 +20,7 @@ public class UserWrapper{
         this.setFirstName(user.getFirstName());
         this.setLastName(user.getLastName());
         this.setActive(user.isRegistered() && !user.isDeleted());
-        switch (user.getClass().getSimpleName()){
-            case "Student":
-                this.type = "student";
-                break;
-            case "Teacher":
-                this.type = "teacher";
-                break;
-        }
+        this.type = user.getClass().getSimpleName();
     }
 
     public String getEmail() {
