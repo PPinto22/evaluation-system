@@ -13,6 +13,7 @@ import {LoginGuardService} from './services/login-guard.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import {HttpUtilService} from './services/http-util.service';
 import { TeacherComponent } from './components/dashboard/teacher/teacher.component';
+import { DefaultComponent } from './components/dashboard/default/default.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TeacherComponent } from './components/dashboard/teacher/teacher.compone
     RegisterComponent,
     HomeComponent,
     DashboardComponent,
-    TeacherComponent
+    TeacherComponent,
+    DefaultComponent
   ],
   imports: [
     BrowserModule,

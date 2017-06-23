@@ -9,7 +9,7 @@ import {RegisterComponent} from './components/register/register.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginGuardService} from './services/login-guard.service';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
-import {TeacherComponent} from "./components/dashboard/teacher/teacher.component";
+import {DefaultComponent} from './components/dashboard/default/default.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [LoginGuardService] },
   { path: 'dashboard', component: DashboardComponent,
     children: [
-      { path: '', component: TeacherComponent }
+      { path: '', component: DefaultComponent }
       // { path: 'classes', component: Overview },
       // { path: 'results', component: Specs }
     ]
