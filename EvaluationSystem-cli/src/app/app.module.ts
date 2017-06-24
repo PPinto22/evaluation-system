@@ -15,6 +15,7 @@ import {HttpUtilService} from './services/http-util.service';
 import { DefaultComponent } from './components/dashboard/default/default.component';
 import { ListClassComponent } from './components/dashboard/default/list-class/list-class.component';
 import { ListExameComponent } from './components/dashboard/default/list-exame/list-exame.component';
+import { ClassComponent } from './components/dashboard/class/class.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ListExameComponent } from './components/dashboard/default/list-exame/li
     DashboardComponent,
     DefaultComponent,
     ListClassComponent,
-    ListExameComponent
+    ListExameComponent,
+    ClassComponent
   ],
   imports: [
     BrowserModule,
