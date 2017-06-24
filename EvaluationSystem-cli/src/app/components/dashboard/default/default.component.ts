@@ -1,17 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-default',
   templateUrl: './default.component.html',
   styleUrls: ['./default.component.css']
 })
-export class DefaultComponent implements OnInit {
+export class DefaultComponent implements OnInit, AfterViewInit {
 
   constructor( private authentication: AuthenticationService ) { }
 
   ngOnInit() {
 
+  }
+
+  ngAfterViewInit() {
+    $('.scroll').mCustomScrollbar({
+      axis: 'y',
+      autoHideScrollbar: true,
+      scrollInertia: 20,
+      advanced: {
+        autoScrollOnFocus: false
+      }
+    }, {passive: true});
   }
 
 
