@@ -3,34 +3,38 @@
   <div class="login-box animated fadeInDown">
     <div class="login-body">
       <div class="login-title"><strong>Welcome</strong>, Please login</div>
-      <form action="index.html" class="form-horizontal" method="post">
+      <form (ngSubmit)="onSubmit()" class="form-horizontal" method="post" #f_register="ngForm">
         <div class="form-group">
           <div class="col-md-12">
-            <input type="text" class="form-control" placeholder="Name"/>
+            <input type="text" name="firstName" class="form-control" [(ngModel)]="user.firstName" placeholder="First Name"  #firstName="ngModel"/>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-12">
-            <input type="text" class="form-control" placeholder="Username"/>
+            <input type="text" name="lastname" class="form-control" [(ngModel)]="user.lastName" placeholder="Last Name" #lastName="ngModel"/>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-12">
-            <input type="password" class="form-control" placeholder="Password"/>
+            <input type="text" name="email" class="form-control" [(ngModel)]="user.email" placeholder="Email" #email="ngModel"/>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-12">
-            <input type="password" class="form-control" placeholder="Confirm Password"/>
+            <input type="password" name="password" class="form-control" [(ngModel)]="user.password" placeholder="Password" #password="ngModel"/>
           </div>
         </div>
-
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="password" name="confirmPassword" class="form-control" [(ngModel)]="user.confirmPassword" placeholder="Confirm Password" #confirmPassword="ngModel"/>
+          </div>
+        </div>
         <div class="form-group">
           <div class="col-md-6">
             <button [routerLink]="['/']" class="btn btn-danger btn-block">Cancel</button>
           </div>
           <div class="col-md-6">
-            <button [routerLink]="['/dashboard']" class="btn btn-info btn-block">Log In</button>
+            <button type="submit" [disabled]="!f_register.form.valid" class="btn btn-info btn-block">Log In</button>
           </div>
         </div>
       </form>

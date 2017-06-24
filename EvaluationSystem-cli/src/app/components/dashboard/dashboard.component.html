@@ -1,11 +1,12 @@
-<div class="page-container">
+<div class="page-container page-navigation-top-fixed">
+
 
   <!-- START PAGE SIDEBAR -->
-  <div class="page-sidebar" >
+  <div class="page-sidebar " >
     <!-- START X-NAVIGATION -->
     <ul class="x-navigation">
       <li class="xn-logo">
-        <a routerLink="['/']">Evaluation</a>
+        <a [routerLink]="['/dashboard']">Evaluation</a>
         <a href="#page-top" class="x-navigation-control"></a>
       </li>
       <li class="xn-profile">
@@ -14,20 +15,20 @@
             <img src="../assets/images/users/no-image.jpg"/>
           </div>
           <div class="profile-data">
-            <div class="profile-data-name">Rui Freitas</div> <!-- Name of user-->
-            <div class="profile-data-title">Teacher</div> <!-- Type of user-->
+            <div class="profile-data-name">{{this.getUserName()}}</div> <!-- Name of user-->
+            <div class="profile-data-title">{{this.getUserType()}}</div> <!-- Type of user-->
           </div>
         </div>
       </li>
       <li class="xn-title">Navigation</li>
       <li class="active">
-        <a routerLinkActive="['/']"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
+        <a [routerLinkActive]="['/dashboard']"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
       </li>
       <li class="xn-openable">
-        <a routerLink="['/dashboard']"><span class="fa fa-files-o"></span> <span class="xn-text">Classes</span></a>
+        <a ><span class="fa fa-files-o"></span> <span class="xn-text">Classes</span></a>
         <ul>
-          <li><a routerLink="['/dashboard']"> AA </a></li>
-          <li><a routerLink="['/dashboard']"> BB </a></li>
+          <li class="active"><a > AA </a></li>
+          <li><a > BB </a></li>
         </ul>
       </li>
     </ul>
@@ -39,7 +40,7 @@
   <div class="page-content">
 
 
-    <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+    <ul class="x-navigation x-navigation-horizontal x-navigation-panel ">
       <!-- TOGGLE NAVIGATION -->
       <li class="xn-icon-button">
         <a class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
@@ -48,15 +49,18 @@
 
       <!-- SIGN OUT -->
       <li class="xn-icon-button pull-right">
-        <a [routerLink]="['/']" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
+        <a (click)="logout()" class="mb-control" ><span class="fa fa-sign-out"></span></a>
       </li>
       <!-- END SIGN OUT -->
     </ul>
 
     <div class="page-content-wrap">
+      <br>
       <router-outlet></router-outlet>
     </div>
 
-  </div>
 
+
+  </div>
 </div>
+
