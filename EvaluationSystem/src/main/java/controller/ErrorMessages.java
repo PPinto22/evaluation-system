@@ -18,6 +18,7 @@ public class ErrorMessages {
     public static final String NO_SUCH_STUDENT = "No such student";
     public static final String NO_SUCH_EXAM = "No such exam";
     public static final String NO_SUCH_SUBMISSION = "No such submission";
+    public static final String NO_SUCH_INVITATION = "No such invitation";
     public static final String GROUP_EXISTS = "Group already exists";
     public static final String CLASS_EXISTS = "Class already exists";
     public static final String QUESTION_EXISTS = "Question already exists";

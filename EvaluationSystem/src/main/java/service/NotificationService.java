@@ -1,6 +1,7 @@
 package service;
 
 import exception.NonExistentEntityException;
+import exception.UnconfirmedRegistrationException;
 import model.Group;
 import model.GroupInvitation;
 import model.Notification;
@@ -13,7 +14,7 @@ public interface NotificationService {
     GroupInvitation getGroupInvitation(Group group, Student student) throws PersistentException, NonExistentEntityException;
     GroupInvitation addGroupInvitation(Group group, Student student) throws PersistentException;
     void removeGroupInvitation(GroupInvitation groupInvitation) throws PersistentException;
-    void acceptInvitation(GroupInvitation groupInvitation);
-    void declineInvitation(GroupInvitation groupInvitation);
+    Group acceptInvitation(GroupInvitation groupInvitation) throws PersistentException, UnconfirmedRegistrationException;
+    void declineInvitation(GroupInvitation groupInvitation) throws PersistentException;
 
 }
