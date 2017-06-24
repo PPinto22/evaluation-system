@@ -1,12 +1,11 @@
 package service;
 
 import dao.GroupInvitationDAO;
+import dao.GroupStudentDAO;
 import dao.NotificationDAO;
 import exception.NonExistentEntityException;
-import model.Group;
-import model.GroupInvitation;
-import model.Notification;
-import model.Student;
+import exception.UnconfirmedRegistrationException;
+import model.*;
 import org.orm.PersistentException;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +14,12 @@ public class NotificationServiceImpl implements NotificationService{
 
     NotificationDAO notificationDAO;
     GroupInvitationDAO groupInvitationDAO;
+    GroupStudentDAO groupStudentDAO;
 
-    public NotificationServiceImpl(NotificationDAO notificationDAO, GroupInvitationDAO groupInvitationDAO) {
+    public NotificationServiceImpl(NotificationDAO notificationDAO, GroupInvitationDAO groupInvitationDAO, GroupStudentDAO groupStudentDAO) {
         this.notificationDAO = notificationDAO;
         this.groupInvitationDAO = groupInvitationDAO;
+        this.groupStudentDAO = groupStudentDAO;
     }
 
     @Override
@@ -55,12 +56,25 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void acceptInvitation(GroupInvitation groupInvitation) {
-        // TODO acceptInvitation
+    public Group acceptInvitation(GroupInvitation groupInvitation) throws PersistentException, UnconfirmedRegistrationException {
+        GroupStudent groupStudent = groupStudentDAO.loadGroupStudentByGroupAndStudent(
+                groupInvitation.get_group().getID(),
+                groupInvitation.get_user().getID()
+        );
+        Student student = groupStudent.get_student();
+        if(!student.isRegistered())
+            throw new UnconfirmedRegistrationException();
+
+        groupStudent.setAccepted(true);
+        groupStudentDAO.save(groupStudent);
+        groupInvitation.get_user()._notifications.remove(groupInvitation);
+        notificationDAO.delete(groupInvitation);
+        return groupInvitation.get_group();
     }
 
     @Override
-    public void declineInvitation(GroupInvitation groupInvitation) {
-        // TODO declineInvitation
+    public void declineInvitation(GroupInvitation groupInvitation) throws PersistentException {
+        groupInvitation.get_user()._notifications.remove(groupInvitation);
+        notificationDAO.delete(groupInvitation);
     }
 }

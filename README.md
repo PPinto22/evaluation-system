@@ -162,7 +162,7 @@ ___
 	"text": "Enunciado pergunta 1",
 	"category": "Category 1",
 	"difficulty": 1,
-	"answers":[
+	"answers": [
 		{
 			"text": "Alternativa 1",
 			"correct": false
@@ -465,8 +465,33 @@ ___
 - **UNAUTHORIZED (401)**
 ___
 
-#### ~~GET    /api/invitations/{invitation_id}/accept~~
-#### ~~GET    /api/invitations/{invitation_id}/decline~~
+#### GET    /api/invitations/{invitation_id}/accept
+### Response
+```json
+"name": "Name1",
+"abbreviation": "Abbreviation1",
+"teacher": {
+    "email": "email16",
+    "firstName": "firstName16",
+    "lastName": "lastName16",
+    "type": "Teacher",
+    "active": true,
+    "id": 16
+},
+"id": 1
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)**
+- **UNAUTHORIZED (401)**
+
+#### GET    /api/invitations/{invitation_id}/decline
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)**
+- **UNAUTHORIZED (401)**
 ___
 
 #### ~~GET    /api/students/{student_id}/scores~~
