@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from "../../services/authentication.service";
-import {Router} from "@angular/router";
+import {AuthenticationService} from '../../services/authentication.service';
+import {Router} from '@angular/router';
+import {User} from '../../models/user';
 
 @Component({
   selector: 'app-register',
@@ -8,21 +9,31 @@ import {Router} from "@angular/router";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  model: any = {};
-  loading : boolean = false;
+  user: any = {};
+  loading = false;
 
   constructor(
     private authentication: AuthenticationService,
-    private router:Router
+    private router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  register(){
-    console.log("email:" + this.model.email + "->" + "pass:" + this.model.password);
+  private register() {
     this.loading = true;
-    this.authentication.login(this.model.email, this.model.password);
-    this.router.navigate(['/classes']);
+    this.authentication.register(this.user.email, this.user.password, this.user.firstName, this.user.lastName, User._Teacher).subscribe(
+      result => {
+        this.router.navigate(['/dashboard']);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+    this.loading = false;
+  }
+
+  onSubmit(): void {
+    this.register();
   }
 }

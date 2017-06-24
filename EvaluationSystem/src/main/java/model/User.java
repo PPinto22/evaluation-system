@@ -46,7 +46,7 @@ public class User {
 		}
 
 		try {
-			md.update(s.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+			md.update(s.getBytes("UTF-16")); // Change this to "UTF-16" if needed
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

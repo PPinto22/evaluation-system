@@ -11,6 +11,11 @@ import {AuthenticationService} from './services/authentication.service';
 import { HomeComponent } from './components/home/home.component';
 import {LoginGuardService} from './services/login-guard.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import {HttpUtilService} from './services/http-util.service';
+import { DefaultComponent } from './components/dashboard/default/default.component';
+import { ListClassComponent } from './components/dashboard/default/list-class/list-class.component';
+import { ListExameComponent } from './components/dashboard/default/list-exame/list-exame.component';
+import { ClassComponent } from './components/dashboard/class/class.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +23,11 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    DefaultComponent,
+    ListClassComponent,
+    ListExameComponent,
+    ClassComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +36,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     routing
   ],
   providers: [
+    HttpUtilService,
     AuthenticationService,
     LoginGuardService
   ],

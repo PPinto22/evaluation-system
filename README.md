@@ -1,10 +1,29 @@
 # EvaluationSystem
 
 ...
+## FrontEnd - Angular 2
 
-## Backend
+## Backend - Spring and Hibernate
 
-### Build and Run
+### Build and Run Postgres
+
+Build image of postgres for docker.
+```
+cd Docker/postgres/
+docker build -t eg_postgresql .
+```
+
+Frist time create container and run with:
+```
+docker run --net="bridge" -p 5432:5432 -P --name pg_test eg_postgresql
+```
+
+Next times, to start container make:
+```
+docker start pg_test 
+```
+
+### Build and Run Spring
 ```
 cd EvaluationSystem/
 mvn package
@@ -14,6 +33,11 @@ docker build -t evalsys-backend .
 docker run --net="bridge" -p 8080:8080 evalsys-backend
 ```
 
+or 
+
+```
+./docker_backend.sh
+```
 
 
 ### Authentication
