@@ -1,12 +1,12 @@
 package exception;
 
-public class ExistentEntityException extends Exception {
+public class InvalidQuestionException extends Exception {
 
-    public ExistentEntityException() {
+    public InvalidQuestionException() {
         super();
     }
 
-    public ExistentEntityException(String message) {
+    public InvalidQuestionException(String message) {
         super(message);
     }
 }

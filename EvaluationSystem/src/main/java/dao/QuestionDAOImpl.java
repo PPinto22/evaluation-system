@@ -17,10 +17,29 @@ import org.hibernate.Query;
 import org.hibernate.LockMode;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
 public class QuestionDAOImpl implements QuestionDAO {
+	@Override
+	public boolean exists(int questionID) throws PersistentException {
+		return this.getQuestionByORMID(questionID) != null;
+	}
+
+	@Override
+	public boolean exists(int classID, String text) throws PersistentException {
+		return !this.listQuestionsByClassAndText(classID,text).isEmpty();
+	}
+
+	@Override
+	public List<Question> listQuestionsByClassAndText(int classID, String text) throws PersistentException {
+		QuestionCriteria criteria = new QuestionCriteria();
+		criteria._classId.eq(classID);
+		criteria.text.eq(text);
+		return Arrays.asList(this.listQuestionByCriteria(criteria));
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(QuestionDAOImpl.class);
 	public Question loadQuestionByORMID(int ID) throws PersistentException {
 		try {

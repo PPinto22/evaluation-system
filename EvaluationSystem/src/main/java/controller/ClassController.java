@@ -2,11 +2,11 @@ package controller;
 
 import exception.ExistentEntityException;
 import exception.InvalidClaimsException;
+import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
 import io.jsonwebtoken.Claims;
+import model.*;
 import model.Class;
-import model.Group;
-import model.User;
 import org.orm.PersistentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import security.JwtService;
 import service.ClassService;
-import wrapper.ClassTeacherWrapper;
-import wrapper.ErrorWrapper;
-import wrapper.GroupClassWrapper;
-import wrapper.GroupWrapper;
+import wrapper.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -93,4 +90,44 @@ public class ClassController {
         }
     }
 
+    @RequestMapping(value = "/{classID:[\\d]+}/questions", method = GET)
+    public ResponseEntity<Object> getQuestions(@PathVariable int classID){
+        // TODO
+        return null;
+    }
+
+    @RequestMapping(value = "/{classID:[\\d]+}/questions", method = POST)
+    // TODO - Verificar emissor = professor
+    public ResponseEntity<Object> postQuestions(@PathVariable int classID,
+                                                @RequestBody QuestionWrapper questionWrapper,
+                                                HttpServletRequest request){
+        try {
+            Class cl = classService.getClassByID(classID);
+            Question question = this.getQuestionFromWrapper(questionWrapper);
+            question = this.classService.addQuestionToClass(cl, question);
+            return new ResponseEntity<Object>(new QuestionWrapper(question), OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
+        } catch (InvalidQuestionException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION), NOT_ACCEPTABLE);
+        } catch (ExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(QUESTION_EXISTS), NOT_ACCEPTABLE);
+        }
+    }
+
+    private Question getQuestionFromWrapper(QuestionWrapper questionWrapper){
+        Question question = new Question();
+        question.setText(questionWrapper.getText());
+        question.setCategory(questionWrapper.getCategory());
+        question.setDificulty(questionWrapper.getDifficulty());
+        for(AnswerWrapper answerWrapper: questionWrapper.getAnswers()){
+            Answer answer = new Answer();
+            answer.setText(answerWrapper.getText());
+            answer.setCorrect(answerWrapper.isCorrect());
+            question._answers.add(answer);
+        }
+        return question;
+    }
 }

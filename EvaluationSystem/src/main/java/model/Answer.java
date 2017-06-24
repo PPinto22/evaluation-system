@@ -66,7 +66,7 @@ public class Answer {
 		this.correct = value;
 	}
 	
-	public boolean getCorrect() {
+	public boolean isCorrect() {
 		return correct;
 	}
 	

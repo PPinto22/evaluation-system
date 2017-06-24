@@ -1,10 +1,12 @@
 package service;
 
 import exception.ExistentEntityException;
+import exception.InvalidQuestionException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
 import model.Class;
 import model.Group;
+import model.Question;
 import model.Teacher;
 import org.orm.PersistentException;
 
@@ -18,4 +20,5 @@ public interface ClassService {
     boolean exists(Teacher teacher, String className) throws PersistentException;
 
     Group addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException;
+    Question addQuestionToClass(Class cl, Question question) throws InvalidQuestionException, PersistentException, ExistentEntityException;
 }

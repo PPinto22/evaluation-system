@@ -48,7 +48,7 @@ public class GroupServiceImpl implements GroupService{
         if(!this.exists(ID))
             throw new NonExistentEntityException();
 
-        else return groupDAO.getGroupByORMID(ID);
+        else return groupDAO.loadGroupByORMID(ID);
     }
 
     @Override

@@ -1,12 +1,40 @@
 package wrapper;
 
-public class QuestionPOSTWrapper {
+import com.fasterxml.jackson.annotation.JsonInclude;
+import model.Answer;
+import model.Question;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class QuestionWrapper {
+    private int id;
     private String text;
     private String category;
     private int difficulty;
-    private AnswerPOSTWrapper[] answers;
+    private List<AnswerWrapper> answers;
 
-    public QuestionPOSTWrapper(){}
+    public QuestionWrapper(){}
+
+    public QuestionWrapper(Question question){
+        this.id = question.getID();
+        this.text = question.getText();
+        this.category = question.getCategory();
+        this.difficulty = question.getDificulty();
+        this.answers = new ArrayList<>();
+        for(Answer answer: question._answers.toArray()){
+            this.answers.add(new AnswerWrapper(answer));
+        }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getText() {
         return text;
@@ -32,11 +60,11 @@ public class QuestionPOSTWrapper {
         this.difficulty = difficulty;
     }
 
-    public AnswerPOSTWrapper[] getAnswers() {
+    public List<AnswerWrapper> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(AnswerPOSTWrapper[] answers) {
+    public void setAnswers(List<AnswerWrapper> answers) {
         this.answers = answers;
     }
 }

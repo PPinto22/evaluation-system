@@ -11,6 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import dao.ClassesPersistentManager;
 import model.Exam;
 import org.hibernate.Criteria;
 import org.orm.PersistentException;
@@ -23,6 +24,7 @@ public class ExamCriteria extends AbstractORMCriteria {
 	public final AssociationExpression _group;
 	public final TimestampExpression beginDate;
 	public final TimeExpression duration;
+	public final StringExpression name;
 	public final CollectionExpression _submissions;
 	public final CollectionExpression _questions;
 	
@@ -33,6 +35,7 @@ public class ExamCriteria extends AbstractORMCriteria {
 		_group = new AssociationExpression("_group", this);
 		beginDate = new TimestampExpression("beginDate", this);
 		duration = new TimeExpression("duration", this);
+		name = new StringExpression("name", this);
 		_submissions = new CollectionExpression("ORM__submissions", this);
 		_questions = new CollectionExpression("ORM__questions", this);
 	}
