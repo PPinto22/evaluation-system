@@ -61,9 +61,9 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 
 - [POST /auth/login](#post-authlogin)
 - [POST /auth/signup](#post-authsignup)
-- [GET /api/classes/{class_id}](#get-apiclasses_id)
-- [~~PUT /api/classes/{class_id}~~](#put-apiclasses_id)
-- [~~DELETE /api/classes/{class_id}~~](#delete-apiclasses_id)
+- [GET /api/classes/{class_id}](#get-apiclassesclass_id)
+- [~~PUT /api/classes/{class_id}~~](#put-apiclassesclass_id)
+- [~~DELETE /api/classes/{class_id}~~](#delete-apiclassesclass_id)
 - [GET /api/classes/{class_id}/questions](#get-apiclassesclass_idquestions)
 - [POST /api/classes/{class_id}/questions](#post-apiclassesclass_idquestions)
 - [GET /api/classes/{class_id}/categories](#get-apiclassesclass_idcategories)
@@ -72,19 +72,19 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [~~GET /api/questions/{question_id}~~](#get-apiquestionsquestion_id)
 - [~~PUT /api/questions/{question_id}~~](#put-apiquestionsquestion_id)
 - [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestion_id)
-- [GET /api/groups/{group_id}](#get-apigroups_id)
-- [~~PUT /api/groups/{group_id}~~](#put-apigroups_id)
-- [~~DELETE /api/groups/{group_id}~~](#delete-apigroups_id)
+- [GET /api/groups/{group_id}](#get-apigroupsgroup_id)
+- [~~PUT /api/groups/{group_id}~~](#put-apigroupsgroup_id)
+- [~~DELETE /api/groups/{group_id}~~](#delete-apigroupsgroup_id)
 - [GET /api/groups/{group_id}/students](#get-apigroupsgroup_idstudents)
 - [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents)
-- [DELETE /api/groups/{group_id}/students/{id}](#delete-apigroupsgroupidstudents_id)
+- [DELETE /api/groups/{group_id}/students/{student_id}](#delete-apigroupsgroupidstudentsstudent_id)
 - [~~GET /api/groups/{group_id}/exams?upcoming,history~~](#get-apigroupsgroup_idexamsupcominghistory)
 - [~~POST /api/groups/{group_id}/exams~~](#post-apigroupsgroup_idexams)
 - [~~POST /api/groups/{group_id}/exams/generate~~](#post-apigroupsgroup_idexamsgenerate)
 - [~~GET /api/groups/{group_id}/scores~~](#get-apigroupsgroup_idscores)
-- [~~GET /api/exams/{exam_id}~~](#get-apiexams_id)
-- [~~DELETE /api/exams/{exam_id}~~](#delete-apiexams_id)
-- [~~PUT /api/exams/{exam_id}~~](#put-apiexams_id)
+- [~~GET /api/exams/{exam_id}~~](#get-apiexamsexam_id)
+- [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
+- [~~PUT /api/exams/{exam_id}~~](#put-apiexamsexam_id)
 - [~~GET /api/exams/{exam_id}/scores~~](#get-apiexamsexam_idscores)
 - [~~POST /api/exams/{exam_id}/submission~~](#post-apiexamsexam_idsubmissions)
 - [~~GET /api/submissions/{submission_id}~~](#get-apisubmissionssubmission_id)
@@ -449,7 +449,7 @@ ___
 - **UNAUTHORIZED (401)**
 - **NOT FOUND (404)**
 
-#### DELETE /api/groups/{group_id}/students/{id}
+#### DELETE /api/groups/{group_id}/students/{student_id}
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
