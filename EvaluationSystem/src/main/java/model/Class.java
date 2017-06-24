@@ -17,11 +17,10 @@ import dao.QuestionSetCollection;
  */
 public class Class {
 	// Nosso codigo
-	public boolean missingInformation(){
+	public boolean isMissingInformation(){
 		return 	this.getName() == null || this.getName().equals("") ||
 				this.getAbbreviation() == null || this.getAbbreviation().equals("");
 	}
-
 
 	// Codigo Gerado
 	public Class() {

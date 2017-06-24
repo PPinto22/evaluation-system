@@ -4,9 +4,7 @@ import exception.InvalidClaimsException;
 import exception.InvalidUserTypeException;
 import exception.NonExistentEntityException;
 import io.jsonwebtoken.Claims;
-import model.Student;
-import model.Teacher;
-import model.User;
+import model.*;
 import model.Class;
 import org.orm.PersistentException;
 import org.springframework.http.HttpStatus;
@@ -55,10 +53,34 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/{id:[\\d]+}/notifications", method = GET)
+    public ResponseEntity<Object> getNotifications(@PathVariable int id, HttpServletRequest request){
+        try {
+            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
+            User user = userService.getUserByID(id);
+            if(clientUser.getID() != user.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-    // Testes...
+            List<NotificationWrapper> notifications = new ArrayList<>();
+            for(Notification notification: user._notifications.toArray()){
+                switch (notification.getClass().getSimpleName()){
+                    case "GroupInvitation":
+                        notifications.add(new GroupInvitationWrapper((GroupInvitation)notification));
+                }
+            }
+            return new ResponseEntity<Object>(notifications, OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        }
+    }
+
+
+    // FIXME - Testes...
     @RequestMapping(value = "/students", method = RequestMethod.GET)
-    // FIXME: Metodo para testes
     public ResponseEntity<List<StudentGroupsWrapper>> getStudents(HttpServletRequest request){
         // Exemplo de como retirar o user a partir do token
         try {
@@ -83,7 +105,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "/teachers", method = RequestMethod.GET)
-    // FIXME: Metodo para testes
     public ResponseEntity<List<TeacherClassesWrapper>> getTeachers(){
         List<TeacherClassesWrapper> views = new ArrayList<>();
         try {

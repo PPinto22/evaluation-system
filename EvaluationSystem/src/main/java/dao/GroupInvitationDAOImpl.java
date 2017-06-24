@@ -11,7 +11,9 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import model.Group;
 import model.GroupInvitation;
+import model.Student;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -21,6 +23,14 @@ import java.util.List;
 
 @Repository
 public class GroupInvitationDAOImpl implements GroupInvitationDAO {
+	@Override
+	public GroupInvitation loadGroupInvitationByGroupAndStudent(Group group, Student student) throws PersistentException {
+		GroupInvitationCriteria criteria = new GroupInvitationCriteria();
+		criteria._groupId.eq(group.getID());
+		criteria._userId.eq(student.getID());
+		return this.loadGroupInvitationByCriteria(criteria);
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(GroupInvitationDAOImpl.class);
 	public GroupInvitation loadGroupInvitationByORMID(int ID) throws PersistentException {
 		try {

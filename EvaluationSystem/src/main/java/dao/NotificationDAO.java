@@ -16,6 +16,8 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface NotificationDAO {
+	public boolean exists(int ID) throws PersistentException;
+
 	public Notification loadNotificationByORMID(int ID) throws PersistentException;
 	public Notification getNotificationByORMID(int ID) throws PersistentException;
 	public Notification loadNotificationByORMID(int ID, LockMode lockMode) throws PersistentException;

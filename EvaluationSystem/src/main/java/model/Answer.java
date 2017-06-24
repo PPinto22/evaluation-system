@@ -15,6 +15,7 @@ import dao.QuestionSubmissionSetCollection;
  * License Type: Academic
  */
 public class Answer {
+
 	public Answer() {
 	}
 	
@@ -65,7 +66,7 @@ public class Answer {
 		this.correct = value;
 	}
 	
-	public boolean getCorrect() {
+	public boolean isCorrect() {
 		return correct;
 	}
 	

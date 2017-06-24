@@ -2,7 +2,6 @@ package wrapper;
 
 import model.GroupStudent;
 import model.Student;
-import model.Submission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ public class StudentGroupsWrapper extends UserNotificationsWrapper {
         super(student);
         this.groups = new ArrayList<>();
         for(GroupStudent groupStudent: student._groups.toArray()){
-            if(groupStudent.getAccepted()){
+            if(groupStudent.isAccepted()){
                 this.groups.add(new GroupClassWrapper(groupStudent.get_group()));
             }
         }

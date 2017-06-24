@@ -12,6 +12,7 @@ package model; /**
  * License Type: Academic
  */
 public class GroupInvitation extends Notification {
+
 	public GroupInvitation() {
 	}
 	

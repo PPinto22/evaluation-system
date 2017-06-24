@@ -12,18 +12,21 @@ package dao; /**
  * License Type: Academic
  */
 import exception.InvalidUserException;
-import exception.UnconfirmedEmailException;
+import exception.UnconfirmedRegistrationException;
 import model.User;
 import org.orm.*;
 import org.hibernate.LockMode;
 
+import java.util.List;
+
 public interface UserDAO {
 	// Nosso codigo
-	public User loadUserByAuthentication(String email, String password)
-			throws PersistentException, InvalidUserException, UnconfirmedEmailException;
-	public User loadUserByEmail(String email) throws PersistentException;
-	public boolean exists(int ID) throws PersistentException;
-	public boolean exists(String email) throws PersistentException;
+	User loadUserByAuthentication(String email, String password)
+			throws PersistentException, InvalidUserException, UnconfirmedRegistrationException;
+	List<User> loadUsersByEmail(String email) throws PersistentException;
+	boolean exists(int ID) throws PersistentException;
+	boolean exists(String email) throws PersistentException;
+	boolean existsActive(String email) throws PersistentException;
 
 	// Codigo Gerado
 	public User loadUserByORMID(int ID) throws PersistentException;

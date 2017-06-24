@@ -11,11 +11,15 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
+import model.Group;
 import model.GroupInvitation;
+import model.Student;
 import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface GroupInvitationDAO {
+	public GroupInvitation loadGroupInvitationByGroupAndStudent(Group group, Student student) throws PersistentException;
+
 	public GroupInvitation loadGroupInvitationByORMID(int ID) throws PersistentException;
 	public GroupInvitation getGroupInvitationByORMID(int ID) throws PersistentException;
 	public GroupInvitation loadGroupInvitationByORMID(int ID, LockMode lockMode) throws PersistentException;

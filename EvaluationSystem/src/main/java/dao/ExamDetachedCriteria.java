@@ -13,6 +13,7 @@ package dao; /**
  */
 import java.util.List;
 
+import dao.ExamCriteria;
 import model.Exam;
 import org.hibernate.criterion.DetachedCriteria;
 import org.orm.PersistentSession;
@@ -24,6 +25,7 @@ public class ExamDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final AssociationExpression _group;
 	public final TimestampExpression beginDate;
 	public final TimeExpression duration;
+	public final StringExpression name;
 	public final CollectionExpression _submissions;
 	public final CollectionExpression _questions;
 	
@@ -34,6 +36,7 @@ public class ExamDetachedCriteria extends AbstractORMDetachedCriteria {
 		_group = new AssociationExpression("_group", this.getDetachedCriteria());
 		beginDate = new TimestampExpression("beginDate", this.getDetachedCriteria());
 		duration = new TimeExpression("duration", this.getDetachedCriteria());
+		name = new StringExpression("name", this.getDetachedCriteria());
 		_submissions = new CollectionExpression("ORM__submissions", this.getDetachedCriteria());
 		_questions = new CollectionExpression("ORM__questions", this.getDetachedCriteria());
 	}
@@ -45,6 +48,7 @@ public class ExamDetachedCriteria extends AbstractORMDetachedCriteria {
 		_group = new AssociationExpression("_group", this.getDetachedCriteria());
 		beginDate = new TimestampExpression("beginDate", this.getDetachedCriteria());
 		duration = new TimeExpression("duration", this.getDetachedCriteria());
+		name = new StringExpression("name", this.getDetachedCriteria());
 		_submissions = new CollectionExpression("ORM__submissions", this.getDetachedCriteria());
 		_questions = new CollectionExpression("ORM__questions", this.getDetachedCriteria());
 	}

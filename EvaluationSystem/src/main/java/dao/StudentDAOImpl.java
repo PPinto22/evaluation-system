@@ -24,6 +24,40 @@ import java.util.List;
 
 @Repository
 public class StudentDAOImpl implements StudentDAO {
+
+	@Override
+	public Student loadStudentByEmail(String email) throws PersistentException {
+		StudentCriteria criteria = new StudentCriteria();
+		criteria.email.eq(email);
+		criteria.deleted.eq(false);
+		return this.loadStudentByCriteria(criteria);
+	}
+
+	@Override
+	public boolean exists(int ID) throws PersistentException {
+		StudentCriteria criteria = new StudentCriteria();
+		criteria.ID.eq(ID);
+		criteria.deleted.eq(false);
+		return this.loadStudentByCriteria(criteria) != null;
+	}
+
+	@Override
+	public boolean exists(String email) throws PersistentException {
+		StudentCriteria criteria = new StudentCriteria();
+		criteria.email.eq(email);
+		criteria.deleted.eq(false);
+		return this.loadStudentByCriteria(criteria) != null;
+	}
+
+	@Override
+	public boolean existsActive(String email) throws PersistentException {
+		StudentCriteria criteria = new StudentCriteria();
+		criteria.email.eq(email);
+		criteria.registered.eq(true);
+		criteria.deleted.eq(false);
+		return this.loadStudentByCriteria(criteria) != null;
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(StudentDAOImpl.class);
 	public Student loadStudentByORMID(int ID) throws PersistentException {
 		try {

@@ -1,24 +1,53 @@
 package service;
 
 import dao.ClassDAO;
+import dao.QuestionDAO;
+import dao.TeacherDAO;
 import exception.ExistentEntityException;
+import exception.InvalidQuestionException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
 import model.Class;
 import model.Group;
+import model.Question;
 import model.Teacher;
 import org.orm.PersistentException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.Entity;
+import javax.persistence.EntityExistsException;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class ClassServiceImpl implements ClassService{
 
     ClassDAO classDAO;
+    TeacherDAO teacherDAO;
+    QuestionDAO questionDAO;
     GroupService groupService;
+    TeacherService teacherService;
+    QuestionService questionService;
 
-    public ClassServiceImpl(ClassDAO classDAO, GroupService groupService) {
-        this.classDAO = classDAO;
+    @Autowired
+    public void setQuestionService(QuestionService questionService) {
+        this.questionService = questionService;
+    }
+    @Autowired
+    public void setGroupService(GroupService groupService) {
         this.groupService = groupService;
+    }
+    @Autowired
+    public void setTeacherService(TeacherService teacherService) {
+        this.teacherService = teacherService;
+    }
+
+    public ClassServiceImpl(ClassDAO classDAO, TeacherDAO teacherDAO, QuestionDAO questionDAO) {
+        this.classDAO = classDAO;
+        this.teacherDAO = teacherDAO;
+        this.questionDAO = questionDAO;
     }
 
     @Override
@@ -37,27 +66,58 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public void addClass(Class cl) throws PersistentException, MissingInformationException {
-        if(cl.missingInformation())
+    public Class addClass(Class cl) throws PersistentException, MissingInformationException {
+        if(cl.isMissingInformation())
             throw new MissingInformationException();
         this.classDAO.save(cl);
+        return cl;
     }
 
     @Override
-    public void addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException {
+    public Group addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException {
         if(this.groupService.exists(cl, group.getName()))
             throw new ExistentEntityException();
 
         cl._groups.add(group);
         group.set_class(cl);
-        this.groupService.addGroup(group);
+        return this.groupService.addGroup(group);
+    }
+
+
+    @Override
+    public List<Question> getClassQuestions(Class cl) throws PersistentException {
+        return questionDAO.listQuestionsByClass(cl.getID());
+    }
+
+    @Override
+    public Set<String> getClassCategories(Class cl) throws PersistentException {
+        List<Question> questions = this.getClassQuestions(cl);
+        Set<String> categories = new TreeSet<>();
+        for(Question question: questions)
+            categories.add(question.getCategory());
+        return categories;
+    }
+
+    @Override
+    public Question addQuestionToClass(Class cl, Question question)
+            throws InvalidQuestionException, ExistentEntityException, PersistentException {
+        if(!questionService.validate(question))
+            throw new InvalidQuestionException();
+
+        if(questionService.exists(cl, question))
+            throw new ExistentEntityException();
+
+        cl._question.add(question);
+        question.set_class(cl);
+        questionDAO.save(question);
+        return question;
     }
 
     @Override
     public void delete(Class cl) throws PersistentException {
         Teacher teacher = cl.get_teacher();
         teacher._classes.remove(cl);
-        classDAO.delete(cl);
+        this.classDAO.delete(cl);
     }
 
     @Override

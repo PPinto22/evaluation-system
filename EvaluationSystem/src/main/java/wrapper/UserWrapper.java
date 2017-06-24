@@ -9,6 +9,7 @@ public class UserWrapper{
     private String firstName;
     private String lastName;
     private String type;
+    private boolean active;
 
     public UserWrapper() {
     }
@@ -18,14 +19,8 @@ public class UserWrapper{
         this.setID(user.getID());
         this.setFirstName(user.getFirstName());
         this.setLastName(user.getLastName());
-        switch (user.getClass().getSimpleName()){
-            case "Student":
-                this.type = "student";
-                break;
-            case "Teacher":
-                this.type = "teacher";
-                break;
-        }
+        this.setActive(user.isRegistered() && !user.isDeleted());
+        this.type = user.getClass().getSimpleName();
     }
 
     public String getEmail() {
@@ -66,5 +61,13 @@ public class UserWrapper{
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

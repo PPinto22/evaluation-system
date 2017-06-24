@@ -14,6 +14,7 @@ License Type: Academic
 		</many-to-one>
 		<property name="beginDate" column="BeginDate" type="timestamp" not-null="false" lazy="false"/>
 		<property name="duration" column="Duration" type="time" not-null="false" lazy="false"/>
+		<property name="name" column="Name" type="string" length="255" not-null="false" lazy="false"/>
 		<set name="ORM__submissions" lazy="true" cascade="save-update,lock" inverse="true">
 			<key column="ExamID" not-null="true"/>
 			<one-to-many class="model.Submission"/>

@@ -22,7 +22,7 @@ public class JwtService {
         this.userService = userService;
     }
 
-    public Claims getClaims(String token) throws SignatureException {
+    public Claims getClaims(String token) throws ExpiredJwtException, MalformedJwtException, SignatureException {
         return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token).getBody();
     }
 

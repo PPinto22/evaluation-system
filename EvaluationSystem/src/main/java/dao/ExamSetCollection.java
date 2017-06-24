@@ -72,6 +72,7 @@ public class ExamSetCollection extends org.orm.util.ORMSet {
 	 * <li>ID</li>
 	 * <li>beginDate</li>
 	 * <li>duration</li>
+	 * <li>name</li>
 	 * </ul>
 	 * @return The persistent objects sorted array
 	 */
@@ -85,6 +86,7 @@ public class ExamSetCollection extends org.orm.util.ORMSet {
 	 * <li>ID</li>
 	 * <li>beginDate</li>
 	 * <li>duration</li>
+	 * <li>name</li>
 	 * </ul>
 	 * @param ascending true for ascending, false for descending
 	 * @return The persistent objects sorted array

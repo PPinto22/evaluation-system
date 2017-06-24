@@ -12,7 +12,7 @@ package dao; /**
  * License Type: Academic
  */
 import exception.InvalidUserException;
-import exception.UnconfirmedEmailException;
+import exception.UnconfirmedRegistrationException;
 import model.Notification;
 import model.Student;
 import model.Teacher;
@@ -22,14 +22,14 @@ import org.hibernate.Query;
 import org.hibernate.LockMode;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
 
-	// Nosso codigo
 	@Override
-	public User loadUserByAuthentication(String email, String password) throws PersistentException, InvalidUserException, UnconfirmedEmailException {
+	public User loadUserByAuthentication(String email, String password) throws PersistentException, InvalidUserException, UnconfirmedRegistrationException {
 		UserCriteria criteria = new UserCriteria();
 		criteria.email.eq(email);
 		criteria.password.eq(password);
@@ -39,26 +39,24 @@ public class UserDAOImpl implements UserDAO {
 			throw new InvalidUserException();
 		}
 		for(int i = 0; i<users.length; i++){
-			if(users[i].getRegistered())
+			if(users[i].isRegistered())
 				return users[i];
 		}
-		throw new UnconfirmedEmailException();
+		throw new UnconfirmedRegistrationException();
 	}
 
 	@Override
-	public User loadUserByEmail(String email) throws PersistentException {
+	public List<User> loadUsersByEmail(String email) throws PersistentException {
 		UserCriteria criteria = new UserCriteria();
 		criteria.email.eq(email);
 		criteria.deleted.eq(false);
-		criteria.registered.eq(true);
-		return this.loadUserByCriteria(criteria);
+		return Arrays.asList(this.listUserByCriteria(criteria));
 	}
 
 	@Override
 	public boolean exists(String email) throws PersistentException {
 		UserCriteria criteria = new UserCriteria();
 		criteria.email.eq(email);
-		criteria.registered.eq(true);
 		criteria.deleted.eq(false);
 		return this.loadUserByCriteria(criteria) != null;
 	}
@@ -67,8 +65,16 @@ public class UserDAOImpl implements UserDAO {
 	public boolean exists(int ID) throws PersistentException {
 		UserCriteria criteria = new UserCriteria();
 		criteria.ID.eq(ID);
-		criteria.registered.eq(true);
 		criteria.deleted.eq(false);
+		return this.loadUserByCriteria(criteria) != null;
+	}
+
+	@Override
+	public boolean existsActive(String email) throws PersistentException {
+		UserCriteria criteria = new UserCriteria();
+		criteria.email.eq(email);
+		criteria.deleted.eq(false);
+		criteria.registered.eq(true);
 		return this.loadUserByCriteria(criteria) != null;
 	}
 

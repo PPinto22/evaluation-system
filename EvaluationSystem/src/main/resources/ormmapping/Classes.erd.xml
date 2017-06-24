@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Model quotesql="1" tablecharset="" mysql_version="504" mssql_version="2005" derby_version="106" ingres_version="9">
-  <Entity name="model.User" Unlogged="false" PKClustered="0">
+  <Entity name="User" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -18,7 +18,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>27</Type>
       <Length>255</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -29,7 +29,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>27</Type>
       <Length>255</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -40,7 +40,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>27</Type>
       <Length>255</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -51,7 +51,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>27</Type>
       <Length>255</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -62,7 +62,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>1</Type>
       <Length>0</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -73,7 +73,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>1</Type>
       <Length>0</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -102,7 +102,7 @@
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.Class" Unlogged="false" PKClustered="0">
+  <Entity name="Class" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -117,7 +117,7 @@
     <Column name="UserID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.User.ID</ReferencedColumn>
+      <ReferencedColumn>User.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -131,7 +131,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>27</Type>
       <Length>255</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -149,7 +149,7 @@
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.Question" Unlogged="false" PKClustered="0">
+  <Entity name="Question" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -164,7 +164,7 @@
     <Column name="ClassID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Class.ID</ReferencedColumn>
+      <ReferencedColumn>Class.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -207,7 +207,7 @@
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.Answer" Unlogged="false" PKClustered="0">
+  <Entity name="Answer" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -222,7 +222,7 @@
     <Column name="QuestionID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Question.ID</ReferencedColumn>
+      <ReferencedColumn>Question.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -254,7 +254,7 @@
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.Group" Unlogged="false" PKClustered="0">
+  <Entity name="Group" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -269,7 +269,7 @@
     <Column name="ClassID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Class.ID</ReferencedColumn>
+      <ReferencedColumn>Class.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -283,14 +283,14 @@
       <ForeignKey>false</ForeignKey>
       <Type>27</Type>
       <Length>255</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.Exam" Unlogged="false" PKClustered="0">
+  <Entity name="Exam" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -305,7 +305,7 @@
     <Column name="GroupID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Group.ID</ReferencedColumn>
+      <ReferencedColumn>Group.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -317,9 +317,9 @@
     <Column name="BeginDate">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
-      <Type>17</Type>
+      <Type>22</Type>
       <Length>0</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -328,16 +328,27 @@
     <Column name="Duration">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
-      <Type>17</Type>
+      <Type>19</Type>
       <Length>0</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="Name">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>255</Length>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.QuestionScore" Unlogged="false" PKClustered="0">
+  <Entity name="QuestionScore" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -352,7 +363,7 @@
     <Column name="QuestionID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Question.ID</ReferencedColumn>
+      <ReferencedColumn>Question.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -364,7 +375,7 @@
     <Column name="ExamID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Exam.ID</ReferencedColumn>
+      <ReferencedColumn>Exam.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -385,7 +396,7 @@
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.Submission" Unlogged="false" PKClustered="0">
+  <Entity name="Submission" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -400,7 +411,7 @@
     <Column name="ExamID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Exam.ID</ReferencedColumn>
+      <ReferencedColumn>Exam.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -412,7 +423,7 @@
     <Column name="UserID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.User.ID</ReferencedColumn>
+      <ReferencedColumn>User.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -433,7 +444,7 @@
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.QuestionSubmission" Unlogged="false" PKClustered="0">
+  <Entity name="QuestionSubmission" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -448,7 +459,7 @@
     <Column name="AnswerID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Answer.ID</ReferencedColumn>
+      <ReferencedColumn>Answer.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>true</Nullable>
@@ -460,7 +471,7 @@
     <Column name="QuestionID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Question.ID</ReferencedColumn>
+      <ReferencedColumn>Question.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -472,7 +483,7 @@
     <Column name="SubmissionID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Submission.ID</ReferencedColumn>
+      <ReferencedColumn>Submission.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -493,7 +504,7 @@
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.Notification" Unlogged="false" PKClustered="0">
+  <Entity name="Notification" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -508,7 +519,7 @@
     <Column name="GroupID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Group.ID</ReferencedColumn>
+      <ReferencedColumn>Group.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -520,7 +531,7 @@
     <Column name="UserID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.User.ID</ReferencedColumn>
+      <ReferencedColumn>User.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -541,7 +552,7 @@
       <UserTypes/>
     </Column>
   </Entity>
-  <Entity name="model.GroupStudent" Unlogged="false" PKClustered="0">
+  <Entity name="GroupStudent" Unlogged="false" PKClustered="0">
     <Column name="ID">
       <PrimaryKey>true</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -556,7 +567,7 @@
     <Column name="UserID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.User.ID</ReferencedColumn>
+      <ReferencedColumn>User.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -568,7 +579,7 @@
     <Column name="GroupID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>model.Group.ID</ReferencedColumn>
+      <ReferencedColumn>Group.ID</ReferencedColumn>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -590,8 +601,8 @@
     </Column>
   </Entity>
   <ForeignKey name="teacher-classes">
-    <ReferenceTable>model.Class</ReferenceTable>
-    <ReferencedTable>model.User</ReferencedTable>
+    <ReferenceTable>Class</ReferenceTable>
+    <ReferencedTable>User</ReferencedTable>
     <Columns>
       <Column>UserID</Column>
     </Columns>
@@ -600,8 +611,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="class-questions">
-    <ReferenceTable>model.Question</ReferenceTable>
-    <ReferencedTable>model.Class</ReferencedTable>
+    <ReferenceTable>Question</ReferenceTable>
+    <ReferencedTable>Class</ReferencedTable>
     <Columns>
       <Column>ClassID</Column>
     </Columns>
@@ -610,8 +621,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="answers">
-    <ReferenceTable>model.Answer</ReferenceTable>
-    <ReferencedTable>model.Question</ReferencedTable>
+    <ReferenceTable>Answer</ReferenceTable>
+    <ReferencedTable>Question</ReferencedTable>
     <Columns>
       <Column>QuestionID</Column>
     </Columns>
@@ -620,8 +631,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="group-students">
-    <ReferenceTable>model.GroupStudent</ReferenceTable>
-    <ReferencedTable>model.Group</ReferencedTable>
+    <ReferenceTable>GroupStudent</ReferenceTable>
+    <ReferencedTable>Group</ReferencedTable>
     <Columns>
       <Column>GroupID</Column>
     </Columns>
@@ -630,8 +641,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="class-groups">
-    <ReferenceTable>model.Group</ReferenceTable>
-    <ReferencedTable>model.Class</ReferencedTable>
+    <ReferenceTable>Group</ReferenceTable>
+    <ReferencedTable>Class</ReferencedTable>
     <Columns>
       <Column>ClassID</Column>
     </Columns>
@@ -640,8 +651,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="exam-questions">
-    <ReferenceTable>model.QuestionScore</ReferenceTable>
-    <ReferencedTable>model.Exam</ReferencedTable>
+    <ReferenceTable>QuestionScore</ReferenceTable>
+    <ReferencedTable>Exam</ReferencedTable>
     <Columns>
       <Column>ExamID</Column>
     </Columns>
@@ -650,8 +661,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="group-exams">
-    <ReferenceTable>model.Exam</ReferenceTable>
-    <ReferencedTable>model.Group</ReferencedTable>
+    <ReferenceTable>Exam</ReferenceTable>
+    <ReferencedTable>Group</ReferencedTable>
     <Columns>
       <Column>GroupID</Column>
     </Columns>
@@ -660,8 +671,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="question">
-    <ReferenceTable>model.QuestionScore</ReferenceTable>
-    <ReferencedTable>model.Question</ReferencedTable>
+    <ReferenceTable>QuestionScore</ReferenceTable>
+    <ReferencedTable>Question</ReferencedTable>
     <Columns>
       <Column>QuestionID</Column>
     </Columns>
@@ -670,8 +681,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="student-submission">
-    <ReferenceTable>model.Submission</ReferenceTable>
-    <ReferencedTable>model.User</ReferencedTable>
+    <ReferenceTable>Submission</ReferenceTable>
+    <ReferencedTable>User</ReferencedTable>
     <Columns>
       <Column>UserID</Column>
     </Columns>
@@ -680,8 +691,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="resolution-exam">
-    <ReferenceTable>model.Submission</ReferenceTable>
-    <ReferencedTable>model.Exam</ReferencedTable>
+    <ReferenceTable>Submission</ReferenceTable>
+    <ReferencedTable>Exam</ReferencedTable>
     <Columns>
       <Column>ExamID</Column>
     </Columns>
@@ -690,8 +701,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="question-submissions">
-    <ReferenceTable>model.QuestionSubmission</ReferenceTable>
-    <ReferencedTable>model.Submission</ReferencedTable>
+    <ReferenceTable>QuestionSubmission</ReferenceTable>
+    <ReferencedTable>Submission</ReferencedTable>
     <Columns>
       <Column>SubmissionID</Column>
     </Columns>
@@ -700,8 +711,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="questionSubmission-question">
-    <ReferenceTable>model.QuestionSubmission</ReferenceTable>
-    <ReferencedTable>model.Question</ReferencedTable>
+    <ReferenceTable>QuestionSubmission</ReferenceTable>
+    <ReferencedTable>Question</ReferencedTable>
     <Columns>
       <Column>QuestionID</Column>
     </Columns>
@@ -709,9 +720,9 @@
       <Column>ID</Column>
     </RefColumns>
   </ForeignKey>
-  <ForeignKey name="questionSubmission-model.Answer">
-    <ReferenceTable>model.QuestionSubmission</ReferenceTable>
-    <ReferencedTable>model.Answer</ReferencedTable>
+  <ForeignKey name="questionSubmission-Answer">
+    <ReferenceTable>QuestionSubmission</ReferenceTable>
+    <ReferencedTable>Answer</ReferencedTable>
     <Columns>
       <Column>AnswerID</Column>
     </Columns>
@@ -720,8 +731,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="user-notifications">
-    <ReferenceTable>model.Notification</ReferenceTable>
-    <ReferencedTable>model.User</ReferencedTable>
+    <ReferenceTable>Notification</ReferenceTable>
+    <ReferencedTable>User</ReferencedTable>
     <Columns>
       <Column>UserID</Column>
     </Columns>
@@ -730,8 +741,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="groupInvitations">
-    <ReferenceTable>model.Notification</ReferenceTable>
-    <ReferencedTable>model.Group</ReferencedTable>
+    <ReferenceTable>Notification</ReferenceTable>
+    <ReferencedTable>Group</ReferencedTable>
     <Columns>
       <Column>GroupID</Column>
     </Columns>
@@ -740,8 +751,8 @@
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="student-groups">
-    <ReferenceTable>model.GroupStudent</ReferenceTable>
-    <ReferencedTable>model.User</ReferencedTable>
+    <ReferenceTable>GroupStudent</ReferenceTable>
+    <ReferencedTable>User</ReferencedTable>
     <Columns>
       <Column>UserID</Column>
     </Columns>
