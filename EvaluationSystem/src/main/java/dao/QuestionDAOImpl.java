@@ -40,6 +40,13 @@ public class QuestionDAOImpl implements QuestionDAO {
 		return Arrays.asList(this.listQuestionByCriteria(criteria));
 	}
 
+	@Override
+	public List<Question> listQuestionsByClass(int classID) throws PersistentException {
+		QuestionCriteria criteria = new QuestionCriteria();
+		criteria._classId.eq(classID);
+		return Arrays.asList(this.listQuestionByCriteria(criteria));
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(QuestionDAOImpl.class);
 	public Question loadQuestionByORMID(int ID) throws PersistentException {
 		try {

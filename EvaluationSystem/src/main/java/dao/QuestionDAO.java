@@ -21,6 +21,7 @@ public interface QuestionDAO {
 	boolean exists(int questionID) throws PersistentException;
 	boolean exists(int classID, String text) throws PersistentException;
 	List<Question> listQuestionsByClassAndText(int classID, String text) throws PersistentException;
+	List<Question> listQuestionsByClass(int classID) throws PersistentException;
 
 	public Question loadQuestionByORMID(int ID) throws PersistentException;
 	public Question getQuestionByORMID(int ID) throws PersistentException;

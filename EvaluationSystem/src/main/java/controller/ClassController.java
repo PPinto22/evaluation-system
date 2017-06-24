@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
@@ -91,18 +92,37 @@ public class ClassController {
     }
 
     @RequestMapping(value = "/{classID:[\\d]+}/questions", method = GET)
-    public ResponseEntity<Object> getQuestions(@PathVariable int classID){
-        // TODO
-        return null;
+    public ResponseEntity<Object> getQuestions(@PathVariable int classID, HttpServletRequest request){
+        try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
+            Class cl = classService.getClassByID(classID);
+            if(!user.equals(cl.get_teacher()))
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            List<Question> questions = classService.getClassQuestions(cl);
+            List<QuestionWrapper> questionWrappers = new ArrayList<>();
+            for(Question question: questions)
+                questionWrappers.add(new QuestionWrapper(question));
+
+            return new ResponseEntity<Object>(questionWrappers, OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        }
     }
 
     @RequestMapping(value = "/{classID:[\\d]+}/questions", method = POST)
-    // TODO - Verificar emissor = professor
     public ResponseEntity<Object> postQuestions(@PathVariable int classID,
                                                 @RequestBody QuestionWrapper questionWrapper,
                                                 HttpServletRequest request){
         try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
             Class cl = classService.getClassByID(classID);
+            if(user.getID() != cl.get_teacher().getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
             Question question = this.getQuestionFromWrapper(questionWrapper);
             question = this.classService.addQuestionToClass(cl, question);
             return new ResponseEntity<Object>(new QuestionWrapper(question), OK);
@@ -114,6 +134,27 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION), NOT_ACCEPTABLE);
         } catch (ExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(QUESTION_EXISTS), NOT_ACCEPTABLE);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        }
+    }
+
+    @RequestMapping(value = "/{classID:[\\d]+}/categories", method = GET)
+    public ResponseEntity<Object> getCategories(@PathVariable int classID, HttpServletRequest request){
+        try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
+            Class cl = classService.getClassByID(classID);
+            if(!user.equals(cl.get_teacher()))
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            Set<String> categories = classService.getClassCategories(cl);
+            return new ResponseEntity<Object>(categories, OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
         }
     }
 

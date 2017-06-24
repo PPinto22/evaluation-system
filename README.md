@@ -5,7 +5,6 @@
 ## Backend
 
 ### Build and Run
-___
 ```
 cd EvaluationSystem/
 mvn package
@@ -38,7 +37,6 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 ### API
 
 #### POST   /auth/login
-
 ##### Body
 ```json
 {
@@ -68,7 +66,6 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 
 
 #### POST   /auth/signup
-
 ##### Body
 ```json
 {
@@ -123,9 +120,111 @@ ___
 #### ~~PUT    /api/classes/{id}~~
 #### ~~DELETE /api/classes/{id}~~
 
-#### ~~GET    /api/classes/{class_id}/questions~~
-#### ~~POST   /api/classes/{class_id}/questions~~
-#### ~~GET    /api/classes/{class_id}/categories~~
+#### GET    /api/classes/{class_id}/questions
+### Response
+```json
+[
+  {
+    "id": 1,
+    "text": "Enunciado pergunta 1",
+    "category": "Category 1",
+    "difficulty": 1,
+    "answers": [
+      {
+        "id": 1,
+        "text": "Alternativa 3",
+        "correct": false
+      },
+      {
+        "id": 2,
+        "text": "Alternativa 1",
+        "correct": false
+      },
+      {
+        "id": 3,
+        "text": "Alternativa 2",
+        "correct": true
+      }
+    ]
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such class*
+- **UNAUTHORIZED (401)** - *No permission*
+
+#### POST   /api/classes/{class_id}/questions
+### Body
+```json
+{
+	"text": "Enunciado pergunta 1",
+	"category": "Category 1",
+	"difficulty": 1,
+	"answers":[
+		{
+			"text": "Alternativa 1",
+			"correct": false
+		},
+		{
+			"text": "Alternativa 2",
+			"correct": true
+		},
+		{
+			"text": "Alternativa 3",
+			"correct": false
+		}
+	]
+}
+```
+### Response
+```json
+{
+    "id": 1,
+    "text": "Enunciado pergunta 1",
+    "category": "Category 1",
+    "difficulty": 1,
+    "answers": [
+        {
+            "id": 1,
+            "text": "Alternativa 3",
+            "correct": false
+        },
+        {
+            "id": 2,
+            "text": "Alternativa 1",
+            "correct": false
+        },
+        {
+            "id": 3,
+            "text": "Alternativa 2",
+            "correct": true
+        }
+    ]
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such class*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Invalid question*, *Question already exists*
+
+
+#### GET      /api/classes/{class_id}/categories
+### Response
+```json
+[
+  "Category1",
+  "Category2"
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such class*
+- **UNAUTHORIZED (401)** - *No permission*
 
 #### GET      /api/classes/{class_id}/groups
 ### Response

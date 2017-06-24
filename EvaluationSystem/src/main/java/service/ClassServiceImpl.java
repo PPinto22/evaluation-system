@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityExistsException;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class ClassServiceImpl implements ClassService{
@@ -78,6 +81,21 @@ public class ClassServiceImpl implements ClassService{
         cl._groups.add(group);
         group.set_class(cl);
         return this.groupService.addGroup(group);
+    }
+
+
+    @Override
+    public List<Question> getClassQuestions(Class cl) throws PersistentException {
+        return questionDAO.listQuestionsByClass(cl.getID());
+    }
+
+    @Override
+    public Set<String> getClassCategories(Class cl) throws PersistentException {
+        List<Question> questions = this.getClassQuestions(cl);
+        Set<String> categories = new TreeSet<>();
+        for(Question question: questions)
+            categories.add(question.getCategory());
+        return categories;
     }
 
     @Override
