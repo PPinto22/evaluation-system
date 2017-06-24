@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-default',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DefaultComponent implements OnInit {
 
-  constructor() { }
+  constructor( private authentication: AuthenticationService ) { }
 
   ngOnInit() {
 
@@ -22,5 +23,7 @@ export class DefaultComponent implements OnInit {
     // TODO fazer um novo pedido por novas notificações
   }
 
-
+  private isTeacher(): boolean {
+    return this.authentication.isTeacher();
+  }
 }

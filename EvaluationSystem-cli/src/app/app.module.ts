@@ -12,8 +12,9 @@ import { HomeComponent } from './components/home/home.component';
 import {LoginGuardService} from './services/login-guard.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import {HttpUtilService} from './services/http-util.service';
-import { TeacherComponent } from './components/dashboard/teacher/teacher.component';
 import { DefaultComponent } from './components/dashboard/default/default.component';
+import { ListClassComponent } from './components/dashboard/default/list-class/list-class.component';
+import { ListExameComponent } from './components/dashboard/default/list-exame/list-exame.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +23,9 @@ import { DefaultComponent } from './components/dashboard/default/default.compone
     RegisterComponent,
     HomeComponent,
     DashboardComponent,
-    TeacherComponent,
-    DefaultComponent
+    DefaultComponent,
+    ListClassComponent,
+    ListExameComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,39 @@
+<!-- START RESPONSIVE TABLES -->
+  <div class="panel panel-default">
+
+    <div class="panel-heading">
+      <h3 class="panel-title">Groups</h3>
+    </div>
+
+    <div class="panel-body panel-body-table">
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-actions">
+          <thead>
+          <tr>
+            <th class="text-center" width="200">Abbreviation</th>
+            <th class="text-center">Name</th>
+            <th class="text-center" width="200">Group</th>
+            <th class="text-center" width="110">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
+          <tr id="trow_1">
+            <td class="text-center"><strong>AA</strong></td>
+            <td class="text-center"><strong>Arquiteturas Aplicacionais</strong></td>
+            <td class="text-center"><strong>Grupo 2016/2017</strong></td>
+            <td>
+              <button class="btn btn-default btn-rounded btn-sm" (click)="editGroup('trow_1');"><span class="fa fa-pencil"></span></button>
+              <button class="btn btn-danger btn-rounded btn-sm" (click)="deleteGroup('trow_1');"><span class="fa fa-times"></span></button>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+<!-- END RESPONSIVE TABLES -->
