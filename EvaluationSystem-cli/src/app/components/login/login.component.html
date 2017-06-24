@@ -3,26 +3,34 @@
   <div class="login-box animated fadeInDown">
     <div class="login-body">
       <div class="login-title"><strong>Welcome</strong>, Please login</div>
+      <div *ngIf="invalidEmail" class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>Invalid Email!</strong> Please use a valid email address.
+      </div>
+      <div *ngIf="emailOrPasswordWrong" class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>Wrong Email or Password!</strong>
+      </div>
       <form class="form-horizontal" (ngSubmit)="onSubmit()" #f_login="ngForm" novalidate>
         <div class="form-group">
           <div class="col-md-12">
             <input type="text" name="email" class="form-control" [(ngModel)]="user.email" placeholder="Email" #email="ngModel" required/>
-            <div *ngIf="!email.valid" class="help-block">Email is required</div>
+            <div *ngIf="f_login.submitted && !email.valid" class="help-block">Email is required</div>
             <!--<div *ngIf="" class="alert alert-danger">{{ }}</div>-->
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-12">
             <input type="password" name="password" class="form-control" [(ngModel)]="user.password" placeholder="Password" #password="ngModel" required/>
-            <div *ngIf="!password.valid" class="help-block">Password is required</div>
+            <div *ngIf="f_login.submitted && !password.valid" class="help-block">Password is required</div>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-6">
-            <button [routerLink]="['/']" class="btn btn-danger btn-block">Cancel</button>
+            <button type="button" [routerLink]="['/']" class="btn btn-danger btn-block">Cancel</button>
           </div>
           <div class="col-md-6">
-            <button type="submit" [disabled]="!f_login.form.valid" class="btn btn-info btn-block">Log In</button>
+            <button type="submit" [disabled]="loading" class="btn btn-info btn-block">Log In</button>
           </div>
         </div>
       </form>
