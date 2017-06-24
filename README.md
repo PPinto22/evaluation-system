@@ -77,7 +77,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [~~DELETE /api/groups/{group_id}~~](#delete-apigroupsgroup_id)
 - [GET /api/groups/{group_id}/students](#get-apigroupsgroup_idstudents)
 - [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents)
-- [DELETE /api/groups/{group_id}/students/{student_id}](#delete-apigroupsgroupidstudentsstudent_id)
+- [DELETE /api/groups/{group_id}/students/{student_id}](#delete-apigroupsgroup_idstudentsstudent_id)
 - [~~GET /api/groups/{group_id}/exams?upcoming,history~~](#get-apigroupsgroup_idexamsupcominghistory)
 - [~~POST /api/groups/{group_id}/exams~~](#post-apigroupsgroup_idexams)
 - [~~POST /api/groups/{group_id}/exams/generate~~](#post-apigroupsgroup_idexamsgenerate)
@@ -350,7 +350,7 @@ ___
 #### ~~DELETE /api/questions/{question_id}~~
 ___
 
-#### GET    /api/groups/{group_id}
+#### GET /api/groups/{group_id}
 ### Response
 ```json
 {
@@ -474,7 +474,7 @@ ___
 #### ~~DELETE /api/submissions/{submission_id}~~
 
 ___
-#### GET      /api/users/{user_id}
+#### GET /api/users/{user_id}
 ### Response
 ```json
 {
