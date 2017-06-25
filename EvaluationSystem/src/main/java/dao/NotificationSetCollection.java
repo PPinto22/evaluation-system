@@ -11,8 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import dao.ClassesPersistentManager;
-import model.Notification;
+import model.persistent.Notification;
 import org.orm.*;
 
 public class NotificationSetCollection extends org.orm.util.ORMSet {

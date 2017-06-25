@@ -1,11 +1,9 @@
 package controller;
 
 import exception.InvalidClaimsException;
-import exception.InvalidUserTypeException;
 import exception.NonExistentEntityException;
 import io.jsonwebtoken.Claims;
-import model.*;
-import model.Class;
+import model.persistent.*;
 import org.orm.PersistentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,46 +73,6 @@ public class UserController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
-        }
-    }
-
-
-    // FIXME - Testes...
-    @RequestMapping(value = "/students", method = RequestMethod.GET)
-    public ResponseEntity<List<StudentGroupsWrapper>> getStudents(HttpServletRequest request){
-        // Exemplo de como retirar o user a partir do token
-        try {
-            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
-            System.out.println(user.toString());
-        } catch (InvalidClaimsException e) {
-            e.printStackTrace();
-        } catch (PersistentException e) {
-            e.printStackTrace();
-        }
-
-        List<StudentGroupsWrapper> views = new ArrayList<>();
-        try{
-            Student[] students = userService.getStudents();
-            for(Student student: students){
-                views.add(new StudentGroupsWrapper(student));
-            }
-            return new ResponseEntity<>(views, HttpStatus.OK);
-        }catch (PersistentException e){
-            return new ResponseEntity<>(views, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @RequestMapping(value = "/teachers", method = RequestMethod.GET)
-    public ResponseEntity<List<TeacherClassesWrapper>> getTeachers(){
-        List<TeacherClassesWrapper> views = new ArrayList<>();
-        try {
-            Teacher[] teachers = userService.getTeachers();
-            for (Teacher teacher : teachers) {
-                views.add(new TeacherClassesWrapper(teacher));
-            }
-            return new ResponseEntity<>(views, HttpStatus.OK);
-        }catch (PersistentException e){
-            return new ResponseEntity<>(views, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

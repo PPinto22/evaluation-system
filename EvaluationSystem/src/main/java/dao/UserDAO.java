@@ -13,7 +13,7 @@ package dao; /**
  */
 import exception.InvalidUserException;
 import exception.UnconfirmedRegistrationException;
-import model.User;
+import model.persistent.User;
 import org.orm.*;
 import org.hibernate.LockMode;
 

@@ -47,58 +47,59 @@ Após fazer login e receber o **token**, deve ser enviado no cabeçalho HTTP:
 O servidor pode responder a qualquer pedido (excepto de autenticação) com um código HTTP **UNAUTHORIZED (401)**, caso o **token** seja inválido ou tenha expirado.
 ```json
 {
- "message": "Invalid token"
+  "message": "Invalid token"
 }
 ```
 ```json
 {
- "message": "Token expired"
+  "message": "Token expired"
 }
 ```
+
 
 ### API
 
 - [POST /auth/login](#post-authlogin)
 - [POST /auth/signup](#post-authsignup)
-- [GET /api/classes/{id}](#get-apiclassesid)
-- [~~PUT /api/classes/{id}~~](#put-apiclassesid)
-- [~~DELETE /api/classes/{id}~~](#delete-apiclassesid)
-- [GET /api/classes/{class_id}/questions](#get-apiclassesclassidquestions)
-- [POST /api/classes/{class_id}/questions](#post-apiclassesclassidquestions)
-- [GET /api/classes/{class_id}/categories](#get-apiclassesclassidcategories)
-- [GET /api/classes/{class_id}/groups](#get-apiclassesclassidgroups)
-- [POST /api/classes/{class_id}/groups](#post-apiclassesclassidgroups)
-- [~~GET /api/questions/{question_id}~~](#get-apiquestionsquestionid)
-- [~~PUT /api/questions/{question_id}~~](#put-apiquestionsquestionid)
-- [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestionid)
-- [GET /api/groups/{id}](#get-apigroupsid)
-- [~~PUT /api/groups/{id}~~](#put-apigroupsid)
-- [~~DELETE /api/groups/{id}~~](#delete-apigroupsid)
-- [GET /api/groups/{group_id}/students](#get-apigroupsgroupidstudents)
-- [POST /api/groups/{group_id}/students](#post-apigroupsgroupidstudents)
-- [DELETE /api/groups/{group_id}/students/{id}](#delete-apigroupsgroupidstudentsid)
-- [~~GET /api/groups/{group_id}/exams?upcoming,history~~](#get-apigroupsgroupidexamsupcominghistory)
-- [~~POST /api/groups/{group_id}/exams~~](#post-apigroupsgroupidexams)
-- [~~POST /api/groups/{group_id}/exams/generate~~](#post-apigroupsgroupidexamsgenerate)
-- [~~GET /api/groups/{group_id}/scores~~](#get-apigroupsgroupidscores)
-- [~~GET /api/exams/{id}~~](#get-apiexamsid)
-- [~~DELETE /api/exams/{id}~~](#delete-apiexamsid)
-- [~~PUT /api/exams/{id}~~](#put-apiexamsid)
-- [~~GET /api/exams/{exam_id}/scores~~](#get-apiexamsexamidscores)
-- [~~POST /api/exams/{exam_id}/submissions~~](#post-apiexamsexamidsubmissions)
-- [~~GET /api/submissions/{submission_id}~~](#get-apisubmissionssubmissionid)
-- [~~PUT /api/submissions/{submission_id}~~](#put-apisubmissionssubmissionid)
-- [~~DELETE /api/submissions/{submission_id}~~](#delete-apisubmissionssubmissionid)
-- [GET /api/users/{user_id}](#get-apiusersuserid)
-- [~~PUT /api/users/{user_id}~~](#put-apiusersuserid)
-- [~~DELETE /api/users/{user_id}~~](#delete-apiusersuserid)
-- [GET /api/users/{user_id}/notifications](#get-apiusersuseridnotifications)
-- [GET /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitationidaccept)
-- [GET /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitationiddecline)
-- [~~GET /api/students/{student_id}/scores~~](#get-apistudentsstudentidscores)
-- [~~GET /api/students/{student_id}/exams?upcoming,history~~](#get-apistudentsstudentidexamsupcominghistory)
-- [GET /api/teachers/{teacher_id}/classes](#get-apiteachersteacheridclasses)
-- [POST api/teachers/{teacher_id}/classes](#post-apiteachersteacheridclasses)
+- [GET /api/classes/{class_id}](#get-apiclassesclass_id)
+- [~~PUT /api/classes/{class_id}~~](#put-apiclassesclass_id)
+- [~~DELETE /api/classes/{class_id}~~](#delete-apiclassesclass_id)
+- [GET /api/classes/{class_id}/questions](#get-apiclassesclass_idquestions)
+- [POST /api/classes/{class_id}/questions](#post-apiclassesclass_idquestions)
+- [GET /api/classes/{class_id}/categories](#get-apiclassesclass_idcategories)
+- [GET /api/classes/{class_id}/groups](#get-apiclassesclass_idgroups)
+- [POST /api/classes/{class_id}/groups](#post-apiclassesclass_idgroups)
+- [~~GET /api/questions/{question_id}~~](#get-apiquestionsquestion_id)
+- [~~PUT /api/questions/{question_id}~~](#put-apiquestionsquestion_id)
+- [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestion_id)
+- [GET /api/groups/{group_id}](#get-apigroupsgroup_id)
+- [~~PUT /api/groups/{group_id}~~](#put-apigroupsgroup_id)
+- [~~DELETE /api/groups/{group_id}~~](#delete-apigroupsgroup_id)
+- [GET /api/groups/{group_id}/students](#get-apigroupsgroup_idstudents)
+- [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents)
+- [DELETE /api/groups/{group_id}/students/{student_id}](#delete-apigroupsgroup_idstudentsstudent_id)
+- [~~GET /api/groups/{group_id}/exams?upcoming,history~~](#get-apigroupsgroup_idexamsupcominghistory)
+- [~~POST /api/groups/{group_id}/exams~~](#post-apigroupsgroup_idexams)
+- [~~POST /api/groups/{group_id}/exams/generate~~](#post-apigroupsgroup_idexamsgenerate)
+- [~~GET /api/groups/{group_id}/scores~~](#get-apigroupsgroup_idscores)
+- [~~GET /api/exams/{exam_id}~~](#get-apiexamsexam_id)
+- [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
+- [~~PUT /api/exams/{exam_id}~~](#put-apiexamsexam_id)
+- [~~GET /api/exams/{exam_id}/scores~~](#get-apiexamsexam_idscores)
+- [~~POST /api/exams/{exam_id}/submission~~](#post-apiexamsexam_idsubmissions)
+- [~~GET /api/submissions/{submission_id}~~](#get-apisubmissionssubmission_id)
+- [~~PUT /api/submissions/{submission_id}~~](#put-apisubmissionssubmission_id)
+- [~~DELETE /api/submissions/{submission_id}~~](#delete-apisubmissionssubmission_id)
+- [GET /api/users/{user_id}](#get-apiusersuser_id)
+- [~~PUT /api/users/{user_id}~~](#put-apiusersuser_id)
+- [~~DELETE /api/users/{user_id}~~](#delete-apiusersuser_id)
+- [GET /api/users/{user_id}/notifications](#get-apiusersuser_idnotifications)
+- [GET /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept)
+- [GET /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitation_iddecline)
+- [~~GET /api/students/{student_id}/scores~~](#get-apistudentsstudent_idscores)
+- [~~GET /api/students/{student_id}/exams?upcoming,history~~](#get-apistudentsstudent_idexamsupcominghistory)
+- [GET /api/teachers/{teacher_id}/classes](#get-apiteachersteacher_idclasses)
+- [POST api/teachers/{teacher_id}/classes](#post-apiteachersteacher_idclasses)
 
 #### POST /auth/login
 ##### Body
@@ -113,12 +114,12 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 {
  "token": "header.body.signature",
  "user":{
- "email": "email1@email.com",
- "firstName": "Foo",
- "lastName": "Bar",
- "type": "student | teacher",
- "active": true,
- "id": 1
+     "email": "email1@email.com",
+     "firstName": "Foo",
+     "lastName": "Bar",
+     "type": "student | teacher",
+     "active": true,
+     "id": 1
  }
 }
 ```
@@ -133,23 +134,23 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 ##### Body
 ```json
 {
- "email": "email1@email.com",
- "password": "password",
- "firstName": "Foo",
- "lastName": "Bar",
- "type": "student | teacher"
+  "email": "email1@email.com",
+  "password": "password",
+  "firstName": "Foo",
+  "lastName": "Bar",
+  "type": "student | teacher"
 }
 ```
 
 ##### Response
 ```json
 {
- "email": "email1@email.com",
- "firstName": "Foo",
- "lastName": "Bar",
- "type": "student | teacher",
- "active": true,
- "id": 1
+  "email": "email1@email.com",
+  "firstName": "Foo",
+  "lastName": "Bar",
+  "type": "student | teacher",
+  "active": true,
+  "id": 1
 }
 ```
 
@@ -159,21 +160,21 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - **NOT_ACCEPTABLE (406)** - *Missing information*, *Email already in use*, *Invalid user type*
 ___
 
-#### GET /api/classes/{id}
+#### GET /api/classes/{class_id}
 ### Response
 ```json
 {
- "id": 1,
- "abbreviation": "AA",
- "name": "Arquiteturas Aplicacionais",
- "teacher": {
- "email": "email1@email.com",
- "firstName": "Foo",
- "lastName": "Bar",
- "type": "student | teacher",
- "active": true,
- "id": 1
- }
+  "id": 1,
+  "abbreviation": "AA",
+  "name": "Arquiteturas Aplicacionais",
+  "teacher": {
+      "email": "email1@email.com",
+      "firstName": "Foo",
+      "lastName": "Bar",
+      "type": "student | teacher",
+      "active": true,
+      "id": 1
+  }
 }
 ```
 ### HttpStatus
@@ -181,36 +182,36 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
 
-#### ~~PUT /api/classes/{id}~~
-#### ~~DELETE /api/classes/{id}~~
+#### ~~PUT /api/classes/{class_id}~~
+#### ~~DELETE /api/classes/{class_id}~~
 
 #### GET /api/classes/{class_id}/questions
 ### Response
 ```json
 [
- {
- "id": 1,
- "text": "Enunciado pergunta 1",
- "category": "Category 1",
- "difficulty": 1,
- "answers": [
- {
- "id": 1,
- "text": "Alternativa 3",
- "correct": false
- },
- {
- "id": 2,
- "text": "Alternativa 1",
- "correct": false
- },
- {
- "id": 3,
- "text": "Alternativa 2",
- "correct": true
- }
- ]
- }
+  {
+    "id": 1,
+    "text": "Enunciado pergunta 1",
+    "category": "Category 1",
+    "difficulty": 1,
+    "answers": [
+      {
+        "id": 1,
+        "text": "Alternativa 3",
+        "correct": false
+      },
+      {
+        "id": 2,
+        "text": "Alternativa 1",
+        "correct": false
+      },
+      {
+        "id": 3,
+        "text": "Alternativa 2",
+        "correct": true
+      }
+    ]
+  }
 ]
 ```
 ### HttpStatus
@@ -245,27 +246,27 @@ ___
 ### Response
 ```json
 {
- "id": 1,
- "text": "Enunciado pergunta 1",
- "category": "Category 1",
- "difficulty": 1,
- "answers": [
- {
- "id": 1,
- "text": "Alternativa 3",
- "correct": false
- },
- {
- "id": 2,
- "text": "Alternativa 1",
- "correct": false
- },
- {
- "id": 3,
- "text": "Alternativa 2",
- "correct": true
- }
- ]
+    "id": 1,
+    "text": "Enunciado pergunta 1",
+    "category": "Category 1",
+    "difficulty": 1,
+    "answers": [
+        {
+            "id": 1,
+            "text": "Alternativa 3",
+            "correct": false
+        },
+        {
+            "id": 2,
+            "text": "Alternativa 1",
+            "correct": false
+        },
+        {
+            "id": 3,
+            "text": "Alternativa 2",
+            "correct": true
+        }
+    ]
 }
 ```
 ### HttpStatus
@@ -280,8 +281,8 @@ ___
 ### Response
 ```json
 [
- "Category1",
- "Category2"
+  "Category1",
+  "Category2"
 ]
 ```
 ### HttpStatus
@@ -294,14 +295,14 @@ ___
 ### Response
 ```json
 [
- {
- "name": "class1",
- "id": 1
- },
- {
- "name": "class2",
- "id": 2
- }
+  {
+    "name": "class1",
+    "id": 1
+  },
+  {
+    "name": "class2",
+    "id": 2
+  }
 ]
 ```
 ### HttpStatus
@@ -313,27 +314,27 @@ ___
 ### Body
 ```json
 {
- "name": "Turma 16/17"
+  "name": "Turma 16/17"
 }
 ```
 ### Response
 ```json
 {
- "name": "Turma 16/17",
- "_class": {
- "name": "Arquiteturas Aplicacionais",
- "abbreviation": "AA",
- "teacher": {
- "email": "teacher@teacher",
- "firstName": "John",
- "lastName": "Doe",
- "type": "teacher",
- "active": true,
- "id": 1
- },
- "id": 1
- },
- "id": 1
+    "name": "Turma 16/17",
+    "_class": {
+        "name": "Arquiteturas Aplicacionais",
+        "abbreviation": "AA",
+        "teacher": {
+            "email": "teacher@teacher",
+            "firstName": "John",
+            "lastName": "Doe",
+            "type": "teacher",
+            "active": true,
+            "id": 1
+        },
+        "id": 1
+    },
+    "id": 1
 }
 ```
 ### HttpStatus
@@ -349,25 +350,25 @@ ___
 #### ~~DELETE /api/questions/{question_id}~~
 ___
 
-#### GET /api/groups/{id}
+#### GET /api/groups/{group_id}
 ### Response
 ```json
 {
- "name": "Name2",
- "_class": {
- "name": "Name1",
- "abbreviation": "Abbreviation1",
- "teacher": {
- "email": "email2",
- "firstName": "firstName2",
- "lastName": "lastName2",
- "type": "teacher",
- "active": true,
- "id": 2
- },
- "id": 1
- },
- "id": 2
+    "name": "Name2",
+    "_class": {
+        "name": "Name1",
+        "abbreviation": "Abbreviation1",
+        "teacher": {
+            "email": "email2",
+            "firstName": "firstName2",
+            "lastName": "lastName2",
+            "type": "teacher",
+            "active": true,
+            "id": 2
+        },
+        "id": 1
+    },
+    "id": 2
 }
 ```
 
@@ -376,35 +377,35 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such group*
 
-#### ~~PUT /api/groups/{id}~~
-#### ~~DELETE /api/groups/{id}~~
+#### ~~PUT /api/groups/{group_id}~~
+#### ~~DELETE /api/groups/{group_id}~~
 
 #### GET /api/groups/{group_id}/students
 ### Response
 ```json
 [
- {
- "accepted": false,
- "user": {
- "email": "email999",
- "firstName": "ND",
- "lastName": "ND",
- "type": "student",
- "active": false,
- "id": 21
- }
- },
- {
- "accepted": false,
- "user": {
- "email": "email1",
- "firstName": "firstName1",
- "lastName": "lastName1",
- "type": "student",
- "active": true,
- "id": 1
- }
- }
+  {
+    "accepted": false,
+    "user": {
+      "email": "email999",
+      "firstName": "ND",
+      "lastName": "ND",
+      "type": "student",
+      "active": false,
+      "id": 21
+    }
+  },
+  {
+    "accepted": false,
+    "user": {
+      "email": "email1",
+      "firstName": "firstName1",
+      "lastName": "lastName1",
+      "type": "student",
+      "active": true,
+      "id": 1
+    }
+  }
 ]
 ```
 ### HttpStatus
@@ -416,28 +417,28 @@ ___
 ### Body
 ```json
 [
- "email1@email.com",
- "email2@email.com"
+  "email1@email.com",
+  "email2@email.com"
 ]
 ```
 ### Response
 ```json
 [
- {
- "email": "email1@email.com",
- "user": {
- "email": "email1@email.com",
- "firstName": "John",
- "lastName": "Doe",
- "type": "student",
- "active": true,
- "id": 1
- }
- }
- {
- "email": "email2@email.com",
- "message": "User is a teacher | Student has already been added to the group"
- }
+  {
+    "email": "email1@email.com",
+    "user": {
+      "email": "email1@email.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "type": "student",
+      "active": true,
+      "id": 1
+    }
+  }
+  {
+    "email": "email2@email.com",
+    "message": "User is a teacher | Student has already been added to the group"
+  }
 ]
 ```
 > Nota: Os utilizadores, mesmo que não existam, são adicionados. Nestes casos, a variável "active" toma o valor falso.
@@ -448,7 +449,7 @@ ___
 - **UNAUTHORIZED (401)**
 - **NOT FOUND (404)**
 
-#### DELETE /api/groups/{group_id}/students/{id}
+#### DELETE /api/groups/{group_id}/students/{student_id}
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
@@ -461,9 +462,9 @@ ___
 #### ~~GET /api/groups/{group_id}/scores~~
 ___
 
-#### ~~GET /api/exams/{id}~~
-#### ~~DELETE /api/exams/{id}~~
-#### ~~PUT /api/exams/{id}~~
+#### ~~GET /api/exams/{exam_id}~~
+#### ~~DELETE /api/exams/{exam_id}~~
+#### ~~PUT /api/exams/{exam_id}~~
 #### ~~GET /api/exams/{exam_id}/scores~~
 #### ~~POST /api/exams/{exam_id}/submissions~~
 ___
@@ -477,12 +478,12 @@ ___
 ### Response
 ```json
 {
- "email": "email1@email.com",
- "firstName": "Foo",
- "lastName": "Bar",
- "type": "student | teacher",
- "active": true,
- "id": 1
+  "email": "email1@email.com",
+  "firstName": "Foo",
+  "lastName": "Bar",
+  "type": "student | teacher",
+  "active": true,
+  "id": 1
 }
 ```
 
@@ -497,27 +498,27 @@ ___
 ### Response
 ```json
 [
- {
- "type": "Group invitation",
- "group": {
- "name": "Name1",
- "_class": {
- "name": "Name1",
- "abbreviation": "Abbreviation1",
- "teacher": {
- "email": "email16",
- "firstName": "firstName16",
- "lastName": "lastName16",
- "type": "Teacher",
- "active": true,
- "id": 16
- },
- "id": 1
- },
- "id": 1
- },
- "id": 0
- }
+  {
+    "type": "Group invitation",
+    "group": {
+      "name": "Name1",
+      "_class": {
+        "name": "Name1",
+        "abbreviation": "Abbreviation1",
+        "teacher": {
+          "email": "email16",
+          "firstName": "firstName16",
+          "lastName": "lastName16",
+          "type": "Teacher",
+          "active": true,
+          "id": 16
+        },
+        "id": 1
+      },
+      "id": 1
+    },
+    "id": 0
+  }
 ]
 ```
 
@@ -534,12 +535,12 @@ ___
 "name": "Name1",
 "abbreviation": "Abbreviation1",
 "teacher": {
- "email": "email16",
- "firstName": "firstName16",
- "lastName": "lastName16",
- "type": "Teacher",
- "active": true,
- "id": 16
+    "email": "email16",
+    "firstName": "firstName16",
+    "lastName": "lastName16",
+    "type": "Teacher",
+    "active": true,
+    "id": 16
 },
 "id": 1
 ```
@@ -565,11 +566,11 @@ ___
 ### Response
 ```json
 [
- {
- "name": "class1",
- "abbreviation": "cl1",
- "id": 1
- }
+  {
+   "name": "class1",
+   "abbreviation": "cl1",
+   "id": 1
+  }
 ]
 ```
 ### HttpStatus

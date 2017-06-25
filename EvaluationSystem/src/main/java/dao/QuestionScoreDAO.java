@@ -11,11 +11,13 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.QuestionScore;
+import model.persistent.QuestionScore;
 import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface QuestionScoreDAO {
+	boolean exists(int questionID, int examID) throws PersistentException;
+
 	public QuestionScore loadQuestionScoreByORMID(int ID) throws PersistentException;
 	public QuestionScore getQuestionScoreByORMID(int ID) throws PersistentException;
 	public QuestionScore loadQuestionScoreByORMID(int ID, LockMode lockMode) throws PersistentException;
@@ -43,6 +45,8 @@ public interface QuestionScoreDAO {
 	public QuestionScore createQuestionScore();
 	public boolean save(QuestionScore questionScore) throws PersistentException;
 	public boolean delete(QuestionScore questionScore) throws PersistentException;
+	public boolean deleteAndDissociate(QuestionScore questionScore) throws PersistentException;
+	public boolean deleteAndDissociate(QuestionScore questionScore, PersistentSession session) throws PersistentException;
 	public boolean refresh(QuestionScore questionScore) throws PersistentException;
 	public boolean evict(QuestionScore questionScore) throws PersistentException;
 	public QuestionScore loadQuestionScoreByCriteria(QuestionScoreCriteria questionScoreCriteria);

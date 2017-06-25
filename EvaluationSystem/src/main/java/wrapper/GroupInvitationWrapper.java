@@ -1,6 +1,6 @@
 package wrapper;
 
-import model.GroupInvitation;
+import model.persistent.GroupInvitation;
 
 public class GroupInvitationWrapper implements NotificationWrapper {
 

@@ -1,4 +1,4 @@
-package model; /**
+package model.persistent; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -7,28 +7,31 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
-import dao.AnswerSetCollection;
-import dao.ORMConstants;
+import dao.ExamSetCollection;
+import dao.GroupStudentSetCollection;
 
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-public class Question {
+public class Group {
 
-	public Question() {
+	public Group() {
 	}
 	
 	private java.util.Set this_getSet (int key) {
-		if (key == ORMConstants.KEY_QUESTION__ANSWERS) {
-			return ORM__answers;
+		if (key == ORMConstants.KEY_GROUP__STUDENTS) {
+			return ORM__students;
+		}
+		else if (key == ORMConstants.KEY_GROUP__EXAMS) {
+			return ORM__exams;
 		}
 		
 		return null;
 	}
 	
 	private void this_setOwner(Object owner, int key) {
-		if (key == ORMConstants.KEY_QUESTION__CLASS) {
+		if (key == ORMConstants.KEY_GROUP__CLASS) {
 			this._class = (Class) owner;
 		}
 	}
@@ -48,13 +51,11 @@ public class Question {
 	
 	private Class _class;
 	
-	private String text;
+	private String name;
 	
-	private String category;
+	private java.util.Set ORM__students = new java.util.HashSet();
 	
-	private int dificulty;
-	
-	private java.util.Set ORM__answers = new java.util.HashSet();
+	private java.util.Set ORM__exams = new java.util.HashSet();
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -68,36 +69,30 @@ public class Question {
 		return getID();
 	}
 	
-	public void setText(String value) {
-		this.text = value;
+	public void setName(String value) {
+		this.name = value;
 	}
 	
-	public String getText() {
-		return text;
+	public String getName() {
+		return name;
 	}
 	
-	public void setCategory(String value) {
-		this.category = value;
+	private void setORM__students(java.util.Set value) {
+		this.ORM__students = value;
 	}
 	
-	public String getCategory() {
-		return category;
+	private java.util.Set getORM__students() {
+		return ORM__students;
 	}
 	
-	public void setDificulty(int value) {
-		this.dificulty = value;
-	}
-	
-	public int getDificulty() {
-		return dificulty;
-	}
+	public final GroupStudentSetCollection _students = new GroupStudentSetCollection(this, _ormAdapter, ORMConstants.KEY_GROUP__STUDENTS, ORMConstants.KEY_GROUPSTUDENT__GROUP, ORMConstants.KEY_MUL_ONE_TO_MANY);
 	
 	public void set_class(Class value) {
 		if (_class != null) {
-			_class._question.remove(this);
+			_class._groups.remove(this);
 		}
 		if (value != null) {
-			value._question.add(this);
+			value._groups.add(this);
 		}
 	}
 	
@@ -116,16 +111,16 @@ public class Question {
 		return _class;
 	}
 	
-	private void setORM__answers(java.util.Set value) {
-		this.ORM__answers = value;
+	private void setORM__exams(java.util.Set value) {
+		this.ORM__exams = value;
 	}
 	
-	private java.util.Set getORM__answers() {
-		return ORM__answers;
+	private java.util.Set getORM__exams() {
+		return ORM__exams;
 	}
 	
-	public final AnswerSetCollection _answers = new AnswerSetCollection(this, _ormAdapter, ORMConstants.KEY_QUESTION__ANSWERS, ORMConstants.KEY_MUL_ONE_TO_MANY);
-	
+	public final ExamSetCollection _exams = new ExamSetCollection(this, _ormAdapter, ORMConstants.KEY_GROUP__EXAMS, ORMConstants.KEY_EXAM__GROUP, ORMConstants.KEY_MUL_ONE_TO_MANY);
+
 	public String toString() {
 		return String.valueOf(getID());
 	}

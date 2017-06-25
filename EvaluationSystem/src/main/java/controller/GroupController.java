@@ -1,12 +1,9 @@
 package controller;
 
-import exception.ExistentEntityException;
-import exception.InvalidClaimsException;
-import exception.InvalidUserTypeException;
-import exception.NonExistentEntityException;
+import exception.*;
 import io.jsonwebtoken.Claims;
-import model.Class;
-import model.*;
+import model.persistent.*;
+import model.persistent.Class;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import security.JwtService;
 import service.GroupService;
 import service.StudentService;
-import wrapper.ErrorWrapper;
-import wrapper.GroupClassWrapper;
-import wrapper.GroupStudentPOSTWrapper;
-import wrapper.GroupStudentWrapper;
+import wrapper.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -119,6 +113,46 @@ public class GroupController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
             else
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_STUDENT), NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/{groupID:[\\d]+}/exams/generate")
+    public ResponseEntity<Object> generateExam(@PathVariable int groupID,
+                                               @RequestBody Question[] questions,
+                                               HttpServletRequest request){
+        try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
+            Group group = groupService.getGroupByID(groupID);
+            Class cl = group.get_class();
+            if(user.getID() != cl.get_teacher().getID()){
+                // TODO
+            }
+
+            List<String> categories = new ArrayList<>();
+            List<Integer> difficulties = new ArrayList<>();
+            for(Question question: questions){
+                String category = question.getCategory();
+                int difficulty = question.getDificulty();
+                if(category == null || category.isEmpty() ||
+                        difficulty < 1 || difficulty > 3)
+                    return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION), NOT_ACCEPTABLE);
+                else{
+                    categories.add(category);
+                    difficulties.add(difficulty);
+                }
+            }
+            // TODO - generateExamQuestions; definir mensagem de erro quando numero de questoes nao e suficiente
+            List<Question> generatedQuestions = groupService.generateExamQuestions(group, categories, difficulties);
+            List<QuestionWrapper> questionWrappers = new ArrayList<>();
+            for(Question q: generatedQuestions)
+                questionWrappers.add(new QuestionWrapper(q));
+            return new ResponseEntity<Object>(questionWrappers, OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         }
     }
 }

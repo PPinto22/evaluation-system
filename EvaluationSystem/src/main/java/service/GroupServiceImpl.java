@@ -2,17 +2,17 @@ package service;
 
 import dao.GroupDAO;
 import dao.GroupStudentDAO;
-import dao.StudentDAO;
 import exception.ExistentEntityException;
 import exception.InvalidUserTypeException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
-import model.*;
-import model.Class;
+import model.persistent.*;
+import model.persistent.Class;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,7 +24,12 @@ public class GroupServiceImpl implements GroupService{
     UserService userService;
     StudentService studentService;
     NotificationService notificationService;
+    ClassService classService;
 
+    @Autowired
+    public void setClassService(ClassService classService) {
+        this.classService = classService;
+    }
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -41,6 +46,16 @@ public class GroupServiceImpl implements GroupService{
     public GroupServiceImpl(GroupDAO groupDAO, GroupStudentDAO groupStudentDAO) {
         this.groupDAO = groupDAO;
         this.groupStudentDAO = groupStudentDAO;
+    }
+
+    @Override
+    public boolean exists(int ID) throws PersistentException {
+        return this.groupDAO.exists(ID);
+    }
+
+    @Override
+    public boolean exists(Class cl, String name) throws PersistentException {
+        return this.groupDAO.exists(cl, name);
     }
 
     @Override
@@ -148,12 +163,27 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public boolean exists(int ID) throws PersistentException {
-        return this.groupDAO.exists(ID);
+    public boolean questionInExam(Group group, Question question) {
+//        for(Exam exam: group._exams.toArray()){
+//            if(exam._questions.contains(question))
+//                return true;
+//        }
+        return false; //TODO
     }
 
     @Override
-    public boolean exists(Class cl, String name) throws PersistentException {
-        return this.groupDAO.exists(cl, name);
+    public List<Question> listAvailableQuestions(Group group) throws PersistentException {
+//        List<Question> classQuestions = classService.listClassQuestions(group.get_class());
+//        List<Question> availableQuestions = new ArrayList<>();
+//        for(Question clq: classQuestions){
+//
+//        }
+        return null;
     }
+
+    @Override
+    public List<Question> generateExamQuestions(Group group, List<String> categories, List<Integer> difficulties) {
+        return null;
+    }
+
 }

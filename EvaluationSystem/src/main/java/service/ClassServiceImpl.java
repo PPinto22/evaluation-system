@@ -7,16 +7,14 @@ import exception.ExistentEntityException;
 import exception.InvalidQuestionException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
-import model.Class;
-import model.Group;
-import model.Question;
-import model.Teacher;
+import model.persistent.Class;
+import model.persistent.Group;
+import model.persistent.Question;
+import model.persistent.Teacher;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityExistsException;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -85,13 +83,13 @@ public class ClassServiceImpl implements ClassService{
 
 
     @Override
-    public List<Question> getClassQuestions(Class cl) throws PersistentException {
+    public List<Question> listClassQuestions(Class cl) throws PersistentException {
         return questionDAO.listQuestionsByClass(cl.getID());
     }
 
     @Override
     public Set<String> getClassCategories(Class cl) throws PersistentException {
-        List<Question> questions = this.getClassQuestions(cl);
+        List<Question> questions = this.listClassQuestions(cl);
         Set<String> categories = new TreeSet<>();
         for(Question question: questions)
             categories.add(question.getCategory());

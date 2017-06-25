@@ -1,7 +1,7 @@
 package controller;
 
 import exception.*;
-import model.User;
+import model.persistent.User;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;

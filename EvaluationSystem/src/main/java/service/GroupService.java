@@ -3,10 +3,8 @@ package service;
 import exception.ExistentEntityException;
 import exception.InvalidUserTypeException;
 import exception.NonExistentEntityException;
-import model.Group;
-import model.Class;
-import model.GroupStudent;
-import model.Student;
+import model.persistent.*;
+import model.persistent.Class;
 import org.orm.PersistentException;
 
 import java.util.List;
@@ -23,4 +21,8 @@ public interface GroupService {
     List<GroupStudent> getGroupStudents(Group group);
     GroupStudent addStudentToGroupByEmail(Group group, String email) throws PersistentException, InvalidUserTypeException, ExistentEntityException;
     void removeStudentFromGroup(Group group, Student student) throws PersistentException, NonExistentEntityException;
+
+    boolean questionInExam(Group group, Question question);
+    List<Question> listAvailableQuestions(Group group) throws PersistentException;
+    List<Question> generateExamQuestions(Group group, List<String> categories, List<Integer> difficulties);
 }

@@ -1,4 +1,4 @@
-package model; /**
+package model.persistent; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -7,20 +7,21 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
-import dao.ORMConstants;
-
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-public class Notification {
-
-	public Notification() {
+public class QuestionScore {
+	public QuestionScore() {
 	}
 	
 	private void this_setOwner(Object owner, int key) {
-		if (key == ORMConstants.KEY_NOTIFICATION__USER) {
-			this._user = (User) owner;
+		if (key == ORMConstants.KEY_QUESTIONSCORE__EXAM) {
+			this._exam = (Exam) owner;
+		}
+		
+		else if (key == ORMConstants.KEY_QUESTIONSCORE__QUESTION) {
+			this._question = (Question) owner;
 		}
 	}
 	
@@ -33,7 +34,11 @@ public class Notification {
 	
 	private int ID;
 	
-	private User _user;
+	private Question _question;
+	
+	private Exam _exam;
+	
+	private float score;
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -47,28 +52,44 @@ public class Notification {
 		return getID();
 	}
 	
-	public void set_user(User value) {
-		if (_user != null) {
-			_user._notifications.remove(this);
+	public void setScore(float value) {
+		this.score = value;
+	}
+	
+	public float getScore() {
+		return score;
+	}
+	
+	public void set_exam(Exam value) {
+		if (_exam != null) {
+			_exam._questions.remove(this);
 		}
 		if (value != null) {
-			value._notifications.add(this);
+			value._questions.add(this);
 		}
 	}
 	
-	public User get_user() {
-		return _user;
+	public Exam get_exam() {
+		return _exam;
 	}
 	
 	/**
 	 * This method is for internal use only.
 	 */
-	public void setORM__user(User value) {
-		this._user = value;
+	public void setORM__exam(Exam value) {
+		this._exam = value;
 	}
 	
-	private User getORM__user() {
-		return _user;
+	private Exam getORM__exam() {
+		return _exam;
+	}
+	
+	public void set_question(Question value) {
+		this._question = value;
+	}
+	
+	public Question get_question() {
+		return _question;
 	}
 	
 	public String toString() {

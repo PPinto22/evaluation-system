@@ -2,8 +2,8 @@ import dao.ExamDAO;
 import dao.ExamDAOImpl;
 import dao.GroupDAO;
 import dao.GroupDAOImpl;
-import model.Exam;
-import model.Group;
+import model.persistent.Exam;
+import model.persistent.Group;
 import org.orm.PersistentException;
 
 import java.sql.Time;

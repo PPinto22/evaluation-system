@@ -2,10 +2,10 @@ package service;
 
 import exception.NonExistentEntityException;
 import exception.UnconfirmedRegistrationException;
-import model.Group;
-import model.GroupInvitation;
-import model.Notification;
-import model.Student;
+import model.persistent.Group;
+import model.persistent.GroupInvitation;
+import model.persistent.Notification;
+import model.persistent.Student;
 import org.orm.PersistentException;
 
 public interface NotificationService {

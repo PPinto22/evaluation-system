@@ -1,11 +1,7 @@
-import dao.ClassDAO;
-import dao.UserDAO;
 import exception.ExistentEntityException;
-import exception.InvalidUserTypeException;
-import exception.MissingInformationException;
 import exception.NonExistentEntityException;
-import model.Class;
-import model.Teacher;
+import model.persistent.Class;
+import model.persistent.Teacher;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

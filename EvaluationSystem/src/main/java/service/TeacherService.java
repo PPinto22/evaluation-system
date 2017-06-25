@@ -1,11 +1,10 @@
 package service;
 
 import exception.ExistentEntityException;
-import exception.InvalidUserTypeException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
-import model.Teacher;
-import model.Class;
+import model.persistent.Teacher;
+import model.persistent.Class;
 import org.orm.PersistentException;
 
 import java.util.List;

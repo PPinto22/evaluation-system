@@ -5,8 +5,8 @@ import exception.InvalidClaimsException;
 import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
 import io.jsonwebtoken.Claims;
-import model.*;
-import model.Class;
+import model.persistent.*;
+import model.persistent.Class;
 import org.orm.PersistentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,7 +99,7 @@ public class ClassController {
             if(!user.equals(cl.get_teacher()))
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            List<Question> questions = classService.getClassQuestions(cl);
+            List<Question> questions = classService.listClassQuestions(cl);
             List<QuestionWrapper> questionWrappers = new ArrayList<>();
             for(Question question: questions)
                 questionWrappers.add(new QuestionWrapper(question));

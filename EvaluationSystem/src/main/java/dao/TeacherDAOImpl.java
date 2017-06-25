@@ -11,9 +11,9 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.Class;
-import model.Notification;
-import model.Teacher;
+import model.persistent.Class;
+import model.persistent.Notification;
+import model.persistent.Teacher;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -186,7 +186,7 @@ public class TeacherDAOImpl implements TeacherDAO {
 	}
 	
 	public List queryTeacher(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Teacher as model.Teacher");
+		StringBuffer sb = new StringBuffer("From model.persistent.Teacher as model.persistent.Teacher");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -202,14 +202,14 @@ public class TeacherDAOImpl implements TeacherDAO {
 	}
 	
 	public List queryTeacher(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Teacher as model.Teacher");
+		StringBuffer sb = new StringBuffer("From model.persistent.Teacher as model.persistent.Teacher");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Teacher", lockMode);
+			query.setLockMode("model.persistent.Teacher", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -301,7 +301,7 @@ public class TeacherDAOImpl implements TeacherDAO {
 	}
 	
 	public java.util.Iterator iterateTeacherByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Teacher as model.Teacher");
+		StringBuffer sb = new StringBuffer("From model.persistent.Teacher as model.persistent.Teacher");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -317,14 +317,14 @@ public class TeacherDAOImpl implements TeacherDAO {
 	}
 	
 	public java.util.Iterator iterateTeacherByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Teacher as model.Teacher");
+		StringBuffer sb = new StringBuffer("From model.persistent.Teacher as model.persistent.Teacher");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Teacher", lockMode);
+			query.setLockMode("model.persistent.Teacher", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -343,7 +343,7 @@ public class TeacherDAOImpl implements TeacherDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.Teacher teacher)", e);
+			_logger.error("save(model.persistent.Teacher teacher)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -354,7 +354,7 @@ public class TeacherDAOImpl implements TeacherDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.Teacher teacher)", e);
+			_logger.error("delete(model.persistent.Teacher teacher)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -406,7 +406,7 @@ public class TeacherDAOImpl implements TeacherDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.Teacher teacher)", e);
+			_logger.error("refresh(model.persistent.Teacher teacher)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -417,7 +417,7 @@ public class TeacherDAOImpl implements TeacherDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.Teacher teacher)", e);
+			_logger.error("evict(model.persistent.Teacher teacher)", e);
 			throw new PersistentException(e);
 		}
 	}

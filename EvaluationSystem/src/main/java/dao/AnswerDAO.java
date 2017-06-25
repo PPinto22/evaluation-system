@@ -11,7 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.Answer;
+import model.persistent.Answer;
 import org.orm.*;
 import org.hibernate.LockMode;
 

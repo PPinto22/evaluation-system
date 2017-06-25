@@ -1,6 +1,6 @@
 package wrapper;
 
-import model.Answer;
+import model.persistent.Answer;
 
 public class AnswerWrapper {
 

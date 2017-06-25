@@ -1,7 +1,7 @@
 package wrapper;
 
-import model.Class;
-import model.Group;
+import model.persistent.Class;
+import model.persistent.Group;
 
 import java.util.ArrayList;
 import java.util.List;

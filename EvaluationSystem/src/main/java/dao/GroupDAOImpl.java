@@ -11,10 +11,10 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.Exam;
-import model.Group;
-import model.GroupStudent;
-import model.Class;
+import model.persistent.Exam;
+import model.persistent.Group;
+import model.persistent.GroupStudent;
+import model.persistent.Class;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -176,7 +176,7 @@ public class GroupDAOImpl implements GroupDAO {
 	}
 	
 	public List queryGroup(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Group as model.Group");
+		StringBuffer sb = new StringBuffer("From model.persistent.Group as model.persistent.Group");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -192,14 +192,14 @@ public class GroupDAOImpl implements GroupDAO {
 	}
 	
 	public List queryGroup(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Group as model.Group");
+		StringBuffer sb = new StringBuffer("From model.persistent.Group as model.persistent.Group");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Group", lockMode);
+			query.setLockMode("model.persistent.Group", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -291,7 +291,7 @@ public class GroupDAOImpl implements GroupDAO {
 	}
 	
 	public java.util.Iterator iterateGroupByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Group as model.Group");
+		StringBuffer sb = new StringBuffer("From model.persistent.Group as model.persistent.Group");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -307,14 +307,14 @@ public class GroupDAOImpl implements GroupDAO {
 	}
 	
 	public java.util.Iterator iterateGroupByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Group as model.Group");
+		StringBuffer sb = new StringBuffer("From model.persistent.Group as model.persistent.Group");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Group", lockMode);
+			query.setLockMode("model.persistent.Group", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -333,7 +333,7 @@ public class GroupDAOImpl implements GroupDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.Group group)", e);
+			_logger.error("save(model.persistent.Group group)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -344,7 +344,7 @@ public class GroupDAOImpl implements GroupDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.Group group)", e);
+			_logger.error("delete(model.persistent.Group group)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -404,7 +404,7 @@ public class GroupDAOImpl implements GroupDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.Group group)", e);
+			_logger.error("refresh(model.persistent.Group group)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -415,7 +415,7 @@ public class GroupDAOImpl implements GroupDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.Group group)", e);
+			_logger.error("evict(model.persistent.Group group)", e);
 			throw new PersistentException(e);
 		}
 	}
