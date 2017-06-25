@@ -1,0 +1,26 @@
+.list-exames {
+  height: 250px;
+}
+
+.title-line {
+  overflow: hidden;
+  text-align: center;
+}
+.title-line:before,
+.title-line:after {
+  background-color: #000;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+.title-line:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+.title-line:after {
+  left: 0.5em;
+  margin-right: -50%;
+}
