@@ -45,7 +45,6 @@ export class ScheduleComponent implements OnInit {
 
 
   ngOnInit() {
-    this.changeCalendarView(this.myCalendar);
   }
 
 }
