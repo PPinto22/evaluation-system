@@ -16,6 +16,8 @@ import { DefaultComponent } from './components/dashboard/default/default.compone
 import { ListClassComponent } from './components/dashboard/default/list-class/list-class.component';
 import { ListExameComponent } from './components/dashboard/default/list-exame/list-exame.component';
 import { ClassComponent } from './components/dashboard/class/class.component';
+import { GroupsComponent } from './components/dashboard/class/groups/groups.component';
+import { ScheduleComponent } from './components/dashboard/schedule/schedule.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { ClassComponent } from './components/dashboard/class/class.component';
     DefaultComponent,
     ListClassComponent,
     ListExameComponent,
-    ClassComponent
+    ClassComponent,
+    GroupsComponent,
+    ScheduleComponent
   ],
   imports: [
     BrowserModule,

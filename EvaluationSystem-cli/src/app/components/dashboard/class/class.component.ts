@@ -4,7 +4,6 @@ import {AuthenticationService} from '../../../services/authentication.service';
 declare var $: any;
 declare var x_navigation: any;
 declare var page_content_onresize: any;
-declare var panels: any;
 
 
 @Component({
@@ -24,7 +23,6 @@ export class ClassComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     x_navigation();
     page_content_onresize();
-    panels();
   }
 
   public isTeacher(): boolean {

@@ -7,7 +7,7 @@ export class HttpUtilService {
 
   // private API_URL = 'http://127.0.0.1:8080';
   // private API_URL = 'http://localhost:8080';
-  private API_URL = 'http://192.168.1.71:8080';
+  private API_URL = 'http://localhost:8080';
 
 
   url(path: string) {
