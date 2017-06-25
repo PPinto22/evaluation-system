@@ -18,6 +18,7 @@ import { ListExameComponent } from './components/dashboard/default/list-exame/li
 import { ClassComponent } from './components/dashboard/class/class.component';
 import { GroupsComponent } from './components/dashboard/class/groups/groups.component';
 import { ScheduleComponent } from './components/dashboard/schedule/schedule.component';
+import {CalendarComponent} from "ap-angular2-fullcalendar";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ScheduleComponent } from './components/dashboard/schedule/schedule.comp
     ListExameComponent,
     ClassComponent,
     GroupsComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
