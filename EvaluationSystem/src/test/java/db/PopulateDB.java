@@ -1,11 +1,10 @@
 package db;
 
 import exception.ExistentEntityException;
-import exception.InvalidUserTypeException;
 import exception.MissingInformationException;
 import exception.UnconfirmedRegistrationException;
-import model.*;
-import model.Class;
+import model.persistent.*;
+import model.persistent.Class;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

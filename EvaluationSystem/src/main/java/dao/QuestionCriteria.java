@@ -11,10 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import dao.AnswerCriteria;
-import dao.ClassCriteria;
-import dao.ClassesPersistentManager;
-import model.Question;
+import model.persistent.Question;
 import org.hibernate.Criteria;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;

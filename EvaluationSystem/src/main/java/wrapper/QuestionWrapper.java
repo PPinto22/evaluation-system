@@ -1,8 +1,8 @@
 package wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.Answer;
-import model.Question;
+import model.persistent.Answer;
+import model.persistent.Question;
 
 import java.util.ArrayList;
 import java.util.List;

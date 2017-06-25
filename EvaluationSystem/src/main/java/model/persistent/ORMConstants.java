@@ -1,4 +1,4 @@
-package dao; /**
+package model.persistent; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -39,6 +39,8 @@ public interface ORMConstants extends org.orm.util.ORMBaseConstants {
 	final int KEY_GROUP__STUDENTS = -1339765481;
 	
 	final int KEY_NOTIFICATION__USER = 337555574;
+	
+	final int KEY_QUESTIONSCORE__EXAM = -159103701;
 	
 	final int KEY_QUESTIONSCORE__QUESTION = 712073970;
 	

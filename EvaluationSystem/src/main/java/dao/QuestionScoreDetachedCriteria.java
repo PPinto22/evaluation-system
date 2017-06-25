@@ -13,7 +13,7 @@ package dao; /**
  */
 import java.util.List;
 
-import model.QuestionScore;
+import model.persistent.QuestionScore;
 import org.hibernate.criterion.DetachedCriteria;
 import org.orm.PersistentSession;
 import org.orm.criteria.*;
@@ -22,6 +22,8 @@ public class QuestionScoreDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression ID;
 	public final IntegerExpression _questionId;
 	public final AssociationExpression _question;
+	public final IntegerExpression _examId;
+	public final AssociationExpression _exam;
 	public final FloatExpression score;
 	
 	public QuestionScoreDetachedCriteria() {
@@ -29,6 +31,8 @@ public class QuestionScoreDetachedCriteria extends AbstractORMDetachedCriteria {
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
 		_questionId = new IntegerExpression("_question.ID", this.getDetachedCriteria());
 		_question = new AssociationExpression("_question", this.getDetachedCriteria());
+		_examId = new IntegerExpression("_exam.ID", this.getDetachedCriteria());
+		_exam = new AssociationExpression("_exam", this.getDetachedCriteria());
 		score = new FloatExpression("score", this.getDetachedCriteria());
 	}
 	
@@ -37,11 +41,17 @@ public class QuestionScoreDetachedCriteria extends AbstractORMDetachedCriteria {
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
 		_questionId = new IntegerExpression("_question.ID", this.getDetachedCriteria());
 		_question = new AssociationExpression("_question", this.getDetachedCriteria());
+		_examId = new IntegerExpression("_exam.ID", this.getDetachedCriteria());
+		_exam = new AssociationExpression("_exam", this.getDetachedCriteria());
 		score = new FloatExpression("score", this.getDetachedCriteria());
 	}
 	
 	public QuestionDetachedCriteria create_questionCriteria() {
 		return new QuestionDetachedCriteria(createCriteria("_question"));
+	}
+	
+	public ExamDetachedCriteria create_examCriteria() {
+		return new ExamDetachedCriteria(createCriteria("_exam"));
 	}
 	
 	public QuestionScore uniqueQuestionScore(PersistentSession session) {

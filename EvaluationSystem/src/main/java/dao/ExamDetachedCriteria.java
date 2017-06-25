@@ -13,8 +13,7 @@ package dao; /**
  */
 import java.util.List;
 
-import dao.ExamCriteria;
-import model.Exam;
+import model.persistent.Exam;
 import org.hibernate.criterion.DetachedCriteria;
 import org.orm.PersistentSession;
 import org.orm.criteria.*;

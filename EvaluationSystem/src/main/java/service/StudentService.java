@@ -1,10 +1,9 @@
 package service;
 
 import exception.ExistentEntityException;
-import exception.InvalidUserTypeException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
-import model.Student;
+import model.persistent.Student;
 import org.orm.PersistentException;
 
 public interface StudentService {

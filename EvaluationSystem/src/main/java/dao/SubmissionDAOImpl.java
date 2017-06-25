@@ -11,8 +11,8 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.QuestionSubmission;
-import model.Submission;
+import model.persistent.QuestionSubmission;
+import model.persistent.Submission;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -152,7 +152,7 @@ public class SubmissionDAOImpl implements SubmissionDAO {
 	}
 	
 	public List querySubmission(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Submission as model.Submission");
+		StringBuffer sb = new StringBuffer("From model.persistent.Submission as model.persistent.Submission");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -168,14 +168,14 @@ public class SubmissionDAOImpl implements SubmissionDAO {
 	}
 	
 	public List querySubmission(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Submission as model.Submission");
+		StringBuffer sb = new StringBuffer("From model.persistent.Submission as model.persistent.Submission");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Submission", lockMode);
+			query.setLockMode("model.persistent.Submission", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -267,7 +267,7 @@ public class SubmissionDAOImpl implements SubmissionDAO {
 	}
 	
 	public java.util.Iterator iterateSubmissionByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Submission as model.Submission");
+		StringBuffer sb = new StringBuffer("From model.persistent.Submission as model.persistent.Submission");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -283,14 +283,14 @@ public class SubmissionDAOImpl implements SubmissionDAO {
 	}
 	
 	public java.util.Iterator iterateSubmissionByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Submission as model.Submission");
+		StringBuffer sb = new StringBuffer("From model.persistent.Submission as model.persistent.Submission");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Submission", lockMode);
+			query.setLockMode("model.persistent.Submission", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -309,7 +309,7 @@ public class SubmissionDAOImpl implements SubmissionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.Submission submission)", e);
+			_logger.error("save(model.persistent.Submission submission)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -320,7 +320,7 @@ public class SubmissionDAOImpl implements SubmissionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.Submission submission)", e);
+			_logger.error("delete(model.persistent.Submission submission)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -380,7 +380,7 @@ public class SubmissionDAOImpl implements SubmissionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.Submission submission)", e);
+			_logger.error("refresh(model.persistent.Submission submission)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -391,7 +391,7 @@ public class SubmissionDAOImpl implements SubmissionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.Submission submission)", e);
+			_logger.error("evict(model.persistent.Submission submission)", e);
 			throw new PersistentException(e);
 		}
 	}

@@ -11,9 +11,8 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.Exam;
+import model.persistent.Exam;
 import org.orm.*;
-import org.hibernate.LockMode;
 
 public interface ExamDAO {
 	public Exam loadExamByORMID(int ID) throws PersistentException;

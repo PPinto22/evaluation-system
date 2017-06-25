@@ -1,4 +1,4 @@
-package model; /**
+package model.persistent; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -7,7 +7,6 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
-import dao.ORMConstants;
 import dao.QuestionScoreSetCollection;
 import dao.SubmissionSetCollection;
 
@@ -28,17 +27,6 @@ public class Exam {
 		DateFormat df = new SimpleDateFormat("HH:mm");
 		return df.format(this.getDuration());
 	}
-
-	public float getAverageScore() {
-		//TODO: Implement Method
-		throw new UnsupportedOperationException();
-	}
-
-	public int getApprovalRate() {
-		//TODO: Implement Method
-		throw new UnsupportedOperationException();
-	}
-
 
 	public Exam() {
 	}

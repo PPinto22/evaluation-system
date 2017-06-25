@@ -11,16 +11,24 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.QuestionScore;
+import model.persistent.QuestionScore;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository
+@Service
 public class QuestionScoreDAOImpl implements QuestionScoreDAO {
+	@Override
+	public boolean exists(int questionID, int examID) throws PersistentException {
+		QuestionScoreCriteria criteria = new QuestionScoreCriteria();
+		criteria._questionId.eq(questionID);
+		criteria._examId.eq(examID);
+		return loadQuestionScoreByCriteria(criteria) != null;
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(QuestionScoreDAOImpl.class);
 	public QuestionScore loadQuestionScoreByORMID(int ID) throws PersistentException {
 		try {
@@ -151,7 +159,7 @@ public class QuestionScoreDAOImpl implements QuestionScoreDAO {
 	}
 	
 	public List queryQuestionScore(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.QuestionScore as model.QuestionScore");
+		StringBuffer sb = new StringBuffer("From QuestionScore as QuestionScore");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -167,14 +175,14 @@ public class QuestionScoreDAOImpl implements QuestionScoreDAO {
 	}
 	
 	public List queryQuestionScore(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.QuestionScore as model.QuestionScore");
+		StringBuffer sb = new StringBuffer("From QuestionScore as QuestionScore");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.QuestionScore", lockMode);
+			query.setLockMode("QuestionScore", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -266,7 +274,7 @@ public class QuestionScoreDAOImpl implements QuestionScoreDAO {
 	}
 	
 	public java.util.Iterator iterateQuestionScoreByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.QuestionScore as model.QuestionScore");
+		StringBuffer sb = new StringBuffer("From QuestionScore as QuestionScore");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -282,14 +290,14 @@ public class QuestionScoreDAOImpl implements QuestionScoreDAO {
 	}
 	
 	public java.util.Iterator iterateQuestionScoreByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.QuestionScore as model.QuestionScore");
+		StringBuffer sb = new StringBuffer("From QuestionScore as QuestionScore");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.QuestionScore", lockMode);
+			query.setLockMode("QuestionScore", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -308,7 +316,7 @@ public class QuestionScoreDAOImpl implements QuestionScoreDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.QuestionScore questionScore)", e);
+			_logger.error("save(QuestionScore questionScore)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -319,7 +327,40 @@ public class QuestionScoreDAOImpl implements QuestionScoreDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.QuestionScore questionScore)", e);
+			_logger.error("delete(QuestionScore questionScore)", e);
+			throw new PersistentException(e);
+		}
+	}
+	
+	public boolean deleteAndDissociate(QuestionScore questionScore)throws PersistentException {
+		try {
+			if (questionScore.get_exam() != null) {
+				questionScore.get_exam()._questions.remove(questionScore);
+			}
+			
+			return delete(questionScore);
+		}
+		catch(Exception e) {
+			_logger.error("deleteAndDissociate()", e);
+			throw new PersistentException(e);
+		}
+	}
+	
+	public boolean deleteAndDissociate(QuestionScore questionScore, PersistentSession session)throws PersistentException {
+		try {
+			if (questionScore.get_exam() != null) {
+				questionScore.get_exam()._questions.remove(questionScore);
+			}
+			
+			try {
+				session.delete(questionScore);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		catch(Exception e) {
+			_logger.error("deleteAndDissociate()", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -330,7 +371,7 @@ public class QuestionScoreDAOImpl implements QuestionScoreDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.QuestionScore questionScore)", e);
+			_logger.error("refresh(QuestionScore questionScore)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -341,7 +382,7 @@ public class QuestionScoreDAOImpl implements QuestionScoreDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.QuestionScore questionScore)", e);
+			_logger.error("evict(QuestionScore questionScore)", e);
 			throw new PersistentException(e);
 		}
 	}

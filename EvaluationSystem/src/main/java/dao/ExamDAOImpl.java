@@ -11,14 +11,15 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import dao.ExamDAO;
-import model.Exam;
-import model.Submission;
+import model.persistent.Exam;
+import model.persistent.Submission;
 import org.orm.*;
 import org.hibernate.Query;
-import org.hibernate.LockMode;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class ExamDAOImpl implements ExamDAO {
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(ExamDAOImpl.class);
 	public Exam loadExamByORMID(int ID) throws PersistentException {

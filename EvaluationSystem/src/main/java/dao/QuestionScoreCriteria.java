@@ -11,7 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.QuestionScore;
+import model.persistent.QuestionScore;
 import org.hibernate.Criteria;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;
@@ -21,6 +21,8 @@ public class QuestionScoreCriteria extends AbstractORMCriteria {
 	public final IntegerExpression ID;
 	public final IntegerExpression _questionId;
 	public final AssociationExpression _question;
+	public final IntegerExpression _examId;
+	public final AssociationExpression _exam;
 	public final FloatExpression score;
 	
 	public QuestionScoreCriteria(Criteria criteria) {
@@ -28,6 +30,8 @@ public class QuestionScoreCriteria extends AbstractORMCriteria {
 		ID = new IntegerExpression("ID", this);
 		_questionId = new IntegerExpression("_question.ID", this);
 		_question = new AssociationExpression("_question", this);
+		_examId = new IntegerExpression("_exam.ID", this);
+		_exam = new AssociationExpression("_exam", this);
 		score = new FloatExpression("score", this);
 	}
 	
@@ -41,6 +45,10 @@ public class QuestionScoreCriteria extends AbstractORMCriteria {
 	
 	public QuestionCriteria create_questionCriteria() {
 		return new QuestionCriteria(createCriteria("_question"));
+	}
+	
+	public ExamCriteria create_examCriteria() {
+		return new ExamCriteria(createCriteria("_exam"));
 	}
 	
 	public QuestionScore uniqueQuestionScore() {

@@ -11,8 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import dao.ClassesPersistentManager;
-import model.QuestionSubmission;
+import model.persistent.QuestionSubmission;
 import org.orm.*;
 
 public class QuestionSubmissionSetCollection extends org.orm.util.ORMSet {

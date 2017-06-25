@@ -11,8 +11,8 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.GroupInvitation;
-import model.Notification;
+import model.persistent.GroupInvitation;
+import model.persistent.Notification;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -157,7 +157,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 	}
 	
 	public List queryNotification(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Notification as model.Notification");
+		StringBuffer sb = new StringBuffer("From model.persistent.Notification as model.persistent.Notification");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -173,14 +173,14 @@ public class NotificationDAOImpl implements NotificationDAO {
 	}
 	
 	public List queryNotification(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Notification as model.Notification");
+		StringBuffer sb = new StringBuffer("From model.persistent.Notification as model.persistent.Notification");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Notification", lockMode);
+			query.setLockMode("model.persistent.Notification", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -272,7 +272,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 	}
 	
 	public java.util.Iterator iterateNotificationByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Notification as model.Notification");
+		StringBuffer sb = new StringBuffer("From model.persistent.Notification as model.persistent.Notification");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -288,14 +288,14 @@ public class NotificationDAOImpl implements NotificationDAO {
 	}
 	
 	public java.util.Iterator iterateNotificationByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Notification as model.Notification");
+		StringBuffer sb = new StringBuffer("From model.persistent.Notification as model.persistent.Notification");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Notification", lockMode);
+			query.setLockMode("model.persistent.Notification", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -314,7 +314,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.Notification notification)", e);
+			_logger.error("save(model.persistent.Notification notification)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -325,7 +325,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.Notification notification)", e);
+			_logger.error("delete(model.persistent.Notification notification)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -377,7 +377,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.Notification notification)", e);
+			_logger.error("refresh(model.persistent.Notification notification)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -388,7 +388,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.Notification notification)", e);
+			_logger.error("evict(model.persistent.Notification notification)", e);
 			throw new PersistentException(e);
 		}
 	}

@@ -1,11 +1,13 @@
 package controller;
 
 import exception.ExistentEntityException;
-import exception.InvalidUserTypeException;
+import exception.InvalidClaimsException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
-import model.Class;
-import model.Teacher;
+import io.jsonwebtoken.Claims;
+import model.persistent.Class;
+import model.persistent.Teacher;
+import model.persistent.User;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import service.TeacherService;
 import wrapper.ClassWrapper;
 import wrapper.ErrorWrapper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +43,16 @@ public class TeacherController {
         this.classService = classService;
     }
 
-    // TODO - verificar que emissor e' o professor
     @RequestMapping(value = "/{teacherID:[\\d]+}/classes", method = POST)
-    public ResponseEntity<Object> postClass(@PathVariable int teacherID, @RequestBody Class cl){
+    public ResponseEntity<Object> postClass(@PathVariable int teacherID,
+                                            @RequestBody Class cl,
+                                            HttpServletRequest request){
         try {
+            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
             Teacher teacher = teacherService.getTeacherByID(teacherID);
+            if(clientUser.getID() != teacher.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
             teacherService.addClassToTeacher(teacher, cl);
             return new ResponseEntity<Object>(new ClassWrapper(cl), OK);
         } catch (PersistentException e) {
@@ -55,6 +63,8 @@ public class TeacherController {
             return new ResponseEntity<Object>(new ErrorWrapper(MISSING_INFORMATION), NOT_ACCEPTABLE);
         } catch (ExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(CLASS_EXISTS), NOT_ACCEPTABLE);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         }
     }
 

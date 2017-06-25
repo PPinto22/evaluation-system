@@ -1,8 +1,8 @@
 package service;
 
 import exception.NonExistentEntityException;
-import model.Question;
-import model.Class;
+import model.persistent.Question;
+import model.persistent.Class;
 import org.orm.PersistentException;
 
 public interface QuestionService {

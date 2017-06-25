@@ -5,12 +5,14 @@ License Type: Academic
 -->
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="model.QuestionScore" table="QuestionScore" lazy="false">
+	<class name="model.persistent.QuestionScore" table="QuestionScore" lazy="false">
 		<id name="ID" column="ID" type="integer" unsaved-value="0">
 			<generator class="native">
 			</generator>
 		</id>
-		<many-to-one name="_question" cascade="lock" column="QuestionID" class="model.Question" not-null="true" lazy="proxy" access="field">
+		<many-to-one name="_question" cascade="lock" column="QuestionID" class="model.persistent.Question" not-null="true" lazy="proxy" access="field">
+		</many-to-one>
+		<many-to-one name="_exam" cascade="lock" column="ExamID" class="model.persistent.Exam" not-null="true" lazy="proxy" access="field">
 		</many-to-one>
 		<property name="score" column="Score" type="float" not-null="true" lazy="false"/>
 	</class>
