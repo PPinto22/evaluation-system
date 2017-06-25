@@ -26,4 +26,10 @@ export class StudentsService {
       }), this.httpUtil.headers())
       .map(this.httpUtil.extrairDados);
   }
+
+  // DELETE /api/groups/{group_id}/students/{student_id}
+  deleteStudentById( groupId: number, studentId: number): Observable<any> {
+    return this.http.delete( this.httpUtil.url('api/groups/' + groupId + '/students/' + studentId ),
+            this.httpUtil.headers()).map( this.httpUtil.extrairDados);
+  }
 }

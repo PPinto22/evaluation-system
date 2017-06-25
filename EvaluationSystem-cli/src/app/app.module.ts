@@ -13,6 +13,14 @@ import {LoginGuardService} from './services/login-guard.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import {HttpUtilService} from './services/http-util.service';
 import { DefaultComponent } from './components/dashboard/default/default.component';
+import {CategoriesService} from './services/categories.service';
+import {ClassesService} from './services/classes.service';
+import {InvitationsService} from './services/invitations.service';
+import {NotificationService} from './services/notification.service';
+import {QuestionsService} from './services/questions.service';
+import {StudentsService} from './services/students.service';
+import {UserService} from './services/user.service';
+import {GroupService} from './services/group.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +40,15 @@ import { DefaultComponent } from './components/dashboard/default/default.compone
   providers: [
     HttpUtilService,
     AuthenticationService,
-    LoginGuardService
+    LoginGuardService,
+    CategoriesService,
+    ClassesService,
+    GroupService,
+    InvitationsService,
+    NotificationService,
+    QuestionsService,
+    StudentsService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

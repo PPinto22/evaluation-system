@@ -5,14 +5,14 @@ import {HttpUtilService} from './http-util.service';
 import {Router} from '@angular/router';
 
 @Injectable()
-export class NotificationService {
+export class GroupService {
 
   constructor( private router: Router,
                private http: Http,
                private httpUtil: HttpUtilService) {
   }
 
-  // GET /api/groups/{id}
+  // GET /api/groups/{group_id}
   getGroupById( groupId: number): Observable<any> {
     return this.http.get( this.httpUtil.url('/api/groups/' + groupId ), this.httpUtil.headers() )
       .map( this.httpUtil.extrairDados );
