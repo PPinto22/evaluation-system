@@ -1,6 +1,4 @@
-import dao.ClassCriteria;
 import dao.ClassDAO;
-import dao.UserCriteria;
 import dao.UserDAO;
 import exception.ExistentEntityException;
 import exception.InvalidUserTypeException;
@@ -8,7 +6,6 @@ import exception.MissingInformationException;
 import exception.NonExistentEntityException;
 import model.Class;
 import model.Teacher;
-import model.User;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import service.ClassService;
+import service.TeacherService;
 import service.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,9 +28,7 @@ public class ClassTest {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserDAO userDAO;
-    @Autowired
-    private ClassDAO classDAO;
+    private TeacherService teacherService;
 
     private Class cl;
     private String clUniqueName = "AA@GetClassTest";
@@ -40,7 +36,7 @@ public class ClassTest {
     private String teacherUniqueEmail = "john@GetClassTest";
 
     @Before
-    public void addClass() throws PersistentException, MissingInformationException, InvalidUserTypeException {
+    public void addClass() throws Exception {
         this.cl = new Class();
         cl.setAbbreviation("AA");
         cl.setName(clUniqueName);
@@ -52,16 +48,17 @@ public class ClassTest {
         teacher.setLastName("Doe");
 
         try {
-            teacher = (Teacher) userService.signup(teacher, "teacher");
+            teacher = (Teacher) userService.signup(teacher, "teacher", true);
         }
         catch (ExistentEntityException e){
             try {
-                teacher = (Teacher) userService.getUserByEmail(teacherUniqueEmail);
-            } catch (NonExistentEntityException e1) {}
+                teacher = (Teacher) userService.getUserByEmail(teacherUniqueEmail, "teacher");
+            } catch (NonExistentEntityException e1) {
+                e.printStackTrace();
+            }
         }
 
-        cl.set_teacher(teacher);
-        classService.addClass(cl);
+        cl = teacherService.addClassToTeacher(teacher,cl);
     }
 
     @Test

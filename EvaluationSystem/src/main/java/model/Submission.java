@@ -15,6 +15,7 @@ import dao.QuestionSubmissionSetCollection;
  * License Type: Academic
  */
 public class Submission {
+
 	public Submission() {
 	}
 	

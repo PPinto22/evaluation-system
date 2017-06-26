@@ -22,15 +22,15 @@ public class User {
 
 	/////// Nosso codigo //////
 	public User(User user) {
-		this.ID = user.getID();
+		//this.ID = user.getID();
 		this.email = user.getEmail();
 		this.password = user.getPassword();
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
-		this.registered = user.getRegistered();
-		this.deleted = user.getDeleted();
+		this.registered = user.isRegistered();
+		this.deleted = user.isDeleted();
 		this.registrationCode = user.getRegistrationCode();
-		this.ORM__notifications = user.getORM__notifications();
+		//this.ORM__notifications = user.getORM__notifications();
 	}
 
 	public void hashPassword(){
@@ -72,21 +72,6 @@ public class User {
 				", deleted=" + deleted +
 				", registrationCode='" + registrationCode + '\'' +
 				'}';
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		User user = (User) o;
-
-		return ID == user.ID;
-	}
-
-	@Override
-	public int hashCode() {
-		return ID;
 	}
 
 	////// Codigo gerado //////
@@ -174,7 +159,7 @@ public class User {
 		this.registered = value;
 	}
 
-	public boolean getRegistered() {
+	public boolean isRegistered() {
 		return registered;
 	}
 	
@@ -182,7 +167,7 @@ public class User {
 		this.deleted = value;
 	}
 
-	public boolean getDeleted() {
+	public boolean isDeleted() {
 		return deleted;
 	}
 	

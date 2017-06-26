@@ -16,6 +16,7 @@ import dao.ORMConstants;
  * License Type: Academic
  */
 public class Group {
+
 	public Group() {
 	}
 	

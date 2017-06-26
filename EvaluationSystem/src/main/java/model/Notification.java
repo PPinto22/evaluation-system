@@ -14,6 +14,7 @@ import dao.ORMConstants;
  * License Type: Academic
  */
 public class Notification {
+
 	public Notification() {
 	}
 	

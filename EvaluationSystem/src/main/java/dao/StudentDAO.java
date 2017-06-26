@@ -16,6 +16,11 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface StudentDAO {
+	Student loadStudentByEmail(String email) throws PersistentException;
+	boolean exists(int ID) throws PersistentException;
+	boolean exists(String email) throws PersistentException;
+	boolean existsActive(String email) throws PersistentException;
+
 	public Student loadStudentByORMID(int ID) throws PersistentException;
 	public Student getStudentByORMID(int ID) throws PersistentException;
 	public Student loadStudentByORMID(int ID, LockMode lockMode) throws PersistentException;

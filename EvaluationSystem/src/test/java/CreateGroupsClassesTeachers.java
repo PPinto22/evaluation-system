@@ -20,20 +20,20 @@ import java.util.List;
 @ContextConfiguration(classes = {AppConfig.class})
 public class CreateGroupsClassesTeachers {
 
-    private final static boolean UNDO = false;
+    private final static boolean UNDO = true;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    TeacherService teacherService;
+    private TeacherService teacherService;
     @Autowired
-    ClassService classService;
+    private ClassService classService;
     @Autowired
-    GroupService groupService;
+    private GroupService groupService;
 
-    Teacher teacher;
-    List<Class> classes = new ArrayList<>();
-    List<Group> groups = new ArrayList<>();
+    private Teacher teacher;
+    private List<Class> classes = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>();
 
     @Test
     public void createGroupsClassesTeachersIfNotExists() throws Exception{
@@ -47,17 +47,17 @@ public class CreateGroupsClassesTeachers {
             Class cl = new Class();
             cl.setName("class"+i);
             cl.setAbbreviation("CL"+2);
-            classes.add(cl);
+            this.classes.add(cl);
         }
 
         for(int i = 1; i<=4; i++) {
             Group group = new Group();
             group.setName("group"+i);
-            groups.add(group);
+            this.groups.add(group);
         }
 
         try {
-            teacherService.addTeacher(teacher);
+            teacher = teacherService.addTeacher(teacher, true);
         } catch (ExistentEntityException e) {
             teacher = teacherService.getTeacherByEmail(teacher.getEmail());
         }
@@ -66,8 +66,7 @@ public class CreateGroupsClassesTeachers {
         for(int i = 0; i < this.classes.size(); i++){
             Class cl = this.classes.get(i);
             if(!classService.exists(teacher, cl.getName())) {
-                cl.set_teacher(teacher);
-                classService.addClass(cl);
+                teacherService.addClassToTeacher(teacher, cl);
             }
             this.classes.remove(i);
             this.classes.add(i, classService.getClassByName(teacher, cl.getName()));
@@ -86,10 +85,10 @@ public class CreateGroupsClassesTeachers {
 
     @After
     public void undo() throws Exception{
-        if(UNDO) {
-            for (Class cl : this.classes)
-                classService.delete(cl);
-            userService.delete(teacher);
-        }
+        for(Group group: this.groups)
+            groupService.delete(group);
+        for (Class cl : this.classes)
+            classService.delete(cl);
+        userService.delete(teacher);
     }
 }

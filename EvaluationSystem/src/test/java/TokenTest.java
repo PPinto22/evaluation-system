@@ -16,9 +16,9 @@ import service.UserService;
 public class TokenTest{
 
     @Autowired
-    JwtService jwtService;
+    private JwtService jwtService;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Test
     public void testTokenCreation() throws PersistentException, InvalidClaimsException {

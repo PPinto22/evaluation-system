@@ -14,6 +14,7 @@ import dao.ORMConstants;
  * License Type: Academic
  */
 public class QuestionSubmission {
+
 	public QuestionSubmission() {
 	}
 	

@@ -56,9 +56,8 @@ public class UserController {
     }
 
 
-    // Testes...
+    // FIXME - Testes...
     @RequestMapping(value = "/students", method = RequestMethod.GET)
-    // FIXME: Metodo para testes
     public ResponseEntity<List<StudentGroupsWrapper>> getStudents(HttpServletRequest request){
         // Exemplo de como retirar o user a partir do token
         try {
@@ -83,7 +82,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "/teachers", method = RequestMethod.GET)
-    // FIXME: Metodo para testes
     public ResponseEntity<List<TeacherClassesWrapper>> getTeachers(){
         List<TeacherClassesWrapper> views = new ArrayList<>();
         try {
