@@ -19,8 +19,8 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping(value = "/auth")
 public class AuthenticationController {
 
-    UserService userService;
-    JwtService jwtService;
+    private UserService userService;
+    private JwtService jwtService;
 
     public AuthenticationController(UserService userService, JwtService jwtService) {
         this.userService = userService;

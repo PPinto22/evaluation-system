@@ -17,11 +17,20 @@ import java.util.List;
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-public class Exam {
+public class Exam implements Comparable<Exam>{
 	public List<QuestionScore> getQuestionScores(){
 		return Arrays.asList(_questions.toArray("order",true));
 	}
 
+	@Override
+	public int compareTo(Exam o) {
+		if(this.getBeginDate() > o.getDuration())
+			return 1;
+		else if(this.getDuration() < o.getBeginDate())
+			return -1;
+		else
+			return 0;
+	}
 
 	public Exam() {
 	}

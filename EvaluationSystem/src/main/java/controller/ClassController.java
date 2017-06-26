@@ -33,8 +33,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(value = "/api/classes")
 public class ClassController {
 
-    JwtService jwtService;
-    ClassService classService;
+    private JwtService jwtService;
+    private ClassService classService;
 
     public ClassController(JwtService jwtService, ClassService classService){
         this.jwtService = jwtService;

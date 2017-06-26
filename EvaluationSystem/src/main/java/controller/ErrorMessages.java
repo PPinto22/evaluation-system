@@ -19,6 +19,7 @@ public class ErrorMessages {
     public static final String NO_SUCH_EXAM = "No such exam";
     public static final String NO_SUCH_SUBMISSION = "No such submission";
     public static final String NO_SUCH_INVITATION = "No such invitation";
+    public static final String NO_SUCH_QUESTION = "No such question";
     public static final String GROUP_EXISTS = "Group already exists";
     public static final String CLASS_EXISTS = "Class already exists";
     public static final String QUESTION_EXISTS = "Question already exists";
@@ -29,6 +30,7 @@ public class ErrorMessages {
     public static final String INVALID_EXAM = "Invalid exam";
     public static final String INVALID_DURATION = "Invalid duration";
     public static final String EXISTENT_EXAM = "Exam already exists";
+    public static final String EXISTENT_SUBMISSION = "Submission already exists";
     public static final String INSUFFICIENT_QUESTIONS = "Insufficient questions";
     public static final String DUPLICATE_QUESTIONS = "Duplicate questions";
     public static final String NO_PERMISSION = "No permission";

@@ -22,6 +22,20 @@ import java.util.List;
 
 @Repository
 public class SubmissionDAOImpl implements SubmissionDAO {
+
+	@Override
+	public boolean exists(int ID) throws PersistentException {
+		return this.getSubmissionByORMID(ID) != null;
+	}
+
+	@Override
+	public boolean exists(int studentID, int examID) throws PersistentException {
+		SubmissionCriteria criteria = new SubmissionCriteria();
+		criteria._studentId.eq(studentID);
+		criteria._examId.eq(examID);
+		return this.loadSubmissionByCriteria(criteria) != null;
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(SubmissionDAOImpl.class);
 	public Submission loadSubmissionByORMID(int ID) throws PersistentException {
 		try {

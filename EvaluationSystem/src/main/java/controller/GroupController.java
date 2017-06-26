@@ -29,10 +29,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(value = "api/groups")
 public class GroupController {
 
-    JwtService jwtService;
-    GroupService groupService;
-    StudentService studentService;
-    ExamService examService;
+    private JwtService jwtService;
+    private GroupService groupService;
+    private StudentService studentService;
+    private ExamService examService;
 
     public GroupController(JwtService jwtService, GroupService groupService, StudentService studentService, ExamService examService) {
         this.jwtService = jwtService;
@@ -238,6 +238,26 @@ public class GroupController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
         } catch (InsufficientQuestionsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INSUFFICIENT_QUESTIONS), NOT_ACCEPTABLE);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        }
+    }
+
+    @RequestMapping(value = "/{groupID:[\\d]+}/exams", method = GET)
+    public ResponseEntity<Object> getExams(@PathVariable int groupID, HttpServletRequest request){
+        try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
+            Group group = groupService.getGroupByID(groupID);
+
+            if(!groupService.userHasAccess(group,user))
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            ExamsWrapper examsWrapper = new ExamsWrapper(examService.getExamsByGroup(group), false);
+            return new ResponseEntity<Object>(examsWrapper, OK);
+        } catch (PersistentException e){
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         }

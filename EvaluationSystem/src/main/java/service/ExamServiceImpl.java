@@ -3,7 +3,6 @@ package service;
 import dao.ExamDAO;
 import dao.QuestionDAO;
 import dao.QuestionScoreDAO;
-import dao.QuestionScoreSetCollection;
 import exception.ExistentEntityException;
 import exception.InvalidExamException;
 import exception.InvalidQuestionException;
@@ -11,13 +10,10 @@ import exception.NonExistentEntityException;
 import model.persistent.*;
 import model.persistent.Class;
 import org.orm.PersistentException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 @Service
 public class ExamServiceImpl implements ExamService{
@@ -25,11 +21,69 @@ public class ExamServiceImpl implements ExamService{
     QuestionScoreDAO questionScoreDAO;
     ExamDAO examDAO;
     QuestionDAO questionDAO;
+    StudentService studentService;
+    TeacherService teacherService;
+
+    @Autowired
+    public void setStudentService(StudentService studentService) {
+        this.studentService = studentService;
+    }
+    @Autowired
+    public void setTeacherService(TeacherService teacherService) {
+        this.teacherService = teacherService;
+    }
 
     public ExamServiceImpl(QuestionScoreDAO questionScoreDAO, ExamDAO examDAO, QuestionDAO questionDAO) {
         this.questionScoreDAO = questionScoreDAO;
         this.examDAO = examDAO;
         this.questionDAO = questionDAO;
+    }
+
+    @Override
+    public Map<String, Set<Exam>> getExamsByUser(User user) {
+        Map<String, Set<Exam>> examMap = new TreeMap<>();
+        List<Group> groups = null;
+        switch (user.getClass().getSimpleName()){
+            case "Student":
+                groups = studentService.getStudentGroups((Student)user);
+                break;
+            case "Teacher":
+                groups = teacherService.getGroups((Teacher)user);
+                break;
+        }
+        return getGroupsExams(groups);
+    }
+
+    private Map<String, Set<Exam>> getGroupsExams(List<Group> groups){
+        Map<String, Set<Exam>> examMap = new TreeMap<>();
+        for(Group group: groups){
+            for(Exam exam: group._exams.toArray()){
+                String key = examHasStarted(exam) ? examHasFinished(exam) ? "History" : "Ongoing" : "Upcoming";
+                if(!examMap.containsKey(key))
+                    examMap.put(key, new TreeSet<>());
+                examMap.get(key).add(exam);
+            }
+        }
+        return examMap;
+    }
+
+    @Override
+    public Map<String, Set<Exam>> getExamsByClass(Class cl) {
+        Map<String, Set<Exam>> examMap = new TreeMap<>();
+        List<Group> groups = Arrays.asList(cl._groups.toArray());
+        return getGroupsExams(groups);
+    }
+
+    @Override
+    public Map<String, Set<Exam>> getExamsByGroup(Group group) {
+        Map<String, Set<Exam>> examMap = new TreeMap<>();
+        for(Exam exam: group._exams.toArray()){
+            String key = examHasStarted(exam) ? examHasFinished(exam) ? "History" : "Ongoing" : "Upcoming";
+            if(!examMap.containsKey(key))
+                examMap.put(key, new TreeSet<>());
+            examMap.get(key).add(exam);
+        }
+        return examMap;
     }
 
     @Override
@@ -48,7 +102,7 @@ public class ExamServiceImpl implements ExamService{
     @Override
     public boolean examHasFinished(Exam exam) {
         long ms = System.currentTimeMillis();
-        return ms > (exam.getBeginDate() + exam.getDuration()*60*1000 + 10*60*1000); // 10 minutos de tolerancia apos fim
+        return ms > (exam.getBeginDate() + exam.getDuration()*60*1000 + 5*60*1000); // 5 minutos de tolerancia apos fim
     }
 
     @Override

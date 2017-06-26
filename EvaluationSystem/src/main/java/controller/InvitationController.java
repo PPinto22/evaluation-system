@@ -27,8 +27,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping(value = "/api/invitations")
 public class InvitationController {
 
-    JwtService jwtService;
-    NotificationService notificationService;
+    private JwtService jwtService;
+    private NotificationService notificationService;
 
     public InvitationController(JwtService jwtService, NotificationService notificationService) {
         this.jwtService = jwtService;

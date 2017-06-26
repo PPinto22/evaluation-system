@@ -8,13 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ExamWrapper {
+public class ExamWrapper implements Comparable<ExamWrapper>{
 
     private int id;
     private String name;
     private long beginDate;
     private int duration;
     private List<QuestionScoreWrapper> questions;
+
+    @Override
+    public int compareTo(ExamWrapper o) {
+        if(this.getBeginDate() > o.getDuration())
+            return 1;
+        else if(this.getDuration() < o.getBeginDate())
+            return -1;
+        else
+            return 0;
+    }
 
     public ExamWrapper(){}
 

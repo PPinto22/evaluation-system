@@ -69,7 +69,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/classes/{class_id}/categories](#get-apiclassesclass_idcategories) [x]
 - [GET /api/classes/{class_id}/groups](#get-apiclassesclass_idgroups) [x]
 - [POST /api/classes/{class_id}/groups](#post-apiclassesclass_idgroups) [x]
-- [~~GET /api/questions/{question_id}~~](#get-apiquestionsquestion_id)
+- [GET /api/questions/{question_id}](#get-apiquestionsquestion_id)
 - [~~PUT /api/questions/{question_id}~~](#put-apiquestionsquestion_id)
 - [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestion_id)
 - [GET /api/groups/{group_id}](#get-apigroupsgroup_id) [x]
@@ -79,7 +79,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents) [x]
 - [DELETE /api/groups/{group_id}/students/{student_id}](#delete-apigroupsgroup_idstudentsstudent_id) [x]
 - [GET /api/groups/{group_id}/questions/available](#get-apigroupsgroup_idquestionsavailable)
-- [~~GET /api/groups/{group_id}/exams?upcoming,history~~](#get-apigroupsgroup_idexamsupcominghistory)
+- [GET /api/groups/{group_id}/exams](#get-apigroupsgroup_idexams)
 - [POST /api/groups/{group_id}/exams](#post-apigroupsgroup_idexams)
 - [POST /api/groups/{group_id}/exams/generate](#post-apigroupsgroup_idexamsgenerate)
 - [~~GET /api/groups/{group_id}/scores~~](#get-apigroupsgroup_idscores)
@@ -94,14 +94,14 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/users/{user_id}](#get-apiusersuser_id) [x]
 - [~~PUT /api/users/{user_id}~~](#put-apiusersuser_id)
 - [~~DELETE /api/users/{user_id}~~](#delete-apiusersuser_id)
+- [POST /api/users/{user_id}/classes](#post-apiusersuser_idclasses) [x] MUDEI O NOME DE /teachers/ para /users/.
 - [GET /api/users/{user_id}/classes](#get-apiusersuser_idclasses)
 - [GET /api/users/{user_id}/groups](#get-apiusersuser_idgroups)
 - [GET /api/users/{user_id}/notifications](#get-apiusersuser_idnotifications) [x]
+- [~~GET /api/users/{user_id}/scores~~](#get-apiusersuser_idscores)
+- [GET /api/users/{user_id}/exams](#get-apiusersuser_idexams)
 - [GET /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept) [x]
 - [GET /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitation_iddecline) [x]
-- [~~GET /api/students/{student_id}/scores~~](#get-apistudentsstudent_idscores)
-- [~~GET /api/students/{student_id}/exams?upcoming,history~~](#get-apistudentsstudent_idexamsupcominghistory)
-- [POST api/teachers/{teacher_id}/classes](#post-apiteachersteacher_idclasses) [x]
 
 #### POST /auth/login
 ##### Body
@@ -353,7 +353,31 @@ ___
 - **UNAUTHORIZED (401)** - *No permission*
 ___
 
-#### ~~GET /api/questions/{question_id}~~
+#### GET /api/questions/{question_id}
+### Response
+```json
+"id": 6,
+"text": "Solve for x: 5 + x = 9",
+"category": "Category1",
+"difficulty": 3,
+"answers": [
+  {
+    "id": 24,
+    "text": "6",
+    "correct": false,
+    "order": 0
+  },
+  {
+    "..."
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such question*
+- **UNAUTHORIZED (401)** - *No permission*
+
 #### ~~PUT /api/questions/{question_id}~~
 #### ~~DELETE /api/questions/{question_id}~~
 ___
@@ -502,7 +526,38 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 - **NOT_FOUND (404)** - *No such group*
 - **UNAUTHORIZED (401)** - *No permission*
 
-#### ~~GET /api/groups/{group_id}/exams?upcoming,history~~
+#### GET /api/groups/{group_id}/exams
+### Response
+```json
+{
+  "exams": {
+    "History": [
+      {
+        "id": 1,
+        "name": "Exam 1",
+        "beginDate": 1498908500000,
+        "duration": 90,
+      }
+    ],
+    "Ongoing": [
+      {
+        "..."
+      }
+    ],
+    "Upcoming": [
+      {
+        "..."
+      }
+    ],
+  }
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such group*
+- **UNAUTHORIZED (401)** - *No permission*
+
 #### POST /api/groups/{group_id}/exams
 ### Body
 ```json
@@ -692,6 +747,30 @@ ___
 #### ~~PUT /api/users/{user_id}~~
 #### ~~DELETE /api/users/{user_id}~~
 
+#### POST api/users/{user_id}/classes
+### Body
+```json
+{
+  "name": "class1",
+  "abbreviation": "cl1",
+}
+```
+### Response
+```json
+[
+  {
+   "name": "class1",
+   "abbreviation": "cl1",
+   "id": 1
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such teacher*
+- **NOT_ACCEPTABLE (406)** - *Missing information*, *Class already exists*
+
 #### GET /api/users/{user_id}/classes
 ### Response
 Caso o utilizador seja um professor, nao e enviado o professor.
@@ -779,6 +858,57 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)**
 - **UNAUTHORIZED (401)**
+
+#### GET /api/users/{user_id}/exams
+### Response
+```json
+{
+  "exams": {
+    "History": [
+      {
+        "id": 1,
+        "name": "Exam 1",
+        "beginDate": 1498908500000,
+        "duration": 90,
+        "group": {
+          "id": 1,
+          "name": "Name1",
+          "_class": {
+            "name": "Name1",
+            "abbreviation": "Abbreviation1",
+            "teacher": {
+              "id": 16,
+              "email": "email16",
+              "firstName": "firstName16",
+              "lastName": "lastName16",
+              "type": "Teacher",
+              "active": true
+            },
+            "id": 1
+          }
+        }
+      }
+    ],
+    "Ongoing": [
+      {
+        "..."
+      }
+    ],
+    "Upcoming": [
+      {
+        "..."
+      }
+    ],
+  }
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)**
+- **UNAUTHORIZED (401)**
+
+#### ~~GET /api/users/{user_id}/scores~~
 ___
 
 #### GET /api/invitations/{invitation_id}/accept
@@ -808,33 +938,4 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)**
 - **UNAUTHORIZED (401)**
-___
-
-#### ~~GET /api/students/{student_id}/scores~~
-#### ~~GET /api/students/{student_id}/exams?upcoming,history~~
-___
-
-#### POST api/teachers/{teacher_id}/classes
-### Body
-```json
-{
-  "name": "class1",
-  "abbreviation": "cl1",
-}
-```
-### Response
-```json
-[
-  {
-   "name": "class1",
-   "abbreviation": "cl1",
-   "id": 1
-  }
-]
-```
-### HttpStatus
-- **OK (200)**
-- **INTERNAL_SERVER_ERROR (500)**
-- **NOT_FOUND (404)** - *No such teacher*
-- **NOT_ACCEPTABLE (406)** - *Missing information*, *Class already exists*
 ___

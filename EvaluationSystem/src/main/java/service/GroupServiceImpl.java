@@ -50,6 +50,14 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
+    public boolean userHasAccess(Group group, User user) {
+        if(user instanceof Teacher)
+            return user.getID() == group.get_class().get_teacher().getID();
+        Student student = (Student) user;
+        return studentInGroup(student,group);
+    }
+
+    @Override
     public boolean exists(int ID) throws PersistentException {
         return this.groupDAO.exists(ID);
     }
