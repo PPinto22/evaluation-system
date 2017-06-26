@@ -11,13 +11,9 @@
           <form>
             <div class="form-group">
               <div class="col-md-5 col-sm-5 col-xs-8">
-                <div *ngIf="order_date" (click)="toggleOrderDate()">
-                  <span class="fa fa-long-arrow-up"></span>
-                  <label class="order-date">most recent frist</label>
-                </div>
-                <div *ngIf="!order_date" (click)="toggleOrderDate()">
-                  <span  class="fa fa-long-arrow-down"></span>
-                  <label class="order-date">oldest frist</label>
+                <div class="noselect" (click)="toggleOrderDate()">
+                  <span [ngClass]="{'fa-long-arrow-up': order_date, 'fa-long-arrow-down': !order_date }" class="fa"></span>
+                  <label>{{this.order_date_text}}</label>
                 </div>
               </div>
               <div class="col-md-3 col-sm-3 col-xs-4">

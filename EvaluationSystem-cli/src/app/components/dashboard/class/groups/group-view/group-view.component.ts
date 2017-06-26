@@ -12,10 +12,13 @@ declare var panels: any;
 export class GroupViewComponent implements OnInit, AfterViewInit  {
 
   private order_date: boolean; // toggle booblen true if most recent frist or false for oldest frist
+  private order_date_text: string;
   constructor() { }
 
   ngOnInit() {
     this.order_date = true;
+    this.order_date_text = 'most recent frist';
+
   }
 
   ngAfterViewInit(): void {
@@ -24,6 +27,7 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
 
   public toggleOrderDate(): void {
     this.order_date = !this.order_date;
+    this.order_date_text = this.order_date ? 'most recent frist' : 'oldest frist';
     // TODO fazer função para mudar a ordem dos exames
   }
 
