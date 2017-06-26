@@ -1,0 +1,76 @@
+<br>
+<br>
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-8 col-sm-6 col-sm-offset-6 col-xs-12">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-primary btn-block">Generate All</button>
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-primary btn-block">Create</button>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-6 col-sm-6 col-xs-12">
+
+    <div class="form-group">
+      <label class="col-md-3 control-label">Exam Name:</label>
+      <div class="col-md-9">
+        <div class="input-group">
+          <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+          <input type="text" class="form-control" autocomplete="off"/>
+        </div>
+        <span class="help-block"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading ui-draggable-handle">
+        <h3 class="panel-title">Invited Students </h3>
+        <ul class="panel-controls">
+          <!--<li><a (click)="refreshInvitedSudents()" class="control-info"><span class="glyphicon glyphicon-refresh"></span></a></li>-->
+          <!--<li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>-->
+        </ul>
+      </div>
+      <div class="panel-body">
+        <div class="panel-body" >
+            <app-question-add *ngFor="let question of questions" [question]="question"></app-question-add>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-8 col-sm-6 col-sm-offset-6 col-xs-12">
+    <div class="col-md-6 col-md-offset-6">
+      <button type="button" class="btn btn-primary btn-block">Add Question</button>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-8 col-sm-6 col-sm-offset-6 col-xs-12">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-primary btn-block">Generate All</button>
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-primary btn-block">Create</button>
+    </div>
+  </div>
+</div>

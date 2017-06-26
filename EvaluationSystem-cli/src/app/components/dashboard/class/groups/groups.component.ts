@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AuthenticationService} from '../../../../services/authentication.service';
 
 @Component({
   selector: 'app-groups',
@@ -8,13 +9,19 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 export class GroupsComponent implements OnInit, AfterViewInit {
 
 
-  constructor() { }
+  constructor(
+    private authentication: AuthenticationService
+  ) { }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
 
+  }
+
+  private isTeacher(): boolean {
+    return this.authentication.isTeacher();
   }
 
 

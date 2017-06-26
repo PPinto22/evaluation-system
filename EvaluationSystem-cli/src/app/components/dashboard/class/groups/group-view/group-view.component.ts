@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {AuthenticationService} from "../../../../../services/authentication.service";
+import {AuthenticationService} from '../../../../../services/authentication.service';
 
 
 declare var $: any;
