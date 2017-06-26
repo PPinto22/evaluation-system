@@ -14,7 +14,7 @@ License Type: Academic
 		</many-to-one>
 		<property name="text" column="Text" type="string" length="255" not-null="false" lazy="false"/>
 		<property name="category" column="Category" type="string" length="255" not-null="false" lazy="false"/>
-		<property name="dificulty" column="Dificulty" type="integer" length="10" not-null="false" lazy="false"/>
+		<property name="difficulty" column="Difficulty" type="integer" length="10" not-null="false" lazy="false"/>
 		<set name="ORM__answers" lazy="true" cascade="save-update,lock" inverse="false">
 			<key column="QuestionID" not-null="true"/>
 			<one-to-many class="model.persistent.Answer"/>

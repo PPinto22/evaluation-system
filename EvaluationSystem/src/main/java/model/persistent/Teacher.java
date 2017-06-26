@@ -9,6 +9,9 @@ package model.persistent; /**
 
 import dao.ClassSetCollection;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic

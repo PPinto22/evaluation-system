@@ -28,6 +28,9 @@ import { GroupsComponent } from './components/dashboard/class/groups/groups.comp
 import { ScheduleComponent } from './components/dashboard/schedule/schedule.component';
 import {CalendarComponent} from 'ap-angular2-fullcalendar';
 import { BreadCrumbService } from './services/breadcrumb.service';
+import { GroupCreateComponent } from './components/dashboard/class/group-create/group-create.component';
+import { ResultsComponent } from './components/dashboard/results/results.component';
+import { GroupViewComponent } from './components/dashboard/class/groups/group-view/group-view.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,10 @@ import { BreadCrumbService } from './services/breadcrumb.service';
     ClassComponent,
     GroupsComponent,
     ScheduleComponent,
-    CalendarComponent
+    CalendarComponent,
+    GroupCreateComponent,
+    ResultsComponent,
+    GroupViewComponent
   ],
   imports: [
     BrowserModule,

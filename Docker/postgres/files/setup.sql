@@ -43,17 +43,18 @@ CREATE TABLE Class (
   Abbreviation varchar(255), 
   PRIMARY KEY (ID));
 CREATE TABLE Question (
-  ID        SERIAL NOT NULL, 
-  ClassID   int4 NOT NULL, 
-  Text      varchar(255), 
-  Category  varchar(255), 
-  Dificulty int4, 
+  ID         SERIAL NOT NULL, 
+  ClassID    int4 NOT NULL, 
+  Text       varchar(255), 
+  Category   varchar(255), 
+  Difficulty int4, 
   PRIMARY KEY (ID));
 CREATE TABLE Answer (
   ID         SERIAL NOT NULL, 
   QuestionID int4 NOT NULL, 
   Text       varchar(255), 
   Correct    bool, 
+  "Order"    int4 NOT NULL, 
   PRIMARY KEY (ID));
 CREATE TABLE "Group" (
   ID      SERIAL NOT NULL, 
@@ -63,14 +64,16 @@ CREATE TABLE "Group" (
 CREATE TABLE Exam (
   ID        SERIAL NOT NULL, 
   GroupID   int4 NOT NULL, 
-  BeginDate timestamp, 
-  Duration  timestamp, 
+  BeginDate int8, 
+  Duration  int4, 
+  Name      varchar(255), 
   PRIMARY KEY (ID));
 CREATE TABLE QuestionScore (
   ID         SERIAL NOT NULL, 
   QuestionID int4 NOT NULL, 
   ExamID     int4 NOT NULL, 
   Score      float4 NOT NULL, 
+  "Order"    int4 NOT NULL, 
   PRIMARY KEY (ID));
 CREATE TABLE Submission (
   ID     SERIAL NOT NULL, 

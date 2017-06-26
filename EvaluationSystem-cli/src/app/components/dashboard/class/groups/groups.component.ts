@@ -17,14 +17,6 @@ export class GroupsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    $('.scroll').mCustomScrollbar({
-      axis: 'y',
-      autoHideScrollbar: true,
-      scrollInertia: 20,
-      advanced: {
-        autoScrollOnFocus: false
-      }
-    }, {passive: true});
     panels();
   }
 }

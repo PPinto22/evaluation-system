@@ -24,6 +24,7 @@ public class QuestionScoreCriteria extends AbstractORMCriteria {
 	public final IntegerExpression _examId;
 	public final AssociationExpression _exam;
 	public final FloatExpression score;
+	public final IntegerExpression order;
 	
 	public QuestionScoreCriteria(Criteria criteria) {
 		super(criteria);
@@ -33,6 +34,7 @@ public class QuestionScoreCriteria extends AbstractORMCriteria {
 		_examId = new IntegerExpression("_exam.ID", this);
 		_exam = new AssociationExpression("_exam", this);
 		score = new FloatExpression("score", this);
+		order = new IntegerExpression("order", this);
 	}
 	
 	public QuestionScoreCriteria(PersistentSession session) {

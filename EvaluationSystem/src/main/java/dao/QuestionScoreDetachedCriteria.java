@@ -25,6 +25,7 @@ public class QuestionScoreDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression _examId;
 	public final AssociationExpression _exam;
 	public final FloatExpression score;
+	public final IntegerExpression order;
 	
 	public QuestionScoreDetachedCriteria() {
 		super(QuestionScore.class, QuestionScoreCriteria.class);
@@ -34,6 +35,7 @@ public class QuestionScoreDetachedCriteria extends AbstractORMDetachedCriteria {
 		_examId = new IntegerExpression("_exam.ID", this.getDetachedCriteria());
 		_exam = new AssociationExpression("_exam", this.getDetachedCriteria());
 		score = new FloatExpression("score", this.getDetachedCriteria());
+		order = new IntegerExpression("order", this.getDetachedCriteria());
 	}
 	
 	public QuestionScoreDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -44,6 +46,7 @@ public class QuestionScoreDetachedCriteria extends AbstractORMDetachedCriteria {
 		_examId = new IntegerExpression("_exam.ID", this.getDetachedCriteria());
 		_exam = new AssociationExpression("_exam", this.getDetachedCriteria());
 		score = new FloatExpression("score", this.getDetachedCriteria());
+		order = new IntegerExpression("order", this.getDetachedCriteria());
 	}
 	
 	public QuestionDetachedCriteria create_questionCriteria() {

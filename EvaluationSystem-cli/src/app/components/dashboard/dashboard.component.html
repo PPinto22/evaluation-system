@@ -21,21 +21,21 @@
         </div>
       </li>
       <li class="xn-title">Navigation</li>
-      <li class="active">
-        <a [routerLink]="['/dashboard']"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
+      <li >
+        <a [routerLink]="['/dashboard']" ><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
       </li>
       <li>
-        <a [routerLink]="['/dashboard/schedule']"><span class="fa fa-calendar"></span> <span class="xn-text">Schedule</span></a>
+        <a [routerLink]="['/dashboard/schedule']" ><span class="fa fa-calendar"></span> <span class="xn-text">Schedule</span></a>
       </li>
       <li>
-        <a [routerLink]="['/dashboard/results']"><span class="fa fa-calendar"></span> <span class="xn-text">Results</span></a>
+        <a [routerLink]="['/dashboard/results']" ><span class="fa fa-calendar"></span> <span class="xn-text">Results</span></a>
       </li>
       <li class="xn-openable">
         <a ><span class="fa fa-files-o"></span> <span class="xn-text">Classes</span></a>
         <ul>
           <!-- TODO ngFor para todas as classes -->
-          <li><a [routerLink]="['/dashboard/classes']"> AA </a></li>
-          <li><a [routerLink]="['/dashboard/classes']"> BB </a></li>
+          <li><a [routerLink]="['/dashboard/classes/1']" > AA </a></li>
+          <li><a [routerLink]="['/dashboard/classes/1']" > BB </a></li>
         </ul>
       </li>
     </ul>

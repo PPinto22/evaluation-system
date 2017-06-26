@@ -4,7 +4,7 @@ import model.persistent.User;
 
 public class UserWrapper{
 
-    private int ID;
+    private int id;
     private String email;
     private String firstName;
     private String lastName;
@@ -16,7 +16,7 @@ public class UserWrapper{
 
     public UserWrapper(User user){
         this.setEmail(user.getEmail());
-        this.setID(user.getID());
+        this.setId(user.getID());
         this.setFirstName(user.getFirstName());
         this.setLastName(user.getLastName());
         this.setActive(user.isRegistered() && !user.isDeleted());
@@ -39,12 +39,12 @@ public class UserWrapper{
         this.type = type;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {

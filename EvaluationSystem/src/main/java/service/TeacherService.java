@@ -3,6 +3,7 @@ package service;
 import exception.ExistentEntityException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
+import model.persistent.Group;
 import model.persistent.Teacher;
 import model.persistent.Class;
 import org.orm.PersistentException;
@@ -15,6 +16,7 @@ public interface TeacherService {
     Teacher getTeacherByID(int ID) throws PersistentException, NonExistentEntityException;
     Teacher getTeacherByEmail(String email) throws NonExistentEntityException, PersistentException;
     List<Class> getClasses(Teacher teacher);
+    List<Group> getGroups(Teacher teacher);
     Class addClassToTeacher(Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException;
 
     boolean exists(int ID) throws PersistentException;

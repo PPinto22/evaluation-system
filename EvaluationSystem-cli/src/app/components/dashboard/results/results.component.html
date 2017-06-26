@@ -1,0 +1,54 @@
+<!-- START RESPONSIVE TABLES -->
+<div class="panel panel-default">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">Results</h3>
+    <ul class="panel-controls">
+      <li><a (click)="refreshUpComing()" class="control-info"><span class="glyphicon glyphicon-refresh"></span></a></li>
+    </ul>
+  </div>
+
+  <div class="panel-body panel-body-table">
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-actions">
+        <thead>
+          <tr>
+            <th class="text-center" width="200">Test</th>
+            <th class="text-center">Class</th>
+            <th class="text-center" width="200">Group</th>
+            <th class="text-center" width="110" *ngIf="isStudent()">Score</th>
+            <th class="text-center" width="110" *ngIf="isTeacher()">Average Score</th>
+            <th class="text-center" width="110" *ngIf="isTeacher()">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
+        <tr id="trow_1">
+          <td class="text-center"><strong>AA</strong></td>
+          <td class="text-center"><strong>Arquiteturas Aplicacionais</strong></td>
+          <td class="text-center"><strong>Grupo 2016/2017</strong></td>
+          <td class="text-center"><strong>19.8</strong></td>
+          <td>
+            <button type="button" class="btn btn-primary btn-rounded btn-sm">View Details</button>
+          </td>
+        </tr>
+
+        <tr id="trow_2">
+          <td class="text-center"><strong>AA</strong></td>
+          <td class="text-center"><strong>Arquiteturas Aplicacionais</strong></td>
+          <td class="text-center"><strong>Grupo 2016/2017</strong></td>
+          <td class="text-center"><strong>19.8</strong></td>
+          <td>
+            <button type="button" class="btn btn-primary btn-rounded btn-sm">View Details</button>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+<!-- END RESPONSIVE TABLES -->

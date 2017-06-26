@@ -22,6 +22,7 @@ public class AnswerDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression ID;
 	public final StringExpression text;
 	public final BooleanExpression correct;
+	public final IntegerExpression order;
 	public final CollectionExpression _questionSubmission;
 	
 	public AnswerDetachedCriteria() {
@@ -29,6 +30,7 @@ public class AnswerDetachedCriteria extends AbstractORMDetachedCriteria {
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
 		text = new StringExpression("text", this.getDetachedCriteria());
 		correct = new BooleanExpression("correct", this.getDetachedCriteria());
+		order = new IntegerExpression("order", this.getDetachedCriteria());
 		_questionSubmission = new CollectionExpression("ORM__questionSubmission", this.getDetachedCriteria());
 	}
 	
@@ -37,6 +39,7 @@ public class AnswerDetachedCriteria extends AbstractORMDetachedCriteria {
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
 		text = new StringExpression("text", this.getDetachedCriteria());
 		correct = new BooleanExpression("correct", this.getDetachedCriteria());
+		order = new IntegerExpression("order", this.getDetachedCriteria());
 		_questionSubmission = new CollectionExpression("ORM__questionSubmission", this.getDetachedCriteria());
 	}
 	

@@ -2,18 +2,18 @@
   <div class="col-lg-6 col-md-6 col-lg-offset-6 col-md-offset-6" *ngIf="isTeacher()">
     <form class="form-horizontal" role="form">
       <div class="form-group">
-        <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
           <button class="btn btn-block btn-primary ">
             <span class="fa fa-eye"></span>Questions
           </button>
         </div>
-        <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
           <button class="btn btn-block btn-primary ">
             <span class="fa fa-plus-square"></span>Questions
           </button>
         </div>
-        <div class="col-md-4 col-sm-4 col-xs-12">
-          <button class="btn btn-block btn-primary ">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <button [routerLink]="['/dashboard/classes/1/groups/create']" class="btn btn-block btn-primary ">
             <span class="fa fa-plus-square"></span>Group
           </button>
         </div>
@@ -25,7 +25,7 @@
 <br>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-lg-12 col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading ui-draggable-handle">
         <h3 class="panel-title">Class - Information</h3>

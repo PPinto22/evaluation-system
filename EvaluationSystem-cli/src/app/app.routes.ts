@@ -11,7 +11,9 @@ import {LoginGuardService} from './services/login-guard.service';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {DefaultComponent} from './components/dashboard/default/default.component';
 import {ClassComponent} from './components/dashboard/class/class.component';
-import {ScheduleComponent} from "./components/dashboard/schedule/schedule.component";
+import {ScheduleComponent} from './components/dashboard/schedule/schedule.component';
+import {GroupCreateComponent} from './components/dashboard/class/group-create/group-create.component';
+import {ResultsComponent} from './components/dashboard/results/results.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
@@ -20,10 +22,11 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent,
     children: [
       { path: '', component: DefaultComponent },
-      { path: 'classes', component: ClassComponent },
-//      { path: 'classes/:id', component: ClassComponent },
+      // { path: 'classes/', component: ClassComponent },
+      { path: 'classes/:id/groups/create', component: GroupCreateComponent },
+      { path: 'classes/:id', component: ClassComponent },
       { path: 'schedule', component: ScheduleComponent },
-      { path: 'results', component: ClassComponent },
+      { path: 'results', component: ResultsComponent },
 
 
       // { path: 'results', component: Specs }

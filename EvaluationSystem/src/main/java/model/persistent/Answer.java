@@ -14,7 +14,6 @@ import dao.QuestionSubmissionSetCollection;
  * License Type: Academic
  */
 public class Answer {
-
 	public Answer() {
 	}
 	
@@ -38,6 +37,8 @@ public class Answer {
 	private String text;
 	
 	private boolean correct;
+	
+	private int order;
 	
 	private java.util.Set ORM__questionSubmission = new java.util.HashSet();
 	
@@ -67,6 +68,14 @@ public class Answer {
 	
 	public boolean isCorrect() {
 		return correct;
+	}
+	
+	public void setOrder(int value) {
+		this.order = value;
+	}
+	
+	public int getOrder() {
+		return order;
 	}
 	
 	private void setORM__questionSubmission(java.util.Set value) {

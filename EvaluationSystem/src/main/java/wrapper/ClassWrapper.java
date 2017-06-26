@@ -2,7 +2,7 @@ package wrapper;
 
 import model.persistent.Class;
 
-public class ClassWrapper {
+public class ClassWrapper{
 
     private int ID;
     private String name;
@@ -38,5 +38,20 @@ public class ClassWrapper {
 
     public void setAbbreviation(String abbreviation) {
         this.abbreviation = abbreviation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassWrapper that = (ClassWrapper) o;
+
+        return ID == that.ID;
+    }
+
+    @Override
+    public int hashCode() {
+        return ID;
     }
 }

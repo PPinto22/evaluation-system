@@ -1,16 +1,18 @@
 <!--Add Class -->
   <div class="row" *ngIf="isTeacher()" >
-    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pull-right">
-      <div class="form-group">
-        <div class="col-md-12">
-          <div class="input-group">
-            <input type="text" [(ngModel)]="newClass" class="form-control" placeholder="Class Name"/>
-            <span class="input-group-btn">
-              <button class="btn btn-primary" (click)="addClass()" type="button">Add Class</button>
-            </span>
+    <div class="col-lg-6 col-lg-offset-6 col-md-6 col-md-offset-6 col-sm-6 col-sm-offset-6 col-xs-12 ">
+      <form>
+          <div class="col-lg-3 col-sm-3">
+            <input type="text" class="form-control" placeholder="Abbreviation"/>
           </div>
-        </div>
-      </div>
+
+          <div class="col-md-6 col-sm-6">
+            <input type="text" class="form-control" placeholder="Class Name"/>
+          </div>
+          <div class="col-md-3 col-sm-3">
+            <button class="btn btn-primary btn-block" (click)="addClass()" type="button">New Class</button>
+          </div>
+      </form>
     </div>
   </div>
 <!--Add Class -->
