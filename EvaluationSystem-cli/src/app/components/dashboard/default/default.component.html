@@ -4,9 +4,9 @@
       <div class="form-group">
         <div class="col-md-12">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Class Name"/>
+            <input type="text" [(ngModel)]="newClass" class="form-control" placeholder="Class Name"/>
             <span class="input-group-btn">
-              <button class="btn btn-primary" type="button">Add Class</button>
+              <button class="btn btn-primary" (click)="addClass()" type="button">Add Class</button>
             </span>
           </div>
         </div>

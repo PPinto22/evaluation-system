@@ -27,6 +27,7 @@ import { ClassComponent } from './components/dashboard/class/class.component';
 import { GroupsComponent } from './components/dashboard/class/groups/groups.component';
 import { ScheduleComponent } from './components/dashboard/schedule/schedule.component';
 import {CalendarComponent} from 'ap-angular2-fullcalendar';
+import { BreadCrumbService } from './services/breadcrumb.service';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {CalendarComponent} from 'ap-angular2-fullcalendar';
     NotificationService,
     QuestionsService,
     StudentsService,
-    UserService
+    UserService,
+    BreadCrumbService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,7 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Component, OnInit, AfterViewInit, Output, EventEmitter} from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
+import {BreadCrumbService} from '../../../services/breadcrumb.service';
+import {ClassesService} from '../../../services/classes.service';
 
 declare var $: any;
 
@@ -10,10 +12,16 @@ declare var $: any;
 })
 export class DefaultComponent implements OnInit, AfterViewInit {
 
-  constructor( private authentication: AuthenticationService ) { }
+  newClass: string;
+
+  constructor(
+    private authentication: AuthenticationService,
+    private breadCrumb: BreadCrumbService,
+    private classes: ClassesService
+  ) { }
 
   ngOnInit() {
-
+    this.breadCrumb.setBreadCrum(['DashBoard']);
   }
 
   ngAfterViewInit() {
@@ -27,15 +35,11 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     }, {passive: true});
   }
 
-
-  private refreshUpComing(): void {
-    // TODO fazer um novo pedido por novas notificações
+  public addClass(): void {
+    // TODO altera a abreviatura
+    this.classes.createClasseByTeacher(this.authentication.getUserId(), this.newClass, 'AA');
   }
-
-  private refreshHistory(): void {
-    // TODO fazer um novo pedido por novas notificações
-  }
-
+  
   private isTeacher(): boolean {
     return this.authentication.isTeacher();
   }

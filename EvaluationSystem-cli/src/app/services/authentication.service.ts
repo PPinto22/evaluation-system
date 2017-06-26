@@ -75,6 +75,10 @@ export class AuthenticationService {
     return this.userLogged.isTeacher();
   }
 
+  getUserId() {
+    return this.userLogged.id;
+  }
+
   isSudent() {
     return this.userLogged.isStudent();
   }

@@ -18,4 +18,12 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     panels();
   }
 
+  private refreshUpComing(): void {
+    // TODO fazer um novo pedido por novas notificações
+  }
+
+  private refreshHistory(): void {
+    // TODO fazer um novo pedido por novas notificações
+  }
+
 }
