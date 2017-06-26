@@ -82,11 +82,11 @@ CREATE TABLE Submission (
   Score  float4 NOT NULL, 
   PRIMARY KEY (ID));
 CREATE TABLE QuestionSubmission (
-  ID           SERIAL NOT NULL, 
-  AnswerID     int4, 
-  QuestionID   int4 NOT NULL, 
-  SubmissionID int4 NOT NULL, 
-  Correct      bool NOT NULL, 
+  ID              SERIAL NOT NULL, 
+  AnswerID        int4, 
+  QuestionScoreID int4 NOT NULL, 
+  SubmissionID    int4 NOT NULL, 
+  Correct         bool NOT NULL, 
   PRIMARY KEY (ID));
 CREATE TABLE Notification (
   ID            SERIAL NOT NULL, 
@@ -111,7 +111,7 @@ ALTER TABLE QuestionScore ADD CONSTRAINT question FOREIGN KEY (QuestionID) REFER
 ALTER TABLE Submission ADD CONSTRAINT "student-submission" FOREIGN KEY (UserID) REFERENCES "User" (ID);
 ALTER TABLE Submission ADD CONSTRAINT "resolution-exam" FOREIGN KEY (ExamID) REFERENCES Exam (ID);
 ALTER TABLE QuestionSubmission ADD CONSTRAINT "question-submissions" FOREIGN KEY (SubmissionID) REFERENCES Submission (ID);
-ALTER TABLE QuestionSubmission ADD CONSTRAINT "questionSubmission-question" FOREIGN KEY (QuestionID) REFERENCES Question (ID);
+ALTER TABLE QuestionSubmission ADD CONSTRAINT "questionSubmission-question" FOREIGN KEY (QuestionScoreID) REFERENCES QuestionScore (ID);
 ALTER TABLE QuestionSubmission ADD CONSTRAINT "questionSubmission-Answer" FOREIGN KEY (AnswerID) REFERENCES Answer (ID);
 ALTER TABLE Notification ADD CONSTRAINT "user-notifications" FOREIGN KEY (UserID) REFERENCES "User" (ID);
 ALTER TABLE Notification ADD CONSTRAINT groupInvitations FOREIGN KEY (GroupID) REFERENCES "Group" (ID);

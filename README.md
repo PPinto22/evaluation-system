@@ -87,7 +87,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
 - [~~PUT /api/exams/{exam_id}~~](#put-apiexamsexam_id)
 - [~~GET /api/exams/{exam_id}/scores~~](#get-apiexamsexam_idscores)
-- [~~POST /api/exams/{exam_id}/submission~~](#post-apiexamsexam_idsubmissions)
+- [POST /api/exams/{exam_id}/submission](#post-apiexamsexam_idsubmissions)
 - [~~GET /api/submissions/{submission_id}~~](#get-apisubmissionssubmission_id)
 - [~~PUT /api/submissions/{submission_id}~~](#put-apisubmissionssubmission_id)
 - [~~DELETE /api/submissions/{submission_id}~~](#delete-apisubmissionssubmission_id)
@@ -718,7 +718,56 @@ Se o utilizador for um aluno e o exame ainda não tiver começado, este método 
 #### ~~DELETE /api/exams/{exam_id}~~
 #### ~~PUT /api/exams/{exam_id}~~
 #### ~~GET /api/exams/{exam_id}/scores~~
-#### ~~POST /api/exams/{exam_id}/submissions~~
+#### POST /api/exams/{exam_id}/submissions
+### Body
+Mapeamento pergunta: resposta (IDs)
+```json
+{
+	"1": 4,
+	"2": 5
+}
+```
+### Response
+São retornadas todas as questões do exame, com a respetiva resposta do estudante. Caso este não dê uma resposta a alguma questão, então o campo "answer" não aparece.
+
+```json
+{
+  "id": 5,
+  "questions": [
+    {
+      "question": {
+        "id": 1,
+        "text": "Solve for x: 0 + x = 4",
+        "category": "Category1",
+        "difficulty": 1,
+        "answers": [
+          {
+            "id": 1,
+            "text": "1",
+            "order": 0
+          },
+          {
+            "..."
+          }
+        ],
+        "score": 3.3333333,
+        "order": 0
+      },
+      "answer": {
+        "id": 4,
+        "text": "4",
+        "order": 3
+      }
+    },
+  ]
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such exam*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Existent submission*, *Invalid answer*, *Invalid question*
 ___
 
 #### ~~GET /api/submissions/{submission_id}~~

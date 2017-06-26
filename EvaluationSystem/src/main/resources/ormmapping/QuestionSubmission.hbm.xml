@@ -12,10 +12,10 @@ License Type: Academic
 		</id>
 		<many-to-one name="_answer" cascade="lock" column="AnswerID" class="model.persistent.Answer" not-null="false" lazy="proxy" access="field">
 		</many-to-one>
-		<many-to-one name="_question" cascade="lock" column="QuestionID" class="model.persistent.Question" not-null="true" lazy="proxy" access="field">
-		</many-to-one>
 		<many-to-one name="_submission" cascade="lock" column="SubmissionID" class="model.persistent.Submission" not-null="true" lazy="proxy" access="field">
 		</many-to-one>
 		<property name="correct" column="Correct" type="boolean" not-null="true" lazy="false"/>
+		<many-to-one name="_question" cascade="lock" column="QuestionScoreID" class="model.persistent.QuestionScore" not-null="true" lazy="proxy" access="field">
+		</many-to-one>
 	</class>
 </hibernate-mapping>

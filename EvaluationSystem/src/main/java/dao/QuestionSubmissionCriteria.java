@@ -21,22 +21,22 @@ public class QuestionSubmissionCriteria extends AbstractORMCriteria {
 	public final IntegerExpression ID;
 	public final IntegerExpression _answerId;
 	public final AssociationExpression _answer;
-	public final IntegerExpression _questionId;
-	public final AssociationExpression _question;
 	public final IntegerExpression _submissionId;
 	public final AssociationExpression _submission;
 	public final BooleanExpression correct;
+	public final IntegerExpression _questionId;
+	public final AssociationExpression _question;
 	
 	public QuestionSubmissionCriteria(Criteria criteria) {
 		super(criteria);
 		ID = new IntegerExpression("ID", this);
 		_answerId = new IntegerExpression("_answer.ID", this);
 		_answer = new AssociationExpression("_answer", this);
-		_questionId = new IntegerExpression("_question.ID", this);
-		_question = new AssociationExpression("_question", this);
 		_submissionId = new IntegerExpression("_submission.ID", this);
 		_submission = new AssociationExpression("_submission", this);
 		correct = new BooleanExpression("correct", this);
+		_questionId = new IntegerExpression("_question.ID", this);
+		_question = new AssociationExpression("_question", this);
 	}
 	
 	public QuestionSubmissionCriteria(PersistentSession session) {
@@ -51,12 +51,12 @@ public class QuestionSubmissionCriteria extends AbstractORMCriteria {
 		return new AnswerCriteria(createCriteria("_answer"));
 	}
 	
-	public QuestionCriteria create_questionCriteria() {
-		return new QuestionCriteria(createCriteria("_question"));
-	}
-	
 	public SubmissionCriteria create_submissionCriteria() {
 		return new SubmissionCriteria(createCriteria("_submission"));
+	}
+	
+	public QuestionScoreCriteria create_questionCriteria() {
+		return new QuestionScoreCriteria(createCriteria("_question"));
 	}
 	
 	public QuestionSubmission uniqueQuestionSubmission() {

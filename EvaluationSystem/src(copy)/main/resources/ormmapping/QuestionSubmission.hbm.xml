@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Licensee: Universidade do Minho
+License Type: Academic
+-->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="model.persistent.QuestionSubmission" table="QuestionSubmission" lazy="false">
+		<id name="ID" column="ID" type="integer" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+		<many-to-one name="_answer" cascade="lock" column="AnswerID" class="model.persistent.Answer" not-null="false" lazy="proxy" access="field">
+		</many-to-one>
+		<many-to-one name="_question" cascade="lock" column="QuestionID" class="model.persistent.Question" not-null="true" lazy="proxy" access="field">
+		</many-to-one>
+		<many-to-one name="_submission" cascade="lock" column="SubmissionID" class="model.persistent.Submission" not-null="true" lazy="proxy" access="field">
+		</many-to-one>
+		<property name="correct" column="Correct" type="boolean" not-null="true" lazy="false"/>
+	</class>
+</hibernate-mapping>

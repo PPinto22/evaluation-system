@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Licensee: Universidade do Minho
+License Type: Academic
+-->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="model.persistent.Exam" table="Exam" lazy="false">
+		<id name="ID" column="ID" type="integer" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+		<many-to-one name="_group" cascade="lock" column="GroupID" class="model.persistent.Group" not-null="true" lazy="proxy" access="field">
+		</many-to-one>
+		<property name="beginDate" column="BeginDate" type="long" not-null="false" lazy="false"/>
+		<property name="duration" column="Duration" type="integer" not-null="false" lazy="false"/>
+		<property name="name" column="Name" type="string" length="255" not-null="false" lazy="false"/>
+		<set name="ORM__submissions" lazy="true" cascade="save-update,lock" inverse="true">
+			<key column="ExamID" not-null="true"/>
+			<one-to-many class="model.persistent.Submission"/>
+		</set>
+		<set name="ORM__questions" lazy="true" cascade="save-update,lock" inverse="true">
+			<key column="ExamID" not-null="true"/>
+			<one-to-many class="model.persistent.QuestionScore"/>
+		</set>
+	</class>
+</hibernate-mapping>
