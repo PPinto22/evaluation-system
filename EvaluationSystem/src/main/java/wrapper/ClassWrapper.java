@@ -2,7 +2,7 @@ package wrapper;
 
 import model.persistent.Class;
 
-public class ClassWrapper implements Comparable<ClassWrapper>{
+public class ClassWrapper{
 
     private int ID;
     private String name;
@@ -41,12 +41,17 @@ public class ClassWrapper implements Comparable<ClassWrapper>{
     }
 
     @Override
-    public int compareTo(ClassWrapper o) {
-        if(this.ID > o.ID)
-            return 1;
-        else if(this.ID < o.ID)
-            return -1;
-        else
-            return 0;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassWrapper that = (ClassWrapper) o;
+
+        return ID == that.ID;
+    }
+
+    @Override
+    public int hashCode() {
+        return ID;
     }
 }

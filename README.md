@@ -94,12 +94,13 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/users/{user_id}](#get-apiusersuser_id) [x]
 - [~~PUT /api/users/{user_id}~~](#put-apiusersuser_id)
 - [~~DELETE /api/users/{user_id}~~](#delete-apiusersuser_id)
+- [GET /api/users/{user_id}/classes](#get-apiusersuser_idclasses)
+- [GET /api/users/{user_id}/groups](#get-apiusersuser_idgroups)
 - [GET /api/users/{user_id}/notifications](#get-apiusersuser_idnotifications) [x]
 - [GET /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept) [x]
 - [GET /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitation_iddecline) [x]
 - [~~GET /api/students/{student_id}/scores~~](#get-apistudentsstudent_idscores)
 - [~~GET /api/students/{student_id}/exams?upcoming,history~~](#get-apistudentsstudent_idexamsupcominghistory)
-- [GET /api/teachers/{teacher_id}/classes](#get-apiteachersteacher_idclasses) [x]
 - [POST api/teachers/{teacher_id}/classes](#post-apiteachersteacher_idclasses) [x]
 
 #### POST /auth/login
@@ -690,6 +691,61 @@ ___
 
 #### ~~PUT /api/users/{user_id}~~
 #### ~~DELETE /api/users/{user_id}~~
+
+#### GET /api/users/{user_id}/classes
+### Response
+Caso o utilizador seja um professor, nao e enviado o professor.
+```json
+[
+  {
+    "name": "Name1",
+    "abbreviation": "Abbreviation1",
+    "id": 1,
+    "teacher": {
+      "id": 16,
+      "email": "email16",
+      "firstName": "firstName16",
+      "lastName": "lastName16",
+      "type": "Teacher",
+      "active": true
+    },
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such user*
+
+#### GET /api/users/{user_id}/groups
+### Response
+```json
+[
+  {
+    "id": 1,
+    "name": "Name1",
+    "_class": {
+      "name": "Name1",
+      "abbreviation": "Abbreviation1",
+      "teacher": {
+        "id": 16,
+        "email": "email16",
+        "firstName": "firstName16",
+        "lastName": "lastName16",
+        "type": "Teacher",
+        "active": true
+      },
+      "id": 1
+    }
+  },
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such user*
+
+
 #### GET /api/users/{user_id}/notifications
 ### Response
 ```json
@@ -757,22 +813,6 @@ ___
 #### ~~GET /api/students/{student_id}/scores~~
 #### ~~GET /api/students/{student_id}/exams?upcoming,history~~
 ___
-
-#### GET /api/teachers/{teacher_id}/classes
-### Response
-```json
-[
-  {
-   "name": "class1",
-   "abbreviation": "cl1",
-   "id": 1
-  }
-]
-```
-### HttpStatus
-- **OK (200)**
-- **INTERNAL_SERVER_ERROR (500)**
-- **NOT_FOUND (404)** - *No such teacher*
 
 #### POST api/teachers/{teacher_id}/classes
 ### Body

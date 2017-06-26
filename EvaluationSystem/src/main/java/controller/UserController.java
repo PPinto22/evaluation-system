@@ -4,21 +4,20 @@ import exception.InvalidClaimsException;
 import exception.NonExistentEntityException;
 import io.jsonwebtoken.Claims;
 import model.persistent.*;
+import model.persistent.Class;
 import org.orm.PersistentException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import security.JwtService;
+import service.StudentService;
 import service.TeacherService;
 import service.UserService;
 import wrapper.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -30,14 +29,15 @@ public class UserController {
 
     private UserService userService;
     private TeacherService teacherService;
+    private StudentService studentService;
     private JwtService jwtService;
 
-    public UserController(UserService userService, TeacherService teacherService, JwtService jwtService) {
+    public UserController(UserService userService, TeacherService teacherService, StudentService studentService, JwtService jwtService) {
         this.userService = userService;
         this.teacherService = teacherService;
+        this.studentService = studentService;
         this.jwtService = jwtService;
     }
-
 
     @RequestMapping(value = "/{id:[\\d]+}", method = GET)
     public ResponseEntity<Object> getUser(@PathVariable int id){
@@ -69,6 +69,68 @@ public class UserController {
             return new ResponseEntity<Object>(notifications, OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        }
+    }
+
+    @RequestMapping(value = "/{id:[\\d]+}/groups", method = GET)
+    public ResponseEntity<Object> getGroups(@PathVariable int id, HttpServletRequest request){
+        try {
+            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
+            User user = userService.getUserByID(id);
+            if(clientUser.getID() != user.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            Set<GroupWrapper> groups = new HashSet<>();
+            switch (user.getClass().getSimpleName()){
+                case "Teacher":
+                    Teacher teacher = (Teacher)user;
+                    for(Group group: teacherService.getGroups(teacher))
+                        groups.add(new GroupClassWrapper(group));
+                    break;
+                case "Student":
+                    Student student = (Student)user;
+                    for(Group group: studentService.getStudentGroups(student))
+                        groups.add(new GroupClassWrapper(group));
+                    break;
+            }
+            return new ResponseEntity<Object>(groups, OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+        }
+        return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+    }
+
+    @RequestMapping(value = "/{userID:[\\d]+}/classes", method = GET)
+    public ResponseEntity<Object> getClasses(@PathVariable int userID, HttpServletRequest request){
+        try {
+            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
+            User user = userService.getUserByID(userID);
+            if(user.getID() != clientUser.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            Set<ClassWrapper> classes = new HashSet<>();
+            switch (user.getClass().getSimpleName()){
+                case "Teacher":
+                    Teacher teacher = (Teacher)user;
+                    for(Class cl: teacherService.getClasses(teacher))
+                        classes.add(new ClassWrapper(cl));
+                    break;
+                case "Student":
+                    Student student = (Student)user;
+                    for(Class cl: studentService.getStudentClasses(student))
+                        classes.add(new ClassTeacherWrapper(cl));
+                    break;
+            }
+            return new ResponseEntity<Object>(classes, OK);
+        } catch (PersistentException e){
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
         } catch (InvalidClaimsException e) {

@@ -69,20 +69,4 @@ public class TeacherController {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         }
     }
-
-    @RequestMapping(value = "/{teacherID:[\\d]+}/classes", method = GET)
-    public ResponseEntity<Object> getClasses(@PathVariable int teacherID){
-        try {
-            Teacher teacher = teacherService.getTeacherByID(teacherID);
-            List<Class> classes = teacherService.getClasses(teacher);
-            Set<ClassWrapper> classWrappers = new TreeSet<>();
-            for(Class cl: classes)
-                classWrappers.add(new ClassWrapper(cl));
-            return new ResponseEntity<Object>(classWrappers, OK);
-        } catch (PersistentException e){
-            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
-        } catch (NonExistentEntityException e) {
-            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_TEACHER), NOT_FOUND);
-        }
-    }
 }

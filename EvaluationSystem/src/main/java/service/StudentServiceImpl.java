@@ -5,10 +5,18 @@ import exception.ExistentEntityException;
 import exception.InvalidUserTypeException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
+import model.persistent.Class;
+import model.persistent.Group;
+import model.persistent.GroupStudent;
 import model.persistent.Student;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import wrapper.GroupClassWrapper;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService{
@@ -35,6 +43,30 @@ public class StudentServiceImpl implements StudentService{
         student.setRegistered(false);
         student.setDeleted(false);
         return student;
+    }
+
+    @Override
+    public List<Group> getStudentGroups(Student student) {
+        List<Group> groups = new ArrayList<>();
+        List<GroupStudent> groupStudentList = Arrays.asList(student._groups.toArray());
+        for(GroupStudent groupStudent: groupStudentList) {
+            if (groupStudent.isAccepted()) {
+                groups.add(groupStudent.get_group());
+            }
+        }
+        return groups;
+    }
+
+    @Override
+    public List<Class> getStudentClasses(Student student) {
+        List<Class> classes = new ArrayList<>();
+        List<Group> groups = getStudentGroups(student);
+        for(Group group: groups){
+            Class cl = group.get_class();
+            if(!classes.contains(cl))
+                classes.add(cl);
+        }
+        return classes;
     }
 
     @Override
