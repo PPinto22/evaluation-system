@@ -59,25 +59,25 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 
 ### API
 
-- [POST /auth/login](#post-authlogin)
-- [POST /auth/signup](#post-authsignup)
-- [GET /api/classes/{class_id}](#get-apiclassesclass_id)
+- [POST /auth/login](#post-authlogin) [x]
+- [POST /auth/signup](#post-authsignup) [x]
+- [GET /api/classes/{class_id}](#get-apiclassesclass_id) [x]
 - [~~PUT /api/classes/{class_id}~~](#put-apiclassesclass_id)
 - [~~DELETE /api/classes/{class_id}~~](#delete-apiclassesclass_id)
-- [GET /api/classes/{class_id}/questions](#get-apiclassesclass_idquestions)
-- [POST /api/classes/{class_id}/questions](#post-apiclassesclass_idquestions)
-- [GET /api/classes/{class_id}/categories](#get-apiclassesclass_idcategories)
-- [GET /api/classes/{class_id}/groups](#get-apiclassesclass_idgroups)
-- [POST /api/classes/{class_id}/groups](#post-apiclassesclass_idgroups)
+- [GET /api/classes/{class_id}/questions](#get-apiclassesclass_idquestions) [x]
+- [POST /api/classes/{class_id}/questions](#post-apiclassesclass_idquestions) [x]
+- [GET /api/classes/{class_id}/categories](#get-apiclassesclass_idcategories) [x]
+- [GET /api/classes/{class_id}/groups](#get-apiclassesclass_idgroups) [x]
+- [POST /api/classes/{class_id}/groups](#post-apiclassesclass_idgroups) [x]
 - [~~GET /api/questions/{question_id}~~](#get-apiquestionsquestion_id)
 - [~~PUT /api/questions/{question_id}~~](#put-apiquestionsquestion_id)
 - [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestion_id)
-- [GET /api/groups/{group_id}](#get-apigroupsgroup_id)
+- [GET /api/groups/{group_id}](#get-apigroupsgroup_id) [x]
 - [~~PUT /api/groups/{group_id}~~](#put-apigroupsgroup_id)
 - [~~DELETE /api/groups/{group_id}~~](#delete-apigroupsgroup_id)
-- [GET /api/groups/{group_id}/students](#get-apigroupsgroup_idstudents)
-- [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents)
-- [DELETE /api/groups/{group_id}/students/{student_id}](#delete-apigroupsgroup_idstudentsstudent_id)
+- [GET /api/groups/{group_id}/students](#get-apigroupsgroup_idstudents) [x]
+- [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents) [x]
+- [DELETE /api/groups/{group_id}/students/{student_id}](#delete-apigroupsgroup_idstudentsstudent_id) [x]
 - [~~GET /api/groups/{group_id}/exams?upcoming,history~~](#get-apigroupsgroup_idexamsupcominghistory)
 - [~~POST /api/groups/{group_id}/exams~~](#post-apigroupsgroup_idexams)
 - [~~POST /api/groups/{group_id}/exams/generate~~](#post-apigroupsgroup_idexamsgenerate)
@@ -90,16 +90,16 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [~~GET /api/submissions/{submission_id}~~](#get-apisubmissionssubmission_id)
 - [~~PUT /api/submissions/{submission_id}~~](#put-apisubmissionssubmission_id)
 - [~~DELETE /api/submissions/{submission_id}~~](#delete-apisubmissionssubmission_id)
-- [GET /api/users/{user_id}](#get-apiusersuser_id)
+- [GET /api/users/{user_id}](#get-apiusersuser_id) [x]
 - [~~PUT /api/users/{user_id}~~](#put-apiusersuser_id)
 - [~~DELETE /api/users/{user_id}~~](#delete-apiusersuser_id)
-- [GET /api/users/{user_id}/notifications](#get-apiusersuser_idnotifications)
-- [GET /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept)
-- [GET /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitation_iddecline)
+- [GET /api/users/{user_id}/notifications](#get-apiusersuser_idnotifications) [x]
+- [GET /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept) [x]
+- [GET /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitation_iddecline) [x]
 - [~~GET /api/students/{student_id}/scores~~](#get-apistudentsstudent_idscores)
 - [~~GET /api/students/{student_id}/exams?upcoming,history~~](#get-apistudentsstudent_idexamsupcominghistory)
-- [GET /api/teachers/{teacher_id}/classes](#get-apiteachersteacher_idclasses)
-- [POST api/teachers/{teacher_id}/classes](#post-apiteachersteacher_idclasses)
+- [GET /api/teachers/{teacher_id}/classes](#get-apiteachersteacher_idclasses) [x]
+- [POST api/teachers/{teacher_id}/classes](#post-apiteachersteacher_idclasses) [x]
 
 #### POST /auth/login
 ##### Body
