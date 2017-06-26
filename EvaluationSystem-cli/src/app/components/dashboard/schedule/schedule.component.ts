@@ -1,14 +1,15 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {CalendarComponent} from 'ap-angular2-fullcalendar';
 
-declare var fullCalendar: any;
+declare var x_navigation: any;
+declare var page_content_onresize: any;
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.css']
 })
-export class ScheduleComponent implements OnInit {
+export class ScheduleComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
 
@@ -45,6 +46,13 @@ export class ScheduleComponent implements OnInit {
 
 
   ngOnInit() {
+
   }
+
+  ngAfterViewInit(): void {
+    x_navigation();
+    page_content_onresize();
+  }
+
 
 }

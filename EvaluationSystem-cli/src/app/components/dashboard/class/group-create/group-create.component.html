@@ -1,0 +1,169 @@
+<br>
+<br>
+
+<div class="row">
+  <div class="col-md-12 col-xs-12">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary">Save Group</button>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-6 col-sm-6 col-xs-12">
+
+    <div class="form-group">
+      <label class="col-md-3 control-label">Group Name:</label>
+      <div class="col-md-9">
+        <div class="input-group">
+          <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+          <input type="text" class="form-control" autocomplete="off"/>
+        </div>
+        <span class="help-block"></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-3 control-label">Invite Students:</label>
+      <div class="col-md-9 col-xs-12">
+        <textarea class="form-control" rows="5"></textarea>
+        <span class="help-block">Separators: line , ;</span>
+        <span class="help-block">Example: ana@gmail.com,rui@gmail.com
+          daniela@hotmail.com;pedro@gmail.com</span>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <button type="button" class="btn btn-primary pull-right">Add Students</button>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-sm-6 col-xs-12">
+
+    <div class="panel panel-default">
+      <div class="panel-heading ui-draggable-handle">
+        <h3 class="panel-title">Invited Students </h3>
+        <ul class="panel-controls">
+          <li><a (click)="refreshInvitedSudents()" class="control-info"><span class="glyphicon glyphicon-refresh"></span></a></li>
+          <li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+        </ul>
+      </div>
+      <div class="panel-body">
+        <!-- Search form -->
+        <form role="form">
+          <div class="bootstrap-select-searchbox">
+            <input type="text" class="input-block-level form-control" autocomplete="off" placeholder="Search for student">
+          </div>
+        </form>
+
+        <div class="panel-body scroll list-students" >
+          <!-- Coloquei o div externo porque penso que ajuda a fazer o ngFor caso contrario tirar-->
+          <ul class="list-group border-bottom ">
+            <li class="list-group-item">Rui Jorge Araujo Freitas
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Pedro Pinto
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Pedro Vale
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rafa Mota
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Joao Silva
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rui Jorge
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+              Araujo Freitas</li>
+            <li class="list-group-item">Pedro Pinto
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Pedro Vale
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rafa Mota
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Joao Silva
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rui Jorge Araujo Freitas
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Pedro Pinto
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Pedro Vale
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rafa Mota
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Joao Silva
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rui Jorge
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+              Araujo Freitas</li>
+            <li class="list-group-item">Pedro Pinto
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Pedro Vale
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rafa Mota
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Joao Silva
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rui Jorge Araujo Freitas
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Pedro Pinto
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Pedro Vale
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rafa Mota
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Joao Silva
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rui Jorge
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+              Araujo Freitas</li>
+            <li class="list-group-item">Pedro Pinto
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Pedro Vale
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Rafa Mota
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+            <li class="list-group-item">Joao Silva
+              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-12 col-xs-12">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary">Save Group</button>
+    </div>
+  </div>
+</div>

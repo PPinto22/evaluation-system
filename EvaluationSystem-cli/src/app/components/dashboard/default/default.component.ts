@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
 
 declare var $: any;
+declare var x_navigation: any;
+declare var page_content_onresize: any;
 
 @Component({
   selector: 'app-default',
@@ -25,6 +27,8 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         autoScrollOnFocus: false
       }
     }, {passive: true});
+    x_navigation();
+    page_content_onresize();
   }
 
 
