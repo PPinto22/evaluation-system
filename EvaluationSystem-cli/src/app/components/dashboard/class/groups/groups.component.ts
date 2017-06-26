@@ -1,8 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 
-declare var $: any;
-declare var panels: any;
-
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -17,6 +14,8 @@ export class GroupsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    panels();
+
   }
+
+
 }
