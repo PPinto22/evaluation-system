@@ -64,7 +64,8 @@ CREATE TABLE Exam (
   ID        SERIAL NOT NULL, 
   GroupID   int4 NOT NULL, 
   BeginDate timestamp, 
-  Duration  timestamp, 
+  Duration  time, 
+  Name      varchar(255), 
   PRIMARY KEY (ID));
 CREATE TABLE QuestionScore (
   ID         SERIAL NOT NULL, 

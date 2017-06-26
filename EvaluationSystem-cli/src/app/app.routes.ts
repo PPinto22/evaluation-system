@@ -11,7 +11,7 @@ import {LoginGuardService} from './services/login-guard.service';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {DefaultComponent} from './components/dashboard/default/default.component';
 import {ClassComponent} from './components/dashboard/class/class.component';
-import {ScheduleComponent} from "./components/dashboard/schedule/schedule.component";
+import {ScheduleComponent} from './components/dashboard/schedule/schedule.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
