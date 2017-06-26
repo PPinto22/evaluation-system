@@ -31,6 +31,7 @@ import { BreadCrumbService } from './services/breadcrumb.service';
 import { GroupCreateComponent } from './components/dashboard/class/group-create/group-create.component';
 import { ResultsComponent } from './components/dashboard/results/results.component';
 import { GroupViewComponent } from './components/dashboard/class/groups/group-view/group-view.component';
+import {ExamsService} from './services/exams.service';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { GroupViewComponent } from './components/dashboard/class/groups/group-vi
     QuestionsService,
     StudentsService,
     UserService,
-    BreadCrumbService
+    BreadCrumbService,
+    ExamsService
   ],
   bootstrap: [AppComponent]
 })
