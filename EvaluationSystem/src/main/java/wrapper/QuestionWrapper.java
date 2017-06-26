@@ -6,6 +6,8 @@ import model.persistent.Question;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionWrapper {
@@ -17,14 +19,14 @@ public class QuestionWrapper {
 
     public QuestionWrapper(){}
 
-    public QuestionWrapper(Question question){
+    public QuestionWrapper(Question question, boolean hideCorrectAnswers){
         this.id = question.getID();
         this.text = question.getText();
         this.category = question.getCategory();
-        this.difficulty = question.getDificulty();
+        this.difficulty = question.getDifficulty();
         this.answers = new ArrayList<>();
-        for(Answer answer: question._answers.toArray()){
-            this.answers.add(new AnswerWrapper(answer));
+        for(Answer answer: question.getAnswers()){
+            this.answers.add(new AnswerWrapper(answer,hideCorrectAnswers));
         }
     }
 

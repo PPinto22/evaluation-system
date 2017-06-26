@@ -33,8 +33,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(value = "/api/classes")
 public class ClassController {
 
-    JwtService jwtService;
-    ClassService classService;
+    private JwtService jwtService;
+    private ClassService classService;
 
     public ClassController(JwtService jwtService, ClassService classService){
         this.jwtService = jwtService;
@@ -102,7 +102,7 @@ public class ClassController {
             List<Question> questions = classService.listClassQuestions(cl);
             List<QuestionWrapper> questionWrappers = new ArrayList<>();
             for(Question question: questions)
-                questionWrappers.add(new QuestionWrapper(question));
+                questionWrappers.add(new QuestionWrapper(question, false));
 
             return new ResponseEntity<Object>(questionWrappers, OK);
         } catch (PersistentException e) {
@@ -125,7 +125,7 @@ public class ClassController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
             Question question = this.getQuestionFromWrapper(questionWrapper);
             question = this.classService.addQuestionToClass(cl, question);
-            return new ResponseEntity<Object>(new QuestionWrapper(question), OK);
+            return new ResponseEntity<Object>(new QuestionWrapper(question, false), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
@@ -158,15 +158,20 @@ public class ClassController {
         }
     }
 
-    private Question getQuestionFromWrapper(QuestionWrapper questionWrapper){
+    private Question getQuestionFromWrapper(QuestionWrapper questionWrapper) throws InvalidQuestionException {
         Question question = new Question();
         question.setText(questionWrapper.getText());
         question.setCategory(questionWrapper.getCategory());
-        question.setDificulty(questionWrapper.getDifficulty());
-        for(AnswerWrapper answerWrapper: questionWrapper.getAnswers()){
+        question.setDifficulty(questionWrapper.getDifficulty());
+        List<AnswerWrapper> answerWrappers = questionWrapper.getAnswers();
+        for(int i = 0; i<answerWrappers.size(); i++){
+            AnswerWrapper answerWrapper = answerWrappers.get(i);
             Answer answer = new Answer();
             answer.setText(answerWrapper.getText());
+            if(answerWrapper.isCorrect() == null)
+                throw new InvalidQuestionException();
             answer.setCorrect(answerWrapper.isCorrect());
+            answer.setOrder(i);
             question._answers.add(answer);
         }
         return question;

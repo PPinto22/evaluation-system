@@ -7,11 +7,13 @@ import exception.InvalidUserTypeException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
 import model.persistent.Class;
+import model.persistent.Group;
 import model.persistent.Teacher;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,6 +67,17 @@ public class TeacherServiceImpl implements TeacherService{
     @Override
     public List<Class> getClasses(Teacher teacher) {
         return Arrays.asList(teacher._classes.toArray());
+    }
+
+    @Override
+    public List<Group> getGroups(Teacher teacher) {
+        List<Group> groups = new ArrayList<>();
+        List<Class> classes = getClasses(teacher);
+        for(Class cl: classes){
+            for(Group group: cl._groups.toArray())
+                groups.add(group);
+        }
+        return groups;
     }
 
     @Override

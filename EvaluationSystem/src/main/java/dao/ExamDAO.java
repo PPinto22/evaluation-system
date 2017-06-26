@@ -14,7 +14,12 @@ package dao; /**
 import model.persistent.Exam;
 import org.orm.*;
 
+import java.util.List;
+
 public interface ExamDAO {
+	boolean exists(int examID) throws PersistentException;
+	boolean exists(int groupID, String examName) throws PersistentException;
+
 	public Exam loadExamByORMID(int ID) throws PersistentException;
 	public Exam getExamByORMID(int ID) throws PersistentException;
 	public Exam loadExamByORMID(int ID, org.hibernate.LockMode lockMode) throws PersistentException;

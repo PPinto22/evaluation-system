@@ -195,7 +195,7 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <Column name="Dificulty">
+    <Column name="Difficulty">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
@@ -248,6 +248,17 @@
       <Type>1</Type>
       <Length>0</Length>
       <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="Order">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>10</Length>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -317,7 +328,7 @@
     <Column name="BeginDate">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
-      <Type>22</Type>
+      <Type>16</Type>
       <Length>0</Length>
       <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
@@ -328,7 +339,7 @@
     <Column name="Duration">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
-      <Type>19</Type>
+      <Type>9</Type>
       <Length>0</Length>
       <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
@@ -389,6 +400,17 @@
       <ForeignKey>false</ForeignKey>
       <Type>4</Type>
       <Length>0</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="Order">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>10</Length>
       <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>

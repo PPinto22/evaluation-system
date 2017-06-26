@@ -16,6 +16,9 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface SubmissionDAO {
+	boolean exists(int ID) throws PersistentException;
+	boolean exists(int studentID, int examID) throws PersistentException;
+
 	public Submission loadSubmissionByORMID(int ID) throws PersistentException;
 	public Submission getSubmissionByORMID(int ID) throws PersistentException;
 	public Submission loadSubmissionByORMID(int ID, LockMode lockMode) throws PersistentException;

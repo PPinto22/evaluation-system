@@ -12,6 +12,7 @@ License Type: Academic
 		</id>
 		<property name="text" column="Text" type="string" length="255" not-null="false" lazy="false"/>
 		<property name="correct" column="Correct" type="boolean" not-null="false" lazy="false"/>
+		<property name="order" column="`Order`" type="integer" length="10" not-null="true" lazy="false"/>
 		<set name="ORM__questionSubmission" lazy="true" cascade="save-update,lock" inverse="true">
 			<key column="AnswerID" not-null="false"/>
 			<one-to-many class="model.persistent.QuestionSubmission"/>

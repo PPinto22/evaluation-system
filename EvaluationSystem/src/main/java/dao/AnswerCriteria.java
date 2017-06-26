@@ -21,6 +21,7 @@ public class AnswerCriteria extends AbstractORMCriteria {
 	public final IntegerExpression ID;
 	public final StringExpression text;
 	public final BooleanExpression correct;
+	public final IntegerExpression order;
 	public final CollectionExpression _questionSubmission;
 	
 	public AnswerCriteria(Criteria criteria) {
@@ -28,6 +29,7 @@ public class AnswerCriteria extends AbstractORMCriteria {
 		ID = new IntegerExpression("ID", this);
 		text = new StringExpression("text", this);
 		correct = new BooleanExpression("correct", this);
+		order = new IntegerExpression("order", this);
 		_questionSubmission = new CollectionExpression("ORM__questionSubmission", this);
 	}
 	

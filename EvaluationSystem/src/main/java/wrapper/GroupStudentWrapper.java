@@ -3,7 +3,7 @@ package wrapper;
 import model.persistent.GroupStudent;
 import model.persistent.Student;
 
-public class GroupStudentWrapper {
+public class GroupStudentWrapper implements Comparable<GroupStudentWrapper>{
 
     private boolean accepted;
     private UserWrapper user;
@@ -28,5 +28,15 @@ public class GroupStudentWrapper {
 
     public void setUser(UserWrapper user) {
         this.user = user;
+    }
+
+    @Override
+    public int compareTo(GroupStudentWrapper o) {
+        if (this.user.getId() > o.user.getId())
+            return 1;
+        else if (this.user.getId() < o.user.getId())
+            return -1;
+        else
+            return 0;
     }
 }

@@ -72,6 +72,7 @@ public class AnswerSetCollection extends org.orm.util.ORMSet {
 	 * <li>ID</li>
 	 * <li>text</li>
 	 * <li>correct</li>
+	 * <li>order</li>
 	 * </ul>
 	 * @return The persistent objects sorted array
 	 */
@@ -85,6 +86,7 @@ public class AnswerSetCollection extends org.orm.util.ORMSet {
 	 * <li>ID</li>
 	 * <li>text</li>
 	 * <li>correct</li>
+	 * <li>order</li>
 	 * </ul>
 	 * @param ascending true for ascending, false for descending
 	 * @return The persistent objects sorted array

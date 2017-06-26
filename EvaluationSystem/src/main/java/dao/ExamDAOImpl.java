@@ -21,6 +21,18 @@ import java.util.List;
 
 @Service
 public class ExamDAOImpl implements ExamDAO {
+	@Override
+	public boolean exists(int examID) throws PersistentException {
+		return this.getExamByORMID(examID) != null;
+	}
+
+	public boolean exists(int groupID, String examName) throws PersistentException {
+		ExamCriteria criteria = new ExamCriteria();
+		criteria._groupId.eq(groupID);
+		criteria.name.eq(examName);
+		return loadExamByCriteria(criteria) != null;
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(ExamDAOImpl.class);
 	public Exam loadExamByORMID(int ID) throws PersistentException {
 		try {
