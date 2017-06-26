@@ -21,6 +21,11 @@ import java.util.List;
 
 @Service
 public class ExamDAOImpl implements ExamDAO {
+	@Override
+	public boolean exists(int examID) throws PersistentException {
+		return this.getExamByORMID(examID) != null;
+	}
+
 	public boolean exists(int groupID, String examName) throws PersistentException {
 		ExamCriteria criteria = new ExamCriteria();
 		criteria._groupId.eq(groupID);

@@ -21,6 +21,7 @@ public interface GroupService {
     GroupStudent addStudentToGroupByEmail(Group group, String email) throws PersistentException, InvalidUserTypeException, ExistentEntityException;
     void removeStudentFromGroup(Group group, Student student) throws PersistentException, NonExistentEntityException;
 
+    boolean studentInGroup(Student student, Group group);
     boolean questionInExams(Group group, Question question) throws PersistentException;
     List<Question> listAvailableQuestions(Group group) throws PersistentException;
     Map<String, Map<Integer, List<Question>>> getAvailableQuestionsByCategoryAndDifficulty(Group group) throws PersistentException;

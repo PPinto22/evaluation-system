@@ -83,7 +83,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [POST /api/groups/{group_id}/exams](#post-apigroupsgroup_idexams)
 - [POST /api/groups/{group_id}/exams/generate](#post-apigroupsgroup_idexamsgenerate)
 - [~~GET /api/groups/{group_id}/scores~~](#get-apigroupsgroup_idscores)
-- [~~GET /api/exams/{exam_id}~~](#get-apiexamsexam_id)
+- [GET /api/exams/{exam_id}](#get-apiexamsexam_id)
 - [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
 - [~~PUT /api/exams/{exam_id}~~](#put-apiexamsexam_id)
 - [~~GET /api/exams/{exam_id}/scores~~](#get-apiexamsexam_idscores)
@@ -538,7 +538,8 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
           "..."
         }
       ],
-      "score": 5
+      "score": 5,
+      "order": 0
     },
     {
       "..."
@@ -617,7 +618,47 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 #### ~~GET /api/groups/{group_id}/scores~~
 ___
 
-#### ~~GET /api/exams/{exam_id}~~
+#### GET /api/exams/{exam_id}
+Se o utilizador for um aluno e o exame ainda não tiver começado, este método retorna apenas as informações do exame sem as questões; se o exame já tiver começado, então retorna também as perguntas mas sem a indicação de qual a resposta certa.
+### Response
+```json
+{
+  "id": 7,
+  "name": "Exam 7",
+  "beginDate": 1498908600000,
+  "duration": 60,
+  "questions": [
+    {
+      "id": 31,
+      "text": "Solve for x: 30 + x = 34",
+      "category": "Category1",
+      "difficulty": 1,
+      "answers": [
+        {
+          "id": 123,
+          "text": "31",
+          "correct": false,
+          "order": 0
+        },
+        {
+          "..."
+        }
+      ],
+      "score": 5,
+      "order": 0
+    },
+    {
+      "..."
+    }
+  ]
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such exam*
+- **UNAUTHORIZED (401)** - *No permission*
+
 #### ~~DELETE /api/exams/{exam_id}~~
 #### ~~PUT /api/exams/{exam_id}~~
 #### ~~GET /api/exams/{exam_id}/scores~~

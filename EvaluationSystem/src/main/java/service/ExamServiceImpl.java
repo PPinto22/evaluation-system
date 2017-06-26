@@ -7,6 +7,7 @@ import dao.QuestionScoreSetCollection;
 import exception.ExistentEntityException;
 import exception.InvalidExamException;
 import exception.InvalidQuestionException;
+import exception.NonExistentEntityException;
 import model.persistent.*;
 import model.persistent.Class;
 import org.orm.PersistentException;
@@ -32,6 +33,25 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
+    public Exam getExamByID(int examID) throws PersistentException, NonExistentEntityException {
+        if(!exists(examID))
+            throw new NonExistentEntityException();
+        return examDAO.loadExamByORMID(examID);
+    }
+
+    @Override
+    public boolean examHasStarted(Exam exam) {
+        long ms = System.currentTimeMillis();
+        return ms > exam.getBeginDate();
+    }
+
+    @Override
+    public boolean examHasFinished(Exam exam) {
+        long ms = System.currentTimeMillis();
+        return ms > (exam.getBeginDate() + exam.getDuration()*60*1000 + 10*60*1000); // 10 minutos de tolerancia apos fim
+    }
+
+    @Override
     public Exam createExam(String name, int minutes, long beginDate, List<Integer> questionIDs, Group group)
             throws InvalidExamException, PersistentException, InvalidQuestionException, ExistentEntityException {
         Exam exam = new Exam();
@@ -46,13 +66,13 @@ public class ExamServiceImpl implements ExamService{
         if(hasDuplicates(questionIDs))
             throw new InvalidExamException("duplicates");
 
-
         exam.setName(name);
         exam.setDuration(minutes);
         exam.setBeginDate(beginDate);
         exam.set_group(group);
         Class cl = group.get_class();
-        for (int qid : questionIDs) {
+        for (int i = 0; i<questionIDs.size(); i++) {
+            int qid = questionIDs.get(i);
             Question question = questionDAO.getQuestionByORMID(qid);
             if(question == null || question.get_class().getID() != cl.getID())
                 throw new InvalidQuestionException(""+qid);
@@ -60,6 +80,7 @@ public class ExamServiceImpl implements ExamService{
             questionScore.set_question(question);
             questionScore.setScore(20.0f / questionIDs.size()); //FIXME, DEFINIR COTACOES
             questionScore.set_exam(exam);
+            questionScore.setOrder(i);
             exam._questions.add(questionScore);
         }
         return exam;
@@ -73,6 +94,11 @@ public class ExamServiceImpl implements ExamService{
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean exists(int examID) throws PersistentException {
+        return examDAO.exists(examID);
     }
 
     @Override

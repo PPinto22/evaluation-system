@@ -19,7 +19,7 @@ License Type: Academic
 			<key column="ExamID" not-null="true"/>
 			<one-to-many class="model.persistent.Submission"/>
 		</set>
-		<set name="ORM__questions" lazy="true" cascade="save-update,lock" inverse="true" order-by="Order">
+		<set name="ORM__questions" lazy="true" cascade="save-update,lock" inverse="true">
 			<key column="ExamID" not-null="true"/>
 			<one-to-many class="model.persistent.QuestionScore"/>
 		</set>

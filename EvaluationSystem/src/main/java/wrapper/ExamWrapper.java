@@ -1,14 +1,13 @@
 package wrapper;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import model.persistent.Exam;
-import model.persistent.Question;
 import model.persistent.QuestionScore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamWrapper {
 
     private int id;
@@ -19,15 +18,18 @@ public class ExamWrapper {
 
     public ExamWrapper(){}
 
-    public ExamWrapper(Exam exam, boolean hideAnswers){
+    public ExamWrapper(Exam exam, boolean hideQuestions, boolean hideAnswers){
         this.id = exam.getID();
         this.name = exam.getName();
         this.beginDate = exam.getBeginDate();
         this.duration = exam.getDuration();
-        this.questions = new ArrayList<>();
-        for(QuestionScore qs: exam.getQuestionScores()){
-            this.questions.add(new QuestionScoreWrapper(qs,false));
+        if(!hideQuestions) {
+            this.questions = new ArrayList<>();
+            for (QuestionScore qs : exam.getQuestionScores()) {
+                this.questions.add(new QuestionScoreWrapper(qs, false));
+            }
         }
+        else this.questions=null;
     }
 
     public int getId() {

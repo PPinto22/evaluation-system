@@ -175,7 +175,7 @@ public class GroupController {
                     examWrapper.getQuestionIDs(),
                     group);
             exam = examService.addExamToGroup(group,exam);
-            return new ResponseEntity<Object>(new ExamWrapper(exam, false), OK);
+            return new ResponseEntity<Object>(new ExamWrapper(exam, false, false), OK);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         } catch (PersistentException e) {
@@ -196,7 +196,7 @@ public class GroupController {
                     return new ResponseEntity<Object>(new ErrorWrapper(INVALID_EXAM), NOT_ACCEPTABLE);
             }
         } catch (InvalidQuestionException e) {
-            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION + "(id "+e.getMessage()+")"), NOT_ACCEPTABLE);
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION + " (id "+e.getMessage()+")"), NOT_ACCEPTABLE);
         } catch (ExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(EXISTENT_EXAM), NOT_ACCEPTABLE);
         }

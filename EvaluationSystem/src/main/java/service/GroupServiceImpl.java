@@ -164,6 +164,15 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
+    public boolean studentInGroup(Student student, Group group) {
+        for(GroupStudent groupStudent: group._students.toArray()) {
+            if (groupStudent.get_student().getID() == student.getID())
+                return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean questionInExams(Group group, Question question) throws PersistentException {
         for(Exam exam: group._exams.toArray()){
             if(examService.examContainsQuestion(exam,question))
