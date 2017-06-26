@@ -40,6 +40,8 @@ public class QuestionScore {
 	
 	private float score;
 	
+	private int order;
+	
 	private void setID(int value) {
 		this.ID = value;
 	}
@@ -58,6 +60,14 @@ public class QuestionScore {
 	
 	public float getScore() {
 		return score;
+	}
+	
+	public void setOrder(int value) {
+		this.order = value;
+	}
+	
+	public int getOrder() {
+		return order;
 	}
 	
 	public void set_exam(Exam value) {

@@ -12,14 +12,14 @@ License Type: Academic
 		</id>
 		<many-to-one name="_group" cascade="lock" column="GroupID" class="model.persistent.Group" not-null="true" lazy="proxy" access="field">
 		</many-to-one>
-		<property name="beginDate" column="BeginDate" type="timestamp" not-null="false" lazy="false"/>
-		<property name="duration" column="Duration" type="time" not-null="false" lazy="false"/>
+		<property name="beginDate" column="BeginDate" type="long" not-null="false" lazy="false"/>
+		<property name="duration" column="Duration" type="integer" not-null="false" lazy="false"/>
 		<property name="name" column="Name" type="string" length="255" not-null="false" lazy="false"/>
 		<set name="ORM__submissions" lazy="true" cascade="save-update,lock" inverse="true">
 			<key column="ExamID" not-null="true"/>
 			<one-to-many class="model.persistent.Submission"/>
 		</set>
-		<set name="ORM__questions" lazy="true" cascade="save-update,lock" inverse="true">
+		<set name="ORM__questions" lazy="true" cascade="save-update,lock" inverse="true" order-by="Order">
 			<key column="ExamID" not-null="true"/>
 			<one-to-many class="model.persistent.QuestionScore"/>
 		</set>

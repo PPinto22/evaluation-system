@@ -24,5 +24,12 @@ public class ErrorMessages {
     public static final String QUESTION_EXISTS = "Question already exists";
     public static final String STUDENT_IN_GROUP = "Student has already been added to the group";
     public static final String INVALID_QUESTION = "Invalid question";
+    public static final String INVALID_NAME = "Invalid name";
+    public static final String INVALID_DATE = "Invalid date";
+    public static final String INVALID_EXAM = "Invalid exam";
+    public static final String INVALID_DURATION = "Invalid duration";
+    public static final String EXISTENT_EXAM = "Exam already exists";
+    public static final String INSUFFICIENT_QUESTIONS = "Insufficient questions";
+    public static final String DUPLICATE_QUESTIONS = "Duplicate questions";
     public static final String NO_PERMISSION = "No permission";
 }

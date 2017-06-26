@@ -78,9 +78,10 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/groups/{group_id}/students](#get-apigroupsgroup_idstudents)
 - [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents)
 - [DELETE /api/groups/{group_id}/students/{student_id}](#delete-apigroupsgroup_idstudentsstudent_id)
+- [GET /api/groups/{group_id}/questions/available](#get-apigroupsgroup_idquestionsavailable)
 - [~~GET /api/groups/{group_id}/exams?upcoming,history~~](#get-apigroupsgroup_idexamsupcominghistory)
 - [~~POST /api/groups/{group_id}/exams~~](#post-apigroupsgroup_idexams)
-- [~~POST /api/groups/{group_id}/exams/generate~~](#post-apigroupsgroup_idexamsgenerate)
+- [POST /api/groups/{group_id}/exams/generate](#post-apigroupsgroup_idexamsgenerate)
 - [~~GET /api/groups/{group_id}/scores~~](#get-apigroupsgroup_idscores)
 - [~~GET /api/exams/{exam_id}~~](#get-apiexamsexam_id)
 - [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
@@ -117,7 +118,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
      "email": "email1@email.com",
      "firstName": "Foo",
      "lastName": "Bar",
-     "type": "student | teacher",
+     "type": "Student | Teacher",
      "active": true,
      "id": 1
  }
@@ -138,7 +139,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
   "password": "password",
   "firstName": "Foo",
   "lastName": "Bar",
-  "type": "student | teacher"
+  "type": "Student | Teacher"
 }
 ```
 
@@ -148,7 +149,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
   "email": "email1@email.com",
   "firstName": "Foo",
   "lastName": "Bar",
-  "type": "student | teacher",
+  "type": "Student | Teacher",
   "active": true,
   "id": 1
 }
@@ -171,7 +172,7 @@ ___
       "email": "email1@email.com",
       "firstName": "Foo",
       "lastName": "Bar",
-      "type": "student | teacher",
+      "type": "Student | Teacher",
       "active": true,
       "id": 1
   }
@@ -197,18 +198,21 @@ ___
     "answers": [
       {
         "id": 1,
-        "text": "Alternativa 3",
-        "correct": false
+        "text": "Alternativa 1",
+        "correct": false,
+        "order": 0
       },
       {
         "id": 2,
-        "text": "Alternativa 1",
-        "correct": false
+        "text": "Alternativa 2",
+        "correct": true,
+        "order": 1
       },
       {
         "id": 3,
-        "text": "Alternativa 2",
-        "correct": true
+        "text": "Alternativa 3",
+        "correct": true,
+        "order": 2
       }
     ]
   }
@@ -253,18 +257,21 @@ ___
     "answers": [
         {
             "id": 1,
-            "text": "Alternativa 3",
-            "correct": false
+            "text": "Alternativa 1",
+            "correct": false,
+            "order": 0,
         },
         {
             "id": 2,
-            "text": "Alternativa 1",
-            "correct": false
+            "text": "Alternativa 2",
+            "correct": false,
+            "order": 1,
         },
         {
             "id": 3,
-            "text": "Alternativa 2",
-            "correct": true
+            "text": "Alternativa 3",
+            "correct": true,
+            "order": 2,
         }
     ]
 }
@@ -328,7 +335,7 @@ ___
             "email": "teacher@teacher",
             "firstName": "John",
             "lastName": "Doe",
-            "type": "teacher",
+            "type": "Teacher",
             "active": true,
             "id": 1
         },
@@ -362,7 +369,7 @@ ___
             "email": "email2",
             "firstName": "firstName2",
             "lastName": "lastName2",
-            "type": "teacher",
+            "type": "Teacher",
             "active": true,
             "id": 2
         },
@@ -390,7 +397,7 @@ ___
       "email": "email999",
       "firstName": "ND",
       "lastName": "ND",
-      "type": "student",
+      "type": "Student",
       "active": false,
       "id": 21
     }
@@ -401,7 +408,7 @@ ___
       "email": "email1",
       "firstName": "firstName1",
       "lastName": "lastName1",
-      "type": "student",
+      "type": "Student",
       "active": true,
       "id": 1
     }
@@ -430,7 +437,7 @@ ___
       "email": "email1@email.com",
       "firstName": "John",
       "lastName": "Doe",
-      "type": "student",
+      "type": "Student",
       "active": true,
       "id": 1
     }
@@ -455,9 +462,157 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such group*, *No such student*
 
+#### GET /api/groups/{group_id}/questions/available
+Este método devolve as perguntas disponíveis para um dado grupo, organizadas por categoria e dificuldade.
+Não são necessariamente as mesmas perguntas associadas à disciplina porque algumas dessas podem já ter sido utilizadas num exame anterior do grupo em questão.
+### Response
+```json
+{
+  "Category1": {
+    "1": {
+      "available": 1,
+      "questionIDs": [
+        1,
+      ]
+    },
+    "3": {
+      "available": 3,
+      "questionIDs": [
+        6,
+        21,
+        36
+      ]
+    }
+  },
+  "Category2": {
+    "1": {
+      "available": 2,
+      "questionIDs": [
+        22,
+        37
+      ]
+    }
+  }
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such group*
+- **UNAUTHORIZED (401)** - *No permission*
+
 #### ~~GET /api/groups/{group_id}/exams?upcoming,history~~
-#### ~~POST /api/groups/{group_id}/exams~~
-#### ~~POST /api/groups/{group_id}/exams/generate~~
+#### POST /api/groups/{group_id}/exams
+### Body
+```json
+{
+	"beginDate": "1498908600000",
+	"duration": 60,
+	"name": "Exam 1",
+	"questionIDs": [
+		31, 7, 11, 6
+	]
+}
+```
+### Response
+```json
+{
+  "id": 4,
+  "name": "Exam 4",
+  "beginDate": 1498908600000,
+  "duration": 60,
+  "questions": [
+    {
+      "id": 6,
+      "text": "Solve for x: 5 + x = 9",
+      "category": "Category1",
+      "difficulty": 3,
+      "answers": [
+        {
+          "id": 24,
+          "text": "6",
+          "correct": false,
+          "order": 0
+        },
+        {
+          "..."
+        }
+      ],
+      "score": 5
+    },
+    {
+      "..."
+    }
+  ]
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such group*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Invalid name*, *Invalid duration*, *Invalid date*, *Duplicate questions*, *Invalid exam*, *Invalid question* (id **ID**)
+
+#### POST /api/groups/{group_id}/exams/generate
+### Body
+```json
+[
+	{
+		"category": "Category1",
+		"difficulty": 1
+	},
+	{
+		"category": "Category2",
+		"difficulty": 3
+	}
+]
+```
+### Response
+```json
+[
+    {
+        "id": 31,
+        "text": "Solve for x: 30 + x = 34",
+        "category": "Category1",
+        "difficulty": 1,
+        "answers": [
+            {
+                "id": 121,
+                "text": "31",
+                "correct": false,
+                "order": 0,
+            },
+            {
+              "id": 122,
+              "text": "34",
+              "correct": true,
+              "order": 1,
+            }
+            {
+                "id": 123,
+                "text": "32",
+                "correct": false,
+                "order": 2,
+            },
+            {
+                "id": 124,
+                "text": "33",
+                "correct": false,
+                "order": 3,
+            },
+        ]
+    },
+    {
+      "..."
+    }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such group*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Invalid questions*, *Insufficient questions*
 
 #### ~~GET /api/groups/{group_id}/scores~~
 ___
@@ -481,7 +636,7 @@ ___
   "email": "email1@email.com",
   "firstName": "Foo",
   "lastName": "Bar",
-  "type": "student | teacher",
+  "type": "Student | Teacher",
   "active": true,
   "id": 1
 }

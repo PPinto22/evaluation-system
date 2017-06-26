@@ -4,7 +4,7 @@ import model.persistent.Group;
 
 public class GroupWrapper {
 
-    private int ID;
+    private int id;
     private String name;
 
     public GroupWrapper() {
@@ -12,16 +12,16 @@ public class GroupWrapper {
     }
 
     public GroupWrapper(Group group) {
-        this.setID(group.getID());
+        this.setId(group.getID());
         this.setName(group.getName());
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

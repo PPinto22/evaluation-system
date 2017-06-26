@@ -9,11 +9,18 @@ package model.persistent; /**
 
 import dao.AnswerSetCollection;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
 public class Question {
+
+	public List<Answer> getAnswers(){
+		return Arrays.asList(_answers.toArray("order",true));
+	}
 
 	public Question() {
 	}
@@ -51,7 +58,7 @@ public class Question {
 	
 	private String category;
 	
-	private int dificulty;
+	private int difficulty;
 	
 	private java.util.Set ORM__answers = new java.util.HashSet();
 	
@@ -83,12 +90,12 @@ public class Question {
 		return category;
 	}
 	
-	public void setDificulty(int value) {
-		this.dificulty = value;
+	public void setDifficulty(int value) {
+		this.difficulty = value;
 	}
 	
-	public int getDificulty() {
-		return dificulty;
+	public int getDifficulty() {
+		return difficulty;
 	}
 	
 	public void set_class(Class value) {

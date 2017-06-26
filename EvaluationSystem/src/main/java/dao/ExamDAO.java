@@ -15,6 +15,8 @@ import model.persistent.Exam;
 import org.orm.*;
 
 public interface ExamDAO {
+	boolean exists(int groupID, String examName) throws PersistentException;
+
 	public Exam loadExamByORMID(int ID) throws PersistentException;
 	public Exam getExamByORMID(int ID) throws PersistentException;
 	public Exam loadExamByORMID(int ID, org.hibernate.LockMode lockMode) throws PersistentException;

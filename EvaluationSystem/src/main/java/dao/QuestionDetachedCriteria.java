@@ -24,7 +24,7 @@ public class QuestionDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final AssociationExpression _class;
 	public final StringExpression text;
 	public final StringExpression category;
-	public final IntegerExpression dificulty;
+	public final IntegerExpression difficulty;
 	public final CollectionExpression _answers;
 	
 	public QuestionDetachedCriteria() {
@@ -34,7 +34,7 @@ public class QuestionDetachedCriteria extends AbstractORMDetachedCriteria {
 		_class = new AssociationExpression("_class", this.getDetachedCriteria());
 		text = new StringExpression("text", this.getDetachedCriteria());
 		category = new StringExpression("category", this.getDetachedCriteria());
-		dificulty = new IntegerExpression("dificulty", this.getDetachedCriteria());
+		difficulty = new IntegerExpression("difficulty", this.getDetachedCriteria());
 		_answers = new CollectionExpression("ORM__answers", this.getDetachedCriteria());
 	}
 	
@@ -45,7 +45,7 @@ public class QuestionDetachedCriteria extends AbstractORMDetachedCriteria {
 		_class = new AssociationExpression("_class", this.getDetachedCriteria());
 		text = new StringExpression("text", this.getDetachedCriteria());
 		category = new StringExpression("category", this.getDetachedCriteria());
-		dificulty = new IntegerExpression("dificulty", this.getDetachedCriteria());
+		difficulty = new IntegerExpression("difficulty", this.getDetachedCriteria());
 		_answers = new CollectionExpression("ORM__answers", this.getDetachedCriteria());
 	}
 	

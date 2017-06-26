@@ -23,7 +23,7 @@ public class QuestionCriteria extends AbstractORMCriteria {
 	public final AssociationExpression _class;
 	public final StringExpression text;
 	public final StringExpression category;
-	public final IntegerExpression dificulty;
+	public final IntegerExpression difficulty;
 	public final CollectionExpression _answers;
 	
 	public QuestionCriteria(Criteria criteria) {
@@ -33,7 +33,7 @@ public class QuestionCriteria extends AbstractORMCriteria {
 		_class = new AssociationExpression("_class", this);
 		text = new StringExpression("text", this);
 		category = new StringExpression("category", this);
-		dificulty = new IntegerExpression("dificulty", this);
+		difficulty = new IntegerExpression("difficulty", this);
 		_answers = new CollectionExpression("ORM__answers", this);
 	}
 	

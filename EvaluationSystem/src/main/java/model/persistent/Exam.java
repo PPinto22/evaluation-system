@@ -10,23 +10,18 @@ package model.persistent; /**
 import dao.QuestionScoreSetCollection;
 import dao.SubmissionSetCollection;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
 public class Exam {
-	public String getBeginDateAsString() {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		return df.format(this.getBeginDate());
+	public List<QuestionScore> getQuestionScores(){
+		return Arrays.asList(_questions.toArray("order",true));
 	}
 
-	public String getDurationAsString() {
-		DateFormat df = new SimpleDateFormat("HH:mm");
-		return df.format(this.getDuration());
-	}
 
 	public Exam() {
 	}
@@ -63,9 +58,9 @@ public class Exam {
 	
 	private Group _group;
 	
-	private java.sql.Timestamp beginDate;
+	private long beginDate;
 	
-	private java.sql.Time duration;
+	private int duration;
 	
 	private String name;
 	
@@ -85,19 +80,19 @@ public class Exam {
 		return getID();
 	}
 	
-	public void setBeginDate(java.sql.Timestamp value) {
+	public void setBeginDate(long value) {
 		this.beginDate = value;
 	}
 	
-	public java.sql.Timestamp getBeginDate() {
+	public long getBeginDate() {
 		return beginDate;
 	}
 	
-	public void setDuration(java.sql.Time value) {
+	public void setDuration(int value) {
 		this.duration = value;
 	}
 	
-	public java.sql.Time getDuration() {
+	public int getDuration() {
 		return duration;
 	}
 	
@@ -151,7 +146,7 @@ public class Exam {
 		return ORM__questions;
 	}
 	
-	public final QuestionScoreSetCollection _questions = new QuestionScoreSetCollection(this, _ormAdapter, ORMConstants.KEY_EXAM__QUESTIONS, ORMConstants.KEY_MUL_ONE_TO_MANY);
+	public final QuestionScoreSetCollection _questions = new QuestionScoreSetCollection(this, _ormAdapter, ORMConstants.KEY_EXAM__QUESTIONS, ORMConstants.KEY_QUESTIONSCORE__EXAM, ORMConstants.KEY_MUL_ONE_TO_MANY);
 	
 	public String toString() {
 		return String.valueOf(getID());

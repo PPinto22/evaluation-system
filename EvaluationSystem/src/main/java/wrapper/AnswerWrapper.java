@@ -1,19 +1,27 @@
 package wrapper;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import model.persistent.Answer;
 
-public class AnswerWrapper {
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class AnswerWrapper implements Comparable<AnswerWrapper>{
 
     private int id;
     private String text;
-    private boolean correct;
+    private Boolean correct;
+    private int order;
 
     public AnswerWrapper(){}
 
-    public AnswerWrapper(Answer answer){
+    public AnswerWrapper(Answer answer, boolean hideCorrect){
         this.id = answer.getID();
         this.text = answer.getText();
-        this.correct = answer.isCorrect();
+        if(hideCorrect)
+            this.correct = null;
+        else
+            this.correct = answer.isCorrect();
+        this.order = answer.getOrder();
     }
 
     public int getId() {
@@ -32,11 +40,29 @@ public class AnswerWrapper {
         this.text = text;
     }
 
-    public boolean isCorrect() {
+    public Boolean isCorrect() {
         return correct;
     }
 
-    public void setCorrect(boolean correct) {
+    public void setCorrect(Boolean correct) {
         this.correct = correct;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    @Override
+    public int compareTo(AnswerWrapper o) {
+        if (this.getOrder() > o.getOrder())
+            return 1;
+        else if (this.getOrder() < o.getOrder())
+                return -1;
+        else
+            return 0;
     }
 }

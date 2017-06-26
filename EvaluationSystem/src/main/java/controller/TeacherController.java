@@ -23,6 +23,8 @@ import wrapper.ErrorWrapper;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
@@ -73,7 +75,7 @@ public class TeacherController {
         try {
             Teacher teacher = teacherService.getTeacherByID(teacherID);
             List<Class> classes = teacherService.getClasses(teacher);
-            List<ClassWrapper> classWrappers = new ArrayList<>();
+            Set<ClassWrapper> classWrappers = new TreeSet<>();
             for(Class cl: classes)
                 classWrappers.add(new ClassWrapper(cl));
             return new ResponseEntity<Object>(classWrappers, OK);

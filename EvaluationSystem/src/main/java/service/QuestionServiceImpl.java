@@ -68,7 +68,7 @@ public class QuestionServiceImpl implements QuestionService{
     public boolean validate(Question question) {
         if(question.getText() == null || question.getText().equals("")
             || question.getCategory() == null || question.getCategory().equals("")
-            || question.getDificulty() > 3 || question.getDificulty() < 1
+            || question.getDifficulty() > 3 || question.getDifficulty() < 1
             || question._answers.size() > 10 || question._answers.size() < 2)
             return false;
         int correct = 0;

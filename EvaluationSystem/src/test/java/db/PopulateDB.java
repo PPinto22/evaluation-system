@@ -35,13 +35,13 @@ public class PopulateDB implements CommandLineRunner {
     @Autowired
     NotificationService notifSrv;
 
-    private static final int N_TEACHERS = 10;
-    private static final int N_STUDENTS = 10;
-    private static final int N_TEACHER_CLASSES = 2;
-    private static final int N_CLASS_GROUPS = 2;
-    private static final int N_GROUPS_STUDENTS = 5;
-    private static final int N_QUESTIONS_CLASS = 30;
-    private static final int N_CATEGORIES = 5;
+    public static final int N_TEACHERS = 10;
+    public static final int N_STUDENTS = 10;
+    public static final int N_TEACHER_CLASSES = 2;
+    public static final int N_CLASS_GROUPS = 2;
+    public static final int N_GROUPS_STUDENTS = 5;
+    public static final int N_QUESTIONS_CLASS = 45;
+    public static final int N_CATEGORIES = 5;
 
     private Map<Integer, Student> students = new HashMap<>();
     private Map<Integer, Teacher> teachers = new HashMap<>();
@@ -85,7 +85,7 @@ public class PopulateDB implements CommandLineRunner {
             int difficulty = i%3 + 1;
             Question question = new Question();
             question.setCategory("Category"+category_i);
-            question.setDificulty(difficulty);
+            question.setDifficulty(difficulty);
             String text = String.format("Solve for x: %d + x = %d", i, i+4);
             question.setText(text);
             for(int j = 1; j<=4; j++){
@@ -95,6 +95,7 @@ public class PopulateDB implements CommandLineRunner {
                     answer.setCorrect(true);
                 else
                     answer.setCorrect(false);
+                answer.setOrder(j-1);
                 question._answers.add(answer);
             }
             questions.add(question);

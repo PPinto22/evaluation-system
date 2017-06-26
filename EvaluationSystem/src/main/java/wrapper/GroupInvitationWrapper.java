@@ -4,7 +4,7 @@ import model.persistent.GroupInvitation;
 
 public class GroupInvitationWrapper implements NotificationWrapper {
 
-    private int ID;
+    private int id;
     private String type;
     private GroupClassWrapper group;
 
@@ -15,12 +15,12 @@ public class GroupInvitationWrapper implements NotificationWrapper {
         this.group = new GroupClassWrapper(invitation.get_group());
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

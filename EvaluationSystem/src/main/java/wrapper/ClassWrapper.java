@@ -2,7 +2,7 @@ package wrapper;
 
 import model.persistent.Class;
 
-public class ClassWrapper {
+public class ClassWrapper implements Comparable<ClassWrapper>{
 
     private int ID;
     private String name;
@@ -38,5 +38,15 @@ public class ClassWrapper {
 
     public void setAbbreviation(String abbreviation) {
         this.abbreviation = abbreviation;
+    }
+
+    @Override
+    public int compareTo(ClassWrapper o) {
+        if(this.ID > o.ID)
+            return 1;
+        else if(this.ID < o.ID)
+            return -1;
+        else
+            return 0;
     }
 }
