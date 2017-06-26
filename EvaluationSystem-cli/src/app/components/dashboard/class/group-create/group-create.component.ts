@@ -21,6 +21,12 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    x_navigation();
+    page_content_onresize();
+    this.scroll();
+  }
+
+  private scroll(): void {
     $('.scroll').mCustomScrollbar({
       axis: 'y',
       autoHideScrollbar: true,
@@ -29,8 +35,6 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
         autoScrollOnFocus: false
       }
     }, {passive: true});
-    x_navigation();
-    page_content_onresize();
   }
 
   public refreshInvitedSudents(): void{

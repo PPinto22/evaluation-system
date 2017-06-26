@@ -1,0 +1,11 @@
+.list {
+  max-height: 500px;
+}
+.filter-group-exames{
+  margin-bottom: 8px;
+  padding-top: 5px;
+}
+
+.filter-group-students{
+  padding-top: 5px;
+}

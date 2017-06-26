@@ -1,0 +1,150 @@
+<div class="col-md-6">
+  <div class="panel panel-default">
+    <div class="panel-heading ui-draggable-handle">
+      <h3 class="panel-title">List of Exames</h3>
+      <ul class="panel-controls">
+        <li><a><span class="fa fa-plus"></span></a></li>
+        <li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+      </ul>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 filter-group-exames">
+          <form>
+            <div class="form-group">
+              <div class="col-md-5 col-sm-5 col-xs-8">
+                <div *ngIf="order_date" (click)="toggleOrderDate()">
+                  <span class="fa fa-long-arrow-up"></span>
+                  <label class="order-date">most recent frist</label>
+                </div>
+                <div *ngIf="!order_date" (click)="toggleOrderDate()">
+                  <span  class="fa fa-long-arrow-down"></span>
+                  <label class="order-date">oldest frist</label>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-4">
+                <label class="check" style="margin: 0px">
+                  <div class="icheckbox_minimal-grey checked" style="position: relative;">
+                    <input type="checkbox" class="icheckbox" checked="checked" style="position: absolute; opacity: 0;">
+                    <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                  </div> done
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body scroll list">
+      <!-- Coloquei o div externo porque penso que ajuda a fazer o ngFor caso contrario tirar-->
+      <div>
+        <h6>Teste 1 de AA</h6>
+        <p>
+          Arquiteturas Aplicacionais - Grupo 2016/2017 - Antonio Nestor
+          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> 14:15 Today  </span>
+        </p>
+      </div>
+      <div>
+        <h6>Teste 1 de AA</h6>
+        <p>
+          Arquiteturas Aplicacionais - Grupo 2016/2017 - Antonio Nestor
+          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> 14:15 Today  </span>
+        </p>
+      </div>
+      <div>
+        <h6>Teste 1 de AA</h6>
+        <p>
+          Arquiteturas Aplicacionais - Grupo 2016/2017 - Antonio Nestor
+          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> 14:15 Today  </span>
+        </p>
+      </div>
+      <div>
+        <h6>Teste 1 de AA</h6>
+        <p>
+          Arquiteturas Aplicacionais - Grupo 2016/2017 - Antonio Nestor
+          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> 14:15 Today  </span>
+        </p>
+      </div>
+      <div>
+        <h6>Teste 1 de AA</h6>
+        <p>
+          Arquiteturas Aplicacionais - Grupo 2016/2017 - Antonio Nestor
+          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> 14:15 Today  </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <!-- Search form -->
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading ui-draggable-handle">
+      <h3 class="panel-title">Students</h3>
+      <ul class="panel-controls">
+        <li><a><span class="fa fa-plus"></span></a></li>
+        <li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+      </ul>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 filter-group-students">
+          <form>
+            <div class="form-group">
+              <input type="text" class="input-block-level form-control" autocomplete="off" placeholder="Search for student">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body scroll list">
+      <ul class="list-group border-bottom">
+        <li class="list-group-item">Rui Jorge Araujo Freitas
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Pedro Pinto
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Pedro Vale
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Rafa Mota
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Joao Silva
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Rui Jorge
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+          Araujo Freitas
+        </li>
+        <li class="list-group-item">Pedro Pinto
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Pedro Vale
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Rafa Mota
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Joao Silva
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Rui Jorge
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+          Araujo Freitas
+        </li>
+        <li class="list-group-item">Pedro Pinto
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Pedro Vale
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Rafa Mota
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+        <li class="list-group-item">Joao Silva
+          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

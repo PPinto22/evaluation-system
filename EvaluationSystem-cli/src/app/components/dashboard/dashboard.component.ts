@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   }
 
-
   ngAfterViewInit() {
     x_navigation();
     page_content_onresize();

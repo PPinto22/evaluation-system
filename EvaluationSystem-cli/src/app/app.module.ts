@@ -29,6 +29,7 @@ import { ScheduleComponent } from './components/dashboard/schedule/schedule.comp
 import {CalendarComponent} from 'ap-angular2-fullcalendar';
 import { GroupCreateComponent } from './components/dashboard/class/group-create/group-create.component';
 import { ResultsComponent } from './components/dashboard/results/results.component';
+import { GroupViewComponent } from './components/dashboard/class/groups/group-view/group-view.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { ResultsComponent } from './components/dashboard/results/results.compone
     ScheduleComponent,
     CalendarComponent,
     GroupCreateComponent,
-    ResultsComponent
+    ResultsComponent,
+    GroupViewComponent
   ],
   imports: [
     BrowserModule,
