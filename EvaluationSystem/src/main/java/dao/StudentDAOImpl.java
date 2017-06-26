@@ -11,10 +11,10 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.GroupStudent;
-import model.Notification;
-import model.Student;
-import model.Submission;
+import model.persistent.GroupStudent;
+import model.persistent.Notification;
+import model.persistent.Student;
+import model.persistent.Submission;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -188,7 +188,7 @@ public class StudentDAOImpl implements StudentDAO {
 	}
 	
 	public List queryStudent(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Student as model.Student");
+		StringBuffer sb = new StringBuffer("From model.persistent.Student as model.persistent.Student");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -204,14 +204,14 @@ public class StudentDAOImpl implements StudentDAO {
 	}
 	
 	public List queryStudent(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Student as model.Student");
+		StringBuffer sb = new StringBuffer("From model.persistent.Student as model.persistent.Student");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Student", lockMode);
+			query.setLockMode("model.persistent.Student", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -303,7 +303,7 @@ public class StudentDAOImpl implements StudentDAO {
 	}
 	
 	public java.util.Iterator iterateStudentByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Student as model.Student");
+		StringBuffer sb = new StringBuffer("From model.persistent.Student as model.persistent.Student");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -319,14 +319,14 @@ public class StudentDAOImpl implements StudentDAO {
 	}
 	
 	public java.util.Iterator iterateStudentByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Student as model.Student");
+		StringBuffer sb = new StringBuffer("From model.persistent.Student as model.persistent.Student");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Student", lockMode);
+			query.setLockMode("model.persistent.Student", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -345,7 +345,7 @@ public class StudentDAOImpl implements StudentDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.Student student)", e);
+			_logger.error("save(model.persistent.Student student)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -356,7 +356,7 @@ public class StudentDAOImpl implements StudentDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.Student student)", e);
+			_logger.error("delete(model.persistent.Student student)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -416,7 +416,7 @@ public class StudentDAOImpl implements StudentDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.Student student)", e);
+			_logger.error("refresh(model.persistent.Student student)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -427,7 +427,7 @@ public class StudentDAOImpl implements StudentDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.Student student)", e);
+			_logger.error("evict(model.persistent.Student student)", e);
 			throw new PersistentException(e);
 		}
 	}

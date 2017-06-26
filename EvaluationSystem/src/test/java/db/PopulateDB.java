@@ -2,8 +2,9 @@ package db;
 
 import exception.ExistentEntityException;
 import exception.MissingInformationException;
-import model.*;
-import model.Class;
+import exception.UnconfirmedRegistrationException;
+import model.persistent.*;
+import model.persistent.Class;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,7 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import service.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
@@ -29,16 +32,16 @@ public class PopulateDB implements CommandLineRunner {
     ClassService classSrv;
     @Autowired
     GroupService groupSrv;
-
-    public static int userCount = 0;
-    public static int classCount = 0;
-    public static int groupCount = 0;
+    @Autowired
+    NotificationService notifSrv;
 
     private static final int N_TEACHERS = 10;
     private static final int N_STUDENTS = 10;
-    public static final int N_TEACHER_CLASSES = 2;
-    public static final int N_CLASS_GROUPS = 2;
-    public static final int N_GROUPS_STUDENTS = 5;
+    private static final int N_TEACHER_CLASSES = 2;
+    private static final int N_CLASS_GROUPS = 2;
+    private static final int N_GROUPS_STUDENTS = 5;
+    private static final int N_QUESTIONS_CLASS = 30;
+    private static final int N_CATEGORIES = 5;
 
     private Map<Integer, Student> students = new HashMap<>();
     private Map<Integer, Teacher> teachers = new HashMap<>();
@@ -58,10 +61,92 @@ public class PopulateDB implements CommandLineRunner {
         addClasses();
         addGroups();
         addStudentsToGroups();
+        acceptGroupInvitations();
+        addQuestionsToClasses();
+    }
+
+    private void addQuestionsToClasses() {
+        for(Class cl: this.classes.values()){
+            for(Question question: this.getQuestions())
+                try{
+                    classSrv.addQuestionToClass(cl, question);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+        }
+    }
+
+    private List<Question> getQuestions(){
+        List<Question> questions = new ArrayList<>();
+
+        for(int i = 0; i<N_QUESTIONS_CLASS; i++) {
+            int category_i = i%N_CATEGORIES + 1;
+            int difficulty = i%3 + 1;
+            Question question = new Question();
+            question.setCategory("Category"+category_i);
+            question.setDificulty(difficulty);
+            String text = String.format("Solve for x: %d + x = %d", i, i+4);
+            question.setText(text);
+            for(int j = 1; j<=4; j++){
+                Answer answer = new Answer();
+                answer.setText(""+(i+j));
+                if(j == 4)
+                    answer.setCorrect(true);
+                else
+                    answer.setCorrect(false);
+                question._answers.add(answer);
+            }
+            questions.add(question);
+        }
+
+        return questions;
+    }
+
+    private void acceptGroupInvitations() {
+        for(Student student: this.students.values()){
+            for(Notification notification: student._notifications.toArray()){
+                switch (notification.getClass().getSimpleName()){
+                    case "GroupInvitation":
+                        GroupInvitation invitation = (GroupInvitation)notification;
+                        try{
+                            notifSrv.acceptInvitation(invitation);
+                        } catch (UnconfirmedRegistrationException e) {
+                            // Utilizador nao registado; nao e possivel aceitar.
+                        } catch (PersistentException e) {
+                            e.printStackTrace();
+                        }
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     private void addStudentsToGroups() {
-        // TODO
+        int group_i = 0;
+        for(Group group: this.groups.values()){
+            for(int i = 0; i<N_GROUPS_STUDENTS - 1; i++){
+                int j = (group_i*(N_GROUPS_STUDENTS-1) + i) % (N_STUDENTS-1) + 1;
+                try {
+                    Student student = this.students.get(j);
+                    GroupStudent groupStudent = groupSrv.addStudentToGroupByEmail(
+                            group, student.getEmail()
+                            );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            try{
+                GroupStudent groupStudent = groupSrv.addStudentToGroupByEmail(
+                        group,
+                        "email"+this.students.size()+this.teachers.size()+1
+                );
+                Student student = groupStudent.get_student();
+                this.students.put(student.getID(),student);
+            } catch (Exception e){ e.printStackTrace(); }
+            group_i++;
+        }
     }
 
     private void addGroups() {
@@ -78,9 +163,9 @@ public class PopulateDB implements CommandLineRunner {
     }
 
     private void addGroupToClass(Class cl) throws Exception {
-        groupCount++;
+        int i = this.groups.size()+1;
         Group group = new Group();
-        group.setName("Name"+groupCount);
+        group.setName("Name"+i);
         group = this.classSrv.addGroupToClass(cl, group);
         this.groups.put(group.getID(), group);
     }
@@ -98,10 +183,10 @@ public class PopulateDB implements CommandLineRunner {
     }
 
     private void addClassToTeacher(Teacher teacher) throws MissingInformationException, PersistentException, ExistentEntityException {
-        classCount++;
+        int i = this.classes.size()+1;
         Class cl = new Class();
-        cl.setAbbreviation("Abbreviation"+classCount);
-        cl.setName("Name"+classCount);
+        cl.setAbbreviation("Abbreviation"+i);
+        cl.setName("Name"+i);
         cl = teacherSrv.addClassToTeacher(teacher, cl);
         this.classes.put(cl.getID(), cl);
     }
@@ -128,12 +213,12 @@ public class PopulateDB implements CommandLineRunner {
     }
 
     public void addUser(String type) throws Exception {
-        userCount++;
+        int i = this.students.size()+this.teachers.size()+1;
         User signup = new User();
-        signup.setEmail("email"+userCount);
+        signup.setEmail("email"+i);
         signup.setPassword("password");
-        signup.setFirstName("firstName"+userCount);
-        signup.setLastName("lastName"+userCount);
+        signup.setFirstName("firstName"+i);
+        signup.setLastName("lastName"+i);
 
         User user = userSrv.signup(signup, type, true);
 
@@ -148,8 +233,5 @@ public class PopulateDB implements CommandLineRunner {
                 break;
         }
     }
-
-
-
 
 }

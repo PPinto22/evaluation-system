@@ -10,6 +10,8 @@ import {HomeComponent} from './components/home/home.component';
 import {LoginGuardService} from './services/login-guard.service';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {DefaultComponent} from './components/dashboard/default/default.component';
+import {ClassComponent} from './components/dashboard/class/class.component';
+import {ScheduleComponent} from "./components/dashboard/schedule/schedule.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
@@ -17,8 +19,13 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [LoginGuardService] },
   { path: 'dashboard', component: DashboardComponent,
     children: [
-      { path: '', component: DefaultComponent }
-      // { path: 'classes', component: Overview },
+      { path: '', component: DefaultComponent },
+      { path: 'classes', component: ClassComponent },
+//      { path: 'classes/:id', component: ClassComponent },
+      { path: 'schedule', component: ScheduleComponent },
+      { path: 'results', component: ClassComponent },
+
+
       // { path: 'results', component: Specs }
     ]
   }

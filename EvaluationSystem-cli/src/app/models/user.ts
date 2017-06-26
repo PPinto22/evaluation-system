@@ -2,8 +2,8 @@
  * Created by rjaf on 30/05/2017.
  */
 export class User {
-  public static _Teacher = 'teacher';
-  public static _Student = 'student';
+  public static _Teacher = 'Teacher';
+  public static _Student = 'Student';
 
   private _id: number;
   private _email: string;

@@ -1,4 +1,4 @@
-package model; /**
+package model.persistent; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -7,24 +7,22 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
-import dao.ORMConstants;
-
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-public class QuestionScore {
+public class Notification {
 
-	public QuestionScore() {
+	public Notification() {
 	}
 	
 	private void this_setOwner(Object owner, int key) {
-		if (key == ORMConstants.KEY_QUESTIONSCORE__QUESTION) {
-			this._question = (Question) owner;
+		if (key == ORMConstants.KEY_NOTIFICATION__USER) {
+			this._user = (User) owner;
 		}
 	}
 	
-	org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
+	public org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
 		public void setOwner(Object owner, int key) {
 			this_setOwner(owner, key);
 		}
@@ -33,9 +31,7 @@ public class QuestionScore {
 	
 	private int ID;
 	
-	private Question _question;
-	
-	private float score;
+	private User _user;
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -49,20 +45,28 @@ public class QuestionScore {
 		return getID();
 	}
 	
-	public void setScore(float value) {
-		this.score = value;
+	public void set_user(User value) {
+		if (_user != null) {
+			_user._notifications.remove(this);
+		}
+		if (value != null) {
+			value._notifications.add(this);
+		}
 	}
 	
-	public float getScore() {
-		return score;
+	public User get_user() {
+		return _user;
 	}
 	
-	public void set_question(Question value) {
-		this._question = value;
+	/**
+	 * This method is for internal use only.
+	 */
+	public void setORM__user(User value) {
+		this._user = value;
 	}
 	
-	public Question get_question() {
-		return _question;
+	private User getORM__user() {
+		return _user;
 	}
 	
 	public String toString() {

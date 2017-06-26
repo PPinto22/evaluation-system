@@ -11,11 +11,10 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.Exam;
-import model.Submission;
+import model.persistent.Exam;
+import model.persistent.Submission;
 import org.orm.*;
 import org.hibernate.Query;
-import org.hibernate.LockMode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,7 +44,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public Exam loadExamByORMID(int ID, LockMode lockMode) throws PersistentException {
+	public Exam loadExamByORMID(int ID, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
 			PersistentSession session = ClassesPersistentManager.instance().getSession();
 			return loadExamByORMID(session, ID, lockMode);
@@ -56,7 +55,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public Exam getExamByORMID(int ID, LockMode lockMode) throws PersistentException {
+	public Exam getExamByORMID(int ID, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
 			PersistentSession session = ClassesPersistentManager.instance().getSession();
 			return getExamByORMID(session, ID, lockMode);
@@ -87,7 +86,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public Exam loadExamByORMID(PersistentSession session, int ID, LockMode lockMode) throws PersistentException {
+	public Exam loadExamByORMID(PersistentSession session, int ID, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
 			return (Exam) session.load(Exam.class, new Integer(ID), lockMode);
 		}
@@ -97,7 +96,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public Exam getExamByORMID(PersistentSession session, int ID, LockMode lockMode) throws PersistentException {
+	public Exam getExamByORMID(PersistentSession session, int ID, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
 			return (Exam) session.get(Exam.class, new Integer(ID), lockMode);
 		}
@@ -118,7 +117,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public List queryExam(String condition, String orderBy, LockMode lockMode) throws PersistentException {
+	public List queryExam(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
 			PersistentSession session = ClassesPersistentManager.instance().getSession();
 			return queryExam(session, condition, orderBy, lockMode);
@@ -140,7 +139,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public Exam[] listExamByQuery(String condition, String orderBy, LockMode lockMode) throws PersistentException {
+	public Exam[] listExamByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
 			PersistentSession session = ClassesPersistentManager.instance().getSession();
 			return listExamByQuery(session, condition, orderBy, lockMode);
@@ -167,7 +166,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public List queryExam(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
+	public List queryExam(PersistentSession session, String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		StringBuffer sb = new StringBuffer("From Exam as Exam");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
@@ -195,7 +194,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public Exam[] listExamByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
+	public Exam[] listExamByQuery(PersistentSession session, String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
 			List list = queryExam(session, condition, orderBy, lockMode);
 			return (Exam[]) list.toArray(new Exam[list.size()]);
@@ -217,7 +216,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public Exam loadExamByQuery(String condition, String orderBy, LockMode lockMode) throws PersistentException {
+	public Exam loadExamByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
 			PersistentSession session = ClassesPersistentManager.instance().getSession();
 			return loadExamByQuery(session, condition, orderBy, lockMode);
@@ -236,7 +235,7 @@ public class ExamDAOImpl implements ExamDAO {
 			return null;
 	}
 	
-	public Exam loadExamByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
+	public Exam loadExamByQuery(PersistentSession session, String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		Exam[] exams = listExamByQuery(session, condition, orderBy, lockMode);
 		if (exams != null && exams.length > 0)
 			return exams[0];
@@ -255,7 +254,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public java.util.Iterator iterateExamByQuery(String condition, String orderBy, LockMode lockMode) throws PersistentException {
+	public java.util.Iterator iterateExamByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
 			PersistentSession session = ClassesPersistentManager.instance().getSession();
 			return iterateExamByQuery(session, condition, orderBy, lockMode);
@@ -282,7 +281,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public java.util.Iterator iterateExamByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
+	public java.util.Iterator iterateExamByQuery(PersistentSession session, String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		StringBuffer sb = new StringBuffer("From Exam as Exam");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
@@ -343,7 +342,7 @@ public class ExamDAOImpl implements ExamDAO {
 		}
 	}
 	
-	public boolean deleteAndDissociate(Exam exam, PersistentSession session)throws PersistentException {
+	public boolean deleteAndDissociate(Exam exam, org.orm.PersistentSession session)throws PersistentException {
 		try {
 			if (exam.get_group() != null) {
 				exam.get_group()._exams.remove(exam);

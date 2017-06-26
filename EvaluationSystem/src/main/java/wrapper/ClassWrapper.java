@@ -1,6 +1,6 @@
 package wrapper;
 
-import model.Class;
+import model.persistent.Class;
 
 public class ClassWrapper {
 

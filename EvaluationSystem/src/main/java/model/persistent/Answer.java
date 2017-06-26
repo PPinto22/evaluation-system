@@ -1,4 +1,4 @@
-package model; /**
+package model.persistent; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -7,7 +7,6 @@ package model; /**
  * Modifying its content may cause the program not work, or your work may lost.
  */
 
-import dao.ORMConstants;
 import dao.QuestionSubmissionSetCollection;
 
 /**
@@ -66,7 +65,7 @@ public class Answer {
 		this.correct = value;
 	}
 	
-	public boolean getCorrect() {
+	public boolean isCorrect() {
 		return correct;
 	}
 	

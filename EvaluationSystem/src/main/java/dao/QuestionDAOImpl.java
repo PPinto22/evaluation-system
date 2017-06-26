@@ -11,16 +11,42 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.Question;
+import model.persistent.Question;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
 public class QuestionDAOImpl implements QuestionDAO {
+	@Override
+	public boolean exists(int questionID) throws PersistentException {
+		return this.getQuestionByORMID(questionID) != null;
+	}
+
+	@Override
+	public boolean exists(int classID, String text) throws PersistentException {
+		return !this.listQuestionsByClassAndText(classID,text).isEmpty();
+	}
+
+	@Override
+	public List<Question> listQuestionsByClassAndText(int classID, String text) throws PersistentException {
+		QuestionCriteria criteria = new QuestionCriteria();
+		criteria._classId.eq(classID);
+		criteria.text.eq(text);
+		return Arrays.asList(this.listQuestionByCriteria(criteria));
+	}
+
+	@Override
+	public List<Question> listQuestionsByClass(int classID) throws PersistentException {
+		QuestionCriteria criteria = new QuestionCriteria();
+		criteria._classId.eq(classID);
+		return Arrays.asList(this.listQuestionByCriteria(criteria));
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(QuestionDAOImpl.class);
 	public Question loadQuestionByORMID(int ID) throws PersistentException {
 		try {
@@ -151,7 +177,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 	}
 	
 	public List queryQuestion(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Question as model.Question");
+		StringBuffer sb = new StringBuffer("From model.persistent.Question as model.persistent.Question");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -167,14 +193,14 @@ public class QuestionDAOImpl implements QuestionDAO {
 	}
 	
 	public List queryQuestion(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Question as model.Question");
+		StringBuffer sb = new StringBuffer("From model.persistent.Question as model.persistent.Question");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Question", lockMode);
+			query.setLockMode("model.persistent.Question", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -266,7 +292,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 	}
 	
 	public java.util.Iterator iterateQuestionByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Question as model.Question");
+		StringBuffer sb = new StringBuffer("From model.persistent.Question as model.persistent.Question");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -282,14 +308,14 @@ public class QuestionDAOImpl implements QuestionDAO {
 	}
 	
 	public java.util.Iterator iterateQuestionByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.Question as model.Question");
+		StringBuffer sb = new StringBuffer("From model.persistent.Question as model.persistent.Question");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.Question", lockMode);
+			query.setLockMode("model.persistent.Question", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -308,7 +334,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.Question question)", e);
+			_logger.error("save(model.persistent.Question question)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -319,7 +345,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.Question question)", e);
+			_logger.error("delete(model.persistent.Question question)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -363,7 +389,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.Question question)", e);
+			_logger.error("refresh(model.persistent.Question question)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -374,7 +400,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.Question question)", e);
+			_logger.error("evict(model.persistent.Question question)", e);
 			throw new PersistentException(e);
 		}
 	}

@@ -11,7 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.GroupStudent;
+import model.persistent.GroupStudent;
 import org.hibernate.Criteria;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;

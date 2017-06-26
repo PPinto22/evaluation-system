@@ -5,22 +5,22 @@ License Type: Academic
 -->
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="model.Class" table="Class" lazy="false">
+	<class name="model.persistent.Class" table="Class" lazy="false">
 		<id name="ID" column="ID" type="integer" unsaved-value="0">
 			<generator class="native">
 			</generator>
 		</id>
-		<many-to-one name="_teacher" cascade="lock" column="UserID" class="model.Teacher" not-null="true" lazy="proxy" access="field">
+		<many-to-one name="_teacher" cascade="lock" column="UserID" class="model.persistent.Teacher" not-null="true" lazy="proxy" access="field">
 		</many-to-one>
 		<property name="name" column="Name" type="string" length="255" not-null="true" lazy="false"/>
 		<property name="abbreviation" column="Abbreviation" type="string" length="255" not-null="false" lazy="false"/>
 		<set name="ORM__question" lazy="true" cascade="save-update,lock" inverse="true">
 			<key column="ClassID" not-null="true"/>
-			<one-to-many class="model.Question"/>
+			<one-to-many class="model.persistent.Question"/>
 		</set>
 		<set name="ORM__groups" lazy="true" cascade="save-update,lock" inverse="true">
 			<key column="ClassID" not-null="true"/>
-			<one-to-many class="model.Group"/>
+			<one-to-many class="model.persistent.Group"/>
 		</set>
 	</class>
 </hibernate-mapping>

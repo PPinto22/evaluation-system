@@ -13,7 +13,7 @@ package dao; /**
  */
 import java.util.List;
 
-import model.Answer;
+import model.persistent.Answer;
 import org.hibernate.criterion.DetachedCriteria;
 import org.orm.PersistentSession;
 import org.orm.criteria.*;

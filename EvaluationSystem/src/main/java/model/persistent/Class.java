@@ -1,4 +1,4 @@
-package model; /**
+package model.persistent; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -8,7 +8,6 @@ package model; /**
  */
 
 import dao.GroupSetCollection;
-import dao.ORMConstants;
 import dao.QuestionSetCollection;
 
 /**
@@ -137,11 +136,6 @@ public class Class {
 	}
 	
 	public final GroupSetCollection _groups = new GroupSetCollection(this, _ormAdapter, ORMConstants.KEY_CLASS__GROUPS, ORMConstants.KEY_GROUP__CLASS, ORMConstants.KEY_MUL_ONE_TO_MANY);
-	
-	public Group addGroup(Group group) {
-		//TODO: Implement Method
-		throw new UnsupportedOperationException();
-	}
 	
 	public String toString() {
 		return String.valueOf(getID());

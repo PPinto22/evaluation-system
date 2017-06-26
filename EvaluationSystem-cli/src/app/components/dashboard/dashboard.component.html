@@ -6,7 +6,7 @@
     <!-- START X-NAVIGATION -->
     <ul class="x-navigation">
       <li class="xn-logo">
-        <a routerLink="['/']">Evaluation</a>
+        <a [routerLink]="['/dashboard']">Evaluation</a>
         <a href="#page-top" class="x-navigation-control"></a>
       </li>
       <li class="xn-profile">
@@ -22,13 +22,20 @@
       </li>
       <li class="xn-title">Navigation</li>
       <li class="active">
-        <a [routerLinkActive]="['/dashboard']"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
+        <a [routerLink]="['/dashboard']"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
+      </li>
+      <li>
+        <a [routerLink]="['/dashboard/schedule']"><span class="fa fa-calendar"></span> <span class="xn-text">Schedule</span></a>
+      </li>
+      <li>
+        <a [routerLink]="['/dashboard/results']"><span class="fa fa-calendar"></span> <span class="xn-text">Results</span></a>
       </li>
       <li class="xn-openable">
         <a ><span class="fa fa-files-o"></span> <span class="xn-text">Classes</span></a>
         <ul>
-          <li class="active"><a > AA </a></li>
-          <li><a > BB </a></li>
+          <!-- TODO ngFor para todas as classes -->
+          <li><a [routerLink]="['/dashboard/classes']"> AA </a></li>
+          <li><a [routerLink]="['/dashboard/classes']"> BB </a></li>
         </ul>
       </li>
     </ul>
@@ -47,6 +54,10 @@
       </li>
       <!-- END TOGGLE NAVIGATION -->
 
+      <li class="xn-text">
+        <a>Arquiteturas Aplicacionais</a>
+      </li>
+
       <!-- SIGN OUT -->
       <li class="xn-icon-button pull-right">
         <a (click)="logout()" class="mb-control" ><span class="fa fa-sign-out"></span></a>
@@ -56,7 +67,9 @@
 
     <div class="page-content-wrap">
       <br>
-      <router-outlet></router-outlet>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
     </div>
 
 

@@ -1,6 +1,6 @@
 package wrapper;
 
-import model.Group;
+import model.persistent.Group;
 
 public class GroupClassWrapper extends GroupWrapper {
 

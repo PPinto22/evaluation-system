@@ -11,8 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import dao.ClassesPersistentManager;
-import model.QuestionScore;
+import model.persistent.QuestionScore;
 import org.orm.*;
 
 public class QuestionScoreSetCollection extends org.orm.util.ORMSet {
@@ -38,7 +37,7 @@ public class QuestionScoreSetCollection extends org.orm.util.ORMSet {
 	 */
 	public void add(QuestionScore value) {
 		if (value != null) {
-			super.add(value, null);
+			super.add(value, value._ormAdapter);
 		}
 	}
 	
@@ -47,7 +46,7 @@ public class QuestionScoreSetCollection extends org.orm.util.ORMSet {
 	 * @param value the persistent object
 	 */
 	public void remove(QuestionScore value) {
-		super.remove(value, null);
+		super.remove(value, value._ormAdapter);
 	}
 	
 	/**

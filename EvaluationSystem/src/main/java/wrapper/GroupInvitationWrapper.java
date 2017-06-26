@@ -1,18 +1,18 @@
 package wrapper;
 
-import model.GroupInvitation;
+import model.persistent.GroupInvitation;
 
 public class GroupInvitationWrapper implements NotificationWrapper {
 
     private int ID;
     private String type;
-    private GroupWrapper group;
+    private GroupClassWrapper group;
 
     public GroupInvitationWrapper(){
     }
 
     public GroupInvitationWrapper(GroupInvitation invitation){
-        this.group = new GroupWrapper(invitation.get_group());
+        this.group = new GroupClassWrapper(invitation.get_group());
     }
 
     public int getID() {
@@ -25,14 +25,14 @@ public class GroupInvitationWrapper implements NotificationWrapper {
 
     @Override
     public String getType() {
-        return "group invitation";
+        return "Group invitation";
     }
 
-    public GroupWrapper getGroup() {
+    public GroupClassWrapper getGroup() {
         return group;
     }
 
-    public void setGroup(GroupWrapper group) {
+    public void setGroup(GroupClassWrapper group) {
         this.group = group;
     }
 }

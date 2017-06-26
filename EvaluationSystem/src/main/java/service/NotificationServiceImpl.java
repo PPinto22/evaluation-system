@@ -1,12 +1,11 @@
 package service;
 
 import dao.GroupInvitationDAO;
+import dao.GroupStudentDAO;
 import dao.NotificationDAO;
 import exception.NonExistentEntityException;
-import model.Group;
-import model.GroupInvitation;
-import model.Notification;
-import model.Student;
+import exception.UnconfirmedRegistrationException;
+import model.persistent.*;
 import org.orm.PersistentException;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +13,13 @@ import org.springframework.stereotype.Service;
 public class NotificationServiceImpl implements NotificationService{
 
     NotificationDAO notificationDAO;
+    GroupInvitationDAO groupInvitationDAO;
+    GroupStudentDAO groupStudentDAO;
 
-    public NotificationServiceImpl(NotificationDAO notificationDAO) {
+    public NotificationServiceImpl(NotificationDAO notificationDAO, GroupInvitationDAO groupInvitationDAO, GroupStudentDAO groupStudentDAO) {
         this.notificationDAO = notificationDAO;
+        this.groupInvitationDAO = groupInvitationDAO;
+        this.groupStudentDAO = groupStudentDAO;
     }
 
     @Override
@@ -28,17 +31,50 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public GroupInvitation addGroupInvitation(Group group, Student student) {
-        return null;
+    public GroupInvitation addGroupInvitation(Group group, Student student) throws PersistentException {
+        GroupInvitation groupInvitation = new GroupInvitation();
+        groupInvitation.set_group(group);
+        groupInvitation.set_user(student);
+        notificationDAO.save(groupInvitation);
+        return groupInvitation;
     }
 
     @Override
-    public void acceptInvitation(GroupInvitation groupInvitation) {
+    public GroupInvitation getGroupInvitation(Group group, Student student) throws PersistentException, NonExistentEntityException {
+        GroupInvitation groupInvitation = this.groupInvitationDAO.loadGroupInvitationByGroupAndStudent(group,student);
+        if(groupInvitation == null)
+            throw new NonExistentEntityException();
 
+        return groupInvitation;
     }
 
     @Override
-    public void declineInvitation(GroupInvitation groupInvitation) {
+    public void removeGroupInvitation(GroupInvitation groupInvitation) throws PersistentException {
+        Student student = (Student)groupInvitation.get_user();
+        student._notifications.remove(groupInvitation);
+        this.groupInvitationDAO.delete(groupInvitation);
+    }
 
+    @Override
+    public Group acceptInvitation(GroupInvitation groupInvitation) throws PersistentException, UnconfirmedRegistrationException {
+        GroupStudent groupStudent = groupStudentDAO.loadGroupStudentByGroupAndStudent(
+                groupInvitation.get_group().getID(),
+                groupInvitation.get_user().getID()
+        );
+        Student student = groupStudent.get_student();
+        if(!student.isRegistered())
+            throw new UnconfirmedRegistrationException();
+
+        groupStudent.setAccepted(true);
+        groupStudentDAO.save(groupStudent);
+        groupInvitation.get_user()._notifications.remove(groupInvitation);
+        notificationDAO.delete(groupInvitation);
+        return groupInvitation.get_group();
+    }
+
+    @Override
+    public void declineInvitation(GroupInvitation groupInvitation) throws PersistentException {
+        groupInvitation.get_user()._notifications.remove(groupInvitation);
+        notificationDAO.delete(groupInvitation);
     }
 }

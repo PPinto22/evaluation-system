@@ -2,14 +2,13 @@ package service;
 
 import dao.*;
 import exception.*;
-import model.Student;
-import model.Teacher;
-import model.User;
+import model.persistent.Student;
+import model.persistent.Teacher;
+import model.persistent.User;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -54,23 +53,6 @@ public class UserServiceImpl implements UserService{
                 throw new InvalidUserTypeException();
         }
     }
-
-    @Override
-    public Student[] getStudents() throws PersistentException {
-        Student[] students = new Student[0];
-        StudentCriteria criteria = new StudentCriteria();
-        students = studentDAO.listStudentByCriteria(criteria);
-        return students;
-    }
-
-    @Override
-    public Teacher[] getTeachers() throws PersistentException {
-        Teacher[] teachers = new Teacher[0];
-        TeacherCriteria criteria = new TeacherCriteria();
-        teachers = teacherDAO.listTeacherByCriteria(criteria);
-        return teachers;
-    }
-
 
     @Override
     public User login(String email, String password) throws PersistentException, InvalidAuthenticationException, UnconfirmedRegistrationException {

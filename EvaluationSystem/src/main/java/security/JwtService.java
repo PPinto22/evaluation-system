@@ -3,7 +3,7 @@ package security;
 import exception.InvalidClaimsException;
 import exception.NonExistentEntityException;
 import io.jsonwebtoken.*;
-import model.User;
+import model.persistent.User;
 import org.orm.PersistentException;
 import org.springframework.stereotype.Service;
 import service.UserService;

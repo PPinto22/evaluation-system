@@ -21,6 +21,12 @@ import {QuestionsService} from './services/questions.service';
 import {StudentsService} from './services/students.service';
 import {UserService} from './services/user.service';
 import {GroupService} from './services/group.service';
+import { ListClassComponent } from './components/dashboard/default/list-class/list-class.component';
+import { ListExameComponent } from './components/dashboard/default/list-exame/list-exame.component';
+import { ClassComponent } from './components/dashboard/class/class.component';
+import { GroupsComponent } from './components/dashboard/class/groups/groups.component';
+import { ScheduleComponent } from './components/dashboard/schedule/schedule.component';
+import {CalendarComponent} from 'ap-angular2-fullcalendar';
 
 @NgModule({
   declarations: [
@@ -29,7 +35,13 @@ import {GroupService} from './services/group.service';
     RegisterComponent,
     HomeComponent,
     DashboardComponent,
-    DefaultComponent
+    DefaultComponent,
+    ListClassComponent,
+    ListExameComponent,
+    ClassComponent,
+    GroupsComponent,
+    ScheduleComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,

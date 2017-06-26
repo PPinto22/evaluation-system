@@ -12,7 +12,7 @@ package dao; /**
  * License Type: Academic
  */
 import exception.NonExistentEntityException;
-import model.Class;
+import model.persistent.Class;
 import org.orm.*;
 import org.hibernate.LockMode;
 

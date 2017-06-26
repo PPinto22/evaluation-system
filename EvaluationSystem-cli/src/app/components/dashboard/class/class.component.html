@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-lg-offset-6 col-md-offset-6" *ngIf="isTeacher()">
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <button class="btn btn-block btn-primary ">
+            <span class="fa fa-eye"></span>Questions
+          </button>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <button class="btn btn-block btn-primary ">
+            <span class="fa fa-plus-square"></span>Questions
+          </button>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <button class="btn btn-block btn-primary ">
+            <span class="fa fa-plus-square"></span>Group
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading ui-draggable-handle">
+        <h3 class="panel-title">Class - Information</h3>
+        <ul class="panel-controls">
+          <li><a><span class="fa fa-edit"></span></a></li>
+          <li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+        </ul>
+      </div>
+      <div class="panel-body">
+        <div>
+          <label>Teacher:</label>
+          <span>Antonio Nestor</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<app-groups></app-groups>
+
