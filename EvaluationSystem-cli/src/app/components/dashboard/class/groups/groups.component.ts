@@ -1,7 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-
-declare var $: any;
-declare var panels: any;
+import {AuthenticationService} from '../../../../services/authentication.service';
 
 @Component({
   selector: 'app-groups',
@@ -11,12 +9,20 @@ declare var panels: any;
 export class GroupsComponent implements OnInit, AfterViewInit {
 
 
-  constructor() { }
+  constructor(
+    private authentication: AuthenticationService
+  ) { }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
-    panels();
+
   }
+
+  private isTeacher(): boolean {
+    return this.authentication.isTeacher();
+  }
+
+
 }

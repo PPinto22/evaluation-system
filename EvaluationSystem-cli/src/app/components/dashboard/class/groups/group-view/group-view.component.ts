@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AuthenticationService} from '../../../../../services/authentication.service';
 
 
 declare var $: any;
@@ -13,7 +14,9 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
 
   private order_date: boolean; // toggle booblen true if most recent frist or false for oldest frist
   private order_date_text: string;
-  constructor() { }
+  constructor(
+    private authentication: AuthenticationService
+  ) { }
 
   ngOnInit() {
     this.order_date = true;
@@ -22,13 +25,8 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit(): void {
+    panels();
     this.scroll();
-  }
-
-  public toggleOrderDate(): void {
-    this.order_date = !this.order_date;
-    this.order_date_text = this.order_date ? 'most recent frist' : 'oldest frist';
-    // TODO fazer função para mudar a ordem dos exames
   }
 
   private scroll(): void {
@@ -41,6 +39,18 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       }
     }, {passive: true});
   }
+
+  public toggleOrderDate(): void {
+    this.order_date = !this.order_date;
+    this.order_date_text = this.order_date ? 'most recent frist' : 'oldest frist';
+    // TODO fazer função para mudar a ordem dos exames
+  }
+
+  private isTeacher(): boolean {
+    return this.authentication.isTeacher();
+  }
+
+
 
 
 }

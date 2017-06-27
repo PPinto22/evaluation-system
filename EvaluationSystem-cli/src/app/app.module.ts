@@ -28,10 +28,13 @@ import { GroupsComponent } from './components/dashboard/class/groups/groups.comp
 import { ScheduleComponent } from './components/dashboard/schedule/schedule.component';
 import {CalendarComponent} from 'ap-angular2-fullcalendar';
 import { BreadCrumbService } from './services/breadcrumb.service';
-import { GroupCreateComponent } from './components/dashboard/class/group-create/group-create.component';
+import { GroupCreateComponent } from './components/dashboard/class/groups/group-create/group-create.component';
 import { ResultsComponent } from './components/dashboard/results/results.component';
 import { GroupViewComponent } from './components/dashboard/class/groups/group-view/group-view.component';
 import {ExamsService} from './services/exams.service';
+import { ExameCreateComponent } from './components/dashboard/class/exame-create/exame-create.component';
+import { QuestionAddComponent } from './components/dashboard/class/exame-create/question-add/question-add.component';
+import { QuestionPreviewComponent } from './components/dashboard/class/exame-create/question-preview/question-preview.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,10 @@ import {ExamsService} from './services/exams.service';
     CalendarComponent,
     GroupCreateComponent,
     ResultsComponent,
-    GroupViewComponent
+    GroupViewComponent,
+    ExameCreateComponent,
+    QuestionAddComponent,
+    QuestionPreviewComponent
   ],
   imports: [
     BrowserModule,

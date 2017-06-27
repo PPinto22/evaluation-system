@@ -269,7 +269,7 @@ function messages_loading() {
 }
 
 function onReady() {
-  progress_start();
+  // progress_start();
 
   $(".x-navigation-horizontal .panel").on("click",function(e){
     e.stopPropagation();
@@ -307,17 +307,17 @@ $(document).ready(function(){
 });
 
 // TODO não fiz anda aqui
-$(function(){
-    onload();
-
-    /* PROGGRESS COMPLETE */
-    $.mpb("update",{value: 100, speed: 5, complete: function(){
-        $(".mpb").fadeOut(200,function(){
-            $(this).remove();
-        });
-    }});
-    /* END PROGGRESS COMPLETE */
-});
+// $(function(){
+//     onload();
+//
+//     /* PROGGRESS COMPLETE */
+//     $.mpb("update",{value: 100, speed: 5, complete: function(){
+//         $(".mpb").fadeOut(200,function(){
+//             $(this).remove();
+//         });
+//     }});
+//     /* END PROGGRESS COMPLETE */
+// });
 
 // TODO on window resize
 $(window).resize(function(){
