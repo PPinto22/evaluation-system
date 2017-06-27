@@ -22,6 +22,11 @@ import java.util.List;
 
 @Repository
 public class AnswerDAOImpl implements AnswerDAO {
+	@Override
+	public boolean exists(int ID) throws PersistentException {
+		return this.getAnswerByORMID(ID) != null;
+	}
+
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(AnswerDAOImpl.class);
 	public Answer loadAnswerByORMID(int ID) throws PersistentException {
 		try {

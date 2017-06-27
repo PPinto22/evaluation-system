@@ -20,6 +20,6 @@ export class ResultsComponent implements OnInit {
   }
 
   public isStudent(): boolean {
-    return this.authentication.isStudent();
+    return this.authentication.isSudent();
   }
 }

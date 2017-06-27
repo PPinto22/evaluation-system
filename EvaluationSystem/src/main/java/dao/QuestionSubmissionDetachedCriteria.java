@@ -22,22 +22,22 @@ public class QuestionSubmissionDetachedCriteria extends AbstractORMDetachedCrite
 	public final IntegerExpression ID;
 	public final IntegerExpression _answerId;
 	public final AssociationExpression _answer;
-	public final IntegerExpression _questionId;
-	public final AssociationExpression _question;
 	public final IntegerExpression _submissionId;
 	public final AssociationExpression _submission;
 	public final BooleanExpression correct;
+	public final IntegerExpression _questionId;
+	public final AssociationExpression _question;
 	
 	public QuestionSubmissionDetachedCriteria() {
 		super(QuestionSubmission.class, QuestionSubmissionCriteria.class);
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
 		_answerId = new IntegerExpression("_answer.ID", this.getDetachedCriteria());
 		_answer = new AssociationExpression("_answer", this.getDetachedCriteria());
-		_questionId = new IntegerExpression("_question.ID", this.getDetachedCriteria());
-		_question = new AssociationExpression("_question", this.getDetachedCriteria());
 		_submissionId = new IntegerExpression("_submission.ID", this.getDetachedCriteria());
 		_submission = new AssociationExpression("_submission", this.getDetachedCriteria());
 		correct = new BooleanExpression("correct", this.getDetachedCriteria());
+		_questionId = new IntegerExpression("_question.ID", this.getDetachedCriteria());
+		_question = new AssociationExpression("_question", this.getDetachedCriteria());
 	}
 	
 	public QuestionSubmissionDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -45,23 +45,23 @@ public class QuestionSubmissionDetachedCriteria extends AbstractORMDetachedCrite
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
 		_answerId = new IntegerExpression("_answer.ID", this.getDetachedCriteria());
 		_answer = new AssociationExpression("_answer", this.getDetachedCriteria());
-		_questionId = new IntegerExpression("_question.ID", this.getDetachedCriteria());
-		_question = new AssociationExpression("_question", this.getDetachedCriteria());
 		_submissionId = new IntegerExpression("_submission.ID", this.getDetachedCriteria());
 		_submission = new AssociationExpression("_submission", this.getDetachedCriteria());
 		correct = new BooleanExpression("correct", this.getDetachedCriteria());
+		_questionId = new IntegerExpression("_question.ID", this.getDetachedCriteria());
+		_question = new AssociationExpression("_question", this.getDetachedCriteria());
 	}
 	
 	public AnswerDetachedCriteria create_answerCriteria() {
 		return new AnswerDetachedCriteria(createCriteria("_answer"));
 	}
 	
-	public QuestionDetachedCriteria create_questionCriteria() {
-		return new QuestionDetachedCriteria(createCriteria("_question"));
-	}
-	
 	public SubmissionDetachedCriteria create_submissionCriteria() {
 		return new SubmissionDetachedCriteria(createCriteria("_submission"));
+	}
+	
+	public QuestionScoreDetachedCriteria create_questionCriteria() {
+		return new QuestionScoreDetachedCriteria(createCriteria("_question"));
 	}
 	
 	public QuestionSubmission uniqueQuestionSubmission(PersistentSession session) {

@@ -10,7 +10,7 @@ public class AnswerWrapper implements Comparable<AnswerWrapper>{
     private int id;
     private String text;
     private Boolean correct;
-    private int order;
+    private Integer order;
 
     public AnswerWrapper(){}
 
@@ -48,11 +48,11 @@ public class AnswerWrapper implements Comparable<AnswerWrapper>{
         this.correct = correct;
     }
 
-    public int getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 

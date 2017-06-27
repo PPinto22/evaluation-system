@@ -1,5 +1,8 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {CalendarComponent} from 'ap-angular2-fullcalendar';
+import {BreadCrumbService} from '../../../services/breadcrumb.service';
+import {observable} from 'rxjs/symbol/observable';
+import {Observable} from 'rxjs/Observable';
 
 declare var x_navigation: any;
 declare var page_content_onresize: any;
@@ -42,10 +45,11 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   }
 
 
-  constructor() { }
+  constructor(private breadCrumb: BreadCrumbService) { }
 
 
   ngOnInit() {
+    this.breadCrumb.setBreadCrum(['Schedule']);
 
   }
 

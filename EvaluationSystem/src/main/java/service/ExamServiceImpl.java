@@ -40,6 +40,15 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
+    public QuestionScore getQuestionScore(Exam exam, Question question) throws NonExistentEntityException {
+        for(QuestionScore qScore: exam._questions.toArray()){
+            if(qScore.get_question().getID() == question.getID())
+                return qScore;
+        }
+        throw new NonExistentEntityException();
+    }
+
+    @Override
     public Map<String, Set<Exam>> getExamsByUser(User user) {
         Map<String, Set<Exam>> examMap = new TreeMap<>();
         List<Group> groups = null;

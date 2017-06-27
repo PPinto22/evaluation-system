@@ -23,6 +23,11 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
+    public boolean questionContainsAnswer(Question question, Answer answer) {
+        return question._answers.contains(answer);
+    }
+
+    @Override
     public Question getQuestionByID(int ID) throws PersistentException, NonExistentEntityException {
         if(!this.exists(ID))
             throw new NonExistentEntityException();

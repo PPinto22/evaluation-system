@@ -1,5 +1,6 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
+import {BreadCrumbService} from '../../services/breadcrumb.service';
 import {Router} from '@angular/router';
 
 declare var $: any;
@@ -13,13 +14,24 @@ declare var page_content_onresize: any;
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
 
+  private nameInToggleNavigation;
+
   constructor(
     private router: Router,
-    private authentication: AuthenticationService
-  ) { }
+    private authentication: AuthenticationService,
+    private breadCrumb: BreadCrumbService
+  ) {
+  }
 
   ngOnInit() {
+    this.setNamebreadCrum();
+  }
 
+  public setNamebreadCrum() {
+    this.breadCrumb.breadCrumDate.subscribe( value => {
+        this.nameInToggleNavigation = value.pop();
+      }
+    );
   }
 
   ngAfterViewInit() {
@@ -27,15 +39,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     page_content_onresize();
   }
 
-  protected getUserName(): string {
+  public getUserName(): string {
     return this.authentication.getUserName();
   }
 
-  protected getUserType(): string {
+  public getUserType(): string {
     return this.authentication.userLogged.type;
   }
 
-  logout() {
+  public logout() {
     console.log('teste');
     this.authentication.logout();
     this.router.navigate(['/']);

@@ -29,6 +29,7 @@ public class ErrorMessages {
     public static final String INVALID_DATE = "Invalid date";
     public static final String INVALID_EXAM = "Invalid exam";
     public static final String INVALID_DURATION = "Invalid duration";
+    public static final String INVALID_ANSWER = "Invalid answer";
     public static final String EXISTENT_EXAM = "Exam already exists";
     public static final String EXISTENT_SUBMISSION = "Submission already exists";
     public static final String INSUFFICIENT_QUESTIONS = "Insufficient questions";

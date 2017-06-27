@@ -18,6 +18,12 @@ export class GroupService {
       .map( this.httpUtil.extrairDados );
   }
 
+  // GET /api/users/{user_id}/groups
+  getGroupByUser( userId: number): Observable<any> {
+    return this.http.get( this.httpUtil.url('/api/users/' + userId + '/groups' ), this.httpUtil.headers() )
+      .map( this.httpUtil.extrairDados );
+  }
+
   // GET /api/classes/{class_id}/groups
   getGroupByClasse( classeId: number): Observable<any> {
     return this.http.get( this.httpUtil.url('/api/classes/' + classeId + '/groups'), this.httpUtil.headers() )

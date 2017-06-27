@@ -1,5 +1,7 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Component, OnInit, AfterViewInit, Output, EventEmitter} from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
+import {BreadCrumbService} from '../../../services/breadcrumb.service';
+import {ClassesService} from '../../../services/classes.service';
 
 declare var $: any;
 declare var x_navigation: any;
@@ -12,23 +14,17 @@ declare var page_content_onresize: any;
 })
 export class DefaultComponent implements OnInit, AfterViewInit {
 
-  private new_class: boolean;
-  private new_class_text: string;
+  private new_class_add: Array<string> = new Array<string>();
 
-  constructor( private authentication: AuthenticationService ) { }
+  constructor(
+    private authentication: AuthenticationService,
+    private breadCrumb: BreadCrumbService,
+    private classes: ClassesService
+  ) { }
 
   ngOnInit() {
-    this.new_class = false;
-    this.new_class_text = 'New Class';
+    this.breadCrumb.setBreadCrum(['DashBoard']);
   }
-
-  newClass(){
-    this.new_class = true;
-    this.new_class_text = this.new_class ? 'New Class' : 'Save Class';
-  }
-
-
-
 
   ngAfterViewInit() {
     x_navigation();
@@ -46,13 +42,15 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       }
     }, {passive: true});
   }
-
-  private refreshUpComing(): void {
-    // TODO fazer um novo pedido por novas notificações
-  }
-
-  private refreshHistory(): void {
-    // TODO fazer um novo pedido por novas notificações
+  public addClass(): void {
+    this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add[1], this.new_class_add[0]).subscribe(
+      resultado => {
+        console.log(resultado);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   private isTeacher(): boolean {

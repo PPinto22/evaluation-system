@@ -12,7 +12,6 @@ package model.persistent; /**
  * License Type: Academic
  */
 public class QuestionSubmission {
-
 	public QuestionSubmission() {
 	}
 	
@@ -22,7 +21,7 @@ public class QuestionSubmission {
 		}
 		
 		else if (key == ORMConstants.KEY_QUESTIONSUBMISSION__QUESTION) {
-			this._question = (Question) owner;
+			this._question = (QuestionScore) owner;
 		}
 		
 		else if (key == ORMConstants.KEY_QUESTIONSUBMISSION__ANSWER) {
@@ -41,11 +40,11 @@ public class QuestionSubmission {
 	
 	private Answer _answer;
 	
-	private Question _question;
-	
 	private Submission _submission;
 	
 	private boolean correct;
+	
+	private QuestionScore _question;
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -63,7 +62,7 @@ public class QuestionSubmission {
 		this.correct = value;
 	}
 	
-	public boolean getCorrect() {
+	public boolean isCorrect() {
 		return correct;
 	}
 	
@@ -91,11 +90,11 @@ public class QuestionSubmission {
 		return _submission;
 	}
 	
-	public void set_question(Question value) {
+	public void set_question(QuestionScore value) {
 		this._question = value;
 	}
 	
-	public Question get_question() {
+	public QuestionScore get_question() {
 		return _question;
 	}
 	

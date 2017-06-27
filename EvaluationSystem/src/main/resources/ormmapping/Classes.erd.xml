@@ -492,8 +492,7 @@
     </Column>
     <Column name="QuestionID">
       <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>Question.ID</ReferencedColumn>
+      <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
@@ -519,6 +518,18 @@
       <ForeignKey>false</ForeignKey>
       <Type>1</Type>
       <Length>0</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="QuestionScoreID">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>QuestionScore.ID</ReferencedColumn>
+      <Type>9</Type>
+      <Length>10</Length>
       <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
@@ -734,9 +745,9 @@
   </ForeignKey>
   <ForeignKey name="questionSubmission-question">
     <ReferenceTable>QuestionSubmission</ReferenceTable>
-    <ReferencedTable>Question</ReferencedTable>
+    <ReferencedTable>QuestionScore</ReferencedTable>
     <Columns>
-      <Column>QuestionID</Column>
+      <Column>QuestionScoreID</Column>
     </Columns>
     <RefColumns>
       <Column>ID</Column>
