@@ -33,7 +33,7 @@ export class AuthenticationService {
 
 
   login(email: string, pass: string): Observable<any> {
-    return this.http.post( this.httpUtil.url('/auth/login'), JSON.stringify({ email: email, password: pass }), this.httpUtil.headers()).map(
+    return this.http.post( this.httpUtil.url('/auth/login'), JSON.stringify({ email: email, password: pass }), this.httpUtil.headers('')).map(
         (response: any) => {
           const data: any = response.json();
           if (data && data.token && data.user) {
@@ -54,7 +54,7 @@ export class AuthenticationService {
         firstName: firstName,
         lastName: lastName,
         type: type
-      }), this.httpUtil.headers())
+      }), this.httpUtil.headers(''))
       .map(
         (response: any) => {
           const data: any = response.json();
@@ -85,5 +85,9 @@ export class AuthenticationService {
 
   getUserName(): string {
     return this.userLogged.firstName + ' ' + this.userLogged.lastName;
+  }
+
+  getToken(): string {
+    return this.userLogged.token;
   }
 }

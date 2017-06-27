@@ -39,6 +39,8 @@ export class ListExameComponent implements OnInit, AfterViewInit {
   private getHistoryAndUpComming(): void {
     this.exams.getExamsByUserId( this.authentication.getUserId() ).subscribe(
       resultado => {
+        console.log(resultado);
+        console.log('resultado');
         for ( const exams of resultado.exams ) {
           if (exams.History) {
             this.getAllHistory(exams);

@@ -12,6 +12,7 @@ import java.util.Map;
 public interface SubmissionService {
 
     Submission getSubmissionByID(int ID) throws PersistentException, NonExistentEntityException;
+    Submission getSubmissionByStudentAndExam(Student student, Exam exam) throws PersistentException, NonExistentEntityException;
     QuestionSubmission getQuestionSubmission(Submission submission, Question question) throws NonExistentEntityException;
     boolean exists(int ID) throws PersistentException;
     boolean exists(Student student, Exam exam) throws PersistentException;

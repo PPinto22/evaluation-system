@@ -81,7 +81,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/groups/{group_id}/questions/available](#get-apigroupsgroup_idquestionsavailable)
 - [GET /api/groups/{group_id}/exams](#get-apigroupsgroup_idexams)
 - [POST /api/groups/{group_id}/exams](#post-apigroupsgroup_idexams)
-- [POST /api/groups/{group_id}/exams/generate](#post-apigroupsgroup_idexamsgenerate)
+- [POST /api/groups/{group_id}/exams/generate](#post-apigroupsgroup_idexamsgenerate) TODO - Gerar apenas uma questao
 - [~~GET /api/groups/{group_id}/scores~~](#get-apigroupsgroup_idscores)
 - [GET /api/exams/{exam_id}](#get-apiexamsexam_id)
 - [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
@@ -94,10 +94,11 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/users/{user_id}](#get-apiusersuser_id) [x]
 - [~~PUT /api/users/{user_id}~~](#put-apiusersuser_id)
 - [~~DELETE /api/users/{user_id}~~](#delete-apiusersuser_id)
-- [POST /api/users/{user_id}/classes](#post-apiusersuser_idclasses) [x] MUDEI O NOME DE /teachers/ para /users/.
+- [POST /api/users/{user_id}/classes](#post-apiusersuser_idclasses) [x]
 - [GET /api/users/{user_id}/classes](#get-apiusersuser_idclasses)
 - [GET /api/users/{user_id}/groups](#get-apiusersuser_idgroups)
 - [GET /api/users/{user_id}/notifications](#get-apiusersuser_idnotifications) [x]
+- [GET /api/users/{user_id}/submissions](#get-apiusersuser_idsubmissions)
 - [~~GET /api/users/{user_id}/scores~~](#get-apiusersuser_idscores)
 - [GET /api/users/{user_id}/exams](#get-apiusersuser_idexams)
 - [GET /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept) [x]
@@ -907,6 +908,50 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)**
 - **UNAUTHORIZED (401)**
+
+#### GET /api/users/{user_id}/submissions
+### Parameters
+- exam=ID
+- group=ID
+
+### Response
+```json
+[
+  {
+    "id": 5,
+    "exam": {
+      "id": 1,
+      "name": "Exam 8",
+      "beginDate": 1498908600000,
+      "duration": 60,
+      "group": {
+        "id": 1,
+        "name": "Name1",
+        "_class": {
+          "name": "Name1",
+          "abbreviation": "Abbreviation1",
+          "teacher": {
+            "id": 16,
+            "email": "email16",
+            "firstName": "firstName16",
+            "lastName": "lastName16",
+            "type": "Teacher",
+            "active": true
+          },
+          "id": 1
+        }
+      }
+    }
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such student*
+- **UNAUTHORIZED (401)**
+- **NOT_ACCEPTABLE (406)** - *Invalid group*, *Invalid exam*
+
 
 #### GET /api/users/{user_id}/exams
 ### Response

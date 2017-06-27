@@ -9,15 +9,9 @@ import model.persistent.*;
 import model.persistent.Class;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import security.JwtService;
-import service.ExamService;
-import service.StudentService;
-import service.TeacherService;
-import service.UserService;
+import service.*;
 import wrapper.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,14 +30,20 @@ public class UserController {
     private TeacherService teacherService;
     private StudentService studentService;
     private ExamService examService;
+    private GroupService groupService;
+    private SubmissionService submissionService;
 
-    public UserController(JwtService jwtService, UserService userService, TeacherService teacherService,
-                          StudentService studentService, ExamService examService) {
+    public UserController(JwtService jwtService, UserService userService,
+                          TeacherService teacherService, StudentService studentService,
+                          ExamService examService, GroupService groupService,
+                          SubmissionService submissionService) {
         this.jwtService = jwtService;
         this.userService = userService;
         this.teacherService = teacherService;
         this.studentService = studentService;
         this.examService = examService;
+        this.groupService = groupService;
+        this.submissionService = submissionService;
     }
 
     @RequestMapping(value = "/{id:[\\d]+}", method = GET)
@@ -187,5 +187,95 @@ public class UserController {
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         }
+    }
+
+    @RequestMapping(value = "/{studentID:[\\d]+}/submissions", method = GET)
+    public ResponseEntity<Object> getSubmissions(@PathVariable int studentID,
+                                                 @RequestParam Map<String,String> requestParams,
+                                                 HttpServletRequest request){
+        try {
+            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
+            Student student  = studentService.getStudentByID(studentID);
+            if(student.getID() != clientUser.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            Exam exam;
+            try {
+                exam = getExamFromRequests(requestParams);
+            }catch (NonExistentEntityException e){
+                return new ResponseEntity<Object>(new ErrorWrapper(INVALID_EXAM), NOT_ACCEPTABLE);
+            }
+            Group group;
+            try {
+                group = getGroupFromRequests(requestParams);
+            }catch (NonExistentEntityException e){
+                return new ResponseEntity<Object>(new ErrorWrapper(INVALID_GROUP), NOT_ACCEPTABLE);
+            }
+
+            List<SubmissionExamWrapper> submissionWrappers = new ArrayList<>();
+            if(exam != null){
+                if (!groupService.studentInGroup(student,exam.get_group()))
+                    return new ResponseEntity<Object>(new ErrorWrapper(INVALID_EXAM), NOT_ACCEPTABLE);
+
+                try{
+                    Submission submission = submissionService.getSubmissionByStudentAndExam(student,exam);
+                    submissionWrappers.add(new SubmissionExamWrapper(submission, true, true));
+                } catch (NonExistentEntityException e){
+                }
+                return new ResponseEntity<Object>(submissionWrappers, OK);
+            }else if(group != null){
+                if(!groupService.studentInGroup(student,group))
+                    return new ResponseEntity<Object>(new ErrorWrapper(INVALID_GROUP), NOT_ACCEPTABLE);
+
+                List<Exam> exams = Arrays.asList(group._exams.toArray());
+                for(Exam e: exams){
+                    try{
+                        Submission submission = submissionService.getSubmissionByStudentAndExam(student,e);
+                        submissionWrappers.add(new SubmissionExamWrapper(submission, true, true));
+                    }catch (NonExistentEntityException exc){}
+                }
+                return new ResponseEntity<Object>(submissionWrappers, OK);
+            }else{
+                List<Submission> submissions = Arrays.asList(student._submissions.toArray());
+                for(Submission submission: submissions){
+                    submissionWrappers.add(new SubmissionExamWrapper(submission, true, true));
+                }
+                return new ResponseEntity<Object>(submissionWrappers, OK);
+            }
+        } catch (PersistentException e){
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_STUDENT), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        }
+    }
+
+    private Group getGroupFromRequests(Map<String, String> requestParams) throws PersistentException, NonExistentEntityException {
+        Integer groupID = null;
+        Group group = null;
+        if(requestParams.containsKey("group")) {
+            String groupString = requestParams.get("group");
+            try {
+                groupID = Integer.parseInt(groupString);
+            }
+            catch (Exception e){}
+            group = groupService.getGroupByID(groupID);
+        }
+        return group;
+    }
+
+    private Exam getExamFromRequests(Map<String, String> requestParams) throws PersistentException, NonExistentEntityException {
+        Integer examID = null;
+        Exam exam = null;
+        if(requestParams.containsKey("exam")) {
+            String examString = requestParams.get("exam");
+            try {
+                examID = Integer.parseInt(examString);
+            }
+            catch (Exception e){}
+            exam = examService.getExamByID(examID);
+        }
+        return exam;
     }
 }
