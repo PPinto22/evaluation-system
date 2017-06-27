@@ -27,8 +27,6 @@ export class ListClassComponent implements OnInit {
     this.group.getGroupByUser(this.authentication.getUserId()).subscribe(
       resultado => {
         for ( const group of resultado){
-          console.log(group)
-          console.log('grupo')
           this.allGroups.push(this.createGroup(group));
         }
       },
