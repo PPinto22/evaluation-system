@@ -553,35 +553,35 @@ function x_navigation(){
         return false;
     });
 
-    $(".x-navigation  li > a").click(function(){
-
-        var li = $(this).parent('li');
-        var ul = li.parent("ul");
-
-        ul.find(" > li").not(li).removeClass("active");
-
-    });
-
-    $(".x-navigation li").click(function(event){
-        event.stopPropagation();
-
-        var li = $(this);
-
-            if(li.children("ul").length > 0 || li.children(".panel").length > 0 || $(this).hasClass("xn-profile") > 0){
-                if(li.hasClass("active")){
-                    li.removeClass("active");
-                    li.find("li.active").removeClass("active");
-                }else
-                    li.addClass("active");
-
-                onresize();
-
-                if($(this).hasClass("xn-profile") > 0)
-                    return true;
-                else
-                    return false;
-            }
-    });
+    // $(".x-navigation  li > a").mousedown(function(){
+    //
+    //     var li = $(this).parent('li');
+    //     var ul = li.parent("ul");
+    //
+    //     ul.find(" > li").not(li).removeClass("active");
+    //
+    // });
+    //
+    // $(".x-navigation li").mousedown(function(event){
+    //     // event.stopPropagation();
+    //
+    //     var li = $(this);
+    //
+    //         if(li.children("ul").length > 0 || li.children(".panel").length > 0 || $(this).hasClass("xn-profile") > 0){
+    //             if(li.hasClass("active")){
+    //                 li.removeClass("active");
+    //                 li.find("li.active").removeClass("active");
+    //             }else
+    //                 li.addClass("active");
+    //
+    //             onresize();
+    //
+    //             if($(this).hasClass("xn-profile") > 0)
+    //                 return true;
+    //             else
+    //                 return false;
+    //         }
+    // });
 
     /* XN-SEARCH */
     $(".xn-search").on("click",function(){

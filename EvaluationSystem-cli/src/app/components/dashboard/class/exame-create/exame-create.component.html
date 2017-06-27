@@ -15,20 +15,42 @@
 <br>
 
 <div class="row">
+  <form>
   <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Exam Name:</label>
+        <div class="col-md-9">
+          <div class="input-group">
+            <input type="text" class="form-control" autocomplete="off"/>
+            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+          </div>
+          <span class="help-block"></span>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label class="col-md-3 control-label">Exam Name:</label>
-      <div class="col-md-9">
-        <div class="input-group">
-          <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-          <input type="text" class="form-control" autocomplete="off"/>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Date</label>
+        <div class="col-md-9">
+          <div class="input-group">
+            <input class="form-control" type="date" placeholder="dd-mm-yyyy" required>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+          </div>
+          <span class="help-block"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3 control-label">Hour</label>
+        <div class="col-md-9">
+          <div class="input-group">
+            <input class="form-control" type="time" placeholder="hh-mm" required>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+          </div>
         </div>
         <span class="help-block"></span>
       </div>
     </div>
-
-  </div>
+  </form>
 </div>
 
 <br>

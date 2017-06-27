@@ -12,9 +12,11 @@ declare var page_content_onresize: any;
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
   private nameInToggleNavigation;
+  private page_navigation_toggled: boolean;
+  private collapse_struture: any;
 
   constructor(
     private router: Router,
@@ -25,6 +27,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.setNamebreadCrum();
+    this.createNavbarStructure();
+    this.page_navigation_toggled = false;
   }
 
   public setNamebreadCrum() {
@@ -39,6 +43,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     page_content_onresize();
   }
 
+  ngOnChanges() {
+    x_navigation();
+  }
+
   public getUserName(): string {
     return this.authentication.getUserName();
   }
@@ -48,9 +56,59 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   public logout() {
-    console.log('teste');
     this.authentication.logout();
     this.router.navigate(['/']);
+  }
+
+  private createNavbarStructure(): void {
+    this.collapse_struture = [
+      { name: 'Dashboard', route: ['/dashboard'], isCollapsed: false },
+      { name: 'Schedule', route: ['/dashboard', 'schedule'], isCollapsed: false },
+      { name: 'Results', route: ['/dashboard', 'results'], isCollapsed: false },
+      { name: 'Classes', route: [], isCollapsed: false , children: [
+        { name: 'AA', route: ['/dashboard', 'classes', '1'], isCollapsed: false , children: [
+          { name: '16/17', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
+          { name: '15/16', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
+          { name: '14/15', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
+        ]},
+        { name: 'BB', route: ['/dashboard', 'classes', '1'], isCollapsed: false , children: [
+          { name: '16/17', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
+          { name: '15/16', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
+          { name: '14/15', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
+        ]},
+        { name: 'CC', route: ['/dashboard', 'classes', '1'], isCollapsed: false },
+      ]},
+    ];
+  }
+
+  public navigateRoute(route: string[], collapse_node: any, collapse_parent: any) {
+
+    for ( const node of collapse_parent ) {
+      node.isCollapsed = false;
+    }
+
+    for ( const node of collapse_node ) {
+      node.isCollapsed = false;
+    }
+
+    collapse_node.isCollapsed = true;
+
+    if (route.length > 0 ) {
+      this.router.navigate(route);
+    }
+
+  }
+
+  public clearActive(collapse_node: any, collapse_parent: any) {
+    for ( const node of collapse_parent ){
+      if ( collapse_node !== node) {
+        node.isCollapsed = false;
+      }
+    }
+  }
+
+  public toggledPageNavigation(): void {
+    this.page_navigation_toggled = !this.page_navigation_toggled;
   }
 
 

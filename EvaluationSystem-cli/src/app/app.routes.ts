@@ -15,6 +15,7 @@ import {ScheduleComponent} from './components/dashboard/schedule/schedule.compon
 import {GroupCreateComponent} from './components/dashboard/class/groups/group-create/group-create.component';
 import {ResultsComponent} from './components/dashboard/results/results.component';
 import {ExameCreateComponent} from './components/dashboard/class/exame-create/exame-create.component';
+import {GroupViewComponent} from './components/dashboard/class/groups/group-view/group-view.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
@@ -23,10 +24,13 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent,
     children: [
       { path: '', component: DefaultComponent },
-      // { path: 'classes/', component: ClassComponent },
-      { path: 'classes/:id/groups/:id/exams/new', component: ExameCreateComponent },
-      { path: 'classes/:id/groups/new', component: GroupCreateComponent },
-      { path: 'classes/:id', component: ClassComponent },
+      { path: 'classes/:id', component: ClassComponent,
+        children: [
+          { path: 'groups/:id/exams/new', component: DashboardComponent },
+          { path: 'groups/new', component: GroupCreateComponent},
+          { path: 'groups/:id', component: GroupViewComponent},
+
+        ]},
       { path: 'schedule', component: ScheduleComponent },
       { path: 'results', component: ResultsComponent },
 

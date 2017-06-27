@@ -21,23 +21,30 @@
         </div>
       </li>
       <li class="xn-title">Navigation</li>
-      <li >
-        <a [routerLink]="['/dashboard']" ><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
-      </li>
-      <li>
-        <a [routerLink]="['/dashboard/schedule']" ><span class="fa fa-calendar"></span> <span class="xn-text">Schedule</span></a>
-      </li>
-      <li>
-        <a [routerLink]="['/dashboard/results']" ><span class="fa fa-calendar"></span> <span class="xn-text">Results</span></a>
-      </li>
-      <li class="xn-openable">
-        <a ><span class="fa fa-files-o"></span> <span class="xn-text">Classes</span></a>
-        <ul>
-          <!-- TODO ngFor para todas as classes -->
-          <li><a [routerLink]="['/dashboard/classes/1']" > AA </a></li>
-          <li><a [routerLink]="['/dashboard/classes/1']" > BB </a></li>
+
+      <li *ngFor="let col_node of collapse_struture; let col_node_pos = index" [ngClass]="{'xn-openable': col_node.children, 'active': col_node.isCollapsed}" >
+        <a (click)="navigateRoute(col_node.route, col_node, collapse_struture)" ><span class="fa fa-desktop"></span> <span class="xn-text">{{col_node.name}}</span></a>
+
+        <!-- Classes -->
+        <ul *ngIf="col_node.children">
+          <li *ngFor="let col_node_class of col_node.children; let col_node_class_pos = index" [ngClass]="{'xn-openable': col_node_class.children , 'active': col_node_class.isCollapsed}">
+            <a (click)="navigateRoute( col_node_class.route, col_node_class, col_node)" >{{col_node_class.name}}</a>
+
+            <!-- Group -->
+            <ul *ngIf="col_node_class.children">
+              <li *ngFor="let col_node_group of col_node_class.children; let col_node_group_pos = index" >
+                <a (click)="navigateRoute( col_node_group.route, col_node_group, col_node_class)" >{{col_node_group.name}}</a>
+              </li>
+            </ul>
+            <!-- ./Group -->
+
+          </li>
         </ul>
+        <!-- ./Classes -->
       </li>
+
+
+
     </ul>
     <!-- END X-NAVIGATION -->
   </div>
@@ -50,7 +57,7 @@
     <ul class="x-navigation x-navigation-horizontal x-navigation-panel ">
       <!-- TOGGLE NAVIGATION -->
       <li class="xn-icon-button">
-        <a class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+        <a (click)="toggledPageNavigation()" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
       </li>
       <!-- END TOGGLE NAVIGATION -->
 
@@ -71,8 +78,6 @@
         <router-outlet></router-outlet>
       </div>
     </div>
-
-
 
   </div>
 </div>
