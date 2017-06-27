@@ -22,17 +22,19 @@ export class StudentsService {
   }
 
   // POST /api/groups/{group_id}/students TODO nao tenho acerteza disto
-  createClasseByTeacher(groupId: number, allEmailsStudents: string[] ): Observable<any> {
-    return this.http.post( this.httpUtil.url('api/groups/' + groupId + '/students'),
-      JSON.stringify({
+  postStudentByGroup(groupId: number, allEmailsStudents: string[] ): Observable<any> {
+    console.log(allEmailsStudents);
+    console.log(JSON.stringify(allEmailsStudents));
+    return this.http.post( this.httpUtil.url('/api/groups/' + groupId + '/students'),
+      JSON.stringify(
         allEmailsStudents
-      }), this.httpUtil.headers(this.authentication.getToken()))
+      ), this.httpUtil.headers(this.authentication.getToken()))
       .map(this.httpUtil.extrairDados);
   }
 
   // DELETE /api/groups/{group_id}/students/{student_id}
   deleteStudentById( groupId: number, studentId: number): Observable<any> {
-    return this.http.delete( this.httpUtil.url('api/groups/' + groupId + '/students/' + studentId ),
+    return this.http.delete( this.httpUtil.url('/api/groups/' + groupId + '/students/' + studentId ),
             this.httpUtil.headers(this.authentication.getToken())).map( this.httpUtil.extrairDados);
   }
 }

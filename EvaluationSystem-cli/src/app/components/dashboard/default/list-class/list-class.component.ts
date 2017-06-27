@@ -27,6 +27,8 @@ export class ListClassComponent implements OnInit {
     this.group.getGroupByUser(this.authentication.getUserId()).subscribe(
       resultado => {
         for ( const group of resultado){
+          console.log(group)
+          console.log('grupo')
           this.allGroups.push(this.createGroup(group));
         }
       },
@@ -36,12 +38,12 @@ export class ListClassComponent implements OnInit {
     );
   }
 
-  private createGroup(exam): Group {
-    const teacher = exam.group._class.teacher;
+  private createGroup(groupT): Group {
+    const teacher = groupT._class.teacher;
     const _teacher =  new User( teacher.id, teacher.email, teacher.firstName, teacher.lastName, teacher.type, '');
-    const classe = exam.group._class;
+    const classe = groupT._class;
     const _classe = new Class( classe.id, classe.name, classe.abbreviation, _teacher);
-    const group = exam.group;
+    const group = groupT;
     const _group = new Group( group.id, group.name, _classe );
     return _group;
   }

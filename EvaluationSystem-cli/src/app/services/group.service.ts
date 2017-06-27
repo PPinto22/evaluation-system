@@ -37,7 +37,7 @@ export class GroupService {
 
   // POST /api/classes/{class_id}/groups
   createGroupByClasse( classeId: number, groupName: string ): Observable<any> {
-    return this.http.post( this.httpUtil.url('api/classes/' + classeId + '/groups'),
+    return this.http.post( this.httpUtil.url('/api/classes/' + classeId + '/groups'),
       JSON.stringify({
         name: groupName
       }), this.httpUtil.headers(this.authentication.getToken()))

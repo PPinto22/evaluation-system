@@ -35,6 +35,7 @@ import {ExamsService} from './services/exams.service';
 import { ExameCreateComponent } from './components/dashboard/class/exame-create/exame-create.component';
 import { QuestionAddComponent } from './components/dashboard/class/exame-create/question-add/question-add.component';
 import { QuestionPreviewComponent } from './components/dashboard/class/exame-create/question-preview/question-preview.component';
+import {Exception} from './execption/exception';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { QuestionPreviewComponent } from './components/dashboard/class/exame-cre
     StudentsService,
     UserService,
     BreadCrumbService,
-    ExamsService
+    ExamsService,
+    Exception
   ],
   bootstrap: [AppComponent]
 })
