@@ -36,7 +36,7 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     panels();
   }
 
-  private getHistoryAndUpComming() {
+  private getHistoryAndUpComming(): void {
     this.exams.getExamsByUserId( this.authentication.getUserId() ).subscribe(
       resultado => {
         for ( const exams of resultado.exams ) {
@@ -54,13 +54,13 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private getAllHistory (exams) {
+  private getAllHistory (exams): void {
     for ( const exam of exams){
       this.historyExams.push(this.createExam(exam));
     }
   }
 
-  private getAllComing (exams) {
+  private getAllComing (exams): void {
     for ( const exam of exams){
       this.upComingExams.push(this.createExam(exam));
     }
@@ -73,16 +73,15 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     const _classe = new Class( classe.id, classe.name, classe.abbreviation, _teacher);
     const group = exam.group;
     const _group = new Group( group.id, group.name, _classe );
-    const _exam = new Exam( exam.id, exam.name, exam.beginDate, exam.duration, _group);
-    return _exam;
+    return new Exam( exam.id, exam.name, exam.beginDate, exam.duration, _group);
   }
 
   private refreshUpComing(): void {
-    // TODO fazer um novo pedido por novas notificações
+    this.getHistoryAndUpComming();
   }
 
   private refreshHistory(): void {
-    // TODO fazer um novo pedido por novas notificações
+    this.getHistoryAndUpComming();
   }
 
 }
