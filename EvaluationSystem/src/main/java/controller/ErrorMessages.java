@@ -25,6 +25,7 @@ public class ErrorMessages {
     public static final String QUESTION_EXISTS = "Question already exists";
     public static final String STUDENT_IN_GROUP = "Student has already been added to the group";
     public static final String INVALID_QUESTION = "Invalid question";
+    public static final String INVALID_GROUP = "Invalid group";
     public static final String INVALID_NAME = "Invalid name";
     public static final String INVALID_DATE = "Invalid date";
     public static final String INVALID_EXAM = "Invalid exam";

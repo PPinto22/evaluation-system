@@ -32,6 +32,14 @@ public class SubmissionServiceImpl implements SubmissionService{
     }
 
     @Override
+    public Submission getSubmissionByStudentAndExam(Student student, Exam exam) throws PersistentException, NonExistentEntityException {
+        if(!submissionDAO.exists(student.getID(), exam.getID()))
+            throw new NonExistentEntityException();
+
+        return submissionDAO.loadSubmissionByStudentAndExam(student.getID(),exam.getID());
+    }
+
+    @Override
     public Submission submit(Student student, Exam exam, Map<Question, Answer> answers)
             throws ExistentEntityException, PersistentException, InvalidQuestionException, InvalidAnswerException {
         if(exists(student,exam))
