@@ -32,7 +32,6 @@ import { ResultsComponent } from './components/dashboard/results/results.compone
 import { GroupViewComponent } from './components/dashboard/class/groups/group-view/group-view.component';
 import { ExameCreateComponent } from './components/dashboard/class/exame-create/exame-create.component';
 import { QuestionAddComponent } from './components/dashboard/class/exame-create/question-add/question-add.component';
-import { QuestionAddViewComponent } from './components/dashboard/class/exame-create/question-add/question-add-view/question-add-view.component';
 import { QuestionPreviewComponent } from './components/dashboard/class/exame-create/question-preview/question-preview.component';
 
 @NgModule({
@@ -54,7 +53,6 @@ import { QuestionPreviewComponent } from './components/dashboard/class/exame-cre
     GroupViewComponent,
     ExameCreateComponent,
     QuestionAddComponent,
-    QuestionAddViewComponent,
     QuestionPreviewComponent
   ],
   imports: [
