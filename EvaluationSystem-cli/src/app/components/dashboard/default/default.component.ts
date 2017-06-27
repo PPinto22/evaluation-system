@@ -14,8 +14,7 @@ declare var page_content_onresize: any;
 })
 export class DefaultComponent implements OnInit, AfterViewInit {
 
-  private new_class: boolean;
-  private new_class_text: string;
+  private new_class_add: Array<string> = new Array<string>();
 
   constructor(
     private authentication: AuthenticationService,
@@ -23,18 +22,9 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     private classes: ClassesService
   ) { }
 
-  ngOnInit() {this.breadCrumb.setBreadCrum(['DashBoard']);
-    this.new_class = false;
-    this.new_class_text = 'New Class';
+  ngOnInit() {
+    this.breadCrumb.setBreadCrum(['DashBoard']);
   }
-
-  newClass(){
-    this.new_class = true;
-    this.new_class_text = this.new_class ? 'New Class' : 'Save Class';
-  }
-
-
-
 
   ngAfterViewInit() {
     x_navigation();
@@ -53,8 +43,14 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     }, {passive: true});
   }
   public addClass(): void {
-    // TODO altera a abreviatura
-    this.classes.createClasseByTeacher(this.authentication.getUserId(), this.new_class_text, 'AA');
+    this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add[1], this.new_class_add[0]).subscribe(
+      resultado => {
+        console.log(resultado);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   private isTeacher(): boolean {

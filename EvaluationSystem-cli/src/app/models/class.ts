@@ -1,16 +1,19 @@
+import {User} from './user';
 /**
  * Created by rjaf on 24/06/2017.
  */
-export class User {
+export class Class {
 
   private _id: number;
   private _name: string;
   private _abbreviation: string;
+  private _user: User;
 
-  constructor( id: number, name: string, abbreviation: string) {
+  constructor( id: number, name: string, abbreviation: string, user: User) {
     this._id = id;
     this._name = name;
     this._abbreviation = abbreviation;
+    this._user = user;
   }
 
   get id(): number {
