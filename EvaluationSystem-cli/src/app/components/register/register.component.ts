@@ -32,14 +32,7 @@ export class RegisterComponent implements OnInit {
       this.differentPassword = false;
       this.authentication.register(this.user.email, this.user.password, this.user.firstName, this.user.lastName, this.user.type).subscribe(
         result => {
-          this.authentication.login(this.user.email, this.user.password).subscribe(
-            resultlogin => {
-              this.router.navigate(['/dashboard']);
-            },
-            error => {
-              console.log(error);
-            }
-          );
+          this.router.navigate(['/login']);
         },
         error => {
           if ( error.status === 406) {

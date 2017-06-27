@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import security.CorsFilter;
 import security.JwtFilter;
 
 @SpringBootApplication
@@ -16,30 +17,34 @@ import security.JwtFilter;
 public class Main {
 
     JwtFilter jwtFilter;
+    CorsFilter corsFilter;
 
-    public Main(JwtFilter jwtFilter){
+    public Main(JwtFilter jwtFilter, CorsFilter corsFilter) {
         this.jwtFilter = jwtFilter;
+        this.corsFilter = corsFilter;
     }
 
     @Bean
-    public FilterRegistrationBean filterRegistrationBean() {
+    public FilterRegistrationBean jwtFilterBean() {
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(jwtFilter);
         registrationBean.addUrlPatterns("/api/*");
+        registrationBean.setOrder(2);
 
         return registrationBean;
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("GET", "PUT", "DELETE", "POST");
-            }
-        };
+    public FilterRegistrationBean corsFilterBean() {
+        final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(corsFilter);
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(1);
+
+        return registrationBean;
     }
+
+
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class,args);

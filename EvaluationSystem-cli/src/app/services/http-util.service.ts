@@ -9,22 +9,21 @@ export class HttpUtilService {
   // private API_URL = 'http://localhost:8080';
   private API_URL = 'http://localhost:8080';
 
-
   url(path: string) {
     return this.API_URL + path;
   }
 
-  headers() {
+  headers(token: string) {
     const headersParams = {
       'Content-Type': 'application/json;charset=UTF-8'
         // 'Content-Type': 'application/x-www-form-urlencoded'
-
     };
-    if (localStorage['currentUser']) {
-      headersParams['Authorization'] = 'Bearer ' + localStorage['currentUser'];
+    if (token) {
+      headersParams['Authorization'] = 'Bearer ' + token;
     }
     const headers = new Headers(headersParams);
     const options = new RequestOptions({ headers: headers });
+    console.log(options);
     return options;
   }
 
