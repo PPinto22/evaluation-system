@@ -31,7 +31,7 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // TODO talvez seja preciso mudar isto, depende como ficar, caso ele selecione um grupo é preciso colocar a verdadeiro.
-    this.haveCreateGroup = true;
+    this.haveCreateGroup = false;
     this.groupId = 2;
   }
 
@@ -75,12 +75,12 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
   }
 
   public create(): void {
-    console.log('create');
     if (!this.haveCreateGroup) {
-      this.createGroup();
-    }
-    if (this.groupCreate.students) {
-      this.addStudents();
+       this.createGroup();
+    }else {
+      if (this.groupCreate.students) {
+        this.addStudents();
+      }
     }
   }
 

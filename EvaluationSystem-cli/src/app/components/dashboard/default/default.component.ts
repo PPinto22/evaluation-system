@@ -17,6 +17,8 @@ export class DefaultComponent implements OnInit, AfterViewInit {
 
   private classAlreadyExists: boolean;
   private new_class_add: any = {}
+  private classAsCreate: boolean;
+
 
   constructor(
     private authentication: AuthenticationService,
@@ -27,6 +29,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.classAlreadyExists = false;
+    this.classAsCreate = false;
     this.breadCrumb.setBreadCrum(['DashBoard']);
   }
 
@@ -49,6 +52,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   public addClass(): void {
     this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add.abbrev, this.new_class_add.nameClass).subscribe(
       resultado => {
+        this.classAsCreate = true;
         console.log(resultado);
       },
       error => {
@@ -56,6 +60,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
           console.log(this.exception.errorHandlingCreateClass(error))
           this.classAlreadyExists = this.exception.errorHandlingCreateClass(error);
         }
+        this.classAsCreate = false;
         console.log(error);
       }
     );

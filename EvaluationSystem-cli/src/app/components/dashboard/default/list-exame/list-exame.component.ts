@@ -70,10 +70,17 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     const teacher = exam.group._class.teacher;
     const _teacher =  new User( teacher.id, teacher.email, teacher.firstName, teacher.lastName, teacher.type, '');
     const classe = exam.group._class;
-    const _classe = new Class( classe.id, classe.name, classe.abbreviation, _teacher);
+    const _classe = new Class( classe.name, classe.abbreviation);
+    _classe.id = classe.id;
+    _classe.user = _teacher;
     const group = exam.group;
-    const _group = new Group( group.id, group.name, _classe );
-    return new Exam( exam.id, exam.name, exam.beginDate, exam.duration, _group);
+    const _group = new Group(group.name);
+    _group.id = group.id;
+    _group.class = _classe;
+    const examnew = new Exam( exam.name, exam.beginDate, exam.duration);
+    examnew.id = exam.id;
+    examnew.group = _group;
+    return examnew;
   }
 
   private refreshUpComing(): void {

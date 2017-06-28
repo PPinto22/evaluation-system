@@ -7,10 +7,8 @@ export class Group {
   private _name: string;
   private _class: Class;
 
-  constructor( id: number, name: string, classe: Class) {
-    this._id = id;
+  constructor( name: string) {
     this._name = name;
-    this._class = classe;
   }
 
   get id(): number {
