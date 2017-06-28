@@ -35,6 +35,9 @@ import {ExamsService} from './services/exams.service';
 import { ExameCreateComponent } from './components/dashboard/class/exame-create/exame-create.component';
 import { QuestionAddComponent } from './components/dashboard/class/exame-create/question-add/question-add.component';
 import { QuestionPreviewComponent } from './components/dashboard/class/exame-create/question-preview/question-preview.component';
+import { QuestionCreateComponent } from './components/dashboard/class/questions/question-create/question-create.component';
+import { QuestionsComponent } from './components/dashboard/class/questions/questions.component';
+import { QuestionCreateItemComponent } from './components/dashboard/class/questions/question-create/question-create-item/question-create-item.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +58,10 @@ import { QuestionPreviewComponent } from './components/dashboard/class/exame-cre
     GroupViewComponent,
     ExameCreateComponent,
     QuestionAddComponent,
-    QuestionPreviewComponent
+    QuestionPreviewComponent,
+    QuestionCreateComponent,
+    QuestionsComponent,
+    QuestionCreateItemComponent
   ],
   imports: [
     BrowserModule,
