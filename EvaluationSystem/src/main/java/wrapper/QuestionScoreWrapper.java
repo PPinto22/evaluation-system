@@ -1,7 +1,7 @@
 package wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.persistent.QuestionScore;
+import model.QuestionScore;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionScoreWrapper extends QuestionWrapper implements Comparable<QuestionScoreWrapper>{

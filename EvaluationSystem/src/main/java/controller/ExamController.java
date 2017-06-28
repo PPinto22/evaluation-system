@@ -2,8 +2,8 @@ package controller;
 
 import exception.*;
 import io.jsonwebtoken.Claims;
-import model.persistent.*;
-import model.persistent.Class;
+import model.*;
+import model.Class;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,6 @@ import security.JwtService;
 import service.*;
 import wrapper.ErrorWrapper;
 import wrapper.ExamWrapper;
-import wrapper.SubmissionExamWrapper;
 import wrapper.SubmissionWrapper;
 
 import java.util.HashMap;

@@ -13,7 +13,7 @@ package dao; /**
  */
 import java.util.List;
 
-import model.persistent.GroupStudent;
+import model.GroupStudent;
 import org.hibernate.criterion.DetachedCriteria;
 import org.orm.PersistentSession;
 import org.orm.criteria.*;

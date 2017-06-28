@@ -1,8 +1,8 @@
 package service;
 
 import exception.*;
-import model.persistent.*;
-import model.persistent.Class;
+import model.*;
+import model.Class;
 import org.orm.PersistentException;
 
 import java.util.List;
@@ -25,4 +25,5 @@ public interface ExamService {
     Map<String, Set<Exam>> getExamsByUser(User user);
     Map<String, Set<Exam>> getExamsByClass(Class cl);
     Map<String, Set<Exam>> getExamsByGroup(Group group);
+    Map<Student, Score> getExamScores(Exam exam) throws PersistentException, InvalidExamException;
 }

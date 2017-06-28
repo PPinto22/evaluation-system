@@ -5,7 +5,7 @@ import exception.ExistentEntityException;
 import exception.InvalidAnswerException;
 import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
-import model.persistent.*;
+import model.*;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

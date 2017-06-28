@@ -1,4 +1,4 @@
-package model.persistent; /**
+package model; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -9,8 +9,6 @@ package model.persistent; /**
 
 import dao.GroupSetCollection;
 import dao.QuestionSetCollection;
-
-import java.util.List;
 
 /**
  * Licensee: Universidade do Minho

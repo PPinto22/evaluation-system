@@ -11,7 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.QuestionScore;
+import model.QuestionScore;
 import org.orm.*;
 
 public class QuestionScoreSetCollection extends org.orm.util.ORMSet {

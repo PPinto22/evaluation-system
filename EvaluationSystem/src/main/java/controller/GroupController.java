@@ -2,8 +2,8 @@ package controller;
 
 import exception.*;
 import io.jsonwebtoken.Claims;
-import model.persistent.*;
-import model.persistent.Class;
+import model.*;
+import model.Class;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

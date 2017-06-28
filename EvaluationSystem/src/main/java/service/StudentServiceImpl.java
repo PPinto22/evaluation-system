@@ -1,29 +1,36 @@
 package service;
 
 import dao.StudentDAO;
-import exception.ExistentEntityException;
-import exception.InvalidUserTypeException;
-import exception.MissingInformationException;
-import exception.NonExistentEntityException;
-import model.persistent.Class;
-import model.persistent.Group;
-import model.persistent.GroupStudent;
-import model.persistent.Student;
+import exception.*;
+import model.*;
+import model.Class;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wrapper.GroupClassWrapper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StudentServiceImpl implements StudentService{
 
     UserService userService;
+    SubmissionService submissionService;
+    GroupService groupService;
+    ExamService examService;
     StudentDAO studentDAO;
 
+    @Autowired
+    public void setExamService(ExamService examService) {
+        this.examService = examService;
+    }
+    @Autowired
+    public void setGroupService(GroupService groupService) {
+        this.groupService = groupService;
+    }
+    @Autowired
+    public void setSubmissionService(SubmissionService submissionService) {
+        this.submissionService = submissionService;
+    }
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -31,6 +38,63 @@ public class StudentServiceImpl implements StudentService{
 
     public StudentServiceImpl(StudentDAO studentDAO) {
         this.studentDAO = studentDAO;
+    }
+
+    @Override
+    public Map<Group, Map<Exam, Score>> getStudentScores(Student student) throws PersistentException {
+        Map<Group, Map<Exam, Score>> groupMap = new TreeMap<>();
+        for(Group group: getStudentGroups(student)){
+            Map<Exam, Score> examMap = new TreeMap<>();
+            for(Exam exam: group.getExams()){
+                if(examService.examHasFinished(exam)) {
+                    try {
+                        Submission submission = submissionService.getSubmissionByStudentAndExam(student, exam);
+                        examMap.put(exam, new Score(submission));
+                    } catch (NonExistentEntityException e) {
+                        examMap.put(exam, new Score());
+                    }
+                }
+            }
+            if(!examMap.isEmpty())
+                groupMap.put(group, examMap);
+        }
+        return groupMap;
+    }
+
+    @Override
+    public Map<Exam, Score> getStudentScoresByGroup(Student student, Group group) throws StudentNotInGroupException, PersistentException {
+        if(!groupService.studentInGroup(student,group))
+            throw new StudentNotInGroupException();
+
+        Map<Exam, Score> scoreMap = new TreeMap<>();
+        for(Exam exam: group.getExams()){
+            if(examService.examHasFinished(exam)) {
+                try {
+                    Submission submission = submissionService.getSubmissionByStudentAndExam(student, exam);
+                    scoreMap.put(exam, new Score(submission));
+                } catch (NonExistentEntityException e) {
+                    scoreMap.put(exam, new Score());
+                }
+            }
+        }
+
+        return scoreMap;
+    }
+
+    @Override
+    public Score getStudentScoreByExam(Student student, Exam exam) throws PersistentException, StudentNotInGroupException, InvalidExamException {
+        if(!examService.examHasFinished(exam))
+            throw new InvalidExamException();
+        if(!groupService.studentInGroup(student,exam.get_group()))
+            throw new StudentNotInGroupException();
+        Score score = null;
+        try {
+            Submission submission = submissionService.getSubmissionByStudentAndExam(student,exam);
+            score = new Score(submission);
+        } catch (NonExistentEntityException e) {
+            score = new Score();
+        }
+        return score;
     }
 
     @Override

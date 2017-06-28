@@ -1,4 +1,4 @@
-package model.persistent; /**
+package model; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -17,9 +17,16 @@ import java.security.NoSuchAlgorithmException;
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-public class User {
+public class User implements Comparable<User>{
 
-	/////// Nosso codigo //////
+	@Override
+	public int compareTo(User o) {
+	    int nameCompare = this.getFullName().compareTo(o.getFullName());
+		if(nameCompare == 0)
+            return this.getEmail().compareTo(o.getEmail());
+		else return nameCompare;
+	}
+
 	public User(User user) {
 		//this.ID = user.getID();
 		this.email = user.getEmail();
@@ -34,6 +41,10 @@ public class User {
 
 	public void hashPassword(){
 		this.setPassword(getHash(this.getPassword()));
+	}
+
+	public String getFullName(){
+		return this.getFirstName() + " " + this.getLastName();
 	}
 
 	public static String getHash(String s){

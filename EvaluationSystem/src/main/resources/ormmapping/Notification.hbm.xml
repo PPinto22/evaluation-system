@@ -5,16 +5,16 @@ License Type: Academic
 -->
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="model.persistent.Notification" table="Notification" lazy="false" discriminator-value="model.persistent.Notification">
+	<class name="model.Notification" table="Notification" lazy="false" discriminator-value="model.Notification">
 		<id name="ID" column="ID" type="integer" unsaved-value="0">
 			<generator class="native">
 			</generator>
 		</id>
 		<discriminator column="Discriminator" type="string"/>
-		<many-to-one name="_user" cascade="lock" column="UserID" class="model.persistent.User" not-null="true" lazy="proxy" access="field">
+		<many-to-one name="_user" cascade="lock" column="UserID" class="model.User" not-null="true" lazy="proxy" access="field">
 		</many-to-one>
-		<subclass name="model.persistent.GroupInvitation" discriminator-value="model.persistent.GroupInvitation" lazy="false">
-			<many-to-one name="_group" cascade="lock" column="GroupID" class="model.persistent.Group" not-null="true" lazy="proxy" access="field">
+		<subclass name="model.GroupInvitation" discriminator-value="model.GroupInvitation" lazy="false">
+			<many-to-one name="_group" cascade="lock" column="GroupID" class="model.Group" not-null="true" lazy="proxy" access="field">
 			</many-to-one>
 		</subclass>
 	</class>

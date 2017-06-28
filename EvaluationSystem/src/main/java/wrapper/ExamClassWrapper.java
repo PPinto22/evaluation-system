@@ -1,7 +1,7 @@
 package wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.persistent.Exam;
+import model.Exam;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamClassWrapper extends ExamWrapper{

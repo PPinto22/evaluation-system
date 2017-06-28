@@ -1,7 +1,7 @@
 package wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.persistent.Answer;
+import model.Answer;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

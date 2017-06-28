@@ -1,6 +1,6 @@
 package wrapper;
 
-import model.persistent.Exam;
+import model.Exam;
 
 import java.util.Map;
 import java.util.Set;

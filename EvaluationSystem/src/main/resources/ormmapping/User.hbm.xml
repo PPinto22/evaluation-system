@@ -5,7 +5,7 @@ License Type: Academic
 -->
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="model.persistent.User" table="`User`" lazy="false" discriminator-value="model.persistent.User">
+	<class name="model.User" table="`User`" lazy="false" discriminator-value="model.User">
 		<id name="ID" column="ID" type="integer" unsaved-value="0">
 			<generator class="native">
 			</generator>
@@ -20,22 +20,22 @@ License Type: Academic
 		<property name="registrationCode" column="RegistrationCode" type="string" length="255" not-null="false" lazy="false"/>
 		<set name="ORM__notifications" lazy="true" cascade="save-update,lock" inverse="true">
 			<key column="UserID" not-null="true"/>
-			<one-to-many class="model.persistent.Notification"/>
+			<one-to-many class="model.Notification"/>
 		</set>
-		<subclass name="model.persistent.Student" discriminator-value="model.persistent.Student" lazy="false">
+		<subclass name="model.Student" discriminator-value="model.Student" lazy="false">
 			<set name="ORM__submissions" lazy="true" cascade="save-update,lock" inverse="true">
 				<key column="UserID" not-null="true"/>
-				<one-to-many class="model.persistent.Submission"/>
+				<one-to-many class="model.Submission"/>
 			</set>
 			<set name="ORM__groups" lazy="true" cascade="save-update,lock" inverse="true">
 				<key column="UserID" not-null="true"/>
-				<one-to-many class="model.persistent.GroupStudent"/>
+				<one-to-many class="model.GroupStudent"/>
 			</set>
 		</subclass>
-		<subclass name="model.persistent.Teacher" discriminator-value="model.persistent.Teacher" lazy="false">
+		<subclass name="model.Teacher" discriminator-value="model.Teacher" lazy="false">
 			<set name="ORM__classes" lazy="true" cascade="save-update,lock" inverse="true">
 				<key column="UserID" not-null="true"/>
-				<one-to-many class="model.persistent.Class"/>
+				<one-to-many class="model.Class"/>
 			</set>
 		</subclass>
 	</class>

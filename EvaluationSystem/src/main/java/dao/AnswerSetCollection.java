@@ -11,7 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.Answer;
+import model.Answer;
 import org.orm.*;
 
 public class AnswerSetCollection extends org.orm.util.ORMSet {

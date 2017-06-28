@@ -2,8 +2,8 @@ package wrapper;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.persistent.QuestionScore;
-import model.persistent.QuestionSubmission;
+import model.QuestionScore;
+import model.QuestionSubmission;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionSubmissionWrapper {

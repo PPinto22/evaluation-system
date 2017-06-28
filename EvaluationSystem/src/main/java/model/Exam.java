@@ -1,4 +1,4 @@
-package model.persistent; /**
+package model; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -24,12 +24,18 @@ public class Exam implements Comparable<Exam>{
 
 	@Override
 	public int compareTo(Exam o) {
-		if(this.getBeginDate() > o.getDuration())
+		if(this.getBeginDate() > o.getBeginDate())
 			return 1;
-		else if(this.getDuration() < o.getBeginDate())
+		else if(this.getBeginDate() < o.getBeginDate())
 			return -1;
-		else
-			return 0;
+		else{
+			if(this.getID() > o.getID())
+				return 1;
+			else if(this.getID() < o.getID())
+				return 1;
+			else
+				return 0;
+		}
 	}
 
 	public Exam() {

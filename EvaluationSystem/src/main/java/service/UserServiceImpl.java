@@ -2,9 +2,9 @@ package service;
 
 import dao.*;
 import exception.*;
-import model.persistent.Student;
-import model.persistent.Teacher;
-import model.persistent.User;
+import model.Student;
+import model.Teacher;
+import model.User;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

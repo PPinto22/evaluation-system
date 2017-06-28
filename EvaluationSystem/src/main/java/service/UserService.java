@@ -1,9 +1,7 @@
 package service;
 
 import exception.*;
-import model.persistent.Student;
-import model.persistent.Teacher;
-import model.persistent.User;
+import model.User;
 import org.orm.PersistentException;
 
 public interface UserService {
