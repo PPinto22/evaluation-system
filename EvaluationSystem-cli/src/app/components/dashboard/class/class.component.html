@@ -2,12 +2,12 @@
   <div class="col-lg-6 col-md-6 col-lg-offset-6 col-md-offset-6" *ngIf="isTeacher()">
     <form class="form-horizontal" role="form">
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-        <button class="btn btn-block btn-primary ">
+        <button [routerLink]="['/dashboard','classes','1','questions' ]" class="btn btn-block btn-primary ">
           <span class="fa fa-eye"></span>Questions
         </button>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-        <button class="btn btn-block btn-primary ">
+        <button [routerLink]="['/dashboard','classes','1','questions','new' ]" class="btn btn-block btn-primary ">
           <span class="fa fa-plus-square"></span>Questions
         </button>
       </div>

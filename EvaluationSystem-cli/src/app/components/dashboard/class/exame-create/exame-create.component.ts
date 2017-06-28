@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Question} from '../../../../models/question';
 
+declare var page_content_onresize: any;
+
 @Component({
   selector: 'app-exame-create',
   templateUrl: './exame-create.component.html',
@@ -16,10 +18,21 @@ export class ExameCreateComponent implements OnInit {
 
   ngOnInit() {
     this.questions = [];
-    this.questions.push( new Question( Question._Normal, 'Categoria 1'));
-    this.questions.push( new Question( Question._Normal, 'Categoria 1'));
-    this.questions.push( new Question( Question._Normal, 'Categoria 1'));
+    this.categories = ['Spring'];
+    this.questions.push( new Question( Question._Normal, this.categories[0]));
 
+  }
+
+
+  public deleteQuestion( question: Question): void {
+    this.questions.filter( ( question_item ) => {
+      return question_item !== question;
+    });
+  }
+
+  public addQuestion(): void {
+    this.questions.push( new Question( Question._Normal, this.categories[0]));
+    page_content_onresize();
   }
 
 

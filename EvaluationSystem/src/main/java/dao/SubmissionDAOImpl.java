@@ -24,6 +24,14 @@ import java.util.List;
 public class SubmissionDAOImpl implements SubmissionDAO {
 
 	@Override
+	public Submission loadSubmissionByStudentAndExam(int studentID, int examID) throws PersistentException {
+		SubmissionCriteria criteria = new SubmissionCriteria();
+		criteria._examId.eq(examID);
+		criteria._studentId.eq(studentID);
+		return this.loadSubmissionByCriteria(criteria);
+	}
+
+	@Override
 	public boolean exists(int ID) throws PersistentException {
 		return this.getSubmissionByORMID(ID) != null;
 	}
