@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {GroupService} from '../../../../../services/group.service';
 import {StudentsService} from '../../../../../services/students.service';
+import {Exception} from '../../../../../execption/exception';
 
 declare var $: any;
 declare var x_navigation: any;
@@ -13,16 +14,19 @@ declare var page_content_onresize: any;
   styleUrls: ['./group-create.component.css']
 })
 export class GroupCreateComponent implements OnInit, AfterViewInit {
-  classId: number;
-  groupId: number;
-  groupCreate: any = {};
-  haveCreateGroup: boolean;
-  wrongEmail = '';
+
+  private classId: number;
+  private groupId: number;
+  private groupCreate: any = {};
+  private haveCreateGroup: boolean;
+  private wrongEmail = '';
+  private groupAlreadyExists = false;
 
   constructor(private group: GroupService,
               private router: Router,
               private route: ActivatedRoute,
-              private students: StudentsService
+              private students: StudentsService,
+              private exception: Exception
   ) {
     this.route.params.subscribe(params => {
       this.classId = +params['id'];
@@ -32,6 +36,7 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // TODO talvez seja preciso mudar isto, depende como ficar, caso ele selecione um grupo é preciso colocar a verdadeiro.
     this.haveCreateGroup = false;
+    this.groupAlreadyExists = false;
     this.groupId = 2;
   }
 
@@ -69,6 +74,9 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
         this.addStudents();
       },
       error => {
+        if ( error.status === 406 ) {
+          this.groupAlreadyExists = this.exception.errorHandlingCreateGroup(error);
+        }
         console.log(error);
       }
     );

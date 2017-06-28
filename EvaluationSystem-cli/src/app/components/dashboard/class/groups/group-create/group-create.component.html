@@ -22,6 +22,8 @@
             <input type="text" class="form-control" name="nameGroup" [(ngModel)]="groupCreate.nameGroup" placeholder="Group Name" #nameGroup="ngModel"/>
           </div>
           <div *ngIf="f_createGroup.submitted && !nameGroup.valid && !haveCreateGroup" class="help-block">Group name is required</div>
+          <label *ngIf="groupAlreadyExists && nameClass.valid"  class="control-label groupAlreadyExists">Group already exists </label>
+          <label *ngIf="haveCreateGroup && nameClass.valid"  class="control-label groupCreated">Group was created </label>
         </div>
       </div>
 

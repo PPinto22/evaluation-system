@@ -12,7 +12,7 @@
             <input type="text" class="form-control" name="nameClass" [(ngModel)]="new_class_add.nameClass" placeholder="Class Name" #nameClass="ngModel" required/>
             <div *ngIf="f_newClass.submitted && !nameClass.valid" class="help-block">New Class is required</div>
             <label *ngIf="classAlreadyExists && nameClass.valid"  class="control-label classAlreadyExists">Class already exists</label>
-            <label *ngIf="classAsCreate && nameClass.valid"  class="control-label classAlreadyExists">Class was created </label>
+            <label *ngIf="classAsCreate && nameClass.valid"  class="control-label classCreated">Class was created </label>
           </div>
 
           <div class="col-md-3 col-sm-3">

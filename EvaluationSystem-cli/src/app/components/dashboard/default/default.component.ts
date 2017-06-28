@@ -16,7 +16,7 @@ declare var page_content_onresize: any;
 export class DefaultComponent implements OnInit, AfterViewInit {
 
   private classAlreadyExists: boolean;
-  private new_class_add: any = {}
+  private new_class_add: any = {};
   private classAsCreate: boolean;
 
 
@@ -50,6 +50,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     }, {passive: true});
   }
   public addClass(): void {
+    console.log('cria class');
     this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add.abbrev, this.new_class_add.nameClass).subscribe(
       resultado => {
         this.classAsCreate = true;
@@ -57,7 +58,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       },
       error => {
         if ( error.status === 406) {
-          console.log(this.exception.errorHandlingCreateClass(error))
+          console.log(this.exception.errorHandlingCreateClass(error));
           this.classAlreadyExists = this.exception.errorHandlingCreateClass(error);
         }
         this.classAsCreate = false;

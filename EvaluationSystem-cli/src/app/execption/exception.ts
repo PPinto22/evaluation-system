@@ -10,4 +10,12 @@ export class Exception {
     }
     return false;
   }
+
+  errorHandlingCreateGroup(error: any): boolean {
+    const p = JSON.parse(error._body);
+    if ( p.message === 'Group already exists') {
+      return true;
+    }
+    return false;
+  }
 }
