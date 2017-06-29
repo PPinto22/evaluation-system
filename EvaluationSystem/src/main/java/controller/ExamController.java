@@ -44,7 +44,33 @@ public class ExamController {
         this.answerService = answerService;
     }
 
-    @RequestMapping(value = "/{examID:[\\d]+}", method = GET)
+    @RequestMapping(value = "/{examID:[\\d]+}", method = PUT)
+    public ResponseEntity<Object> getExam(@PathVariable int examID,
+                                          @RequestBody ExamPUTWrapper examWrapper,
+                                          HttpServletRequest request) {
+        try {
+            User user = jwtService.getUser((Claims) request.getAttribute("claims"));
+            Exam exam = examService.getExamByID(examID);
+            Group group = exam.get_group();
+            Class cl = group.get_class();
+            if(cl.get_teacher().getID() != user.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            exam = examService.updateExam(exam, examWrapper.getName(), examWrapper.getBeginDate(), examWrapper.getDuration());
+            return new ResponseEntity<Object>(new ExamWrapper(exam, true, true), OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_EXAM), NOT_FOUND);
+        } catch (ExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(EXISTENT_EXAM), NOT_ACCEPTABLE);
+        }
+    }
+
+
+            @RequestMapping(value = "/{examID:[\\d]+}", method = GET)
     public ResponseEntity<Object> getExam(@PathVariable int examID, HttpServletRequest request){
         try{
             User user = jwtService.getUser((Claims)request.getAttribute("claims"));

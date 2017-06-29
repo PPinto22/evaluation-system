@@ -50,7 +50,7 @@ public class ClassServiceImpl implements ClassService{
 
     @Override
     public Class updateClass(Class cl, String name, String abbreviation) throws PersistentException, ExistentEntityException {
-        if(exists(cl.get_teacher(), name))
+        if(name != null && !name.equals(cl.getName()) && exists(cl.get_teacher(), name))
             throw new ExistentEntityException();
         if(name != null && !name.equals(""))
             cl.setName(name);

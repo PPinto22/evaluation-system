@@ -97,7 +97,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores)
 - [GET /api/exams/{exam_id}](#get-apiexamsexam_id)
 - [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
-- [~~PUT /api/exams/{exam_id}~~](#put-apiexamsexam_id)
+- [PUT /api/exams/{exam_id}](#put-apiexamsexam_id)
 - [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores)
 - [POST /api/exams/{exam_id}/submission](#post-apiexamsexam_idsubmissions)
 - [GET /api/submissions/{submission_id}](#get-apisubmissionssubmission_id)
@@ -853,7 +853,31 @@ Se o utilizador for um aluno e o exame ainda não tiver começado, este método 
 - **UNAUTHORIZED (401)** - *No permission*
 
 #### ~~DELETE /api/exams/{exam_id}~~
-#### ~~PUT /api/exams/{exam_id}~~
+#### PUT /api/exams/{exam_id}
+### Body
+```json
+{
+	"name": "Exam 1",
+	"beginDate": 1498908600000,
+	"duration": 10
+}
+```
+### Response
+```json
+{
+  "id": 1,
+  "name": "Exam 1",
+  "beginDate": 1498908600000,
+  "duration": 10
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Exam already exists*
+
+
 #### GET /api/exams/{exam_id}/scores
 ### Body
 > O campo *submissionID* pode não existir, caso o aluno não tenha feita uma submissão. Neste caso, o score é 0.
