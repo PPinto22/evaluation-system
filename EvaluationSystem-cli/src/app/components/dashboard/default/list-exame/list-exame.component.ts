@@ -17,15 +17,15 @@ declare var panels: any;
 })
 export class ListExameComponent implements OnInit, AfterViewInit {
 
-  upComingExams: Array<Exam>;
-  historyExams: Array<Exam>;
+  private upComingExams: Array<Exam>;
+  private historyExams: Array<Exam>;
+  private onGoingExams: Array<Exam>;
 
   constructor(
     private authentication: AuthenticationService,
     private exams: ExamsService
     ) {
-    this.upComingExams = new Array<Exam>();
-    this.historyExams = new Array<Exam>();
+    this.cleanAllArray();
   }
 
   ngOnInit() {
@@ -36,16 +36,26 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     panels();
   }
 
+  private cleanAllArray(): void {
+    this.upComingExams = new Array<Exam>();
+    this.historyExams = new Array<Exam>();
+    this.onGoingExams = new Array<Exam>();
+  }
+
   private getHistoryAndUpComming(): void {
+    this.cleanAllArray();
     this.exams.getExamsByUserId( this.authentication.getUserId() ).subscribe(
       resultado => {
-        for ( const exams of resultado.exams ) {
-          if (exams.History) {
-            this.getAllHistory(exams);
-          }
-          if (exams.Ongoing || exams.Upcoming) {
-            this.getAllComing(exams);
-          }
+        console.log(resultado);
+        console.log('resultado');
+        if (resultado.exams.History) {
+          this.getAllHistory(resultado.exams.History);
+        }
+        if (resultado.exams.Ongoing) {
+          this.getAllOngoing(resultado.exams.Ongoing);
+        }
+        if (resultado.exams.Upcoming) {
+          this.getAllComing(resultado.exams.Upcoming);
         }
       },
       error => {
@@ -60,8 +70,14 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     }
   }
 
+  private getAllOngoing (exams): void {
+    for (const exam of exams) {
+      this.onGoingExams.push(this.createExam(exam));
+    }
+  }
+
   private getAllComing (exams): void {
-    for ( const exam of exams){
+    for (const exam of exams) {
       this.upComingExams.push(this.createExam(exam));
     }
   }

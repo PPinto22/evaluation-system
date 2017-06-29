@@ -1,3 +1,7 @@
 .list-exames {
   height: 250px;
 }
+
+.ongoing{
+  color: red;
+}
