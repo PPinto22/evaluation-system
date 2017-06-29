@@ -9,6 +9,11 @@ Refresh - need someones changes
 Remove and Edit Group
 ```
 
+- Schedule
+```
+Maybe change colors
+```
+
 ## Backend - Spring and Hibernate
 
 ### Build and Run Postgres
