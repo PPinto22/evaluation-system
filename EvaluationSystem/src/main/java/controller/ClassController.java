@@ -28,6 +28,7 @@ import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
 @RequestMapping(value = "/api/classes")
@@ -52,6 +53,29 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Object>(new ClassTeacherWrapper(cl),OK);
+    }
+
+    @RequestMapping(value = "/{id:[\\d]+}", method = PUT)
+    public ResponseEntity<Object> updateClass(@PathVariable int id,
+                                              @RequestBody Class clWrapper,
+                                              HttpServletRequest request) {
+        try {
+            User clientUser = jwtService.getUser((Claims) request.getAttribute("claims"));
+            Class cl = classService.getClassByID(id);
+            if (clientUser.getID() != cl.get_teacher().getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            cl = classService.updateClass(cl, clWrapper.getName(), clWrapper.getAbbreviation());
+            return new ResponseEntity<Object>(new ClassTeacherWrapper(cl), OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
+        } catch (ExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(CLASS_EXISTS), NOT_ACCEPTABLE);
+        }
     }
 
     @RequestMapping(value = "/{classID:[\\d]+}/groups", method = POST)

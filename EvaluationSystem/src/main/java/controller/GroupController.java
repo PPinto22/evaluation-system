@@ -22,9 +22,7 @@ import java.util.*;
 
 import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping(value = "api/groups")
@@ -55,6 +53,29 @@ public class GroupController {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        }
+    }
+    
+    @RequestMapping(value = "/{id:[\\d]+}", method = PUT)
+    public ResponseEntity<Object> updateGroup(@PathVariable int id,
+                                              @RequestBody Group groupWrapper,
+                                              HttpServletRequest request){
+        try {
+            User clientUser = jwtService.getUser((Claims) request.getAttribute("claims"));
+            Group group = this.groupService.getGroupByID(id);
+            if(group.get_class().get_teacher().getID() != clientUser.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            group = groupService.updateGroup(group, groupWrapper.getName());
+            return new ResponseEntity<Object>(new GroupClassWrapper(group), OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        } catch (ExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(GROUP_EXISTS), NOT_ACCEPTABLE);
         }
     }
 

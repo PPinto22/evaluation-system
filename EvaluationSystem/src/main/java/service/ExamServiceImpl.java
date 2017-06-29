@@ -48,6 +48,25 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
+    public Exam updateExam(Exam exam, String name, Long beginDate, Integer duration)
+            throws PersistentException, ExistentEntityException {
+        if(name != null && !name.equals(exam.getName()) && exists(exam.get_group(), name))
+            throw new ExistentEntityException();
+
+        if(name != null && !name.equals(""))
+            exam.setName(name);
+        if(beginDate != null
+//                && validateDate(beginDate)
+          )
+            exam.setBeginDate(beginDate);
+        if(duration != null && validateDuration(duration))
+            exam.setDuration(duration);
+
+        examDAO.save(exam);
+        return exam;
+    }
+
+    @Override
     public Map<Student, Score> getExamScores(Exam exam) throws PersistentException, InvalidExamException {
         if(!examHasFinished(exam))
             throw new InvalidExamException();
@@ -140,15 +159,24 @@ public class ExamServiceImpl implements ExamService{
         return ms > (exam.getBeginDate() + exam.getDuration()*60*1000 + 5*60*1000); // 5 minutos de tolerancia apos fim
     }
 
+    private boolean validateDate(long date) {
+        return date > (System.currentTimeMillis() + (1000 * 60 * 60 * 24));
+    }
+
+    private boolean validateDuration(int minutes){
+        return minutes >= 10 && minutes <= 300;
+    }
+
     @Override
     public Exam createExam(String name, int minutes, long beginDate, List<Integer> questionIDs, Group group)
             throws InvalidExamException, PersistentException, InvalidQuestionException, ExistentEntityException {
         Exam exam = new Exam();
         if(name == null || name.equals(""))
             throw new InvalidExamException("name");
-        if(minutes < 10 || minutes > 300)
+        if(!validateDuration(minutes))
             throw new InvalidExamException("duration");
-        //if(beginDate < (System.currentTimeMillis()+ (1000 * 60 * 60 * 24)))
+
+        //if(!validateDate(beginDate))
         //    throw new InvalidExamException("date");
         if(exists(group, name))
             throw new ExistentEntityException();

@@ -49,6 +49,19 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
+    public Class updateClass(Class cl, String name, String abbreviation) throws PersistentException, ExistentEntityException {
+        if(name != null && !name.equals(cl.getName()) && exists(cl.get_teacher(), name))
+            throw new ExistentEntityException();
+        if(name != null && !name.equals(""))
+            cl.setName(name);
+        if(abbreviation != null && !name.equals(""))
+            cl.setAbbreviation(abbreviation);
+
+        classDAO.save(cl);
+        return cl;
+    }
+
+    @Override
     public Class getClassByID(int id) throws PersistentException, NonExistentEntityException {
         if(!classDAO.exists(id))
             throw new NonExistentEntityException();
