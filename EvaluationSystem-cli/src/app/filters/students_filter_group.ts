@@ -4,7 +4,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'StudentsFilter',
+  name: 'StudentsFilterGroup',
 })
 export class StudentsFilterGroup implements PipeTransform {
   transform(value: any, input: string) {
