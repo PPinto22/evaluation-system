@@ -11,11 +11,25 @@ export class StudentsFilter implements PipeTransform {
     if (input) {
       input = input.toLowerCase();
       return value.filter(function (el: any) {
-        const pos = el.email.indexOf('@');
-        const aux = el.email.substring(0, pos);
+        const pos = el.indexOf('@');
+        const aux = el.substring(0, pos);
         return aux.toLowerCase().indexOf(input) > -1;
       });
     }
     return value;
   }
 }
+
+/*
+ transform(value: any, input: string) {
+ if (input) {
+ input = input.toLowerCase();
+ return value.filter(function (el: any) {
+ const pos = el.email.indexOf('@');
+ const aux = el.email.substring(0, pos);
+ return aux.toLowerCase().indexOf(input) > -1;
+ });
+ }
+ return value;
+ }
+ */

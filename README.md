@@ -7,12 +7,18 @@
 ```
 Refresh - need someones changes
 Remove and Edit Group
+Create Classe
 ```
 
 - Schedule
 ```
 Maybe change colors
 ```
+
+- Create Group
+```
+Need Tests
+``` 
 
 ## Backend - Spring and Hibernate
 
