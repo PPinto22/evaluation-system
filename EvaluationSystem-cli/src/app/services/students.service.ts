@@ -15,7 +15,7 @@ export class StudentsService {
   }
 
   // GET /api/groups/{group_id}/students
-  getUserById(groupId: number): Observable<any> {
+  getUserByGroupId(groupId: number): Observable<any> {
     return this.http.get( this.httpUtil.url('/api/groups/' + groupId + '/students' ),
           this.httpUtil.headers(this.authentication.getToken()) )
       .map( this.httpUtil.extrairDados );

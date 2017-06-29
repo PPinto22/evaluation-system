@@ -29,7 +29,7 @@ export class ClassComponent implements OnInit, AfterViewInit {
     private _class: ClassesService
   ) {
     this.route.params.subscribe(params => {
-      this.classId = +params['id'];
+      this.classId = +params['class_id'];
     });
     this.classInformation = new Class('', '');
     this.teacherClass = new User(-1, '', '', '', '', '');

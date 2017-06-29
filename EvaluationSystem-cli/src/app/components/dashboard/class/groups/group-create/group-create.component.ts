@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {GroupService} from '../../../../../services/group.service';
 import {StudentsService} from '../../../../../services/students.service';
 import {Exception} from '../../../../../execption/exception';
+import {User} from '../../../../../models/user';
+import {StudentsFilter} from '../../../../../filters/students_filter';
 
 declare var $: any;
 declare var x_navigation: any;
@@ -21,6 +23,8 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
   private haveCreateGroup: boolean;
   private wrongEmail = '';
   private groupAlreadyExists = false;
+  private allStudentsOfGroup: Array<any>;
+  private model: any = {};
 
   constructor(private group: GroupService,
               private router: Router,
@@ -29,15 +33,32 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
               private exception: Exception
   ) {
     this.route.params.subscribe(params => {
-      this.classId = +params['id'];
+      this.classId = +params['class_id'];
     });
+    this.allStudentsOfGroup = new Array<User>();
+  }
+
+  private getAllGroupStudents(): void {
+    this.allStudentsOfGroup = new Array<User>();
+    this.students.getUserByGroupId(this.groupId).subscribe(
+      resultado => {
+        for ( const student of resultado) {
+          const p = { id: student.user.id, email: student.user.email, active: student.user.active, accepted: student.accepted};
+          this.allStudentsOfGroup.push(p);
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   ngOnInit() {
     // TODO talvez seja preciso mudar isto, depende como ficar, caso ele selecione um grupo é preciso colocar a verdadeiro.
     this.haveCreateGroup = false;
     this.groupAlreadyExists = false;
-    this.groupId = 2;
+    this.groupId = 3;
+    this.getAllGroupStudents();
   }
 
   ngAfterViewInit(): void {
@@ -58,6 +79,8 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
   }
 
   public refreshInvitedSudents(): void {
+    this.model.search = '';
+    this.getAllGroupStudents();
   }
 
   public saveGroup(): void {
@@ -95,6 +118,7 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
   public addStudents() {
     this.students.postStudentByGroup(this.groupId, this.treatmentEmail()).subscribe(
       resultado => {
+        this.getAllGroupStudents();
         this.groupCreate.students = this.wrongEmail;
         this.wrongEmail = '';
         console.log(resultado);

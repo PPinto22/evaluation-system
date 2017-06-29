@@ -54,6 +54,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add.abbrev, this.new_class_add.nameClass).subscribe(
       resultado => {
         this.classAsCreate = true;
+        this.new_class_add = {};
         console.log(resultado);
       },
       error => {
