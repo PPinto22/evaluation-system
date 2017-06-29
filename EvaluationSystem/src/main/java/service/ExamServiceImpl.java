@@ -3,10 +3,7 @@ package service;
 import dao.ExamDAO;
 import dao.QuestionDAO;
 import dao.QuestionScoreDAO;
-import exception.ExistentEntityException;
-import exception.InvalidExamException;
-import exception.InvalidQuestionException;
-import exception.NonExistentEntityException;
+import exception.*;
 import model.*;
 import model.Class;
 import org.orm.PersistentException;
@@ -14,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class ExamServiceImpl implements ExamService{
@@ -24,7 +22,12 @@ public class ExamServiceImpl implements ExamService{
     StudentService studentService;
     TeacherService teacherService;
     SubmissionService submissionService;
+    GroupService groupService;
 
+    @Autowired
+    public void setGroupService(GroupService groupService) {
+        this.groupService = groupService;
+    }
     @Autowired
     public void setSubmissionService(SubmissionService submissionService) {
         this.submissionService = submissionService;
@@ -205,5 +208,50 @@ public class ExamServiceImpl implements ExamService{
         group._exams.add(exam);
         examDAO.save(exam);
         return exam;
+    }
+
+    @Override
+    public Question generateExamQuestion(Group group, String category, int difficulty, List<Question> excludedQuestions) throws PersistentException, InsufficientQuestionsException {
+        List<Question> availableQuestions = groupService.listAvailableQuestionByCategoryAndDifficulty(group,category,difficulty);
+        for(Question question: excludedQuestions){
+            if(availableQuestions.contains(question))
+                availableQuestions.remove(question);
+        }
+
+        if(availableQuestions.isEmpty())
+            throw new InsufficientQuestionsException();
+
+        int randomQuestionIndex = ThreadLocalRandom.current().nextInt(0, availableQuestions.size());
+        return availableQuestions.get(randomQuestionIndex);
+    }
+
+    @Override
+    public List<Question> generateExamQuestions(Group group, List<String> categories, List<Integer> difficulties)
+            throws PersistentException, InvalidInputException, InsufficientQuestionsException {
+        if(categories.size() != difficulties.size())
+            throw new InvalidInputException("Categories and dificulties lists must be the same size");
+
+        Map<String, Map<Integer, List<Question>>> categoriesMap = groupService.getAvailableQuestions(group);
+        List<Question> res = new ArrayList<>();
+        for(int i = 0; i<categories.size(); i++){
+            String category = categories.get(i);
+            int difficulty = difficulties.get(i);
+            if(!categoriesMap.containsKey(category))
+                throw new InsufficientQuestionsException();
+            Map<Integer, List<Question>> difficultiesMap = categoriesMap.get(category);
+            if(!difficultiesMap.containsKey(difficulty))
+                throw new InsufficientQuestionsException();
+            List<Question> questions = difficultiesMap.get(difficulty);
+            if(questions.isEmpty())
+                throw new InsufficientQuestionsException();
+
+            int randomQuestionIndex =  ThreadLocalRandom.current().nextInt(0, questions.size());
+            Question selectedQuestion = questions.get(randomQuestionIndex);
+            questions.remove(randomQuestionIndex);
+
+            res.add(selectedQuestion);
+        }
+
+        return res;
     }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 public interface QuestionDAO {
 	boolean exists(int questionID) throws PersistentException;
 	boolean exists(int classID, String text) throws PersistentException;
+	List<Question> listQuestionsByClassCategoryAndDifficulty(int classID, String category, int difficulty) throws PersistentException;
 	List<Question> listQuestionsByClassAndText(int classID, String text) throws PersistentException;
 	List<Question> listQuestionsByClass(int classID) throws PersistentException;
 

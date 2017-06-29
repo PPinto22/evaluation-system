@@ -93,7 +93,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/groups/{group_id}/exams](#get-apigroupsgroup_idexams)
 - [POST /api/groups/{group_id}/exams](#post-apigroupsgroup_idexams)
 - [POST /api/groups/{group_id}/exams/generate](#post-apigroupsgroup_idexamsgenerate)
-- [~~POST /api/groups/{group_id}/exams/generate/question~~](#post-apigroupsgroup_idexamsgeneratequestion)
+- [POST /api/groups/{group_id}/exams/generate/question](#post-apigroupsgroup_idexamsgeneratequestion)
 - [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores)
 - [GET /api/exams/{exam_id}](#get-apiexamsexam_id)
 - [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
@@ -684,8 +684,44 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 - **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Invalid questions*, *Insufficient questions*
 
-#### ~~POST /api/groups/{group_id}/exams/generate/question~~
+#### POST /api/groups/{group_id}/exams/generate/question
 Gera uma única questão para um exame.
+### Body
+> No campo *excluded* devem ir os IDs de perguntas a não considerar.
+
+```json
+{
+	"category": "Category1",
+	"difficulty": 1,
+	"excluded": [1,16]
+}
+```
+### Response
+```json
+{
+    "id": 31,
+    "text": "Solve for x: 30 + x = 34",
+    "category": "Category1",
+    "difficulty": 1,
+    "answers": [
+        {
+            "id": 122,
+            "text": "31",
+            "correct": false,
+            "order": 0
+        },
+        {
+          "..."
+        }
+    ]
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such group*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *No such question*, *Insufficient questions*
 
 #### GET /api/groups/{group_id}/scores
 ### Response
