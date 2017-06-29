@@ -80,7 +80,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [POST /auth/login](#post-authlogin) [x]
 - [POST /auth/signup](#post-authsignup) [x]
 - [GET /api/classes/{class_id}](#get-apiclassesclass_id) [x]
-- [~~PUT /api/classes/{class_id}~~](#put-apiclassesclass_id)
+- [PUT /api/classes/{class_id}](#put-apiclassesclass_id)
 - [~~DELETE /api/classes/{class_id}~~](#delete-apiclassesclass_id)
 - [GET /api/classes/{class_id}/questions](#get-apiclassesclass_idquestions) [x]
 - [POST /api/classes/{class_id}/questions](#post-apiclassesclass_idquestions) [x]
@@ -88,10 +88,10 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/classes/{class_id}/groups](#get-apiclassesclass_idgroups) [x]
 - [POST /api/classes/{class_id}/groups](#post-apiclassesclass_idgroups) [x]
 - [GET /api/questions/{question_id}](#get-apiquestionsquestion_id)
-- [~~PUT /api/questions/{question_id}~~](#put-apiquestionsquestion_id)
+- [PUT /api/questions/{question_id}](#put-apiquestionsquestion_id)
 - [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestion_id)
 - [GET /api/groups/{group_id}](#get-apigroupsgroup_id) [x]
-- [~~PUT /api/groups/{group_id}~~](#put-apigroupsgroup_id)
+- [PUT /api/groups/{group_id}](#put-apigroupsgroup_id)
 - [~~DELETE /api/groups/{group_id}~~](#delete-apigroupsgroup_id)
 - [GET /api/groups/{group_id}/students](#get-apigroupsgroup_idstudents) [x]
 - [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents) [x]
@@ -104,7 +104,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores)
 - [GET /api/exams/{exam_id}](#get-apiexamsexam_id)
 - [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
-- [~~PUT /api/exams/{exam_id}~~](#put-apiexamsexam_id)
+- [PUT /api/exams/{exam_id}](#put-apiexamsexam_id)
 - [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores)
 - [POST /api/exams/{exam_id}/submission](#post-apiexamsexam_idsubmissions)
 - [GET /api/submissions/{submission_id}](#get-apisubmissionssubmission_id)
@@ -204,7 +204,30 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
 
-#### ~~PUT /api/classes/{class_id}~~
+#### PUT /api/classes/{class_id}
+### Body
+```json
+{
+	"name": "Name1",
+	"abbreviation": "Abbreviation1"
+}
+```
+### Response
+```json
+[
+  {
+   "name": "Name1",
+   "abbreviation": "Abbreviation11",
+   "id": 1
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such class*
+- **NOT_ACCEPTABLE (406)** - *Class already exists*
+
 #### ~~DELETE /api/classes/{class_id}~~
 
 #### GET /api/classes/{class_id}/questions
@@ -398,7 +421,58 @@ ___
 - **NOT_FOUND (404)** - *No such question*
 - **UNAUTHORIZED (401)** - *No permission*
 
-#### ~~PUT /api/questions/{question_id}~~
+#### PUT /api/questions/{question_id}
+> Não é possível atualizar uma questão que esteja inserida num exame. Caso contrário, pode ser alterado qualquer um dos atributos *text*, *category*, *difficulty* ou *answers*.
+
+### Body
+```json
+{
+	"text": "Which is pi?",
+	"category": "Category2",
+	"difficulty": 1,
+	"answers": [
+		{
+			"text": "pi",
+			"correct": true
+		},
+		{
+			"text": "2*pi",
+			"correct": false
+		}
+	]
+}
+```
+
+### Response
+```json
+{
+  "id": 1,
+  "text": "Which is pi?",
+  "category": "Category2",
+  "difficulty": 1,
+  "answers": [
+    {
+      "id": 3603,
+      "text": "pi",
+      "correct": true,
+      "order": 0
+    },
+    {
+      "id": 3604,
+      "text": "2*pi",
+      "correct": false,
+      "order": 1
+    }
+  ]
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such question*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Question in use*, *Question exists*, *Invalid question*
+
 #### ~~DELETE /api/questions/{question_id}~~
 ___
 
@@ -429,7 +503,39 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such group*
 
-#### ~~PUT /api/groups/{group_id}~~
+#### PUT /api/groups/{group_id}
+### Body
+```json
+{
+	"name": "Name1"
+}
+```
+### Response
+```
+{
+  "id": 1,
+  "name": "Name1",
+  "_class": {
+    "name": "Name1",
+    "abbreviation": "Abbreviation1",
+    "teacher": {
+      "id": 16,
+      "email": "email16",
+      "firstName": "firstName16",
+      "lastName": "lastName16",
+      "type": "Teacher",
+      "active": true
+    },
+    "id": 1
+  }
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_ACCEPTABLE (406)** - *Group already exists*
+- **UNAUTHORIZED (401)** - *No permission*
+
 #### ~~DELETE /api/groups/{group_id}~~
 
 #### GET /api/groups/{group_id}/students
@@ -805,7 +911,31 @@ Se o utilizador for um aluno e o exame ainda não tiver começado, este método 
 - **UNAUTHORIZED (401)** - *No permission*
 
 #### ~~DELETE /api/exams/{exam_id}~~
-#### ~~PUT /api/exams/{exam_id}~~
+#### PUT /api/exams/{exam_id}
+### Body
+```json
+{
+	"name": "Exam 1",
+	"beginDate": 1498908600000,
+	"duration": 10
+}
+```
+### Response
+```json
+{
+  "id": 1,
+  "name": "Exam 1",
+  "beginDate": 1498908600000,
+  "duration": 10
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Exam already exists*
+
+
 #### GET /api/exams/{exam_id}/scores
 ### Body
 > O campo *submissionID* pode não existir, caso o aluno não tenha feita uma submissão. Neste caso, o score é 0.

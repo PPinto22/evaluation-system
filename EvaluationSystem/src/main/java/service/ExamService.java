@@ -19,6 +19,7 @@ public interface ExamService {
     QuestionScore getQuestionScore(Exam exam, Question question) throws NonExistentEntityException;
     Exam getExamByID(int examID) throws PersistentException, NonExistentEntityException;
     Exam addExamToGroup(Group group, Exam exam) throws PersistentException, ExistentEntityException;
+    Exam updateExam(Exam exam, String name, Long beginDate, Integer duration) throws PersistentException, ExistentEntityException;
     Exam createExam(String name, int minutes, long beginDate, List<Integer> questionIDs, Group group)
             throws InvalidExamException, PersistentException, InvalidQuestionException, ExistentEntityException;
 

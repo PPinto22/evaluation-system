@@ -21,6 +21,14 @@ import java.util.List;
 
 @Service
 public class QuestionScoreDAOImpl implements QuestionScoreDAO {
+
+	@Override
+	public boolean exists(int questionID) throws PersistentException {
+		QuestionScoreCriteria criteria = new QuestionScoreCriteria();
+		criteria._questionId.eq(questionID);
+		return loadQuestionScoreByCriteria(criteria) != null;
+	}
+
 	@Override
 	public boolean exists(int questionID, int examID) throws PersistentException {
 		QuestionScoreCriteria criteria = new QuestionScoreCriteria();

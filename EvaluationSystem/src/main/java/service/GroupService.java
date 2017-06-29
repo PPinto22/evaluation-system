@@ -13,6 +13,7 @@ public interface GroupService {
     Group getGroupByID(int ID) throws PersistentException, NonExistentEntityException;
     Group getGroupByName(Class cl, String name) throws PersistentException, NonExistentEntityException;
     Group addGroup(Group group) throws PersistentException;
+    Group updateGroup(Group group, String name) throws PersistentException, ExistentEntityException;
     void delete(Group group) throws PersistentException;
     boolean exists(int ID) throws PersistentException;
     boolean exists(Class cl, String name) throws PersistentException;
@@ -25,5 +26,6 @@ public interface GroupService {
     List<Question> listAvailableQuestions(Group group) throws PersistentException;
     List<Question> listAvailableQuestionByCategoryAndDifficulty(Group group, String category, int difficulty) throws PersistentException;
     Map<String, Map<Integer, List<Question>>> getAvailableQuestions(Group group) throws PersistentException;
+
     Map<Student, Map<Exam, Score>> getGroupScores(Group group) throws PersistentException;
 }
