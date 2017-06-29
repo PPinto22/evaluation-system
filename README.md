@@ -73,7 +73,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [POST /auth/login](#post-authlogin) [x]
 - [POST /auth/signup](#post-authsignup) [x]
 - [GET /api/classes/{class_id}](#get-apiclassesclass_id) [x]
-- [~~PUT /api/classes/{class_id}~~](#put-apiclassesclass_id)
+- [PUT /api/classes/{class_id}](#put-apiclassesclass_id)
 - [~~DELETE /api/classes/{class_id}~~](#delete-apiclassesclass_id)
 - [GET /api/classes/{class_id}/questions](#get-apiclassesclass_idquestions) [x]
 - [POST /api/classes/{class_id}/questions](#post-apiclassesclass_idquestions) [x]
@@ -84,7 +84,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [~~PUT /api/questions/{question_id}~~](#put-apiquestionsquestion_id)
 - [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestion_id)
 - [GET /api/groups/{group_id}](#get-apigroupsgroup_id) [x]
-- [~~PUT /api/groups/{group_id}~~](#put-apigroupsgroup_id)
+- [PUT /api/groups/{group_id}](#put-apigroupsgroup_id)
 - [~~DELETE /api/groups/{group_id}~~](#delete-apigroupsgroup_id)
 - [GET /api/groups/{group_id}/students](#get-apigroupsgroup_idstudents) [x]
 - [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents) [x]
@@ -197,7 +197,30 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
 
-#### ~~PUT /api/classes/{class_id}~~
+#### PUT /api/classes/{class_id}
+### Body
+```json
+{
+	"name": "Name1",
+	"abbreviation": "Abbreviation1"
+}
+```
+### Response
+```json
+[
+  {
+   "name": "Name1",
+   "abbreviation": "Abbreviation11",
+   "id": 1
+  }
+]
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such class*
+- **NOT_ACCEPTABLE (406)** - *Class already exists*
+
 #### ~~DELETE /api/classes/{class_id}~~
 
 #### GET /api/classes/{class_id}/questions
@@ -422,7 +445,39 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such group*
 
-#### ~~PUT /api/groups/{group_id}~~
+#### PUT /api/groups/{group_id}
+### Body
+```json
+{
+	"name": "Name1"
+}
+```
+### Response
+```
+{
+  "id": 1,
+  "name": "Name1",
+  "_class": {
+    "name": "Name1",
+    "abbreviation": "Abbreviation1",
+    "teacher": {
+      "id": 16,
+      "email": "email16",
+      "firstName": "firstName16",
+      "lastName": "lastName16",
+      "type": "Teacher",
+      "active": true
+    },
+    "id": 1
+  }
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_ACCEPTABLE (406)** - *Group already exists*
+- **UNAUTHORIZED (401)** - *No permission*
+
 #### ~~DELETE /api/groups/{group_id}~~
 
 #### GET /api/groups/{group_id}/students

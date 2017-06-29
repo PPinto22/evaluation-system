@@ -18,6 +18,7 @@ public interface ClassService {
     Class getClassByID(int id) throws PersistentException, NonExistentEntityException;
     Class getClassByName(Teacher teacher, String className) throws PersistentException, NonExistentEntityException;
     Class addClass(Class cl) throws PersistentException, MissingInformationException;
+    Class updateClass(Class cl, String name, String abbreviation) throws PersistentException, ExistentEntityException;
     List<Question> listClassQuestions(Class cl) throws PersistentException;
     List<Question> listClassQuestionsByCategoryAndDifficulty(Class cl, String category, int difficulty) throws PersistentException;
     Set<String> getClassCategories(Class cl) throws PersistentException;
@@ -26,6 +27,5 @@ public interface ClassService {
 
     boolean exists(Teacher teacher, String className) throws PersistentException;
     Group addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException;
-
     Question addQuestionToClass(Class cl, Question question) throws InvalidQuestionException, PersistentException, ExistentEntityException;
 }

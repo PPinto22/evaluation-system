@@ -55,6 +55,17 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
+    public Group updateGroup(Group group, String name) throws PersistentException, ExistentEntityException {
+        if(exists(group.get_class(), name))
+            throw new ExistentEntityException();
+
+        if(name != null && !name.equals(""))
+            group.setName(name);
+        groupDAO.save(group);
+        return group;
+    }
+
+    @Override
     public Map<Student, Map<Exam, Score>> getGroupScores(Group group) throws PersistentException {
         Map<Student, Map<Exam, Score>> studentMap = new TreeMap<>();
         for(GroupStudent groupStudent: group._students.toArray()){
