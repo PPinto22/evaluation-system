@@ -12,9 +12,9 @@ package dao; /**
  * License Type: Academic
  */
 import exception.NonExistentEntityException;
-import model.persistent.Class;
-import model.persistent.Group;
-import model.persistent.Question;
+import model.Class;
+import model.Group;
+import model.Question;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -184,7 +184,7 @@ public class ClassDAOImpl implements ClassDAO {
 	}
 	
 	public List queryClass(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.Class as model.persistent.Class");
+		StringBuffer sb = new StringBuffer("From model.Class as model.Class");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -200,14 +200,14 @@ public class ClassDAOImpl implements ClassDAO {
 	}
 	
 	public List queryClass(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.Class as model.persistent.Class");
+		StringBuffer sb = new StringBuffer("From model.Class as model.Class");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.Class", lockMode);
+			query.setLockMode("model.Class", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -299,7 +299,7 @@ public class ClassDAOImpl implements ClassDAO {
 	}
 	
 	public java.util.Iterator iterateClassByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.Class as model.persistent.Class");
+		StringBuffer sb = new StringBuffer("From model.Class as model.Class");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -315,14 +315,14 @@ public class ClassDAOImpl implements ClassDAO {
 	}
 	
 	public java.util.Iterator iterateClassByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.Class as model.persistent.Class");
+		StringBuffer sb = new StringBuffer("From model.Class as model.Class");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.Class", lockMode);
+			query.setLockMode("model.Class", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -341,7 +341,7 @@ public class ClassDAOImpl implements ClassDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.persistent.Class class1)", e);
+			_logger.error("save(model.Class class1)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -352,7 +352,7 @@ public class ClassDAOImpl implements ClassDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.persistent.Class class1)", e);
+			_logger.error("delete(model.Class class1)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -412,7 +412,7 @@ public class ClassDAOImpl implements ClassDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.persistent.Class class1)", e);
+			_logger.error("refresh(model.Class class1)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -423,7 +423,7 @@ public class ClassDAOImpl implements ClassDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.persistent.Class class1)", e);
+			_logger.error("evict(model.Class class1)", e);
 			throw new PersistentException(e);
 		}
 	}

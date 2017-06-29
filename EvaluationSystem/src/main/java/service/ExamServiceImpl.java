@@ -7,8 +7,8 @@ import exception.ExistentEntityException;
 import exception.InvalidExamException;
 import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
-import model.persistent.*;
-import model.persistent.Class;
+import model.*;
+import model.Class;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,12 @@ public class ExamServiceImpl implements ExamService{
     QuestionDAO questionDAO;
     StudentService studentService;
     TeacherService teacherService;
+    SubmissionService submissionService;
 
+    @Autowired
+    public void setSubmissionService(SubmissionService submissionService) {
+        this.submissionService = submissionService;
+    }
     @Autowired
     public void setStudentService(StudentService studentService) {
         this.studentService = studentService;
@@ -37,6 +42,24 @@ public class ExamServiceImpl implements ExamService{
         this.questionScoreDAO = questionScoreDAO;
         this.examDAO = examDAO;
         this.questionDAO = questionDAO;
+    }
+
+    @Override
+    public Map<Student, Score> getExamScores(Exam exam) throws PersistentException, InvalidExamException {
+        if(!examHasFinished(exam))
+            throw new InvalidExamException();
+
+        Map<Student, Score> studentMap = new TreeMap<>();
+        for(GroupStudent groupStudent: exam.get_group()._students.toArray()){
+            Student student = groupStudent.get_student();
+            try {
+                Submission submission = submissionService.getSubmissionByStudentAndExam(student, exam);
+                studentMap.put(student, new Score(submission));
+            }catch (NonExistentEntityException e) {
+                studentMap.put(student, new Score());
+            }
+        }
+        return studentMap;
     }
 
     @Override
@@ -66,7 +89,7 @@ public class ExamServiceImpl implements ExamService{
     private Map<String, Set<Exam>> getGroupsExams(List<Group> groups){
         Map<String, Set<Exam>> examMap = new TreeMap<>();
         for(Group group: groups){
-            for(Exam exam: group._exams.toArray()){
+            for(Exam exam: group.getExams()){
                 String key = examHasStarted(exam) ? examHasFinished(exam) ? "History" : "Ongoing" : "Upcoming";
                 if(!examMap.containsKey(key))
                     examMap.put(key, new TreeSet<>());
@@ -86,7 +109,7 @@ public class ExamServiceImpl implements ExamService{
     @Override
     public Map<String, Set<Exam>> getExamsByGroup(Group group) {
         Map<String, Set<Exam>> examMap = new TreeMap<>();
-        for(Exam exam: group._exams.toArray()){
+        for(Exam exam: group.getExams()){
             String key = examHasStarted(exam) ? examHasFinished(exam) ? "History" : "Ongoing" : "Upcoming";
             if(!examMap.containsKey(key))
                 examMap.put(key, new TreeSet<>());
@@ -122,8 +145,8 @@ public class ExamServiceImpl implements ExamService{
             throw new InvalidExamException("name");
         if(minutes < 10 || minutes > 300)
             throw new InvalidExamException("duration");
-        if(beginDate < (System.currentTimeMillis()+ (1000 * 60 * 60 * 24)))
-            throw new InvalidExamException("date");
+        //if(beginDate < (System.currentTimeMillis()+ (1000 * 60 * 60 * 24)))
+        //    throw new InvalidExamException("date");
         if(exists(group, name))
             throw new ExistentEntityException();
         if(hasDuplicates(questionIDs))

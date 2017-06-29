@@ -2,8 +2,8 @@ package wrapper;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.persistent.GroupStudent;
-import model.persistent.Student;
+import model.GroupStudent;
+import model.Student;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GroupStudentPOSTWrapper {

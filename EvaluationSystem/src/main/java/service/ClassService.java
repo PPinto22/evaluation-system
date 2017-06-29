@@ -4,10 +4,10 @@ import exception.ExistentEntityException;
 import exception.InvalidQuestionException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
-import model.persistent.Class;
-import model.persistent.Group;
-import model.persistent.Question;
-import model.persistent.Teacher;
+import model.Class;
+import model.Group;
+import model.Question;
+import model.Teacher;
 import org.orm.PersistentException;
 
 import java.util.List;

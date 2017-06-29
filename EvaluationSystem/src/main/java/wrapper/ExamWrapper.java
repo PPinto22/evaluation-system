@@ -1,8 +1,8 @@
 package wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.persistent.Exam;
-import model.persistent.QuestionScore;
+import model.Exam;
+import model.QuestionScore;
 
 import java.util.ArrayList;
 import java.util.List;

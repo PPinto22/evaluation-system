@@ -9,12 +9,10 @@ export class Exam {
   private _duration: number;
   private _group: Group;
 
-  constructor( id: number, name: string, beginDate: number, duration: number, group: Group ) {
-    this._id = id;
+  constructor(name: string, beginDate: number, duration: number ) {
     this._name = name;
     this._beginDate = new Date(beginDate);
     this._duration = duration;
-    this._group = group;
   }
 
   get id(): number {

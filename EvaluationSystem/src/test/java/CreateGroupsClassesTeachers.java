@@ -1,7 +1,7 @@
 import exception.ExistentEntityException;
-import model.persistent.Class;
-import model.persistent.Group;
-import model.persistent.Teacher;
+import model.Class;
+import model.Group;
+import model.Teacher;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

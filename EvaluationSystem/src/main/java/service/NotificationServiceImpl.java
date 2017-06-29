@@ -5,7 +5,7 @@ import dao.GroupStudentDAO;
 import dao.NotificationDAO;
 import exception.NonExistentEntityException;
 import exception.UnconfirmedRegistrationException;
-import model.persistent.*;
+import model.*;
 import org.orm.PersistentException;
 import org.springframework.stereotype.Service;
 

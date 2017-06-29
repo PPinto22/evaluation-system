@@ -1,7 +1,7 @@
 package wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.persistent.Submission;
+import model.Submission;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SubmissionExamWrapper extends SubmissionWrapper{

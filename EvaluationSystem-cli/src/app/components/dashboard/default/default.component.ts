@@ -2,10 +2,11 @@ import {Component, OnInit, AfterViewInit, Output, EventEmitter} from '@angular/c
 import {AuthenticationService} from '../../../services/authentication.service';
 import {BreadCrumbService} from '../../../services/breadcrumb.service';
 import {ClassesService} from '../../../services/classes.service';
+import {Exception} from '../../../execption/exception';
 
 declare var $: any;
 declare var x_navigation: any;
-declare var page_content_onresize: any;
+declare var page_content_onresize:  any;
 
 @Component({
   selector: 'app-default',
@@ -14,15 +15,21 @@ declare var page_content_onresize: any;
 })
 export class DefaultComponent implements OnInit, AfterViewInit {
 
-  private new_class_add: Array<string> = new Array<string>();
+  private classAlreadyExists: boolean;
+  private new_class_add: any = {};
+  private classAsCreate: boolean;
+
 
   constructor(
     private authentication: AuthenticationService,
     private breadCrumb: BreadCrumbService,
-    private classes: ClassesService
+    private classes: ClassesService,
+    private exception: Exception
   ) { }
 
   ngOnInit() {
+    this.classAlreadyExists = false;
+    this.classAsCreate = false;
     this.breadCrumb.setBreadCrum(['DashBoard']);
   }
 
@@ -43,11 +50,17 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     }, {passive: true});
   }
   public addClass(): void {
-    this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add[1], this.new_class_add[0]).subscribe(
+    this.classAsCreate = false;
+    this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add.abbrev, this.new_class_add.nameClass).subscribe(
       resultado => {
+        this.classAsCreate = true;
         console.log(resultado);
       },
       error => {
+        if ( error.status === 406) {
+          this.classAlreadyExists = this.exception.errorHandlingCreateClass(error);
+        }
+        this.classAsCreate = false;
         console.log(error);
       }
     );

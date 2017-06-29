@@ -5,7 +5,7 @@ import exception.ExistentEntityException;
 import exception.InvalidAnswerException;
 import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
-import model.persistent.*;
+import model.*;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +37,13 @@ public class SubmissionServiceImpl implements SubmissionService{
             throw new NonExistentEntityException();
 
         return submissionDAO.loadSubmissionByStudentAndExam(student.getID(),exam.getID());
+    }
+
+    @Override
+    public Submission updateSubmission(Submission submission, Map<Question, Answer> answers) throws InvalidAnswerException, PersistentException, InvalidQuestionException {
+        addAnswersToSubmission(submission, answers);
+        submissionDAO.save(submission);
+        return submission;
     }
 
     @Override
@@ -93,7 +100,7 @@ public class SubmissionServiceImpl implements SubmissionService{
     public QuestionSubmission getQuestionSubmission(Submission submission, Question question) throws NonExistentEntityException {
         List<QuestionSubmission> qSubs = Arrays.asList(submission._questionSubmissions.toArray());
         for(QuestionSubmission qSub: qSubs){
-            if(qSub.get_question().getID() == question.getID())
+            if(qSub.get_question().get_question().getID() == question.getID())
                 return qSub;
         }
         throw new NonExistentEntityException();

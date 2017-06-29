@@ -8,7 +8,7 @@ declare var page_content_onresize: any;
   templateUrl: './exam-create.component.html',
   styleUrls: ['./exam-create.component.css']
 })
-export class ExameCreateComponent implements OnInit {
+export class ExamCreateComponent implements OnInit {
 
   private questions: Question[];
   private number_questions: number;

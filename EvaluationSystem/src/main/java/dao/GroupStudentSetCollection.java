@@ -11,7 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.GroupStudent;
+import model.GroupStudent;
 import org.orm.*;
 
 public class GroupStudentSetCollection extends org.orm.util.ORMSet {

@@ -20,15 +20,16 @@
           <tbody>
 
           <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
-          <tr id="trow_1">
-            <td class="text-center"><strong>AA</strong></td>
-            <td class="text-center"><strong>Arquiteturas Aplicacionais</strong></td>
-            <td class="text-center"><strong>Grupo 2016/2017</strong></td>
-            <td>
-              <button class="btn btn-default btn-rounded btn-sm" (click)="editGroup('trow_1');"><span class="fa fa-pencil"></span></button>
-              <button class="btn btn-danger btn-rounded btn-sm" (click)="deleteGroup('trow_1');"><span class="fa fa-times"></span></button>
-            </td>
+          <tr *ngFor="let group of allGroups; let i = index">
+              <td class="text-center"><strong>{{group.class.abbreviation}}</strong></td>
+              <td class="text-center"><strong>{{group.class.name}}</strong></td>
+              <td class="text-center"><strong>{{group.name}}</strong></td>
+              <td>
+                <button class="btn btn-default btn-rounded btn-sm" (click)="editGroup(i);"><span class="fa fa-pencil"></span></button>
+                <button class="btn btn-danger btn-rounded btn-sm" (click)="deleteGroup(i);"><span class="fa fa-times"></span></button>
+              </td>
           </tr>
+          <!-- Apagar depois -->
 
           </tbody>
         </table>

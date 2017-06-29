@@ -18,31 +18,34 @@
 
 <div class="row">
   <div class="col-md-6 col-sm-6 col-xs-12">
-
-    <div class="form-group">
-      <label class="col-md-3 control-label">Group Name:</label>
-      <div class="col-md-9">
-        <div class="input-group">
-          <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-          <input type="text" class="form-control" autocomplete="off"/>
+    <form class="form-horizontal" (ngSubmit)="f_createGroup.form.valid && create()" #f_createGroup="ngForm" novalidate>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Group Name:</label>
+        <div class="col-md-9">
+          <div class="input-group">
+            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+            <input type="text" class="form-control" name="nameGroup" [(ngModel)]="groupCreate.nameGroup" placeholder="Group Name" #nameGroup="ngModel"/>
+          </div>
+          <div *ngIf="f_createGroup.submitted && !nameGroup.valid && !haveCreateGroup" class="help-block">Group name is required</div>
+          <label *ngIf="groupAlreadyExists && nameClass.valid"  class="control-label groupAlreadyExists">Group already exists </label>
+          <label *ngIf="haveCreateGroup && nameClass.valid"  class="control-label groupCreated">Group was created </label>
         </div>
-        <span class="help-block"></span>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label class="col-md-3 control-label">Invite Students:</label>
-      <div class="col-md-9 col-xs-12">
-        <textarea class="form-control" rows="5"></textarea>
-        <span class="help-block">Separators: line , ;</span>
-        <span class="help-block">Example: ana@gmail.com,rui@gmail.com
-          daniela@hotmail.com;pedro@gmail.com</span>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Invite Students:</label>
+        <div class="col-md-9 col-xs-12">
+          <textarea class="form-control" rows="5" name="students" [(ngModel)]="groupCreate.students" #students="ngModel"></textarea>
+          <span class="help-block">Separators: line , ;</span>
+          <span class="help-block">Example: ana@gmail.com,rui@gmail.com
+            daniela@hotmail.com;pedro@gmail.com</span>
+        </div>
       </div>
-    </div>
 
-    <div class="col-md-12">
-      <button type="button" class="btn btn-primary pull-right">Add Students</button>
-    </div>
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-primary pull-right">Add Students</button>
+      </div>
+    </form>
   </div>
 
   <div class="col-md-6 col-sm-6 col-xs-12">

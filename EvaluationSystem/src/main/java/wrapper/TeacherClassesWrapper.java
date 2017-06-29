@@ -1,10 +1,10 @@
 package wrapper;
 
-import model.persistent.Teacher;
+import model.Teacher;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.persistent.Class;
+import model.Class;
 
 public class TeacherClassesWrapper extends UserWrapper {
 

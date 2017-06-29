@@ -23,7 +23,6 @@ export class HttpUtilService {
     }
     const headers = new Headers(headersParams);
     const options = new RequestOptions({ headers: headers });
-    console.log(options);
     return options;
   }
 

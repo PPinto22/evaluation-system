@@ -1,6 +1,6 @@
 package wrapper;
 
-import model.persistent.User;
+import model.User;
 
 public class LoginResponseWrapper {
 

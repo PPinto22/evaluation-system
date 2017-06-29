@@ -4,7 +4,7 @@ import exception.ExistentEntityException;
 import exception.InvalidAnswerException;
 import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
-import model.persistent.*;
+import model.*;
 import org.orm.PersistentException;
 
 import java.util.Map;
@@ -18,4 +18,5 @@ public interface SubmissionService {
     boolean exists(Student student, Exam exam) throws PersistentException;
 
     Submission submit(Student student, Exam exam, Map<Question, Answer> answers) throws ExistentEntityException, PersistentException, InvalidQuestionException, InvalidAnswerException;
+    Submission updateSubmission(Submission submission, Map<Question, Answer> answers) throws InvalidAnswerException, PersistentException, InvalidQuestionException;
 }

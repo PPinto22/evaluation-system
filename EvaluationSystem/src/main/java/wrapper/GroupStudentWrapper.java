@@ -1,7 +1,7 @@
 package wrapper;
 
-import model.persistent.GroupStudent;
-import model.persistent.Student;
+import model.GroupStudent;
+import model.Student;
 
 public class GroupStudentWrapper implements Comparable<GroupStudentWrapper>{
 

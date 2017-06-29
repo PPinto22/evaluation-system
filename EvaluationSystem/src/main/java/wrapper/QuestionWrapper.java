@@ -1,13 +1,11 @@
 package wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.persistent.Answer;
-import model.persistent.Question;
+import model.Answer;
+import model.Question;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionWrapper {

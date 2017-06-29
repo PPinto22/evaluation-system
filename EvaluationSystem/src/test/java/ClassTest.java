@@ -1,7 +1,7 @@
 import exception.ExistentEntityException;
 import exception.NonExistentEntityException;
-import model.persistent.Class;
-import model.persistent.Teacher;
+import model.Class;
+import model.Teacher;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

@@ -36,13 +36,17 @@ export class ListClassComponent implements OnInit {
     );
   }
 
-  private createGroup(exam): Group {
-    const teacher = exam.group._class.teacher;
-    const _teacher =  new User( teacher.id, teacher.email, teacher.firstName, teacher.lastName, teacher.type, '');
-    const classe = exam.group._class;
-    const _classe = new Class( classe.id, classe.name, classe.abbreviation, _teacher);
-    const group = exam.group;
-    const _group = new Group( group.id, group.name, _classe );
+  private createGroup(groupT): Group {
+    const teacher = groupT._class.teacher;
+    const _teacher: User =  new User( teacher.id, teacher.email, teacher.firstName, teacher.lastName, teacher.type, '');
+    const classe = groupT._class;
+    const _classe = new Class( classe.name, classe.abbreviation);
+    _classe.id = classe.id;
+    _classe.user = _teacher;
+    const group = groupT;
+    const _group = new Group(group.name);
+    _group.id = group.id;
+    _group.class = _classe;
     return _group;
   }
 

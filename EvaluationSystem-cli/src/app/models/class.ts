@@ -9,11 +9,9 @@ export class Class {
   private _abbreviation: string;
   private _user: User;
 
-  constructor( id: number, name: string, abbreviation: string, user: User) {
-    this._id = id;
+  constructor( name: string, abbreviation: string) {
     this._name = name;
     this._abbreviation = abbreviation;
-    this._user = user;
   }
 
   get id(): number {
@@ -34,6 +32,14 @@ export class Class {
 
   get abbreviation(): string {
     return this._abbreviation;
+  }
+
+  get user(): User {
+    return this._user;
+  }
+
+  set user(value: User) {
+    this._user = value;
   }
 
   set abbreviation(value: string) {

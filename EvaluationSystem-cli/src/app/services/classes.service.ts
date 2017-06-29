@@ -22,7 +22,7 @@ export class ClassesService {
 
   // GET /api/classes/{id}
   getById(classeId: number): Observable<any> {
-    return this.http.get( this.httpUtil.url('classes/' + classeId),
+    return this.http.get( this.httpUtil.url('/api/classes/' + classeId),
            this.httpUtil.headers(this.authentication.getToken()) ).map( this.httpUtil.extrairDados );
   }
 

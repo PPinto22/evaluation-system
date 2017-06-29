@@ -17,15 +17,15 @@ declare var panels: any;
 })
 export class ListExameComponent implements OnInit, AfterViewInit {
 
-  upComingExams: Array<Exam>;
-  historyExams: Array<Exam>;
+  private upComingExams: Array<Exam>;
+  private historyExams: Array<Exam>;
+  private onGoingExams: Array<Exam>;
 
   constructor(
     private authentication: AuthenticationService,
     private exams: ExamsService
     ) {
-    this.upComingExams = new Array<Exam>();
-    this.historyExams = new Array<Exam>();
+    this.cleanAllArray();
   }
 
   ngOnInit() {
@@ -36,18 +36,24 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     panels();
   }
 
+  private cleanAllArray(): void {
+    this.upComingExams = new Array<Exam>();
+    this.historyExams = new Array<Exam>();
+    this.onGoingExams = new Array<Exam>();
+  }
+
   private getHistoryAndUpComming(): void {
+    this.cleanAllArray();
     this.exams.getExamsByUserId( this.authentication.getUserId() ).subscribe(
       resultado => {
-        console.log(resultado);
-        console.log('resultado');
-        for ( const exams of resultado.exams ) {
-          if (exams.History) {
-            this.getAllHistory(exams);
-          }
-          if (exams.Ongoing || exams.Upcoming) {
-            this.getAllComing(exams);
-          }
+        if (resultado.exams.History) {
+          this.getAllHistory(resultado.exams.History);
+        }
+        if (resultado.exams.Ongoing) {
+          this.getAllOngoing(resultado.exams.Ongoing);
+        }
+        if (resultado.exams.Upcoming) {
+          this.getAllComing(resultado.exams.Upcoming);
         }
       },
       error => {
@@ -62,8 +68,14 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     }
   }
 
+  private getAllOngoing (exams): void {
+    for (const exam of exams) {
+      this.onGoingExams.push(this.createExam(exam));
+    }
+  }
+
   private getAllComing (exams): void {
-    for ( const exam of exams){
+    for (const exam of exams) {
       this.upComingExams.push(this.createExam(exam));
     }
   }
@@ -72,10 +84,17 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     const teacher = exam.group._class.teacher;
     const _teacher =  new User( teacher.id, teacher.email, teacher.firstName, teacher.lastName, teacher.type, '');
     const classe = exam.group._class;
-    const _classe = new Class( classe.id, classe.name, classe.abbreviation, _teacher);
+    const _classe = new Class( classe.name, classe.abbreviation);
+    _classe.id = classe.id;
+    _classe.user = _teacher;
     const group = exam.group;
-    const _group = new Group( group.id, group.name, _classe );
-    return new Exam( exam.id, exam.name, exam.beginDate, exam.duration, _group);
+    const _group = new Group(group.name);
+    _group.id = group.id;
+    _group.class = _classe;
+    const examnew = new Exam( exam.name, exam.beginDate, exam.duration);
+    examnew.id = exam.id;
+    examnew.group = _group;
+    return examnew;
   }
 
   private refreshUpComing(): void {

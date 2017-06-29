@@ -1,14 +1,12 @@
 package service;
 
-import exception.ExistentEntityException;
-import exception.MissingInformationException;
-import exception.NonExistentEntityException;
-import model.persistent.Class;
-import model.persistent.Group;
-import model.persistent.Student;
+import exception.*;
+import model.*;
+import model.Class;
 import org.orm.PersistentException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentService {
     Student createStudent();
@@ -19,6 +17,9 @@ public interface StudentService {
     List<Group> getStudentGroups(Student student);
     List<Class> getStudentClasses(Student student);
 
+    Map<Group, Map<Exam, Score>> getStudentScores(Student student) throws PersistentException;
+    Map<Exam, Score> getStudentScoresByGroup(Student student, Group group) throws StudentNotInGroupException, PersistentException;
+    Score getStudentScoreByExam(Student student, Exam exam) throws PersistentException, StudentNotInGroupException, InvalidExamException;
     boolean exists(int ID) throws PersistentException;
     boolean exists(String email) throws PersistentException;
     boolean existsActive(String email) throws PersistentException;
