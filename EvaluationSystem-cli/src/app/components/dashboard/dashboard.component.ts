@@ -68,8 +68,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private getGroups(class_dash: any, class_id: number): void {
-    this.groupsService.getGroupByClasse(class_id).subscribe(
+    console.log(class_id);
+    this.groupsService.getGroupByClass(class_id).subscribe(
       result => {
+        console.log("result groups");
+        console.log(result);
         for (const group of result) {
           const group_dash = class_dash.children.find(obj => class_id === obj.id);
           if (!group_dash) { // não existe o grupo
@@ -77,7 +80,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
               level: 3,
               id: group.id,
               name: group.name,
-              route: ['/dashboard', 'classes', '' + group._class.id, 'groups', '' + group.id],
+              route: ['/dashboard', 'classes', '' + group.id, 'groups', '' + group.id],
               isCollapsed: false
             });
           }
@@ -152,19 +155,26 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
       }
       case 2: {
         this.collapse_struture.map( obj_parent => {
-          obj_parent.map( obj => {
-            obj.id === noclear ? obj.isCollapsed = true : obj.isCollapsed = false;
-          });
+          if ( obj_parent.children ){
+            obj_parent.children.map( obj => {
+              obj.id === noclear ? obj.isCollapsed = true : obj.isCollapsed = false;
+            });
+          }
+
         });
         break;
       }
       case 3: {
         this.collapse_struture.map( obj_grand => {
-          obj_grand.map( obj_parent => {
-            obj_parent.map( obj => {
-              obj.id === noclear ? obj.isCollapsed = true : obj.isCollapsed = false;
+          if ( obj_grand.children ) {
+            obj_grand.children.map(obj_parent => {
+              if ( obj_parent.children ) {
+                obj_parent.children.map(obj => {
+                  obj.id === noclear ? obj.isCollapsed = true : obj.isCollapsed = false;
+                });
+              }
             });
-          });
+          }
         });
         break;
       }

@@ -35,7 +35,9 @@ export class ClassComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.classId = +params['class_id'];
+      console.log('teste class id' + this.classId);
       this.getClassInformation();
+
     });
     this.breadCrumb.setBreadCrum(['Classes']);
   }
