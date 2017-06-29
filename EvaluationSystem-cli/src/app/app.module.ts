@@ -42,6 +42,7 @@ import { AnswerCreateComponent } from './components/dashboard/class/questions/qu
 import { ExamsComponent } from './components/dashboard/class/exams/exams.component';
 import {ExamCreateComponent} from 'app/components/dashboard/class/exams/exam-create/exam-create.component';
 import {StudentsFilter} from './filters/students_filter';
+import {StudentsFilterGroup} from './filters/students_filter_group';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import {StudentsFilter} from './filters/students_filter';
     QuestionCreateItemComponent,
     AnswerCreateComponent,
     ExamsComponent,
-    StudentsFilter
+    StudentsFilter,
+    StudentsFilterGroup
   ],
   imports: [
     BrowserModule,

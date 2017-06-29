@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../../../../services/authentication.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import {StudentsService} from '../../../../../services/students.service';
+import {StudentsFilterGroup} from '../../../../../filters/students_filter_group';
 
 
 declare var $: any;

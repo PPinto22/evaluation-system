@@ -97,7 +97,7 @@
       </div>
     </div>
     <div class="panel-body scroll list">
-      <ul *ngFor="let student of allStudentsOfGroup | StudentsFilterGroup: model.search" class="list-group border-bottom">
+      <ul *ngFor="let student of allStudentsOfGroup" class="list-group border-bottom">
         <li class="list-group-item">{{student.email}}
           <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
         </li>
