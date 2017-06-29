@@ -42,19 +42,20 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
         console.log(result);
         const classes_dash = this.collapse_struture[3];
         for (const resul_class of result ){
-          const class_dash = classes_dash.children.find( obj => resul_class.id === obj.class_id );
+          const class_dash = classes_dash.children.find( obj => resul_class.id === obj.id );
           if (class_dash) { // já existe a class criada
             this.getGroups( class_dash, resul_class.id);
           }else { // não existe a class criada
             classes_dash.children.push( {
-              class_id: resul_class.id,
+              level: 2,
+              id: resul_class.id,
               name: resul_class.abbreviation,
               route: ['/dashboard', 'classes', '' + resul_class.id],
               isCollapsed: false,
               children: []
             });
 
-            this.getGroups( classes_dash.children.find( obj => resul_class.id === obj.class_id ), resul_class.id );
+            this.getGroups( classes_dash.children.find( obj => resul_class.id === obj.id ), resul_class.id );
 
           }
         }
@@ -70,10 +71,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     this.groupsService.getGroupByClasse(class_id).subscribe(
       result => {
         for (const group of result) {
-          const group_dash = class_dash.children.find(obj => class_id === obj.group_id);
+          const group_dash = class_dash.children.find(obj => class_id === obj.id);
           if (!group_dash) { // não existe o grupo
             class_dash.children.push({
-              group_id: group.id,
+              level: 3,
+              id: group.id,
               name: group.name,
               route: ['/dashboard', 'classes', '' + group._class.id, 'groups', '' + group.id],
               isCollapsed: false
@@ -105,42 +107,66 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
   private createNavbarStructure(): void {
     this.collapse_struture = [
-      { name: 'Dashboard', route: ['/dashboard'], isCollapsed: false },
-      { name: 'Schedule', route: ['/dashboard', 'schedule'], isCollapsed: false },
-      { name: 'Results', route: ['/dashboard', 'results'], isCollapsed: false },
-      { name: 'Classes', route: [], isCollapsed: false , children: []}
+      { id: 0, level: 1, name: 'Dashboard', route: ['/dashboard'], isCollapsed: false },
+      { id: 1, level: 1, name: 'Schedule', route: ['/dashboard', 'schedule'], isCollapsed: false },
+      { id: 2, level: 1, name: 'Results', route: ['/dashboard', 'results'], isCollapsed: false },
+      { id: 3, level: 1, name: 'Classes', route: [], isCollapsed: false , children: []}
     ];
   }
 
-  public navigateRoute(route: string[], collapse_node: any, collapse_parent: any) {
+  public navigateRoute(route: string[], collapse_node: any, node_ids: number[]) {
 
-    for ( const node of collapse_parent ) {
-      node.isCollapsed = false;
+    switch ( node_ids.length ) {
+      case 1: {
+        this.clearCollapseLevel(1, node_ids[0]);
+        break;
+      }
+      case 2: {
+        this.clearCollapseLevel(1, node_ids[0]);
+        this.clearCollapseLevel(2, node_ids[1]);
+        break;
+      }
+      case 3: {
+        this.clearCollapseLevel(1, node_ids[0]);
+        this.clearCollapseLevel(2, node_ids[1]);
+        this.clearCollapseLevel(3, node_ids[2]);
+        break;
+      }
     }
-
-    console.log(collapse_parent)
-
-    for ( const node of collapse_node ) {
-      node.isCollapsed = false;
-    }
-    console.log(collapse_node)
-
 
     collapse_node.isCollapsed = true;
 
     if (route.length > 0 ) {
       this.router.navigate(route);
     }
-
-    console.log(this.collapse_struture);
-
-
   }
 
-  public clearActive(collapse_node: any, collapse_parent: any) {
-    for ( const node of collapse_parent ){
-      if ( collapse_node !== node) {
-        node.isCollapsed = false;
+  public clearCollapseLevel(level: number, noclear: number) {
+
+    switch ( level ) {
+      case 1: {
+        this.collapse_struture.map( obj => {
+          obj.id === noclear ? obj.isCollapsed = true : obj.isCollapsed = false;
+        });
+        break;
+      }
+      case 2: {
+        this.collapse_struture.map( obj_parent => {
+          obj_parent.map( obj => {
+            obj.id === noclear ? obj.isCollapsed = true : obj.isCollapsed = false;
+          });
+        });
+        break;
+      }
+      case 3: {
+        this.collapse_struture.map( obj_grand => {
+          obj_grand.map( obj_parent => {
+            obj_parent.map( obj => {
+              obj.id === noclear ? obj.isCollapsed = true : obj.isCollapsed = false;
+            });
+          });
+        });
+        break;
       }
     }
   }
