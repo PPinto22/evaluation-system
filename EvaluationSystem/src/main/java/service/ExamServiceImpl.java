@@ -145,8 +145,8 @@ public class ExamServiceImpl implements ExamService{
             throw new InvalidExamException("name");
         if(minutes < 10 || minutes > 300)
             throw new InvalidExamException("duration");
-        if(beginDate < (System.currentTimeMillis()+ (1000 * 60 * 60 * 24)))
-            throw new InvalidExamException("date");
+        //if(beginDate < (System.currentTimeMillis()+ (1000 * 60 * 60 * 24)))
+        //    throw new InvalidExamException("date");
         if(exists(group, name))
             throw new ExistentEntityException();
         if(hasDuplicates(questionIDs))

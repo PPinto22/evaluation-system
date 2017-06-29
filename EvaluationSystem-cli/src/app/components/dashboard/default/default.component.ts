@@ -6,7 +6,7 @@ import {Exception} from '../../../execption/exception';
 
 declare var $: any;
 declare var x_navigation: any;
-declare var page_content_onresize: any;
+declare var page_content_onresize:  any;
 
 @Component({
   selector: 'app-default',
@@ -50,7 +50,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     }, {passive: true});
   }
   public addClass(): void {
-    console.log('cria class');
+    this.classAsCreate = false;
     this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add.abbrev, this.new_class_add.nameClass).subscribe(
       resultado => {
         this.classAsCreate = true;
@@ -58,7 +58,6 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       },
       error => {
         if ( error.status === 406) {
-          console.log(this.exception.errorHandlingCreateClass(error));
           this.classAlreadyExists = this.exception.errorHandlingCreateClass(error);
         }
         this.classAsCreate = false;

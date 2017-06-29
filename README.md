@@ -3,6 +3,12 @@
 ...
 ## FrontEnd - Angular 2
 
+DashBoard
+```
+Refresh - need someones changes
+Remove and Edit Group
+```
+
 ## Backend - Spring and Hibernate
 
 ### Build and Run Postgres
