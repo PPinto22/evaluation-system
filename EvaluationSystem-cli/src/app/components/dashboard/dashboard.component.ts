@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {BreadCrumbService} from '../../services/breadcrumb.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {GroupService} from '../../services/group.service';
 import {ClassesService} from '../../services/classes.service';
 
@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private authentication: AuthenticationService,
     private breadCrumb: BreadCrumbService,
     private groupsService: GroupService,
@@ -33,7 +34,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     this.setNamebreadCrum();
     this.createNavbarStructure();
     this.page_navigation_toggled = false;
-    this.getClasses();
+    this.route.params.subscribe( params => {
+      this.getClasses();
+    });
   }
 
   private getClasses(): void {
@@ -62,16 +65,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
         console.log(this.collapse_struture);
       },
       error => {
-        console.log('error get classes by user');
+        console.log(error);
       }
     );
   }
 
   private getGroups(class_dash: any, class_id: number): void {
-    console.log(class_id);
     this.groupsService.getGroupByClass(class_id).subscribe(
       result => {
-        console.log("result groups");
         console.log(result);
         for (const group of result) {
           const group_dash = class_dash.children.find(obj => class_id === obj.id);
@@ -87,7 +88,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
         }
       },
       error => {
-        console.log('error get groups by user');
+        console.log(error);
       });
   }
 
