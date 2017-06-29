@@ -2,7 +2,7 @@ package wrapper;
 
 import model.Class;
 
-public class ClassWrapper{
+public class ClassWrapper implements Comparable<ClassWrapper>{
 
     private int ID;
     private String name;
@@ -53,5 +53,14 @@ public class ClassWrapper{
     @Override
     public int hashCode() {
         return ID;
+    }
+
+    @Override
+    public int compareTo(ClassWrapper o) {
+        int abbreviationCompare = abbreviation.toLowerCase().compareTo(o.getAbbreviation().toLowerCase());
+        if(abbreviationCompare == 0)
+            return name.toLowerCase().compareTo(o.getName().toLowerCase());
+        else
+            return abbreviationCompare;
     }
 }

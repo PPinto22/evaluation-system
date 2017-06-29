@@ -88,7 +88,7 @@ public class UserController {
             if(clientUser.getID() != user.getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            Set<GroupWrapper> groups = new HashSet<>();
+            Set<GroupWrapper> groups = new TreeSet<>();
             switch (user.getClass().getSimpleName()){
                 case "Teacher":
                     Teacher teacher = (Teacher)user;
@@ -119,7 +119,7 @@ public class UserController {
             if(user.getID() != clientUser.getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            Set<ClassWrapper> classes = new HashSet<>();
+            Set<ClassWrapper> classes = new TreeSet<>();
             switch (user.getClass().getSimpleName()){
                 case "Teacher":
                     Teacher teacher = (Teacher)user;

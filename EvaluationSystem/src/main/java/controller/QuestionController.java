@@ -20,6 +20,7 @@ import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
 @RequestMapping("api/questions")
@@ -35,6 +36,24 @@ public class QuestionController {
 
     @RequestMapping(value = "/{id:[\\d]+}", method = GET)
     public ResponseEntity<Object> getQuestion(@PathVariable int id, HttpServletRequest request){
+        try {
+            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
+            Question question = questionService.getQuestionByID(id);
+            if(clientUser.getID() != question.get_class().get_teacher().getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            return new ResponseEntity<Object>(new QuestionWrapper(question,false), OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_QUESTION), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        }
+    }
+
+    @RequestMapping(value = "/{id:[\\d]+}", method = PUT)
+    public ResponseEntity<Object> updateQuestion(@PathVariable int id, HttpServletRequest request){
         try {
             User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
             Question question = questionService.getQuestionByID(id);

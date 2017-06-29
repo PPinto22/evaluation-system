@@ -2,7 +2,7 @@ package wrapper;
 
 import model.Group;
 
-public class GroupWrapper {
+public class GroupWrapper implements Comparable<GroupWrapper>{
 
     private int id;
     private String name;
@@ -14,6 +14,11 @@ public class GroupWrapper {
     public GroupWrapper(Group group) {
         this.setId(group.getID());
         this.setName(group.getName());
+    }
+
+    @Override
+    public int compareTo(GroupWrapper o) {
+        return name.toLowerCase().compareTo(o.getName().toLowerCase());
     }
 
     public int getId() {
