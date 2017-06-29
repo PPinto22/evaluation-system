@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import security.JwtService;
 import service.ExamService;
 import service.GroupService;
+import service.QuestionService;
 import service.StudentService;
 import wrapper.*;
 
@@ -33,12 +34,16 @@ public class GroupController {
     private GroupService groupService;
     private StudentService studentService;
     private ExamService examService;
+    private QuestionService questionService;
 
-    public GroupController(JwtService jwtService, GroupService groupService, StudentService studentService, ExamService examService) {
+    public GroupController(JwtService jwtService, GroupService groupService,
+                           StudentService studentService, ExamService examService,
+                           QuestionService questionService) {
         this.jwtService = jwtService;
         this.groupService = groupService;
         this.studentService = studentService;
         this.examService = examService;
+        this.questionService = questionService;
     }
 
     @RequestMapping(value = "/{id:[\\d]+}", method = GET)
@@ -131,7 +136,7 @@ public class GroupController {
             }
 
             Map<String, Map<Integer, List<Question>>> questions =
-                    groupService.getAvailableQuestionsByCategoryAndDifficulty(group);
+                    groupService.getAvailableQuestions(group);
             return new ResponseEntity<Object>(wrapAvailableQuestions(questions), OK);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
@@ -202,7 +207,45 @@ public class GroupController {
         }
     }
 
-    @RequestMapping(value = "/{groupID:[\\d]+}/exams/generate", method = POST)
+    @RequestMapping(value = "/{groupID:[\\d]+}/exams/generate/question", method = POST)
+    public ResponseEntity<Object> generateExamQuestion(@PathVariable int groupID,
+                                                       @RequestBody GenerateExamQuestionWrapper questionWrapper,
+                                                       HttpServletRequest request) {
+        try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
+            Group group = groupService.getGroupByID(groupID);
+            Class cl = group.get_class();
+            if(user.getID() != cl.get_teacher().getID()){
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+            }
+
+            String category = questionWrapper.getCategory();
+            int difficulty = questionWrapper.getDifficulty();
+            if(category == null || category.isEmpty() ||
+                    difficulty < 1 || difficulty > 3)
+                return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION), NOT_ACCEPTABLE);
+
+            try {
+                List<Question> excludedQuestions = questionService.listQuestionsByIDs(questionWrapper.getExcluded());
+                Question question = examService.generateExamQuestion(group, category, difficulty, excludedQuestions);
+                return new ResponseEntity<Object>(new QuestionWrapper(question, false), OK);
+            } catch(NonExistentEntityException e){
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_QUESTION), NOT_ACCEPTABLE);
+            }
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        } catch (InsufficientQuestionsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INSUFFICIENT_QUESTIONS), NOT_ACCEPTABLE);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        }
+
+    }
+
+
+        @RequestMapping(value = "/{groupID:[\\d]+}/exams/generate", method = POST)
     public ResponseEntity<Object> generateExam(@PathVariable int groupID,
                                                @RequestBody Question[] questions,
                                                HttpServletRequest request){
@@ -227,7 +270,7 @@ public class GroupController {
                     difficulties.add(difficulty);
                 }
             }
-            List<Question> generatedQuestions = groupService.generateExamQuestions(group, categories, difficulties);
+            List<Question> generatedQuestions = examService.generateExamQuestions(group, categories, difficulties);
             List<QuestionWrapper> questionWrappers = new ArrayList<>();
             for(Question q: generatedQuestions)
                 questionWrappers.add(new QuestionWrapper(q, false));

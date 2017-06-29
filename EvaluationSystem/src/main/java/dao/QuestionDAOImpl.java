@@ -23,6 +23,15 @@ import java.util.List;
 @Repository
 public class QuestionDAOImpl implements QuestionDAO {
 	@Override
+	public List<Question> listQuestionsByClassCategoryAndDifficulty(int classID, String category, int difficulty) throws PersistentException {
+		QuestionCriteria criteria = new QuestionCriteria();
+		criteria._classId.eq(classID);
+		criteria.category.eq(category);
+		criteria.difficulty.eq(difficulty);
+		return Arrays.asList( listQuestionByCriteria(criteria) );
+	}
+
+	@Override
 	public boolean exists(int questionID) throws PersistentException {
 		return this.getQuestionByORMID(questionID) != null;
 	}

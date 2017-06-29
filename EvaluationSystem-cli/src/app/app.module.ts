@@ -32,13 +32,15 @@ import { GroupCreateComponent } from './components/dashboard/class/groups/group-
 import { ResultsComponent } from './components/dashboard/results/results.component';
 import { GroupViewComponent } from './components/dashboard/class/groups/group-view/group-view.component';
 import {ExamsService} from './services/exams.service';
-import { ExameCreateComponent } from './components/dashboard/class/exame-create/exame-create.component';
-import { QuestionAddComponent } from './components/dashboard/class/exame-create/question-add/question-add.component';
-import { QuestionPreviewComponent } from './components/dashboard/class/exame-create/question-preview/question-preview.component';
+import { QuestionAddComponent } from './components/dashboard/class/exams/exam-create/question-add/question-add.component';
+import { QuestionPreviewComponent } from './components/dashboard/class/exams/exam-create/question-preview/question-preview.component';
 import {Exception} from './execption/exception';
 import { QuestionCreateComponent } from './components/dashboard/class/questions/question-create/question-create.component';
 import { QuestionsComponent } from './components/dashboard/class/questions/questions.component';
 import { QuestionCreateItemComponent } from './components/dashboard/class/questions/question-create/question-create-item/question-create-item.component';
+import { AnswerCreateComponent } from './components/dashboard/class/questions/question-create/question-create-item/answer-create/answer-create.component';
+import { ExamsComponent } from './components/dashboard/class/exams/exams.component';
+import {ExamCreateComponent} from 'app/components/dashboard/class/exams/exam-create/exam-create.component';
 
 @NgModule({
   declarations: [
@@ -57,12 +59,14 @@ import { QuestionCreateItemComponent } from './components/dashboard/class/questi
     GroupCreateComponent,
     ResultsComponent,
     GroupViewComponent,
-    ExameCreateComponent,
+    ExamCreateComponent,
     QuestionAddComponent,
     QuestionPreviewComponent,
     QuestionCreateComponent,
     QuestionsComponent,
-    QuestionCreateItemComponent
+    QuestionCreateItemComponent,
+    AnswerCreateComponent,
+    ExamsComponent
   ],
   imports: [
     BrowserModule,

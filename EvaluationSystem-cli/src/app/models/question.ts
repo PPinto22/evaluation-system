@@ -1,3 +1,4 @@
+import {Answer} from './answer';
 export class Question {
 
   public static _Hard = 3;
@@ -7,11 +8,20 @@ export class Question {
   private _id: number;
   private _dificulty: number;
   private _category: string;
-
+  private _answers: Answer[];
+  private _text: string;
 
   constructor(dificulty: number, category: string) {
     this._dificulty = dificulty;
     this._category = category;
+  }
+
+  get text(): string {
+    return this._text;
+  }
+
+  set text(value: string) {
+    this._text = value;
   }
 
   get id(): number {
@@ -36,5 +46,13 @@ export class Question {
 
   set category(value: string) {
     this._category = value;
+  }
+
+  get answers(): Answer[] {
+    return this._answers;
+  }
+
+  set answers(value: Answer[]) {
+    this._answers = value;
   }
 }

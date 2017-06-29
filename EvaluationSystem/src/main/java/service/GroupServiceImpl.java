@@ -227,7 +227,18 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public Map<String, Map<Integer, List<Question>>> getAvailableQuestionsByCategoryAndDifficulty(Group group)
+    public List<Question> listAvailableQuestionByCategoryAndDifficulty(Group group, String category, int difficulty) throws PersistentException {
+        List<Question> classQuestions = classService.listClassQuestionsByCategoryAndDifficulty(group.get_class(), category, difficulty);
+        List<Question> availableQuestions = new ArrayList<>();
+        for(Question q: classQuestions){
+            if(!this.questionInExams(group,q))
+                availableQuestions.add(q);
+        }
+        return availableQuestions;
+    }
+
+    @Override
+    public Map<String, Map<Integer, List<Question>>> getAvailableQuestions(Group group)
             throws PersistentException {
         List<Question> questions = this.listAvailableQuestions(group);
         Map<String, Map<Integer, List<Question>>> categoriesMap = new TreeMap<>();
@@ -244,35 +255,4 @@ public class GroupServiceImpl implements GroupService{
         }
         return categoriesMap;
     }
-
-    @Override
-    public List<Question> generateExamQuestions(Group group, List<String> categories, List<Integer> difficulties)
-            throws PersistentException, InvalidInputException, InsufficientQuestionsException {
-        if(categories.size() != difficulties.size())
-            throw new InvalidInputException("Categories and dificulties lists must be the same size");
-
-        Map<String, Map<Integer, List<Question>>> categoriesMap = getAvailableQuestionsByCategoryAndDifficulty(group);
-        List<Question> res = new ArrayList<>();
-        for(int i = 0; i<categories.size(); i++){
-            String category = categories.get(i);
-            int difficulty = difficulties.get(i);
-            if(!categoriesMap.containsKey(category))
-                throw new InsufficientQuestionsException();
-            Map<Integer, List<Question>> difficultiesMap = categoriesMap.get(category);
-            if(!difficultiesMap.containsKey(difficulty))
-                throw new InsufficientQuestionsException();
-            List<Question> questions = difficultiesMap.get(difficulty);
-            if(questions.isEmpty())
-                throw new InsufficientQuestionsException();
-
-            int randomQuestionIndex =  ThreadLocalRandom.current().nextInt(0, questions.size());
-            Question selectedQuestion = questions.get(randomQuestionIndex);
-            questions.remove(randomQuestionIndex);
-
-            res.add(selectedQuestion);
-        }
-
-        return res;
-    }
-
 }

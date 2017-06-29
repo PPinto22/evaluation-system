@@ -9,6 +9,7 @@ import model.Class;
 import org.orm.PersistentException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +21,15 @@ public class QuestionServiceImpl implements QuestionService{
     public QuestionServiceImpl(QuestionDAO questionDAO, AnswerDAO answerDAO) {
         this.questionDAO = questionDAO;
         this.answerDAO = answerDAO;
+    }
+
+    @Override
+    public List<Question> listQuestionsByIDs(List<Integer> IDs) throws PersistentException, NonExistentEntityException {
+        List<Question> questions = new ArrayList<>();
+        for(int id: IDs){
+            questions.add(getQuestionByID(id));
+        }
+        return questions;
     }
 
     @Override

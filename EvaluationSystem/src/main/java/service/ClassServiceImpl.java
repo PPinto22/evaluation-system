@@ -88,6 +88,11 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
+    public List<Question> listClassQuestionsByCategoryAndDifficulty(Class cl, String category, int difficulty) throws PersistentException {
+        return questionDAO.listQuestionsByClassCategoryAndDifficulty(cl.getID(), category, difficulty);
+    }
+
+    @Override
     public Set<String> getClassCategories(Class cl) throws PersistentException {
         List<Question> questions = this.listClassQuestions(cl);
         Set<String> categories = new TreeSet<>();
