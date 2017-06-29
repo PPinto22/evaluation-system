@@ -11,7 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.Exam;
+import model.Exam;
 import org.orm.*;
 
 public class ExamSetCollection extends org.orm.util.ORMSet {

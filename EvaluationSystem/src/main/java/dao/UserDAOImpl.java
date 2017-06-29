@@ -13,10 +13,10 @@ package dao; /**
  */
 import exception.InvalidUserException;
 import exception.UnconfirmedRegistrationException;
-import model.persistent.Notification;
-import model.persistent.Student;
-import model.persistent.Teacher;
-import model.persistent.User;
+import model.Notification;
+import model.Student;
+import model.Teacher;
+import model.User;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -209,7 +209,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	public List queryUser(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.User as model.persistent.User");
+		StringBuffer sb = new StringBuffer("From model.User as model.User");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -225,14 +225,14 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	public List queryUser(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.User as model.persistent.User");
+		StringBuffer sb = new StringBuffer("From model.User as model.User");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.User", lockMode);
+			query.setLockMode("model.User", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -324,7 +324,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	public java.util.Iterator iterateUserByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.User as model.persistent.User");
+		StringBuffer sb = new StringBuffer("From model.User as model.User");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -340,14 +340,14 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	public java.util.Iterator iterateUserByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.User as model.persistent.User");
+		StringBuffer sb = new StringBuffer("From model.User as model.User");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.User", lockMode);
+			query.setLockMode("model.User", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -366,7 +366,7 @@ public class UserDAOImpl implements UserDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.persistent.User user)", e);
+			_logger.error("save(model.User user)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -377,7 +377,7 @@ public class UserDAOImpl implements UserDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.persistent.User user)", e);
+			_logger.error("delete(model.User user)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -437,7 +437,7 @@ public class UserDAOImpl implements UserDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.persistent.User user)", e);
+			_logger.error("refresh(model.User user)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -448,7 +448,7 @@ public class UserDAOImpl implements UserDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.persistent.User user)", e);
+			_logger.error("evict(model.User user)", e);
 			throw new PersistentException(e);
 		}
 	}

@@ -3,10 +3,8 @@ package controller;
 import exception.InvalidClaimsException;
 import exception.NonExistentEntityException;
 import io.jsonwebtoken.Claims;
-import model.persistent.GroupInvitation;
-import model.persistent.Notification;
-import model.persistent.Question;
-import model.persistent.User;
+import model.Question;
+import model.User;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +15,6 @@ import service.QuestionService;
 import wrapper.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;

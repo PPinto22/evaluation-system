@@ -1,9 +1,9 @@
 package wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.persistent.QuestionScore;
-import model.persistent.QuestionSubmission;
-import model.persistent.Submission;
+import model.QuestionScore;
+import model.QuestionSubmission;
+import model.Submission;
 
 import java.util.*;
 

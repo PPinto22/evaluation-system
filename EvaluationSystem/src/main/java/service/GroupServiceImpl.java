@@ -3,8 +3,8 @@ package service;
 import dao.GroupDAO;
 import dao.GroupStudentDAO;
 import exception.*;
-import model.persistent.*;
-import model.persistent.Class;
+import model.*;
+import model.Class;
 import org.orm.PersistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,12 @@ public class GroupServiceImpl implements GroupService{
     NotificationService notificationService;
     ClassService classService;
     ExamService examService;
+    SubmissionService submissionService;
 
+    @Autowired
+    public void setSubmissionService(SubmissionService submissionService) {
+        this.submissionService = submissionService;
+    }
     @Autowired
     public void setExamService(ExamService examService) {
         this.examService = examService;
@@ -47,6 +52,27 @@ public class GroupServiceImpl implements GroupService{
     public GroupServiceImpl(GroupDAO groupDAO, GroupStudentDAO groupStudentDAO) {
         this.groupDAO = groupDAO;
         this.groupStudentDAO = groupStudentDAO;
+    }
+
+    @Override
+    public Map<Student, Map<Exam, Score>> getGroupScores(Group group) throws PersistentException {
+        Map<Student, Map<Exam, Score>> studentMap = new TreeMap<>();
+        for(GroupStudent groupStudent: group._students.toArray()){
+            Student student = groupStudent.get_student();
+            Map<Exam, Score> examMap = new TreeMap<>();
+            for(Exam exam: group.getExams()){
+                if(examService.examHasFinished(exam)) {
+                    try {
+                        Submission submission = submissionService.getSubmissionByStudentAndExam(student, exam);
+                        examMap.put(exam, new Score(submission));
+                    } catch (NonExistentEntityException e) {
+                        examMap.put(exam, new Score());
+                    }
+                }
+            }
+            studentMap.put(student, examMap);
+        }
+        return studentMap;
     }
 
     @Override

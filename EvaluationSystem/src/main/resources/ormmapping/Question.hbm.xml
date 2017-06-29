@@ -5,19 +5,19 @@ License Type: Academic
 -->
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="model.persistent.Question" table="Question" lazy="false">
+	<class name="model.Question" table="Question" lazy="false">
 		<id name="ID" column="ID" type="integer" unsaved-value="0">
 			<generator class="native">
 			</generator>
 		</id>
-		<many-to-one name="_class" cascade="lock" column="ClassID" class="model.persistent.Class" not-null="true" lazy="proxy" access="field">
+		<many-to-one name="_class" cascade="lock" column="ClassID" class="model.Class" not-null="true" lazy="proxy" access="field">
 		</many-to-one>
 		<property name="text" column="Text" type="string" length="255" not-null="false" lazy="false"/>
 		<property name="category" column="Category" type="string" length="255" not-null="false" lazy="false"/>
 		<property name="difficulty" column="Difficulty" type="integer" length="10" not-null="false" lazy="false"/>
 		<set name="ORM__answers" lazy="true" cascade="save-update,lock" inverse="false">
 			<key column="QuestionID" not-null="true"/>
-			<one-to-many class="model.persistent.Answer"/>
+			<one-to-many class="model.Answer"/>
 		</set>
 	</class>
 </hibernate-mapping>

@@ -11,8 +11,8 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.Exam;
-import model.persistent.Submission;
+import model.Exam;
+import model.Submission;
 import org.orm.*;
 import org.hibernate.Query;
 import org.springframework.stereotype.Service;

@@ -11,7 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.QuestionSubmission;
+import model.QuestionSubmission;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -151,7 +151,7 @@ public class QuestionSubmissionDAOImpl implements QuestionSubmissionDAO {
 	}
 	
 	public List queryQuestionSubmission(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.QuestionSubmission as model.persistent.QuestionSubmission");
+		StringBuffer sb = new StringBuffer("From model.QuestionSubmission as model.QuestionSubmission");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -167,14 +167,14 @@ public class QuestionSubmissionDAOImpl implements QuestionSubmissionDAO {
 	}
 	
 	public List queryQuestionSubmission(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.QuestionSubmission as model.persistent.QuestionSubmission");
+		StringBuffer sb = new StringBuffer("From model.QuestionSubmission as model.QuestionSubmission");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.QuestionSubmission", lockMode);
+			query.setLockMode("model.QuestionSubmission", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -266,7 +266,7 @@ public class QuestionSubmissionDAOImpl implements QuestionSubmissionDAO {
 	}
 	
 	public java.util.Iterator iterateQuestionSubmissionByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.QuestionSubmission as model.persistent.QuestionSubmission");
+		StringBuffer sb = new StringBuffer("From model.QuestionSubmission as model.QuestionSubmission");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -282,14 +282,14 @@ public class QuestionSubmissionDAOImpl implements QuestionSubmissionDAO {
 	}
 	
 	public java.util.Iterator iterateQuestionSubmissionByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.QuestionSubmission as model.persistent.QuestionSubmission");
+		StringBuffer sb = new StringBuffer("From model.QuestionSubmission as model.QuestionSubmission");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.QuestionSubmission", lockMode);
+			query.setLockMode("model.QuestionSubmission", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -308,7 +308,7 @@ public class QuestionSubmissionDAOImpl implements QuestionSubmissionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.persistent.QuestionSubmission questionSubmission)", e);
+			_logger.error("save(model.QuestionSubmission questionSubmission)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -319,7 +319,7 @@ public class QuestionSubmissionDAOImpl implements QuestionSubmissionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.persistent.QuestionSubmission questionSubmission)", e);
+			_logger.error("delete(model.QuestionSubmission questionSubmission)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -371,7 +371,7 @@ public class QuestionSubmissionDAOImpl implements QuestionSubmissionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.persistent.QuestionSubmission questionSubmission)", e);
+			_logger.error("refresh(model.QuestionSubmission questionSubmission)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -382,7 +382,7 @@ public class QuestionSubmissionDAOImpl implements QuestionSubmissionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.persistent.QuestionSubmission questionSubmission)", e);
+			_logger.error("evict(model.QuestionSubmission questionSubmission)", e);
 			throw new PersistentException(e);
 		}
 	}

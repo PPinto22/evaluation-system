@@ -87,12 +87,13 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/groups/{group_id}/questions/available](#get-apigroupsgroup_idquestionsavailable)
 - [GET /api/groups/{group_id}/exams](#get-apigroupsgroup_idexams)
 - [POST /api/groups/{group_id}/exams](#post-apigroupsgroup_idexams)
-- [POST /api/groups/{group_id}/exams/generate](#post-apigroupsgroup_idexamsgenerate) TODO - Gerar apenas uma questao
-- [~~GET /api/groups/{group_id}/scores~~](#get-apigroupsgroup_idscores)
+- [POST /api/groups/{group_id}/exams/generate](#post-apigroupsgroup_idexamsgenerate)
+- [~~POST /api/groups/{group_id}/exams/generate/question~~](#post-apigroupsgroup_idexamsgeneratequestion)
+- [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores)
 - [GET /api/exams/{exam_id}](#get-apiexamsexam_id)
 - [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
 - [~~PUT /api/exams/{exam_id}~~](#put-apiexamsexam_id)
-- [~~GET /api/exams/{exam_id}/scores~~](#get-apiexamsexam_idscores)
+- [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores)
 - [POST /api/exams/{exam_id}/submission](#post-apiexamsexam_idsubmissions)
 - [~~GET /api/submissions/{submission_id}~~](#get-apisubmissionssubmission_id)
 - [~~PUT /api/submissions/{submission_id}~~](#put-apisubmissionssubmission_id)
@@ -105,8 +106,8 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/users/{user_id}/groups](#get-apiusersuser_idgroups)
 - [GET /api/users/{user_id}/notifications](#get-apiusersuser_idnotifications) [x]
 - [GET /api/users/{user_id}/submissions](#get-apiusersuser_idsubmissions)
-- [~~GET /api/users/{user_id}/scores~~](#get-apiusersuser_idscores)
 - [GET /api/users/{user_id}/exams](#get-apiusersuser_idexams)
+- [GET /api/users/{user_id}/scores](#get-apiusersuser_idscores)
 - [GET /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept) [x]
 - [GET /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitation_iddecline) [x]
 
@@ -678,7 +679,40 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 - **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Invalid questions*, *Insufficient questions*
 
-#### ~~GET /api/groups/{group_id}/scores~~
+#### ~~POST /api/groups/{group_id}/exams/generate/question~~
+Gera uma única questão para um exame.
+
+#### GET /api/groups/{group_id}/scores
+### Response
+> O campo *submissionID* pode não existir, caso o aluno não tenha feita uma submissão. Neste caso, o score é 0.
+
+```json
+{
+  "students": [
+    {
+      "student": {
+        "user info..."
+      },
+      "exams":[
+        {
+          "exam":{
+            "exam info..."
+          },
+          "score": {
+            "score": 20,
+            "submissionID": 1
+          }
+        }
+      ]
+    },
+  ]
+}        
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such exam*
+- **UNAUTHORIZED (401)** - *No permission*
 ___
 
 #### GET /api/exams/{exam_id}
@@ -724,7 +758,32 @@ Se o utilizador for um aluno e o exame ainda não tiver começado, este método 
 
 #### ~~DELETE /api/exams/{exam_id}~~
 #### ~~PUT /api/exams/{exam_id}~~
-#### ~~GET /api/exams/{exam_id}/scores~~
+#### GET /api/exams/{exam_id}/scores
+### Body
+> O campo *submissionID* pode não existir, caso o aluno não tenha feita uma submissão. Neste caso, o score é 0.
+
+```json
+{
+  "students": [
+    {
+      "student": {
+        "user info..."
+      },
+      "score": {
+        "score": 20,
+        "submissionID": 1
+      }
+    },
+  ]
+}        
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such exam*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Invalid exam*
+
 #### POST /api/exams/{exam_id}/submissions
 ### Body
 Mapeamento pergunta: resposta (IDs)
@@ -1008,7 +1067,55 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **NOT_FOUND (404)**
 - **UNAUTHORIZED (401)**
 
-#### ~~GET /api/users/{user_id}/scores~~
+#### GET /api/users/{user_id}/scores
+Este método só funciona com utilizadores do tipo *student*. Para os professores saberem as notas dos alunos, utilizar [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores) ou [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores).
+
+### Parameters
+- exam=ID
+- group=ID
+
+### Response
+A resposta abaixo é enviada quando não é passado nenhum parâmetro. Caso seja passado um ID de um grupo, então é enviado apenas o correspondente ao array *exams*; caso seja passado um ID de um exame, é enviado apenas o correspondente ao objeto *score*.
+```json
+{
+  "groups": [
+    {
+      "group": {
+        "id": 1,
+        "name": "Name1",
+        "_class": {
+          "name": "Name1",
+          "abbreviation": "Abbreviation1",
+          "teacher": {
+            "..."
+          },
+          "id": 1
+        }
+      },
+      "exams": [
+        {
+          "exam": {
+            "id": 1,
+            "name": "Exam 8",
+            "beginDate": 1498908600000,
+            "duration": 60
+          },
+          "score": {
+            "submissionID": 1,
+            "score": 0
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such student*
+- **UNAUTHORIZED (401)**
+- **NOT_ACCEPTABLE (406)** - *Invalid group*, *Invalid exam*
 ___
 
 #### GET /api/invitations/{invitation_id}/accept

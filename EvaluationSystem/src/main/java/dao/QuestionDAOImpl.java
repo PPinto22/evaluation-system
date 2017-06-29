@@ -11,7 +11,7 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.Question;
+import model.Question;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -177,7 +177,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 	}
 	
 	public List queryQuestion(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.Question as model.persistent.Question");
+		StringBuffer sb = new StringBuffer("From model.Question as model.Question");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -193,14 +193,14 @@ public class QuestionDAOImpl implements QuestionDAO {
 	}
 	
 	public List queryQuestion(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.Question as model.persistent.Question");
+		StringBuffer sb = new StringBuffer("From model.Question as model.Question");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.Question", lockMode);
+			query.setLockMode("model.Question", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -292,7 +292,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 	}
 	
 	public java.util.Iterator iterateQuestionByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.Question as model.persistent.Question");
+		StringBuffer sb = new StringBuffer("From model.Question as model.Question");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -308,14 +308,14 @@ public class QuestionDAOImpl implements QuestionDAO {
 	}
 	
 	public java.util.Iterator iterateQuestionByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.Question as model.persistent.Question");
+		StringBuffer sb = new StringBuffer("From model.Question as model.Question");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.Question", lockMode);
+			query.setLockMode("model.Question", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -334,7 +334,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.persistent.Question question)", e);
+			_logger.error("save(model.Question question)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -345,7 +345,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.persistent.Question question)", e);
+			_logger.error("delete(model.Question question)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -389,7 +389,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.persistent.Question question)", e);
+			_logger.error("refresh(model.Question question)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -400,7 +400,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.persistent.Question question)", e);
+			_logger.error("evict(model.Question question)", e);
 			throw new PersistentException(e);
 		}
 	}

@@ -1,4 +1,4 @@
-package model.persistent; /**
+package model; /**
  * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
  * 
  * This is an automatic generated file. It will be regenerated every time 
@@ -10,11 +10,28 @@ package model.persistent; /**
 import dao.ExamSetCollection;
 import dao.GroupStudentSetCollection;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-public class Group {
+public class Group implements Comparable<Group>{
+
+	@Override
+	public int compareTo(Group o) {
+		if(this.getID() > o.getID())
+			return 1;
+		else if(this.getID() < o.getID())
+			return -1;
+		else
+			return 0;
+	}
+
+	public List<Exam> getExams(){
+		return Arrays.asList(this._exams.toArray("beginDate", true));
+	}
 
 	public Group() {
 	}

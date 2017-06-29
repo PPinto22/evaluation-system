@@ -1,8 +1,8 @@
 package wrapper;
 
-import model.persistent.GroupInvitation;
-import model.persistent.Notification;
-import model.persistent.User;
+import model.GroupInvitation;
+import model.Notification;
+import model.User;
 
 import java.util.ArrayList;
 import java.util.List;

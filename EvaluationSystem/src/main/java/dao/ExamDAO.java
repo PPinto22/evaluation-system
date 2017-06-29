@@ -11,10 +11,8 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.Exam;
+import model.Exam;
 import org.orm.*;
-
-import java.util.List;
 
 public interface ExamDAO {
 	boolean exists(int examID) throws PersistentException;

@@ -2,7 +2,7 @@ package service;
 
 import dao.AnswerDAO;
 import exception.NonExistentEntityException;
-import model.persistent.Answer;
+import model.Answer;
 import org.orm.PersistentException;
 import org.springframework.stereotype.Service;
 

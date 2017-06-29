@@ -11,9 +11,9 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.Group;
-import model.persistent.GroupInvitation;
-import model.persistent.Student;
+import model.Group;
+import model.GroupInvitation;
+import model.Student;
 import org.orm.*;
 import org.hibernate.Query;
 import org.hibernate.LockMode;
@@ -161,7 +161,7 @@ public class GroupInvitationDAOImpl implements GroupInvitationDAO {
 	}
 	
 	public List queryGroupInvitation(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.GroupInvitation as model.persistent.GroupInvitation");
+		StringBuffer sb = new StringBuffer("From model.GroupInvitation as model.GroupInvitation");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -177,14 +177,14 @@ public class GroupInvitationDAOImpl implements GroupInvitationDAO {
 	}
 	
 	public List queryGroupInvitation(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.GroupInvitation as model.persistent.GroupInvitation");
+		StringBuffer sb = new StringBuffer("From model.GroupInvitation as model.GroupInvitation");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.GroupInvitation", lockMode);
+			query.setLockMode("model.GroupInvitation", lockMode);
 			return query.list();
 		}
 		catch (Exception e) {
@@ -276,7 +276,7 @@ public class GroupInvitationDAOImpl implements GroupInvitationDAO {
 	}
 	
 	public java.util.Iterator iterateGroupInvitationByQuery(PersistentSession session, String condition, String orderBy) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.GroupInvitation as model.persistent.GroupInvitation");
+		StringBuffer sb = new StringBuffer("From model.GroupInvitation as model.GroupInvitation");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
@@ -292,14 +292,14 @@ public class GroupInvitationDAOImpl implements GroupInvitationDAO {
 	}
 	
 	public java.util.Iterator iterateGroupInvitationByQuery(PersistentSession session, String condition, String orderBy, LockMode lockMode) throws PersistentException {
-		StringBuffer sb = new StringBuffer("From model.persistent.GroupInvitation as model.persistent.GroupInvitation");
+		StringBuffer sb = new StringBuffer("From model.GroupInvitation as model.GroupInvitation");
 		if (condition != null)
 			sb.append(" Where ").append(condition);
 		if (orderBy != null)
 			sb.append(" Order By ").append(orderBy);
 		try {
 			Query query = session.createQuery(sb.toString());
-			query.setLockMode("model.persistent.GroupInvitation", lockMode);
+			query.setLockMode("model.GroupInvitation", lockMode);
 			return query.iterate();
 		}
 		catch (Exception e) {
@@ -318,7 +318,7 @@ public class GroupInvitationDAOImpl implements GroupInvitationDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("save(model.persistent.GroupInvitation groupInvitation)", e);
+			_logger.error("save(model.GroupInvitation groupInvitation)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -329,7 +329,7 @@ public class GroupInvitationDAOImpl implements GroupInvitationDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("delete(model.persistent.GroupInvitation groupInvitation)", e);
+			_logger.error("delete(model.GroupInvitation groupInvitation)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -373,7 +373,7 @@ public class GroupInvitationDAOImpl implements GroupInvitationDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("refresh(model.persistent.GroupInvitation groupInvitation)", e);
+			_logger.error("refresh(model.GroupInvitation groupInvitation)", e);
 			throw new PersistentException(e);
 		}
 	}
@@ -384,7 +384,7 @@ public class GroupInvitationDAOImpl implements GroupInvitationDAO {
 			return true;
 		}
 		catch (Exception e) {
-			_logger.error("evict(model.persistent.GroupInvitation groupInvitation)", e);
+			_logger.error("evict(model.GroupInvitation groupInvitation)", e);
 			throw new PersistentException(e);
 		}
 	}

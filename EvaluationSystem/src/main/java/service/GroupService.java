@@ -1,8 +1,8 @@
 package service;
 
 import exception.*;
-import model.persistent.*;
-import model.persistent.Class;
+import model.*;
+import model.Class;
 import org.orm.PersistentException;
 
 import java.util.List;
@@ -25,4 +25,5 @@ public interface GroupService {
     List<Question> listAvailableQuestions(Group group) throws PersistentException;
     Map<String, Map<Integer, List<Question>>> getAvailableQuestionsByCategoryAndDifficulty(Group group) throws PersistentException;
     List<Question> generateExamQuestions(Group group, List<String> categories, List<Integer> difficulties) throws PersistentException, InvalidInputException, InsufficientQuestionsException;
+    Map<Student, Map<Exam, Score>> getGroupScores(Group group) throws PersistentException;
 }

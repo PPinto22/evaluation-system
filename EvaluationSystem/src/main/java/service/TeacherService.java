@@ -3,9 +3,9 @@ package service;
 import exception.ExistentEntityException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
-import model.persistent.Group;
-import model.persistent.Teacher;
-import model.persistent.Class;
+import model.Group;
+import model.Teacher;
+import model.Class;
 import org.orm.PersistentException;
 
 import java.util.List;

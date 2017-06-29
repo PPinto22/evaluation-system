@@ -1,6 +1,6 @@
 package wrapper;
 
-import model.persistent.Question;
+import model.Question;
 
 import java.util.ArrayList;
 import java.util.List;

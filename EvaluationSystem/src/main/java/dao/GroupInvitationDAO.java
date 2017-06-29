@@ -11,9 +11,9 @@ package dao; /**
  * Licensee: Universidade do Minho
  * License Type: Academic
  */
-import model.persistent.Group;
-import model.persistent.GroupInvitation;
-import model.persistent.Student;
+import model.Group;
+import model.GroupInvitation;
+import model.Student;
 import org.orm.*;
 import org.hibernate.LockMode;
 
