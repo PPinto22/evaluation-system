@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {GroupService} from '../../../../services/group.service';
 import {AuthenticationService} from '../../../../services/authentication.service';
 import {Group} from '../../../../models/group';
 import {Class} from '../../../../models/class';
 import {User} from '../../../../models/user';
 
+declare var x_navigation: any;
+declare var page_content_onresize:  any;
+
 @Component({
   selector: 'app-list-class',
   templateUrl: './list-class.component.html',
   styleUrls: ['./list-class.component.css']
 })
-export class ListClassComponent implements OnInit {
+export class ListClassComponent implements OnInit, AfterViewInit {
 
   allGroups: Array<Group>;
 
@@ -23,12 +26,18 @@ export class ListClassComponent implements OnInit {
     this.getAllGroups();
   }
 
+  ngAfterViewInit() {
+    x_navigation();
+    page_content_onresize();
+  }
+
   private getAllGroups() {
     this.group.getGroupByUser(this.authentication.getUserId()).subscribe(
       resultado => {
         for ( const group of resultado){
           this.allGroups.push(this.createGroup(group));
         }
+        page_content_onresize();
       },
       error => {
         console.log(error);

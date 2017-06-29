@@ -90,60 +90,16 @@
         <div class="col-md-12 col-sm-12 col-xs-12 filter-group-students">
           <form>
             <div class="form-group">
-              <input type="text" class="input-block-level form-control" autocomplete="off" placeholder="Search for student">
+              <input type="text" class="input-block-level form-control" name="search" id="search" [(ngModel)]="model.search" value="" #search="ngModel" autocomplete="off" placeholder="Search for student">
             </div>
           </form>
         </div>
       </div>
     </div>
     <div class="panel-body scroll list">
-      <ul class="list-group border-bottom">
-        <li class="list-group-item">Rui Jorge Araujo Freitas
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Pedro Pinto
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Pedro Vale
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Rafa Mota
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Joao Silva
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Rui Jorge
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-          Araujo Freitas
-        </li>
-        <li class="list-group-item">Pedro Pinto
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Pedro Vale
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Rafa Mota
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Joao Silva
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Rui Jorge
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-          Araujo Freitas
-        </li>
-        <li class="list-group-item">Pedro Pinto
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Pedro Vale
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Rafa Mota
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-        </li>
-        <li class="list-group-item">Joao Silva
-          <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+      <ul *ngFor="let student of allStudentsOfGroup | StudentsFilterGroup: model.search" class="list-group border-bottom">
+        <li class="list-group-item">{{student.email}}
+          <span (click)="removeStudent(student.email)" class="glyphicon glyphicon-remove pull-right text-danger"></span>
         </li>
       </ul>
     </div>

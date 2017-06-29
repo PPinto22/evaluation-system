@@ -51,9 +51,10 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   }
   public addClass(): void {
     this.classAsCreate = false;
-    this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add.abbrev, this.new_class_add.nameClass).subscribe(
+    this.classes.createClasseByUser(this.authentication.getUserId(), this.new_class_add.nameClass, this.new_class_add.abbrev).subscribe(
       resultado => {
         this.classAsCreate = true;
+        this.new_class_add = {};
         console.log(resultado);
       },
       error => {
@@ -64,6 +65,10 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         console.log(error);
       }
     );
+  }
+
+  public changeAlreadyExists(): void {
+    this.classAlreadyExists = false;
   }
 
   private isTeacher(): boolean {

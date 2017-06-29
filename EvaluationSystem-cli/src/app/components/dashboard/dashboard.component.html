@@ -23,17 +23,17 @@
       <li class="xn-title">Navigation</li>
 
       <li *ngFor="let col_node of collapse_struture; let col_node_pos = index" [ngClass]="{'xn-openable': col_node.children, 'active': col_node.isCollapsed}" >
-        <a (click)="navigateRoute(col_node.route, col_node, collapse_struture)" ><span class="fa fa-desktop"></span> <span class="xn-text">{{col_node.name}}</span></a>
+        <a (click)="navigateRoute(col_node.route, col_node, [col_node.id])" ><span class="fa fa-desktop"></span> <span class="xn-text">{{col_node.name}}</span></a>
 
         <!-- Classes -->
         <ul *ngIf="col_node.children">
           <li *ngFor="let col_node_class of col_node.children; let col_node_class_pos = index" [ngClass]="{'xn-openable': col_node_class.children , 'active': col_node_class.isCollapsed}">
-            <a (click)="navigateRoute( col_node_class.route, col_node_class, col_node)" >{{col_node_class.name}}</a>
+            <a (click)="navigateRoute( col_node_class.route, col_node_class, [col_node.id,col_node_class.id])" >{{col_node_class.name}}</a>
 
             <!-- Group -->
             <ul *ngIf="col_node_class.children">
               <li *ngFor="let col_node_group of col_node_class.children; let col_node_group_pos = index" >
-                <a (click)="navigateRoute( col_node_group.route, col_node_group, col_node_class)" >{{col_node_group.name}}</a>
+                <a (click)="navigateRoute( col_node_group.route, col_node_group, [col_node.id,col_node_class.id, col_node_group.id ])" >{{col_node_group.name}}</a>
               </li>
             </ul>
             <!-- ./Group -->

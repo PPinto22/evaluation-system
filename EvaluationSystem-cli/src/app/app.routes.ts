@@ -27,7 +27,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent,
     children: [
       { path: '', component: DefaultComponent },
-      { path: 'classes/:id/groups/:group_id/exams/new', component: ExamCreateComponent },
+      { path: 'classes/:class_id/groups/:group_id/exams/new', component: ExamCreateComponent },
       { path: 'classes/:class_id/groups/:group_id/exams/:exams_id', component: ExamsComponent },
       { path: 'classes/:class_id/groups/:group_id/exams/:exams_id/submit', component: ExamCreateComponent },
 

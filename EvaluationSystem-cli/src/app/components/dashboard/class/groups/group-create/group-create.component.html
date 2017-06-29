@@ -5,11 +5,11 @@
 </div>
 
 <br>
-
+<form class="form-horizontal" (ngSubmit)="f_createGroup.form.valid && saveGroup()" #f_createGroup="ngForm" novalidate>
 <div class="row">
   <div class="col-md-12 col-xs-12">
     <div class="pull-right">
-      <button type="button" class="btn btn-primary">Save Group</button>
+      <button type="submit" class="btn btn-primary">Save Group</button>
     </div>
   </div>
 </div>
@@ -18,7 +18,6 @@
 
 <div class="row">
   <div class="col-md-6 col-sm-6 col-xs-12">
-    <form class="form-horizontal" (ngSubmit)="f_createGroup.form.valid && create()" #f_createGroup="ngForm" novalidate>
       <div class="form-group">
         <label class="col-md-3 control-label">Group Name:</label>
         <div class="col-md-9">
@@ -26,9 +25,8 @@
             <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
             <input type="text" class="form-control" name="nameGroup" [(ngModel)]="groupCreate.nameGroup" placeholder="Group Name" #nameGroup="ngModel"/>
           </div>
-          <div *ngIf="f_createGroup.submitted && !nameGroup.valid && !haveCreateGroup" class="help-block">Group name is required</div>
-          <label *ngIf="groupAlreadyExists && nameClass.valid"  class="control-label groupAlreadyExists">Group already exists </label>
-          <label *ngIf="haveCreateGroup && nameClass.valid"  class="control-label groupCreated">Group was created </label>
+          <div *ngIf="nameGroupValid" class="help-block">Group name is required</div>
+          <label *ngIf="groupAlreadyExists"  class="control-label groupAlreadyExists">Group already exists </label>
         </div>
       </div>
 
@@ -43,9 +41,8 @@
       </div>
 
       <div class="col-md-12">
-        <button type="submit" class="btn btn-primary pull-right">Add Students</button>
+        <button (click)="treatmentEmail()" type="button" class="btn btn-primary pull-right">Add Students</button>
       </div>
-    </form>
   </div>
 
   <div class="col-md-6 col-sm-6 col-xs-12">
@@ -54,7 +51,6 @@
       <div class="panel-heading ui-draggable-handle">
         <h3 class="panel-title">Invited Students </h3>
         <ul class="panel-controls">
-          <li><a (click)="refreshInvitedSudents()" class="control-info"><span class="glyphicon glyphicon-refresh"></span></a></li>
           <li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
         </ul>
       </div>
@@ -62,102 +58,15 @@
         <!-- Search form -->
         <form role="form">
           <div class="bootstrap-select-searchbox">
-            <input type="text" class="input-block-level form-control" autocomplete="off" placeholder="Search for student">
+            <input type="text" class="input-block-level form-control" name="search" id="search" [(ngModel)]="model.search" value="" #search="ngModel" autocomplete="off" placeholder="Search for student">
           </div>
         </form>
 
         <div class="panel-body scroll list-students" >
           <!-- Coloquei o div externo porque penso que ajuda a fazer o ngFor caso contrario tirar-->
-          <ul class="list-group border-bottom ">
-            <li class="list-group-item">Rui Jorge Araujo Freitas
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Pedro Pinto
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Pedro Vale
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rafa Mota
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Joao Silva
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rui Jorge
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-              Araujo Freitas</li>
-            <li class="list-group-item">Pedro Pinto
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Pedro Vale
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rafa Mota
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Joao Silva
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rui Jorge Araujo Freitas
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Pedro Pinto
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Pedro Vale
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rafa Mota
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Joao Silva
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rui Jorge
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-              Araujo Freitas</li>
-            <li class="list-group-item">Pedro Pinto
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Pedro Vale
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rafa Mota
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Joao Silva
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rui Jorge Araujo Freitas
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Pedro Pinto
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Pedro Vale
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rafa Mota
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Joao Silva
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rui Jorge
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-              Araujo Freitas</li>
-            <li class="list-group-item">Pedro Pinto
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Pedro Vale
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Rafa Mota
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
-            </li>
-            <li class="list-group-item">Joao Silva
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+          <ul *ngFor="let student of allStudentsOfGroup | StudentsFilter: model.search" class="list-group border-bottom ">
+            <li class="list-group-item">{{student}}
+              <span (click)="removeStudent(student)" class="glyphicon glyphicon-remove pull-right text-danger"></span>
             </li>
           </ul>
         </div>
@@ -171,7 +80,8 @@
 <div class="row">
   <div class="col-md-12 col-xs-12">
     <div class="pull-right">
-      <button type="button" class="btn btn-primary">Save Group</button>
+      <button type="submit" class="btn btn-primary">Save Group</button>
     </div>
   </div>
 </div>
+</form>

@@ -7,12 +7,19 @@
 ```
 Refresh - need someones changes
 Remove and Edit Group
+Many Groups problems with page_content_onresize();
 ```
 
 - Schedule
 ```
 Maybe change colors
 ```
+
+- Create Group
+```
+Need Tests
+```
+
 
 ## Backend - Spring and Hibernate
 

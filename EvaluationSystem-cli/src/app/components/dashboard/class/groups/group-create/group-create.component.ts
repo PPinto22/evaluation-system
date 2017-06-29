@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {GroupService} from '../../../../../services/group.service';
 import {StudentsService} from '../../../../../services/students.service';
 import {Exception} from '../../../../../execption/exception';
+import {User} from '../../../../../models/user';
+import {StudentsFilter} from '../../../../../filters/students_filter';
 
 declare var $: any;
 declare var x_navigation: any;
@@ -21,6 +23,9 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
   private haveCreateGroup: boolean;
   private wrongEmail = '';
   private groupAlreadyExists = false;
+  private allStudentsOfGroup: string[];
+  private model: any = {};
+  private nameGroupValid: boolean;
 
   constructor(private group: GroupService,
               private router: Router,
@@ -28,16 +33,19 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
               private students: StudentsService,
               private exception: Exception
   ) {
-    this.route.params.subscribe(params => {
-      this.classId = +params['id'];
+    this.route.parent.params.subscribe(params => {
+      this.classId = +params['class_id'];
     });
+    this.allStudentsOfGroup = [];
   }
 
   ngOnInit() {
+    // this.cleanAll(); limpar tudo depois talvez
     // TODO talvez seja preciso mudar isto, depende como ficar, caso ele selecione um grupo é preciso colocar a verdadeiro.
     this.haveCreateGroup = false;
     this.groupAlreadyExists = false;
-    this.groupId = 2;
+    // this.groupId = 3;
+    this.nameGroupValid = false;
   }
 
   ngAfterViewInit(): void {
@@ -57,13 +65,13 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
     }, {passive: true});
   }
 
-  public refreshInvitedSudents(): void {
-  }
-
   public saveGroup(): void {
-
-    this.router.navigate(['/dashboard', 'classes', this.classId]);
-
+    if (this.groupCreate.nameGroup) {
+      this.nameGroupValid = false;
+      this.createGroup();
+    }else {
+      this.nameGroupValid = true;
+    }
   }
 
   public createGroup(): void {
@@ -82,45 +90,41 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
     );
   }
 
-  public create(): void {
-    if (!this.haveCreateGroup) {
-       this.createGroup();
-    }else {
-      if (this.groupCreate.students) {
-        this.addStudents();
-      }
-    }
-  }
-
   public addStudents() {
-    this.students.postStudentByGroup(this.groupId, this.treatmentEmail()).subscribe(
+    this.students.postStudentByGroup(this.groupId, this.allStudentsOfGroup).subscribe(
       resultado => {
-        this.groupCreate.students = this.wrongEmail;
-        this.wrongEmail = '';
-        console.log(resultado);
+        this.router.navigate(['/dashboard', 'classes', this.classId, 'groups', this.groupId]);
       },
       error => {
         console.log(error);
+        this.router.navigate(['/dashboard', 'classes', this.classId, 'groups', this.groupId]);
       }
     );
   }
-  public treatmentEmail(): string[] {
-    const separators = [',', ';', '\n'];
-    const nameStudents: string[] = this.groupCreate.students.toString().split(new RegExp(separators.join('|')));
-    for ( const email of nameStudents ) {
-      if ( !this.validateEmail(email) ) {
-        if ( this.wrongEmail === '') {
-          this.wrongEmail = email;
-          const index = nameStudents.indexOf(email);
-          nameStudents.splice(index, 1);
-        }else {
-          this.wrongEmail = this.wrongEmail + '\n' + email;
-          const index = nameStudents.indexOf(email);
-          nameStudents.splice(index, 1);
+  public treatmentEmail(): void {
+    if (this.groupCreate.students) {
+      this.wrongEmail = '';
+      const separators = [',', ';', '\n'];
+      const allNewStudents: string[] = [];
+      for (const email of this.groupCreate.students.toString().split(new RegExp(separators.join('|')))) {
+        console.log(email);
+        if (!this.validateEmail(email)) {
+          if (this.wrongEmail === '') {
+            this.wrongEmail = email;
+          } else {
+            this.wrongEmail = this.wrongEmail + '\n' + email;
+          }
+        } else {
+          this.allStudentsOfGroup.push(email);
         }
       }
+      this.groupCreate.students = this.wrongEmail;
     }
-    return nameStudents;
+  }
+
+  public removeStudent(student: string): void {
+    const idStudent = this.allStudentsOfGroup.indexOf(student);
+    this.allStudentsOfGroup.splice(idStudent, 1);
   }
 
   public validateEmail(email: any): boolean {

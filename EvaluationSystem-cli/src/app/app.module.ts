@@ -41,6 +41,8 @@ import { QuestionCreateItemComponent } from './components/dashboard/class/questi
 import { AnswerCreateComponent } from './components/dashboard/class/questions/question-create/question-create-item/answer-create/answer-create.component';
 import { ExamsComponent } from './components/dashboard/class/exams/exams.component';
 import {ExamCreateComponent} from 'app/components/dashboard/class/exams/exam-create/exam-create.component';
+import {StudentsFilter} from './filters/students_filter';
+import {StudentsFilterGroup} from './filters/students_filter_group';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import {ExamCreateComponent} from 'app/components/dashboard/class/exams/exam-cre
     QuestionsComponent,
     QuestionCreateItemComponent,
     AnswerCreateComponent,
-    ExamsComponent
+    ExamsComponent,
+    StudentsFilter,
+    StudentsFilterGroup
   ],
   imports: [
     BrowserModule,

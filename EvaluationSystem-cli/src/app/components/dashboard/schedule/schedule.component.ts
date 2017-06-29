@@ -29,20 +29,6 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     editable: false,
     eventLimit: true, // allow "more" link when too many events
     events: [
-      /*{
-        title: 'All Day Event',
-        start: '2016-09-01'
-      },
-      {
-        title: 'Long Event',
-        start: '2016-09-07',
-        end: '2016-09-10'
-      },
-      {
-        title: 'Conference',
-        start: '2016-09-11',
-        end: '2016-09-13'
-      }*/
     ]
   };
 
