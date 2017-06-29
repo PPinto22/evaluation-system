@@ -40,6 +40,13 @@ public class SubmissionServiceImpl implements SubmissionService{
     }
 
     @Override
+    public Submission updateSubmission(Submission submission, Map<Question, Answer> answers) throws InvalidAnswerException, PersistentException, InvalidQuestionException {
+        addAnswersToSubmission(submission, answers);
+        submissionDAO.save(submission);
+        return submission;
+    }
+
+    @Override
     public Submission submit(Student student, Exam exam, Map<Question, Answer> answers)
             throws ExistentEntityException, PersistentException, InvalidQuestionException, InvalidAnswerException {
         if(exists(student,exam))
@@ -93,7 +100,7 @@ public class SubmissionServiceImpl implements SubmissionService{
     public QuestionSubmission getQuestionSubmission(Submission submission, Question question) throws NonExistentEntityException {
         List<QuestionSubmission> qSubs = Arrays.asList(submission._questionSubmissions.toArray());
         for(QuestionSubmission qSub: qSubs){
-            if(qSub.get_question().getID() == question.getID())
+            if(qSub.get_question().get_question().getID() == question.getID())
                 return qSub;
         }
         throw new NonExistentEntityException();

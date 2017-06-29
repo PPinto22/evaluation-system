@@ -18,4 +18,5 @@ public interface SubmissionService {
     boolean exists(Student student, Exam exam) throws PersistentException;
 
     Submission submit(Student student, Exam exam, Map<Question, Answer> answers) throws ExistentEntityException, PersistentException, InvalidQuestionException, InvalidAnswerException;
+    Submission updateSubmission(Submission submission, Map<Question, Answer> answers) throws InvalidAnswerException, PersistentException, InvalidQuestionException;
 }

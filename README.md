@@ -89,11 +89,11 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [~~PUT /api/exams/{exam_id}~~](#put-apiexamsexam_id)
 - [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores)
 - [POST /api/exams/{exam_id}/submission](#post-apiexamsexam_idsubmissions)
-- [~~GET /api/submissions/{submission_id}~~](#get-apisubmissionssubmission_id)
-- [~~PUT /api/submissions/{submission_id}~~](#put-apisubmissionssubmission_id)
+- [GET /api/submissions/{submission_id}](#get-apisubmissionssubmission_id)
+- [PUT /api/submissions/{submission_id}](#put-apisubmissionssubmission_id)
 - [~~DELETE /api/submissions/{submission_id}~~](#delete-apisubmissionssubmission_id)
 - [GET /api/users/{user_id}](#get-apiusersuser_id) [x]
-- [~~PUT /api/users/{user_id}~~](#put-apiusersuser_id)
+- [PUT /api/users/{user_id}](#put-apiusersuser_id)
 - [~~DELETE /api/users/{user_id}~~](#delete-apiusersuser_id)
 - [POST /api/users/{user_id}/classes](#post-apiusersuser_idclasses) [x]
 - [GET /api/users/{user_id}/classes](#get-apiusersuser_idclasses)
@@ -830,8 +830,46 @@ São retornadas todas as questões do exame, com a respetiva resposta do estudan
 - **NOT_ACCEPTABLE (406)** - *Existent submission*, *Invalid answer*, *Invalid question*
 ___
 
-#### ~~GET /api/submissions/{submission_id}~~
-#### ~~PUT /api/submissions/{submission_id}~~
+#### GET /api/submissions/{submission_id}
+### Response
+> Se o aluno não tiver respondido a alguma questão, o campo *answer* não aparece.
+> Se o exame já tiver terminado, então também é indicado se as respostas estão certas ou não.
+
+```json
+{
+  "id": 1,
+  "questions": [
+    {
+      "question": {
+        "id": 1,
+        "text": "Solve for x: 1 + x = 5",
+        "category": "Category1",
+        "difficulty": 2,
+        "answers": [
+          "answers..."
+        ],
+        "score": 3.3333333,
+        "order": 1
+      },
+      "answer": {
+        "id": 4,
+        "text": "1",
+        "correct": false,
+        "order": 0
+      }
+    },
+  ]
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such submissions*
+
+#### PUT /api/submissions/{submission_id}
+Este método altera ou acrescenta novas respostas a uma submissão já existente.
+O funcionamento é igual a [POST /api/exams/{exam_id}/submission](#post-apiexamsexam_idsubmissions)
+
 #### ~~DELETE /api/submissions/{submission_id}~~
 
 ___
