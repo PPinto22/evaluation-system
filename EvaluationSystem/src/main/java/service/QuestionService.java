@@ -1,5 +1,7 @@
 package service;
 
+import exception.ExistentEntityException;
+import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
 import model.Answer;
 import model.Question;
@@ -16,4 +18,6 @@ public interface QuestionService {
     boolean exists(int ID) throws PersistentException;
     boolean exists(Class cl, Question question) throws PersistentException;
     boolean validate(Question question);
+
+    Question updateQuestion(Question question, String text, String category, Integer difficulty, List<Answer> answers) throws InvalidQuestionException, PersistentException, ExistentEntityException;
 }
