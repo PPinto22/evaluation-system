@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {BreadCrumbService} from '../../../services/breadcrumb.service';
 import {ActivatedRoute} from '@angular/router';
@@ -28,16 +28,16 @@ export class ClassComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private _class: ClassesService
   ) {
-    this.route.params.subscribe(params => {
-      this.classId = +params['id'];
-    });
     this.classInformation = new Class('', '');
     this.teacherClass = new User(-1, '', '', '', '', '');
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.classId = +params['class_id'];
+      this.getClassInformation();
+    });
     this.breadCrumb.setBreadCrum(['Classes']);
-    this.getClassInformation();
   }
 
   ngAfterViewInit() {
