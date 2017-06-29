@@ -122,6 +122,11 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public removeStudent(student: string): void {
+    const idStudent = this.allStudentsOfGroup.indexOf(student);
+    this.allStudentsOfGroup.splice(idStudent, 1);
+  }
+
   public validateEmail(email: any): boolean {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
