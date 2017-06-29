@@ -38,21 +38,6 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
     });
     this.allStudentsOfGroup = [];
   }
-/*
-  private getAllGroupStudents(): void {
-    this.allStudentsOfGroup = new Array<User>();
-    this.students.getUserByGroupId(this.groupId).subscribe(
-      resultado => {
-        for ( const student of resultado) {
-          const p = { id: student.user.id, email: student.user.email, active: student.user.active, accepted: student.accepted};
-          this.allStudentsOfGroup.push(p);
-        }
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }*/
 
   ngOnInit() {
     // this.cleanAll(); limpar tudo depois talvez
