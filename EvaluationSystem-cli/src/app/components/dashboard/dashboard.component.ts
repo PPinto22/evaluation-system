@@ -3,7 +3,7 @@ import {AuthenticationService} from '../../services/authentication.service';
 import {BreadCrumbService} from '../../services/breadcrumb.service';
 import {Router} from '@angular/router';
 import {GroupService} from '../../services/group.service';
-import {ClassesService} from "../../services/classes.service";
+import {ClassesService} from '../../services/classes.service';
 
 declare var $: any;
 declare var x_navigation: any;
@@ -35,8 +35,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     this.page_navigation_toggled = false;
     this.getClasses();
   }
-
-
 
   private getClasses(): void {
     this.classesService.getAllClassesByUser( this.authentication.getUserId() ).subscribe(
@@ -89,7 +87,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
 
-
   public setNamebreadCrum() {
     this.breadCrumb.breadCrumDate.subscribe( value => {
         this.nameInToggleNavigation = value.pop();
@@ -121,9 +118,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
       node.isCollapsed = false;
     }
 
+    console.log(collapse_parent)
+
     for ( const node of collapse_node ) {
       node.isCollapsed = false;
     }
+    console.log(collapse_node)
+
 
     collapse_node.isCollapsed = true;
 
