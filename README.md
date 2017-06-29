@@ -18,8 +18,8 @@ Maybe change colors
 - Create Group
 ```
 Need Tests
-And Remove Students;
-``` 
+```
+
 
 ## Backend - Spring and Hibernate
 

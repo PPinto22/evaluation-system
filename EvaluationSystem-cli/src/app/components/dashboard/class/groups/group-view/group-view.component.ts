@@ -34,9 +34,9 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     this.order_date_text = 'most recent frist';
     this.router.params.subscribe( params => {
       this.groupId = params['group_id'];
-      this.groupId = 2; // TODO tirar esta merda depois!
+      this.getAllGroupStudents();
+     //  this.groupId = 2; // TODO tirar esta merda depois!
     });
-    this.getAllGroupStudents();
   }
 
   ngAfterViewInit(): void {
@@ -63,6 +63,10 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
 
   private isTeacher(): boolean {
     return this.authentication.isTeacher();
+  }
+
+  private removeStudent(email): void {
+
   }
 
 

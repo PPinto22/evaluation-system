@@ -66,7 +66,7 @@
           <!-- Coloquei o div externo porque penso que ajuda a fazer o ngFor caso contrario tirar-->
           <ul *ngFor="let student of allStudentsOfGroup | StudentsFilter: model.search" class="list-group border-bottom ">
             <li class="list-group-item">{{student}}
-              <span class="glyphicon glyphicon-remove pull-right text-danger"></span>
+              <span (click)="removeStudent(student)" class="glyphicon glyphicon-remove pull-right text-danger"></span>
             </li>
           </ul>
         </div>
