@@ -2,6 +2,7 @@ package service;
 
 import dao.AnswerDAO;
 import dao.QuestionDAO;
+import dao.QuestionScoreDAO;
 import exception.NonExistentEntityException;
 import model.Answer;
 import model.Question;
@@ -16,11 +17,19 @@ import java.util.List;
 public class QuestionServiceImpl implements QuestionService{
 
     private QuestionDAO questionDAO;
+    private QuestionScoreDAO questionScoreDAO;
     private AnswerDAO answerDAO;
 
-    public QuestionServiceImpl(QuestionDAO questionDAO, AnswerDAO answerDAO) {
+    public QuestionServiceImpl(QuestionDAO questionDAO,
+                               QuestionScoreDAO questionScoreDAO, AnswerDAO answerDAO) {
         this.questionDAO = questionDAO;
+        this.questionScoreDAO = questionScoreDAO;
         this.answerDAO = answerDAO;
+    }
+
+    @Override
+    public boolean questionInUse(Question question) throws PersistentException {
+        return questionScoreDAO.exists(question.getID());
     }
 
     @Override

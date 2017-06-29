@@ -66,7 +66,7 @@ public class TeacherServiceImpl implements TeacherService{
 
     @Override
     public List<Class> getClasses(Teacher teacher) {
-        return Arrays.asList(teacher._classes.toArray());
+        return Arrays.asList(teacher._classes.toArray("abbreviation", true));
     }
 
     @Override
