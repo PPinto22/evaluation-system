@@ -14,7 +14,7 @@ import {ClassComponent} from './components/dashboard/class/class.component';
 import {ScheduleComponent} from './components/dashboard/schedule/schedule.component';
 import {GroupCreateComponent} from './components/dashboard/class/groups/group-create/group-create.component';
 import {ResultsComponent} from './components/dashboard/results/results.component';
-import {ExameCreateComponent} from './components/dashboard/class/exams/exam-create/exam-create.component';
+import {ExamCreateComponent} from './components/dashboard/class/exams/exam-create/exam-create.component';
 import {GroupViewComponent} from './components/dashboard/class/groups/group-view/group-view.component';
 import {QuestionsComponent} from './components/dashboard/class/questions/questions.component';
 import {QuestionCreateComponent} from './components/dashboard/class/questions/question-create/question-create.component';
@@ -27,9 +27,9 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent,
     children: [
       { path: '', component: DefaultComponent },
-      { path: 'classes/:id/groups/:group_id/exams/new', component: ExameCreateComponent },
+      { path: 'classes/:id/groups/:group_id/exams/new', component: ExamCreateComponent },
       { path: 'classes/:class_id/groups/:group_id/exams/:exams_id', component: ExamsComponent },
-      { path: 'classes/:class_id/groups/:group_id/exams/:exams_id/submit', component: ExameCreateComponent },
+      { path: 'classes/:class_id/groups/:group_id/exams/:exams_id/submit', component: ExamCreateComponent },
 
 
       { path: 'classes/:class_id/questions/new', component: QuestionCreateComponent},
