@@ -83,11 +83,11 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [POST /api/groups/{group_id}/exams](#post-apigroupsgroup_idexams)
 - [POST /api/groups/{group_id}/exams/generate](#post-apigroupsgroup_idexamsgenerate)
 - [~~POST /api/groups/{group_id}/exams/generate/question~~](#post-apigroupsgroup_idexamsgeneratequestion)
-- [~~GET /api/groups/{group_id}/scores~~](#get-apigroupsgroup_idscores)
+- [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores)
 - [GET /api/exams/{exam_id}](#get-apiexamsexam_id)
 - [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
 - [~~PUT /api/exams/{exam_id}~~](#put-apiexamsexam_id)
-- [~~GET /api/exams/{exam_id}/scores~~](#get-apiexamsexam_idscores)
+- [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores)
 - [POST /api/exams/{exam_id}/submission](#post-apiexamsexam_idsubmissions)
 - [~~GET /api/submissions/{submission_id}~~](#get-apisubmissionssubmission_id)
 - [~~PUT /api/submissions/{submission_id}~~](#put-apisubmissionssubmission_id)
@@ -676,7 +676,37 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 #### ~~POST /api/groups/{group_id}/exams/generate/question~~
 Gera uma única questão para um exame.
 
-#### ~~GET /api/groups/{group_id}/scores~~
+#### GET /api/groups/{group_id}/scores
+### Response
+> O campo *submissionID* pode não existir, caso o aluno não tenha feita uma submissão. Neste caso, o score é 0.
+
+```json
+{
+  "students": [
+    {
+      "student": {
+        "user info..."
+      },
+      "exams":[
+        {
+          "exam":{
+            "exam info..."
+          },
+          "score": {
+            "score": 20,
+            "submissionID": 1
+          }
+        }
+      ]
+    },
+  ]
+}        
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such exam*
+- **UNAUTHORIZED (401)** - *No permission*
 ___
 
 #### GET /api/exams/{exam_id}
@@ -722,7 +752,32 @@ Se o utilizador for um aluno e o exame ainda não tiver começado, este método 
 
 #### ~~DELETE /api/exams/{exam_id}~~
 #### ~~PUT /api/exams/{exam_id}~~
-#### ~~GET /api/exams/{exam_id}/scores~~
+#### GET /api/exams/{exam_id}/scores
+### Body
+> O campo *submissionID* pode não existir, caso o aluno não tenha feita uma submissão. Neste caso, o score é 0.
+
+```json
+{
+  "students": [
+    {
+      "student": {
+        "user info..."
+      },
+      "score": {
+        "score": 20,
+        "submissionID": 1
+      }
+    },
+  ]
+}        
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such exam*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Invalid exam*
+
 #### POST /api/exams/{exam_id}/submissions
 ### Body
 Mapeamento pergunta: resposta (IDs)

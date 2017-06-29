@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import security.JwtService;
 import service.*;
-import wrapper.ErrorWrapper;
-import wrapper.ExamWrapper;
-import wrapper.SubmissionWrapper;
+import wrapper.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +28,6 @@ public class ExamController {
 
     private ExamService examService;
     private GroupService groupService;
-    private UserService userService;
     private JwtService jwtService;
     private SubmissionService submissionService;
     private QuestionService questionService;
@@ -41,7 +38,6 @@ public class ExamController {
                           QuestionService questionService, AnswerService answerService) {
         this.examService = examService;
         this.groupService = groupService;
-        this.userService = userService;
         this.jwtService = jwtService;
         this.submissionService = submissionService;
         this.questionService = questionService;
@@ -127,6 +123,28 @@ public class ExamController {
             answers.put(question, answer);
         }
         return answers;
+    }
+
+    @RequestMapping(value = "/{examID:[\\d]+}/scores", method = GET)
+    public ResponseEntity<Object> getScores(@PathVariable int examID, HttpServletRequest request){
+        try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
+            Exam exam = examService.getExamByID(examID);
+
+            if(!groupService.userHasAccess(exam.get_group(),user))
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            Map<Student, Score> scoreMap = examService.getExamScores(exam);
+            return new ResponseEntity<Object>(new StudentsScoresWrapper(scoreMap), OK);
+        } catch (PersistentException e){
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        } catch (InvalidExamException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_EXAM), NOT_ACCEPTABLE);
+        }
     }
 
 }

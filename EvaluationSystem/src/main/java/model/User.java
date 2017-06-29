@@ -21,9 +21,9 @@ public class User implements Comparable<User>{
 
 	@Override
 	public int compareTo(User o) {
-	    int nameCompare = this.getFullName().compareTo(o.getFullName());
+	    int nameCompare = this.getFullName().toLowerCase().compareTo(o.getFullName().toLowerCase());
 		if(nameCompare == 0)
-            return this.getEmail().compareTo(o.getEmail());
+            return this.getEmail().toLowerCase().compareTo(o.getEmail().toLowerCase());
 		else return nameCompare;
 	}
 

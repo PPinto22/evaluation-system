@@ -257,7 +257,27 @@ public class GroupController {
         } catch (PersistentException e){
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
-            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        }
+    }
+
+    @RequestMapping(value = "/{groupID:[\\d]+}/scores", method = GET)
+    public ResponseEntity<Object> getScores(@PathVariable int groupID, HttpServletRequest request){
+        try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
+            Group group = groupService.getGroupByID(groupID);
+
+            if(!groupService.userHasAccess(group,user))
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            Map<Student, Map<Exam, Score>> scoreMap = groupService.getGroupScores(group);
+            return new ResponseEntity<Object>(new StudentsExamsScoresWrapper(scoreMap), OK);
+        } catch (PersistentException e){
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         }
