@@ -6,7 +6,10 @@ import model.Question;
 import model.Class;
 import org.orm.PersistentException;
 
+import java.util.List;
+
 public interface QuestionService {
+    List<Question> listQuestionsByIDs(List<Integer> IDs) throws PersistentException, NonExistentEntityException;
     Question getQuestionByID(int ID) throws PersistentException, NonExistentEntityException;
     boolean questionContainsAnswer(Question question, Answer answer);
     boolean exists(int ID) throws PersistentException;

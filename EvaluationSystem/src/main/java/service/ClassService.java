@@ -19,6 +19,7 @@ public interface ClassService {
     Class getClassByName(Teacher teacher, String className) throws PersistentException, NonExistentEntityException;
     Class addClass(Class cl) throws PersistentException, MissingInformationException;
     List<Question> listClassQuestions(Class cl) throws PersistentException;
+    List<Question> listClassQuestionsByCategoryAndDifficulty(Class cl, String category, int difficulty) throws PersistentException;
     Set<String> getClassCategories(Class cl) throws PersistentException;
     void delete(Class cl) throws PersistentException;
     boolean exists(int id) throws PersistentException;

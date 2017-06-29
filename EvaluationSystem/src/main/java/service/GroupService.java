@@ -23,7 +23,7 @@ public interface GroupService {
     boolean studentInGroup(Student student, Group group);
     boolean questionInExams(Group group, Question question) throws PersistentException;
     List<Question> listAvailableQuestions(Group group) throws PersistentException;
-    Map<String, Map<Integer, List<Question>>> getAvailableQuestionsByCategoryAndDifficulty(Group group) throws PersistentException;
-    List<Question> generateExamQuestions(Group group, List<String> categories, List<Integer> difficulties) throws PersistentException, InvalidInputException, InsufficientQuestionsException;
+    List<Question> listAvailableQuestionByCategoryAndDifficulty(Group group, String category, int difficulty) throws PersistentException;
+    Map<String, Map<Integer, List<Question>>> getAvailableQuestions(Group group) throws PersistentException;
     Map<Student, Map<Exam, Score>> getGroupScores(Group group) throws PersistentException;
 }

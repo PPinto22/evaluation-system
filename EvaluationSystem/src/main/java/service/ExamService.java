@@ -22,6 +22,9 @@ public interface ExamService {
     Exam createExam(String name, int minutes, long beginDate, List<Integer> questionIDs, Group group)
             throws InvalidExamException, PersistentException, InvalidQuestionException, ExistentEntityException;
 
+    List<Question> generateExamQuestions(Group group, List<String> categories, List<Integer> difficulties) throws PersistentException, InvalidInputException, InsufficientQuestionsException;
+    Question generateExamQuestion(Group group, String category, int difficulty, List<Question> excludedQuestions) throws PersistentException, InsufficientQuestionsException;
+
     Map<String, Set<Exam>> getExamsByUser(User user);
     Map<String, Set<Exam>> getExamsByClass(Class cl);
     Map<String, Set<Exam>> getExamsByGroup(Group group);
