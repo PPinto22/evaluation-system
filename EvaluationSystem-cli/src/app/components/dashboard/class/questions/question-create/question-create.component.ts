@@ -30,4 +30,9 @@ export class QuestionCreateComponent implements OnInit {
 
   }
 
+
+  public saveQuestion(): void {
+
+  }
+
 }

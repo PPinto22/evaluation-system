@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Question} from '../../../../models/question';
+import {Question} from '../../../../../models/question';
 
 declare var page_content_onresize: any;
 
 @Component({
-  selector: 'app-exame-create',
-  templateUrl: './exame-create.component.html',
-  styleUrls: ['./exame-create.component.css']
+  selector: 'app-exam-create',
+  templateUrl: './exam-create.component.html',
+  styleUrls: ['./exam-create.component.css']
 })
 export class ExameCreateComponent implements OnInit {
 
