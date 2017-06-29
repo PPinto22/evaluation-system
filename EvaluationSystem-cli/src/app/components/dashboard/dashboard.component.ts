@@ -80,7 +80,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
               level: 3,
               id: group.id,
               name: group.name,
-              route: ['/dashboard', 'classes', '' + group.id, 'groups', '' + group.id],
+              route: ['/dashboard', 'classes', '' + class_id, 'groups', '' + group.id],
               isCollapsed: false
             });
           }
