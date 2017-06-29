@@ -36,6 +36,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     this.getClasses();
   }
 
+
+
   private getClasses(): void {
     this.classesService.getAllClassesByUser( this.authentication.getUserId() ).subscribe(
       result => {
@@ -66,7 +68,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     );
   }
 
-
   private getGroups(class_dash: any, class_id: number): void {
     this.groupsService.getGroupByClasse(class_id).subscribe(
       result => {
@@ -86,6 +87,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
         console.log('error get groups by user');
       });
   }
+
+
 
   public setNamebreadCrum() {
     this.breadCrumb.breadCrumDate.subscribe( value => {
@@ -111,27 +114,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
       { name: 'Classes', route: [], isCollapsed: false , children: []}
     ];
   }
-
-  // private createNavbarStructure(): void {
-  //   this.collapse_struture = [
-  //     { name: 'Dashboard', route: ['/dashboard'], isCollapsed: false },
-  //     { name: 'Schedule', route: ['/dashboard', 'schedule'], isCollapsed: false },
-  //     { name: 'Results', route: ['/dashboard', 'results'], isCollapsed: false },
-  //     { name: 'Classes', route: [], isCollapsed: false , children: [
-  //       { name: 'AA', route: ['/dashboard', 'classes', '1'], isCollapsed: false , children: [
-  //         { name: '16/17', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
-  //         { name: '15/16', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
-  //         { name: '14/15', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
-  //       ]},
-  //       { name: 'BB', route: ['/dashboard', 'classes', '1'], isCollapsed: false , children: [
-  //         { name: '16/17', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
-  //         { name: '15/16', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
-  //         { name: '14/15', route: ['/dashboard', 'classes', '1', 'groups', '1'], isCollapsed: false },
-  //       ]},
-  //       { name: 'CC', route: ['/dashboard', 'classes', '1'], isCollapsed: false },
-  //     ]},
-  //   ];
-  // }
 
   public navigateRoute(route: string[], collapse_node: any, collapse_parent: any) {
 
