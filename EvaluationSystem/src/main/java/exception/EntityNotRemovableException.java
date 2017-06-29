@@ -1,12 +1,12 @@
 package exception;
 
-public class UserNotRemovableException extends Exception {
+public class EntityNotRemovableException extends Exception {
 
-    public UserNotRemovableException() {
+    public EntityNotRemovableException() {
         super();
     }
 
-    public UserNotRemovableException(String message) {
+    public EntityNotRemovableException(String message) {
         super(message);
     }
 }

@@ -85,7 +85,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestion_id)
 - [GET /api/groups/{group_id}](#get-apigroupsgroup_id) [x]
 - [PUT /api/groups/{group_id}](#put-apigroupsgroup_id)
-- [~~DELETE /api/groups/{group_id}~~](#delete-apigroupsgroup_id)
+- [DELETE /api/groups/{group_id}](#delete-apigroupsgroup_id)
 - [GET /api/groups/{group_id}/students](#get-apigroupsgroup_idstudents) [x]
 - [POST /api/groups/{group_id}/students](#post-apigroupsgroup_idstudents) [x]
 - [DELETE /api/groups/{group_id}/students/{student_id}](#delete-apigroupsgroup_idstudentsstudent_id) [x]
@@ -96,13 +96,13 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [POST /api/groups/{group_id}/exams/generate/question](#post-apigroupsgroup_idexamsgeneratequestion)
 - [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores)
 - [GET /api/exams/{exam_id}](#get-apiexamsexam_id)
-- [~~DELETE /api/exams/{exam_id}~~](#delete-apiexamsexam_id)
+- [DELETE /api/exams/{exam_id}](#delete-apiexamsexam_id)
 - [PUT /api/exams/{exam_id}](#put-apiexamsexam_id)
 - [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores)
 - [POST /api/exams/{exam_id}/submission](#post-apiexamsexam_idsubmissions)
 - [GET /api/submissions/{submission_id}](#get-apisubmissionssubmission_id)
 - [PUT /api/submissions/{submission_id}](#put-apisubmissionssubmission_id)
-- [~~DELETE /api/submissions/{submission_id}~~](#delete-apisubmissionssubmission_id)
+- [DELETE /api/submissions/{submission_id}](#delete-apisubmissionssubmission_id)
 - [GET /api/users/{user_id}](#get-apiusersuser_id) [x]
 - [PUT /api/users/{user_id}](#put-apiusersuser_id)
 - [~~DELETE /api/users/{user_id}~~](#delete-apiusersuser_id)
@@ -526,10 +526,19 @@ ___
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
-- **NOT_ACCEPTABLE (406)** - *Group already exists*
+- **NOT_FOUND (404)**
 - **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Group already exists*
 
-#### ~~DELETE /api/groups/{group_id}~~
+#### DELETE /api/groups/{group_id}
+Apaga um grupo apenas se este não tiver nenhuma submissão em algum dos seus exames.
+
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)**
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Group cannot be removed*
 
 #### GET /api/groups/{group_id}/students
 ### Response
@@ -601,6 +610,7 @@ ___
 - **NOT FOUND (404)**
 
 #### DELETE /api/groups/{group_id}/students/{student_id}
+Remove um estudante de um grupo apenas se este ainda não tiver feita nenhuma submissão de um exame.
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
@@ -903,7 +913,15 @@ Se o utilizador for um aluno e o exame ainda não tiver começado, este método 
 - **NOT_FOUND (404)** - *No such exam*
 - **UNAUTHORIZED (401)** - *No permission*
 
-#### ~~DELETE /api/exams/{exam_id}~~
+#### DELETE /api/exams/{exam_id}
+Apaga um exame apenas se ainda não tiver sido feita nenhuma submissão.
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such exam*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Exam cannot be removed*
+
 #### PUT /api/exams/{exam_id}
 ### Body
 ```json
@@ -1047,7 +1065,12 @@ ___
 Este método altera ou acrescenta novas respostas a uma submissão já existente.
 O funcionamento é igual a [POST /api/exams/{exam_id}/submission](#post-apiexamsexam_idsubmissions)
 
-#### ~~DELETE /api/submissions/{submission_id}~~
+#### DELETE /api/submissions/{submission_id}
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such submissions*
+- **UNAUTHORIZED (401)** - *No permission*
 
 ___
 #### GET /api/users/{user_id}

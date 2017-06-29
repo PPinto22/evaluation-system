@@ -79,6 +79,28 @@ public class GroupController {
         }
     }
 
+    @RequestMapping(value = "/{id:[\\d]+}", method = DELETE)
+    public ResponseEntity<Object> deleteGroup(@PathVariable int id,
+                                              HttpServletRequest request){
+        try {
+            User clientUser = jwtService.getUser((Claims) request.getAttribute("claims"));
+            Group group = this.groupService.getGroupByID(id);
+            if(group.get_class().get_teacher().getID() != clientUser.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            groupService.delete(group);
+            return new ResponseEntity<Object>(OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        } catch (EntityNotRemovableException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(GROUP_NOT_REMOVABLE), NOT_ACCEPTABLE);
+        }
+    }
+
     @RequestMapping(value = "/{groupID:[\\d]+}/students", method = POST)
     public ResponseEntity<Object> postStudents(@PathVariable int groupID, @RequestBody String[] studentEmails,
                                                HttpServletRequest request){
@@ -128,10 +150,16 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/{groupID:[\\d]+}/students/{studentID:[\\d]+}", method = DELETE)
-    public ResponseEntity<Object> removeStudent(@PathVariable int groupID, @PathVariable int studentID){
+    public ResponseEntity<Object> removeStudent(@PathVariable int groupID,
+                                                @PathVariable int studentID,
+                                                HttpServletRequest request){
         Group group = null;
         try {
+            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
             group = groupService.getGroupByID(groupID);
+            if(group.get_class().get_teacher().getID() != user.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
             Student student = studentService.getStudentByID(studentID);
             groupService.removeStudentFromGroup(group,student);
             return new ResponseEntity<Object>(OK);
@@ -142,6 +170,10 @@ public class GroupController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
             else
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_STUDENT), NOT_FOUND);
+        } catch (EntityNotRemovableException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(STUDENT_NOT_REMOVABLE), NOT_ACCEPTABLE);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         }
     }
 
