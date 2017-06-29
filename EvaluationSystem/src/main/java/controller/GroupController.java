@@ -224,7 +224,7 @@ public class GroupController {
         } catch (InvalidQuestionException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION + " (id "+e.getMessage()+")"), NOT_ACCEPTABLE);
         } catch (ExistentEntityException e) {
-            return new ResponseEntity<Object>(new ErrorWrapper(EXISTENT_EXAM), NOT_ACCEPTABLE);
+            return new ResponseEntity<Object>(new ErrorWrapper(EXAM_EXISTS), NOT_ACCEPTABLE);
         }
     }
 

@@ -65,7 +65,7 @@ public class ExamController {
         } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_EXAM), NOT_FOUND);
         } catch (ExistentEntityException e) {
-            return new ResponseEntity<Object>(new ErrorWrapper(EXISTENT_EXAM), NOT_ACCEPTABLE);
+            return new ResponseEntity<Object>(new ErrorWrapper(EXAM_EXISTS), NOT_ACCEPTABLE);
         }
     }
 
@@ -121,7 +121,7 @@ public class ExamController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
             if(submissionService.exists(student,exam))
-                return new ResponseEntity<>(new ErrorWrapper(EXISTENT_SUBMISSION), NOT_ACCEPTABLE);
+                return new ResponseEntity<>(new ErrorWrapper(SUBMISSION_EXISTS), NOT_ACCEPTABLE);
 
             Map<Question, Answer> answers = this.getAnswers(answersMap);
             Submission submission = submissionService.submit(student, exam, answers);
@@ -137,7 +137,7 @@ public class ExamController {
         } catch (InvalidQuestionException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION), NOT_ACCEPTABLE);
         } catch (ExistentEntityException e) {
-            return new ResponseEntity<Object>(new ErrorWrapper(EXISTENT_SUBMISSION), NOT_ACCEPTABLE);
+            return new ResponseEntity<Object>(new ErrorWrapper(SUBMISSION_EXISTS), NOT_ACCEPTABLE);
         }
     }
 

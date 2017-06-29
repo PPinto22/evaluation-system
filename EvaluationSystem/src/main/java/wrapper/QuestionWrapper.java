@@ -12,7 +12,7 @@ public class QuestionWrapper {
     private int id;
     private String text;
     private String category;
-    private int difficulty;
+    private Integer difficulty;
     private List<AnswerWrapper> answers;
 
     public QuestionWrapper(){}
@@ -52,11 +52,11 @@ public class QuestionWrapper {
         this.category = category;
     }
 
-    public int getDifficulty() {
+    public Integer getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(Integer difficulty) {
         this.difficulty = difficulty;
     }
 

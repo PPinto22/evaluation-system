@@ -81,7 +81,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/classes/{class_id}/groups](#get-apiclassesclass_idgroups) [x]
 - [POST /api/classes/{class_id}/groups](#post-apiclassesclass_idgroups) [x]
 - [GET /api/questions/{question_id}](#get-apiquestionsquestion_id)
-- [~~PUT /api/questions/{question_id}~~](#put-apiquestionsquestion_id)
+- [PUT /api/questions/{question_id}](#put-apiquestionsquestion_id)
 - [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestion_id)
 - [GET /api/groups/{group_id}](#get-apigroupsgroup_id) [x]
 - [PUT /api/groups/{group_id}](#put-apigroupsgroup_id)
@@ -414,7 +414,58 @@ ___
 - **NOT_FOUND (404)** - *No such question*
 - **UNAUTHORIZED (401)** - *No permission*
 
-#### ~~PUT /api/questions/{question_id}~~
+#### PUT /api/questions/{question_id}
+> Não é possível atualizar uma questão que esteja inserida num exame. Caso contrário, pode ser alterado qualquer um dos atributos *text*, *category*, *difficulty* ou *answers*.
+
+### Body
+```json
+{
+	"text": "Which is pi?",
+	"category": "Category2",
+	"difficulty": 1,
+	"answers": [
+		{
+			"text": "pi",
+			"correct": true
+		},
+		{
+			"text": "2*pi",
+			"correct": false
+		}
+	]
+}
+```
+
+### Response
+```json
+{
+  "id": 1,
+  "text": "Which is pi?",
+  "category": "Category2",
+  "difficulty": 1,
+  "answers": [
+    {
+      "id": 3603,
+      "text": "pi",
+      "correct": true,
+      "order": 0
+    },
+    {
+      "id": 3604,
+      "text": "2*pi",
+      "correct": false,
+      "order": 1
+    }
+  ]
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such question*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Question in use*, *Question exists*, *Invalid question*
+
 #### ~~DELETE /api/questions/{question_id}~~
 ___
 
