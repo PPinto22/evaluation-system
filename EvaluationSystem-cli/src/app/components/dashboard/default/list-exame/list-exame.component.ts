@@ -46,8 +46,6 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     this.cleanAllArray();
     this.exams.getExamsByUserId( this.authentication.getUserId() ).subscribe(
       resultado => {
-        console.log(resultado);
-        console.log('resultado');
         if (resultado.exams.History) {
           this.getAllHistory(resultado.exams.History);
         }

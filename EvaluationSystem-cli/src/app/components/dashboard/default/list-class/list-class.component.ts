@@ -29,7 +29,6 @@ export class ListClassComponent implements OnInit {
         for ( const group of resultado){
           this.allGroups.push(this.createGroup(group));
         }
-        console.log(this.allGroups);
       },
       error => {
         console.log(error);
