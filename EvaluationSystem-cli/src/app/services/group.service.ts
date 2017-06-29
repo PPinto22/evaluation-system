@@ -29,7 +29,7 @@ export class GroupService {
   }
 
   // GET /api/classes/{class_id}/groups
-  getGroupByClasse( classeId: number): Observable<any> {
+  getGroupByClass( classeId: number): Observable<any> {
     return this.http.get( this.httpUtil.url('/api/classes/' + classeId + '/groups'),
             this.httpUtil.headers(this.authentication.getToken()) )
             .map( this.httpUtil.extrairDados );
