@@ -12,6 +12,7 @@ public class GroupInvitationWrapper implements NotificationWrapper {
     }
 
     public GroupInvitationWrapper(GroupInvitation invitation){
+        this.id = invitation.getID();
         this.group = new GroupClassWrapper(invitation.get_group());
     }
 

@@ -1,12 +1,15 @@
 package service;
 
 
+import dao.ClassesPersistentManager;
 import dao.TeacherDAO;
 import exception.*;
 import model.Class;
 import model.Group;
 import model.Teacher;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
+import org.orm.PersistentTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,6 +94,7 @@ public class TeacherServiceImpl implements TeacherService{
 
     @Override
     public List<Class> getClasses(Teacher teacher) {
+        System.err.println("DEBUG:SIZE >>"+ teacher._classes.size());
         return Arrays.asList(teacher._classes.toArray("abbreviation", true));
     }
 
