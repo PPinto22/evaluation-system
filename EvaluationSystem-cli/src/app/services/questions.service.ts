@@ -34,5 +34,21 @@ export class QuestionsService {
       .map(this.httpUtil.extrairDados);
   }
 
+  // GET /api/groups/{group_id}/questions/available
+  getAllQuestionsAvailableGroup( groupId: number): Observable<any> {
+    return this.http.get(this.httpUtil.url('/api/groups/' + groupId + '/questions/available'),
+      this.httpUtil.headers(this.authentication.getToken()))
+      .map(this.httpUtil.extrairDados);
+  }
+  // POST /api/groups/{group_id}/exams/generate/question
+  createQuestionByGenerate( groupId: number, categoryName: string, difficulty: number, exclude: number[] ): Observable<any> {
+    return this.http.post(this.httpUtil.url('/api/groups/' + groupId + '/exams/generate/question'),
+      JSON.stringify({
+        category: categoryName,
+        difficulty: difficulty,
+        excluded: exclude
+      }), this.httpUtil.headers(this.authentication.getToken()))
+      .map(this.httpUtil.extrairDados);
+  }
 
 }
