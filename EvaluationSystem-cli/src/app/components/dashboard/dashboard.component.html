@@ -20,6 +20,13 @@
           </div>
         </div>
       </li>
+      <!-- FIXME Ver isto melhor-->
+      <li class="xn-title" *ngIf="isStudent()">Exams OnGoing</li>
+      <li *ngFor="let teste of ['Teste1']">
+        <a  [routerLink]="" routerLinkActive=""><span class="fa fa-desktop"></span> <span class="xn-text">{{teste}}</span></a>
+      </li>
+
+
       <li class="xn-title">Navigation</li>
 
       <li *ngFor="let col_node of collapse_struture; let col_node_pos = index" [ngClass]="{'xn-openable': col_node.children, 'active': col_node.isCollapsed}" >
@@ -74,11 +81,6 @@
         <a><span class="fa fa-tasks"></span></a>
         <div *ngIf="notifications.length>0"class="informer informer-danger">{{notifications.length}}</div>
       </li>
-    </ul>
-
-
-    <ul class="breadcrumb">
-      <li >{{nameInToggleNavigation}}</li>
     </ul>
 
     <div class="page-content-wrap">

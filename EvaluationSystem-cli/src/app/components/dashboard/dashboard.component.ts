@@ -8,7 +8,7 @@ import {Notification} from '../../models/notification';
 import {NotificationService} from '../../services/notification.service';
 import {Class} from 'app/models/class';
 import {User} from '../../models/user';
-import {Group} from "../../models/group";
+import {Group} from '../../models/group';
 
 declare var $: any;
 declare var x_navigation: any;
@@ -26,8 +26,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
   private page_navigation_toggled: boolean;
   private collapse_struture: any;
   private numberOfNotifications: number;
-  private notifications: Notification[];
 
+  private notifications: Notification[];
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     this.page_navigation_toggled = false;
     this.route.params.subscribe( params => {
       this.getClasses();
+      // FIXME fazer o update das classes
     });
     this.breadCrumb.setBreadCrum(['Dashboard']);
   }
@@ -155,7 +156,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     x_navigation();
     page_content_onresize();
     xn_panel_dragging();
-    this.initNotification();
+    if ( this.isStudent() ) {
+      this.initNotification();
+    }
   }
 
   ngOnChanges() {
@@ -260,4 +263,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     return this.authentication.isTeacher();
   }
 
+  public isStudent(): boolean {
+    return this.authentication.isTeacher();
+  }
 }

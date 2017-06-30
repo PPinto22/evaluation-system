@@ -20,6 +20,10 @@ import {QuestionsComponent} from './components/dashboard/class/questions/questio
 import {QuestionCreateComponent} from './components/dashboard/class/questions/question-create/question-create.component';
 import {ExamsComponent} from 'app/components/dashboard/class/exams/exams.component';
 import {NotificationComponent} from './components/notification/notification.component';
+import {ExamSubmissionComponent} from './components/dashboard/class/exams/exam-submission/exam-submission.component';
+import {ExamResultComponent} from './components/dashboard/class/exams/exam-result/exam-result.component';
+import {ExamResultAllComponent} from './components/dashboard/class/exams/exam-result-all/exam-result-all.component';
+import {ClassScoreComponent} from './components/dashboard/class/class-score/class-score.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
@@ -30,11 +34,12 @@ export const routes: Routes = [
       { path: '', component: DefaultComponent },
       { path: 'classes/:class_id/groups/:group_id/exams/new', component: ExamCreateComponent },
       { path: 'classes/:class_id/groups/:group_id/exams/:exam_id', component: ExamsComponent },
-      { path: 'classes/:class_id/groups/:group_id/exams/:exam_id/submit', component: ExamCreateComponent },
-
-
+      { path: 'classes/:class_id/groups/:group_id/exams/:exam_id/submit', component: ExamSubmissionComponent },
+      { path: 'classes/:class_id/groups/:group_id/exams/:exam_id/submission/:submission_id', component: ExamResultComponent },
+      { path: 'classes/:class_id/groups/:group_id/exams/:exam_id/results', component: ExamResultAllComponent },
       { path: 'classes/:class_id/questions/new', component: QuestionCreateComponent},
       { path: 'classes/:class_id/questions', component: QuestionsComponent},
+      { path: 'classes/:class_id/results', component: ClassScoreComponent },
       { path: 'classes/:class_id', component: ClassComponent,
         children: [
           { path: 'groups/new', component: GroupCreateComponent},
