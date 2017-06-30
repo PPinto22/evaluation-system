@@ -73,7 +73,7 @@ export class NotificationComponent implements OnInit {
   }
 
   public acceptNotification( invitition_id: number ): void {
-    this.notificationsService.declineNotification(invitition_id).subscribe(
+    this.notificationsService.acceptNotification(invitition_id).subscribe(
       result => {
         this.notifications = this.notifications.filter( obj => obj.id !== invitition_id );
       },

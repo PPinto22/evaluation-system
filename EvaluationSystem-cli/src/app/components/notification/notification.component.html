@@ -33,8 +33,8 @@
               <td class="text-center"><strong>{{notification.group.name}}</strong></td>
               <td class="text-center"><strong>{{notification.group._class.teacher.firstName}} {{notification.group._class.teacher.lastName}}({{notification.group._class.teacher.email}})</strong></td>
               <td>
-                <button (click)="declineNotification(notification.id)" type="button" class="btn btn-danger btn-rounded btn-sm">Decline</button>
-                <button (click)="acceptNotification(notification.id)" type="button" class="btn btn-success btn-rounded btn-sm">Accept</button>
+                <button (click)="this.declineNotification(notification.id)" type="button" class="btn btn-danger btn-rounded btn-sm">Decline</button>
+                <button (click)="this.acceptNotification(notification.id)" type="button" class="btn btn-success btn-rounded btn-sm">Accept</button>
               </td>
             </tr>
 

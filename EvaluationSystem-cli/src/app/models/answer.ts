@@ -6,6 +6,7 @@ export class Answer {
   public id: number;
   public correct: boolean;
   public text: string;
+  public order: number;
 
   constructor(correct: boolean, text: string) {
     this.correct = correct;
