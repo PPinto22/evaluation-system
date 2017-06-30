@@ -9,8 +9,10 @@ public interface UserService {
 
     User login(String email, String password) throws PersistentException, UnconfirmedRegistrationException, InvalidAuthenticationException;
     User signup(User userDetails, String type, boolean confirmRegistration) throws PersistentException, MissingInformationException, ExistentEntityException, InvalidUserTypeException;
+    User update(User user, String firstName, String lastName, String password) throws PersistentException;
     void delete(User user) throws PersistentException;
     void setup(User user, boolean register);
+
 
     User getUserByID(int userID) throws PersistentException, NonExistentEntityException;
     User getUserByEmail(String email, String type) throws NonExistentEntityException, PersistentException, InvalidUserTypeException;

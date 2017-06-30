@@ -111,7 +111,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [PUT /api/submissions/{submission_id}](#put-apisubmissionssubmission_id)
 - [DELETE /api/submissions/{submission_id}](#delete-apisubmissionssubmission_id)
 - [GET /api/users/{user_id}](#get-apiusersuser_id) [x]
-- [~~PUT /api/users/{user_id}~~](#put-apiusersuser_id)
+- [PUT /api/users/{user_id}](#put-apiusersuser_id)
 - [DELETE /api/users/{user_id}](#delete-apiusersuser_id)
 - [POST /api/users/{user_id}/classes](#post-apiusersuser_idclasses) [x]
 - [GET /api/users/{user_id}/classes](#get-apiusersuser_idclasses)
@@ -121,8 +121,8 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [GET /api/users/{user_id}/submissions](#get-apiusersuser_idsubmissions)
 - [GET /api/users/{user_id}/exams](#get-apiusersuser_idexams)
 - [GET /api/users/{user_id}/scores](#get-apiusersuser_idscores)
-- [POST /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept) [x]
-- [POST /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitation_iddecline) [x]
+- [POST /api/invitations/{invitation_id}/accept](#post-apiinvitationsinvitation_idaccept) [x]
+- [POST /api/invitations/{invitation_id}/decline](#post-apiinvitationsinvitation_iddecline) [x]
 
 #### POST /auth/login
 ##### Body
@@ -1114,7 +1114,32 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such user*
 
-#### ~~PUT /api/users/{user_id}~~
+#### PUT /api/users/{user_id}
+### Body
+```json
+{
+	"firstName": "John",
+	"lastName": "Doe",
+	"password": "password"
+}
+```
+### Response
+```json
+{
+  "id": 1,
+  "email": "email1",
+  "firstName": "John",
+  "lastName": "Doe",
+  "type": "Student",
+  "active": true
+}
+```
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **UNAUTHORIZED (401)**
+- **NOT_FOUND (404)** - *No such user*
+
 #### DELETE /api/users/{user_id}
 ### HttpStatus
 - **OK (200)**

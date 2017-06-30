@@ -55,6 +55,27 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/{id:[\\d]+}", method = PUT)
+    public ResponseEntity<Object> updateUser(@PathVariable int id,
+                                             @RequestBody User userWrapper,
+                                             HttpServletRequest request){
+        try {
+            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
+            User user = userService.getUserByID(id);
+            if(clientUser.getID() != user.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            user = userService.update(user, userWrapper.getFirstName(), userWrapper.getLastName(), userWrapper.getPassword());
+            return new ResponseEntity<Object>(new UserWrapper(user), OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        }
+    }
+
     @RequestMapping(value = "/{id:[\\d]+}", method = DELETE)
     public ResponseEntity<Object> deleteUser(@PathVariable int id, HttpServletRequest request){
         try {
