@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BreadCrumbService} from '../../../../services/breadcrumb.service';
 import {ActivatedRoute} from '@angular/router';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 @Component({
   selector: 'app-class-score',
@@ -29,4 +30,32 @@ export class ClassScoreComponent implements OnInit {
     this.breadCrumbService.setBreadCrum(['Classes > Arquiteturas Aplicacionais > Results' ]);
   }
 
+  public exportResults(): void {
+    // FIXME colocar dados correctos
+    const data = [
+      {
+        name: 'Test 1',
+        age: 13,
+        average: 8.2,
+        approved: true,
+        description: 'using \'Content here, content here\' '
+      },
+      {
+        name: 'Test 2',
+        age: 11,
+        average: 8.2,
+        approved: true,
+        description: 'using \'Content here, content here\' '
+      },
+      {
+        name: 'Test 4',
+        age: 10,
+        average: 8.2,
+        approved: true,
+        description: 'using \'Content here, content here\' '
+      },
+    ];
+
+    new Angular2Csv(data, 'My Report');
+  }
 }

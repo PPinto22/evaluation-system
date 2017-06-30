@@ -24,6 +24,7 @@ import {ExamSubmissionComponent} from './components/dashboard/class/exams/exam-s
 import {ExamResultComponent} from './components/dashboard/class/exams/exam-result/exam-result.component';
 import {ExamResultAllComponent} from './components/dashboard/class/exams/exam-result-all/exam-result-all.component';
 import {ClassScoreComponent} from './components/dashboard/class/class-score/class-score.component';
+import {ProfileComponent} from './components/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
@@ -48,7 +49,8 @@ export const routes: Routes = [
 
       { path: 'schedule', component: ScheduleComponent },
       { path: 'results', component: ResultsComponent },
-      { path: 'notifications', component: NotificationComponent }
+      { path: 'notifications', component: NotificationComponent },
+      { path: 'profile', component: ProfileComponent}
     ]
   }
 
