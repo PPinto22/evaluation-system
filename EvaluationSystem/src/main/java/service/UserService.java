@@ -1,6 +1,7 @@
 package service;
 
 import exception.*;
+import model.Student;
 import model.User;
 import org.orm.PersistentException;
 

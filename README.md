@@ -81,7 +81,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [POST /auth/signup](#post-authsignup) [x]
 - [GET /api/classes/{class_id}](#get-apiclassesclass_id) [x]
 - [PUT /api/classes/{class_id}](#put-apiclassesclass_id)
-- [~~DELETE /api/classes/{class_id}~~](#delete-apiclassesclass_id)
+- [DELETE /api/classes/{class_id}](#delete-apiclassesclass_id)
 - [GET /api/classes/{class_id}/questions](#get-apiclassesclass_idquestions) [x]
 - [POST /api/classes/{class_id}/questions](#post-apiclassesclass_idquestions) [x]
 - [GET /api/classes/{class_id}/categories](#get-apiclassesclass_idcategories) [x]
@@ -89,7 +89,7 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [POST /api/classes/{class_id}/groups](#post-apiclassesclass_idgroups) [x]
 - [GET /api/questions/{question_id}](#get-apiquestionsquestion_id)
 - [PUT /api/questions/{question_id}](#put-apiquestionsquestion_id)
-- [~~DELETE /api/questions/{question_id}~~](#delete-apiquestionsquestion_id)
+- [DELETE /api/questions/{question_id}](#delete-apiquestionsquestion_id)
 - [GET /api/groups/{group_id}](#get-apigroupsgroup_id) [x]
 - [PUT /api/groups/{group_id}](#put-apigroupsgroup_id)
 - [DELETE /api/groups/{group_id}](#delete-apigroupsgroup_id)
@@ -111,17 +111,18 @@ O servidor pode responder a qualquer pedido (excepto de autenticação) com um c
 - [PUT /api/submissions/{submission_id}](#put-apisubmissionssubmission_id)
 - [DELETE /api/submissions/{submission_id}](#delete-apisubmissionssubmission_id)
 - [GET /api/users/{user_id}](#get-apiusersuser_id) [x]
-- [PUT /api/users/{user_id}](#put-apiusersuser_id)
-- [~~DELETE /api/users/{user_id}~~](#delete-apiusersuser_id)
+- [~~PUT /api/users/{user_id}~~](#put-apiusersuser_id)
+- [DELETE /api/users/{user_id}](#delete-apiusersuser_id)
 - [POST /api/users/{user_id}/classes](#post-apiusersuser_idclasses) [x]
 - [GET /api/users/{user_id}/classes](#get-apiusersuser_idclasses)
 - [GET /api/users/{user_id}/groups](#get-apiusersuser_idgroups)
+- [DELETE /api/users/{user_id}/groups/{group_id}](#delete-apiusersuser_idgroupsgroup_id)
 - [GET /api/users/{user_id}/notifications](#get-apiusersuser_idnotifications) [x]
 - [GET /api/users/{user_id}/submissions](#get-apiusersuser_idsubmissions)
 - [GET /api/users/{user_id}/exams](#get-apiusersuser_idexams)
 - [GET /api/users/{user_id}/scores](#get-apiusersuser_idscores)
-- [GET /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept) [x]
-- [GET /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitation_iddecline) [x]
+- [POST /api/invitations/{invitation_id}/accept](#get-apiinvitationsinvitation_idaccept) [x]
+- [POST /api/invitations/{invitation_id}/decline](#get-apiinvitationsinvitation_iddecline) [x]
 
 #### POST /auth/login
 ##### Body
@@ -228,7 +229,13 @@ ___
 - **NOT_FOUND (404)** - *No such class*
 - **NOT_ACCEPTABLE (406)** - *Class already exists*
 
-#### ~~DELETE /api/classes/{class_id}~~
+#### DELETE /api/classes/{class_id}
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **UNAUTHORIZED (401)**
+- **NOT_FOUND (404)** - *No such class*
+- **NOT_ACCEPTABLE (406)** - *Class cannot be removed*
 
 #### GET /api/classes/{class_id}/questions
 ### Response
@@ -473,7 +480,16 @@ ___
 - **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Question in use*, *Question exists*, *Invalid question*
 
-#### ~~DELETE /api/questions/{question_id}~~
+#### DELETE /api/questions/{question_id}
+A questão só pode ser removida se não pertencer a nenhum exame.
+
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such question*
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_ACCEPTABLE (406)** - *Question cannot be removed*
+
 ___
 
 #### GET /api/groups/{group_id}
@@ -1099,7 +1115,12 @@ ___
 - **NOT_FOUND (404)** - *No such user*
 
 #### ~~PUT /api/users/{user_id}~~
-#### ~~DELETE /api/users/{user_id}~~
+#### DELETE /api/users/{user_id}
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **NOT_FOUND (404)** - *No such user*
+- **UNAUTHORIZED (401)** - *No permission*
 
 #### POST api/users/{user_id}/classes
 ### Body
@@ -1178,6 +1199,12 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such user*
 
+#### DELETE /api/users/{user_id}/groups/{group_id}
+### HttpStatus
+- **OK (200)**
+- **INTERNAL_SERVER_ERROR (500)**
+- **UNAUTHORIZED (401)** - *No permission*
+- **NOT_FOUND (404)** - *No such user*, *No such group*
 
 #### GET /api/users/{user_id}/notifications
 ### Response
@@ -1357,7 +1384,7 @@ A resposta abaixo é enviada quando não é passado nenhum parâmetro. Caso seja
 - **NOT_ACCEPTABLE (406)** - *Invalid group*, *Invalid exam*
 ___
 
-#### GET /api/invitations/{invitation_id}/accept
+#### POST /api/invitations/{invitation_id}/accept
 ### Response
 ```json
 "name": "Name1",
@@ -1378,7 +1405,7 @@ ___
 - **NOT_FOUND (404)**
 - **UNAUTHORIZED (401)**
 
-#### GET /api/invitations/{invitation_id}/decline
+#### POST /api/invitations/{invitation_id}/decline
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**

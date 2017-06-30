@@ -55,6 +55,25 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/{id:[\\d]+}", method = DELETE)
+    public ResponseEntity<Object> deleteUser(@PathVariable int id, HttpServletRequest request){
+        try {
+            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
+            User user = userService.getUserByID(id);
+            if(clientUser.getID() != user.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            userService.delete(user);
+            return new ResponseEntity<Object>(OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        }
+    }
+
     @RequestMapping(value = "/{id:[\\d]+}/notifications", method = GET)
     public ResponseEntity<Object> getNotifications(@PathVariable int id, HttpServletRequest request){
         try {
@@ -109,6 +128,34 @@ public class UserController {
         } catch (InvalidClaimsException e) {
         }
         return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+    }
+
+    @RequestMapping(value = "/{studentID:[\\d]+}/groups/{groupID:[\\d]+}", method = DELETE)
+    public ResponseEntity<Object> leaveGroup(@PathVariable int studentID, @PathVariable int groupID, HttpServletRequest request){
+        Student student = null;
+        try {
+            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
+            student = studentService.getStudentByID(studentID);
+            if(clientUser.getID() != student.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+            Group group = groupService.getGroupByID(groupID);
+            if(!groupService.studentInGroup(student,group))
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+
+            studentService.leaveGroup(student, group);
+            return new ResponseEntity<Object>(OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            if(student == null)
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_USER), NOT_FOUND);
+            else
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        } catch (StudentNotInGroupException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/{userID:[\\d]+}/classes", method = GET)

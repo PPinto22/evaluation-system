@@ -1,5 +1,6 @@
 package service;
 
+import exception.EntityNotRemovableException;
 import exception.ExistentEntityException;
 import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
@@ -18,6 +19,7 @@ public interface QuestionService {
     boolean exists(int ID) throws PersistentException;
     boolean exists(Class cl, Question question) throws PersistentException;
     boolean validate(Question question);
+    void delete(Question question) throws PersistentException, EntityNotRemovableException;
 
     Question updateQuestion(Question question, String text, String category, Integer difficulty, List<Answer> answers) throws InvalidQuestionException, PersistentException, ExistentEntityException;
 }

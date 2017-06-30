@@ -134,7 +134,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void delete(User user) throws PersistentException {
-        userDAO.delete(user);
+        switch (user.getClass().getSimpleName()){
+            case "Teacher":
+                teacherService.delete((Teacher)user);
+                break;
+            case "Student":
+                studentService.delete((Student)user);
+                break;
+        }
     }
 
     @Override
