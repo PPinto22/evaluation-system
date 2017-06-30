@@ -1,8 +1,10 @@
 package controller;
 
+import dao.ClassesPersistentManager;
 import exception.*;
 import model.User;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +30,12 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<Object> login(@RequestBody LoginWrapper userLogin){
+    public ResponseEntity<Object> login(@RequestBody LoginWrapper userLogin) throws PersistentException{
+        ResponseEntity<Object> resp = null;
+        PersistentSession session =  null;
         try {
-            User user = userService.login(userLogin.getEmail(), userLogin.getPassword());
+            session = ClassesPersistentManager.instance().getSession();
+            User user = userService.login(session, userLogin.getEmail(), userLogin.getPassword());
             String token = jwtService.createToken(user.getID());
             return new ResponseEntity<Object>(new LoginResponseWrapper(token, user), OK);
         } catch (PersistentException e) {
@@ -39,19 +44,24 @@ public class AuthenticationController {
             return new ResponseEntity<Object>(new ErrorWrapper(UNCONFIRMED_EMAIL), UNAUTHORIZED);
         } catch (InvalidAuthenticationException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<Object> signup(@RequestBody SignupWrapper userSignup){
+    public ResponseEntity<Object> signup(@RequestBody SignupWrapper userSignup) throws PersistentException{
         User userDetails = new User();
         userDetails.setEmail(userSignup.getEmail());
         userDetails.setPassword(userSignup.getPassword());
         userDetails.setFirstName(userSignup.getFirstName());
         userDetails.setLastName(userSignup.getLastName());
 
+        ResponseEntity<Object> resp = null;
+        PersistentSession session =  null;
         try {
-            User user = userService.signup(userDetails, userSignup.getType(), true);
+            session = ClassesPersistentManager.instance().getSession();
+            User user = userService.signup(session, userDetails, userSignup.getType(), true);
             return new ResponseEntity<Object>(new UserWrapper(user), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
@@ -61,6 +71,8 @@ public class AuthenticationController {
             return new ResponseEntity<Object>(new ErrorWrapper(EMAIL_IN_USE), NOT_ACCEPTABLE);
         } catch (InvalidUserTypeException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_USER_TYPE), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
 }

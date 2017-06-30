@@ -16,8 +16,8 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface QuestionScoreDAO {
-	boolean exists(int questionID) throws PersistentException;
-	boolean exists(int questionID, int examID) throws PersistentException;
+	boolean exists(PersistentSession session, int questionID) throws PersistentException;
+	boolean exists(PersistentSession session, int questionID, int examID) throws PersistentException;
 
 	public QuestionScore loadQuestionScoreByORMID(int ID) throws PersistentException;
 	public QuestionScore getQuestionScoreByORMID(int ID) throws PersistentException;

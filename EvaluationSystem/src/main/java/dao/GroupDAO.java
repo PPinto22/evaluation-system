@@ -17,9 +17,9 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface GroupDAO {
-	boolean exists(int ID) throws PersistentException;
-	boolean exists(Class cl, String name) throws PersistentException;
-	Group loadGroupByName(Class cl, String name) throws PersistentException;
+	boolean exists(PersistentSession session, int ID) throws PersistentException;
+	boolean exists(PersistentSession session, Class cl, String name) throws PersistentException;
+	Group loadGroupByName(PersistentSession session, Class cl, String name) throws PersistentException;
 
 	public Group loadGroupByORMID(int ID) throws PersistentException;
 	public Group getGroupByORMID(int ID) throws PersistentException;

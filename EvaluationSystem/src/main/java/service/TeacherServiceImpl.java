@@ -1,7 +1,6 @@
 package service;
 
 
-import dao.ClassesPersistentManager;
 import dao.TeacherDAO;
 import exception.*;
 import model.Class;
@@ -9,7 +8,6 @@ import model.Group;
 import model.Teacher;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;
-import org.orm.PersistentTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,15 +36,15 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public void delete(Teacher teacher) throws PersistentException{
-        if(hasStudentSubmissions(teacher)){
+    public void delete(PersistentSession session, Teacher teacher) throws PersistentException{
+        if(hasStudentSubmissions(session, teacher)){
             teacher.setDeleted(false);
             teacher.setRegistered(true);
             teacherDAO.save(teacher);
         } else {
             for (Class cl : teacher._classes.toArray()) {
                 try {
-                    classService.delete(cl);
+                    classService.delete(session, cl);
                 } catch (EntityNotRemovableException e) {
                     throw new PersistentException(); // Nunca deve acontecer
                 }
@@ -57,19 +55,19 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public boolean hasStudentSubmissions(Teacher teacher) throws PersistentException {
+    public boolean hasStudentSubmissions(PersistentSession session, Teacher teacher) throws PersistentException {
         for(Class cl: teacher._classes.toArray()){
-            if(classService.classHasSubmissions(cl))
+            if(classService.classHasSubmissions(session, cl))
                 return true;
         }
         return false;
     }
 
     @Override
-    public Teacher addTeacher(Teacher teacher, boolean register) throws MissingInformationException, PersistentException, ExistentEntityException {
+    public Teacher addTeacher(PersistentSession session, Teacher teacher, boolean register) throws MissingInformationException, PersistentException, ExistentEntityException {
         Teacher addedTeacher = null;
         try {
-            addedTeacher = (Teacher) userService.signup(teacher, "teacher", register);
+            addedTeacher = (Teacher) userService.signup(session, teacher, "teacher", register);
         } catch (InvalidUserTypeException e) {
             e.printStackTrace();
         }
@@ -77,19 +75,19 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public Teacher getTeacherByID(int ID) throws PersistentException, NonExistentEntityException {
-        if(!this.teacherDAO.exists(ID))
+    public Teacher getTeacherByID(PersistentSession session, int ID) throws PersistentException, NonExistentEntityException {
+        if(!this.teacherDAO.exists(session, ID))
             throw new NonExistentEntityException();
 
-        return this.teacherDAO.loadTeacherByORMID(ID);
+        return this.teacherDAO.loadTeacherByORMID(session, ID);
     }
 
     @Override
-    public Teacher getTeacherByEmail(String email) throws NonExistentEntityException, PersistentException {
-        if(!this.teacherDAO.exists(email))
+    public Teacher getTeacherByEmail(PersistentSession session, String email) throws NonExistentEntityException, PersistentException {
+        if(!this.teacherDAO.exists(session, email))
             throw new NonExistentEntityException();
 
-        return this.teacherDAO.loadTeacherByEmail(email);
+        return this.teacherDAO.loadTeacherByEmail(session, email);
     }
 
     @Override
@@ -109,25 +107,25 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public Class addClassToTeacher(Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException {
-        if(classService.exists(teacher, cl.getName()))
+    public Class addClassToTeacher(PersistentSession session, Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException {
+        if(classService.exists(session, teacher, cl.getName()))
             throw new ExistentEntityException();
         cl.set_teacher(teacher);
         return classService.addClass(cl);
     }
 
     @Override
-    public boolean exists(int ID) throws PersistentException {
-        return this.teacherDAO.exists(ID);
+    public boolean exists(PersistentSession session, int ID) throws PersistentException {
+        return this.teacherDAO.exists(session, ID);
     }
 
     @Override
-    public boolean exists(String email) throws PersistentException {
-        return this.teacherDAO.exists(email);
+    public boolean exists(PersistentSession session, String email) throws PersistentException {
+        return this.teacherDAO.exists(session, email);
     }
 
     @Override
-    public boolean existsActive(String email) throws PersistentException {
-        return this.teacherDAO.existsActive(email);
+    public boolean existsActive(PersistentSession session, String email) throws PersistentException {
+        return this.teacherDAO.existsActive(session, email);
     }
 }

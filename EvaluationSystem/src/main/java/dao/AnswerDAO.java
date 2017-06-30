@@ -16,7 +16,7 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface AnswerDAO {
-	public boolean exists(int ID) throws PersistentException;
+	public boolean exists(PersistentSession session, int ID) throws PersistentException;
 
 	public Answer loadAnswerByORMID(int ID) throws PersistentException;
 	public Answer getAnswerByORMID(int ID) throws PersistentException;

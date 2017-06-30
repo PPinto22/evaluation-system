@@ -1,6 +1,5 @@
 package service;
 
-import exception.EntityNotRemovableException;
 import exception.ExistentEntityException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
@@ -8,22 +7,23 @@ import model.Group;
 import model.Teacher;
 import model.Class;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 
 import java.util.List;
 
 public interface TeacherService {
 
-    Teacher addTeacher(Teacher teacher, boolean register) throws MissingInformationException, PersistentException, ExistentEntityException;
-    Teacher getTeacherByID(int ID) throws PersistentException, NonExistentEntityException;
-    Teacher getTeacherByEmail(String email) throws NonExistentEntityException, PersistentException;
+    Teacher addTeacher(PersistentSession session, Teacher teacher, boolean register) throws MissingInformationException, PersistentException, ExistentEntityException;
+    Teacher getTeacherByID(PersistentSession session, int ID) throws PersistentException, NonExistentEntityException;
+    Teacher getTeacherByEmail(PersistentSession session, String email) throws NonExistentEntityException, PersistentException;
     List<Class> getClasses(Teacher teacher);
     List<Group> getGroups(Teacher teacher);
-    Class addClassToTeacher(Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException;
+    Class addClassToTeacher(PersistentSession session, Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException;
 
-    boolean exists(int ID) throws PersistentException;
-    boolean exists(String email) throws PersistentException;
-    boolean existsActive(String email) throws PersistentException;
+    boolean exists(PersistentSession session, int ID) throws PersistentException;
+    boolean exists(PersistentSession session, String email) throws PersistentException;
+    boolean existsActive(PersistentSession session, String email) throws PersistentException;
 
-    void delete(Teacher teacher) throws PersistentException;
-    boolean hasStudentSubmissions(Teacher teacher) throws PersistentException;
+    void delete(PersistentSession session, Teacher teacher) throws PersistentException;
+    boolean hasStudentSubmissions(PersistentSession session, Teacher teacher) throws PersistentException;
 }

@@ -26,32 +26,32 @@ import java.util.List;
 public class StudentDAOImpl implements StudentDAO {
 
 	@Override
-	public Student loadStudentByEmail(String email) throws PersistentException {
-		StudentCriteria criteria = new StudentCriteria();
+	public Student loadStudentByEmail(PersistentSession session, String email) throws PersistentException {
+		StudentCriteria criteria = new StudentCriteria(session);
 		criteria.email.eq(email);
 		criteria.deleted.eq(false);
 		return this.loadStudentByCriteria(criteria);
 	}
 
 	@Override
-	public boolean exists(int ID) throws PersistentException {
-		StudentCriteria criteria = new StudentCriteria();
+	public boolean exists(PersistentSession session, int ID) throws PersistentException {
+		StudentCriteria criteria = new StudentCriteria(session);
 		criteria.ID.eq(ID);
 		criteria.deleted.eq(false);
 		return this.loadStudentByCriteria(criteria) != null;
 	}
 
 	@Override
-	public boolean exists(String email) throws PersistentException {
-		StudentCriteria criteria = new StudentCriteria();
+	public boolean exists(PersistentSession session, String email) throws PersistentException {
+		StudentCriteria criteria = new StudentCriteria(session);
 		criteria.email.eq(email);
 		criteria.deleted.eq(false);
 		return this.loadStudentByCriteria(criteria) != null;
 	}
 
 	@Override
-	public boolean existsActive(String email) throws PersistentException {
-		StudentCriteria criteria = new StudentCriteria();
+	public boolean existsActive(PersistentSession session, String email) throws PersistentException {
+		StudentCriteria criteria = new StudentCriteria(session);
 		criteria.email.eq(email);
 		criteria.registered.eq(true);
 		criteria.deleted.eq(false);

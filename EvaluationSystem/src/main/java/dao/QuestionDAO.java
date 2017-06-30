@@ -18,11 +18,11 @@ import org.hibernate.LockMode;
 import java.util.List;
 
 public interface QuestionDAO {
-	boolean exists(int questionID) throws PersistentException;
-	boolean exists(int classID, String text) throws PersistentException;
-	List<Question> listQuestionsByClassCategoryAndDifficulty(int classID, String category, int difficulty) throws PersistentException;
-	List<Question> listQuestionsByClassAndText(int classID, String text) throws PersistentException;
-	List<Question> listQuestionsByClass(int classID) throws PersistentException;
+	boolean exists(PersistentSession session, int questionID) throws PersistentException;
+	boolean exists(PersistentSession session, int classID, String text) throws PersistentException;
+	List<Question> listQuestionsByClassCategoryAndDifficulty(PersistentSession session, int classID, String category, int difficulty) throws PersistentException;
+	List<Question> listQuestionsByClassAndText(PersistentSession session, int classID, String text) throws PersistentException;
+	List<Question> listQuestionsByClass(PersistentSession session, int classID) throws PersistentException;
 
 	public Question loadQuestionByORMID(int ID) throws PersistentException;
 	public Question getQuestionByORMID(int ID) throws PersistentException;

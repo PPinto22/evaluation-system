@@ -7,6 +7,7 @@ import exception.*;
 import model.*;
 import model.Class;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,11 +58,11 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public void delete(Student student) throws PersistentException {
+    public void delete(PersistentSession session, Student student) throws PersistentException {
         if(inAGroup(student)){
             for(GroupStudent groupStudent: student._groups.toArray()){
                 try {
-                    leaveGroup(student, groupStudent.get_group());
+                    leaveGroup(session, student, groupStudent.get_group());
                 } catch (StudentNotInGroupException e) {}
             }
             student.setRegistered(false);
@@ -77,28 +78,28 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public void leaveGroup(Student student, Group group) throws PersistentException, StudentNotInGroupException {
-        if(!groupStudentDAO.exists(group.getID(), student.getID()))
+    public void leaveGroup(PersistentSession session, Student student, Group group) throws PersistentException, StudentNotInGroupException {
+        if(!groupStudentDAO.exists(session, group.getID(), student.getID()))
             throw new StudentNotInGroupException();
-        GroupStudent groupStudent = groupStudentDAO.loadGroupStudentByGroupAndStudent(group.getID(), student.getID());
+        GroupStudent groupStudent = groupStudentDAO.loadGroupStudentByGroupAndStudent(session, group.getID(), student.getID());
         groupStudent.setAccepted(false);
         groupStudentDAO.save(groupStudent);
 
         try{
-            GroupInvitation groupInvitation = notificationService.getGroupInvitation(group, student);
+            GroupInvitation groupInvitation = notificationService.getGroupInvitation(session, group, student);
             notificationService.removeGroupInvitation(groupInvitation);
         } catch (NonExistentEntityException e) {}
     }
 
     @Override
-    public Map<Group, Map<Exam, Score>> getStudentScores(Student student) throws PersistentException {
+    public Map<Group, Map<Exam, Score>> getStudentScores(PersistentSession session, Student student) throws PersistentException {
         Map<Group, Map<Exam, Score>> groupMap = new TreeMap<>();
         for(Group group: getStudentGroups(student)){
             Map<Exam, Score> examMap = new TreeMap<>();
             for(Exam exam: group.getExams()){
                 if(examService.examHasFinished(exam)) {
                     try {
-                        Submission submission = submissionService.getSubmissionByStudentAndExam(student, exam);
+                        Submission submission = submissionService.getSubmissionByStudentAndExam(session, student, exam);
                         examMap.put(exam, new Score(submission));
                     } catch (NonExistentEntityException e) {
                         examMap.put(exam, new Score());
@@ -112,7 +113,8 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Map<Exam, Score> getStudentScoresByGroup(Student student, Group group) throws StudentNotInGroupException, PersistentException {
+    public Map<Exam, Score> getStudentScoresByGroup(PersistentSession session, Student student, Group group)
+            throws StudentNotInGroupException, PersistentException {
         if(!groupService.studentInGroup(student,group))
             throw new StudentNotInGroupException();
 
@@ -120,7 +122,7 @@ public class StudentServiceImpl implements StudentService{
         for(Exam exam: group.getExams()){
             if(examService.examHasFinished(exam)) {
                 try {
-                    Submission submission = submissionService.getSubmissionByStudentAndExam(student, exam);
+                    Submission submission = submissionService.getSubmissionByStudentAndExam(session, student, exam);
                     scoreMap.put(exam, new Score(submission));
                 } catch (NonExistentEntityException e) {
                     scoreMap.put(exam, new Score());
@@ -132,14 +134,15 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Score getStudentScoreByExam(Student student, Exam exam) throws PersistentException, StudentNotInGroupException, InvalidExamException {
+    public Score getStudentScoreByExam(PersistentSession session, Student student, Exam exam)
+            throws PersistentException, StudentNotInGroupException, InvalidExamException {
         if(!examService.examHasFinished(exam))
             throw new InvalidExamException();
         if(!groupService.studentInGroup(student,exam.get_group()))
             throw new StudentNotInGroupException();
         Score score = null;
         try {
-            Submission submission = submissionService.getSubmissionByStudentAndExam(student,exam);
+            Submission submission = submissionService.getSubmissionByStudentAndExam(session, student, exam);
             score = new Score(submission);
         } catch (NonExistentEntityException e) {
             score = new Score();
@@ -184,10 +187,11 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student addStudent(Student student, boolean register) throws MissingInformationException, PersistentException, ExistentEntityException {
+    public Student addStudent(PersistentSession session, Student student, boolean register)
+            throws MissingInformationException, PersistentException, ExistentEntityException {
         Student addedStudent = null;
         try {
-            addedStudent = (Student) userService.signup(student, "student", register);
+            addedStudent = (Student) userService.signup(session, student, "student", register);
         } catch (InvalidUserTypeException e) {
             e.printStackTrace();
         }
@@ -195,51 +199,35 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student getStudentByID(int ID) throws PersistentException, NonExistentEntityException {
-        if(!this.studentDAO.exists(ID))
+    public Student getStudentByID(PersistentSession session, int ID) throws PersistentException, NonExistentEntityException {
+        if(!this.studentDAO.exists(session, ID))
             throw new NonExistentEntityException();
 
-        return this.studentDAO.loadStudentByORMID(ID);
+        Student student = this.studentDAO.loadStudentByORMID(session, ID);
+        return student;
     }
 
     @Override
-    public Student getStudentByEmail(String email) throws NonExistentEntityException, PersistentException {
-        if(!this.studentDAO.exists(email))
+    public Student getStudentByEmail(PersistentSession session, String email) throws NonExistentEntityException, PersistentException {
+        if(!this.studentDAO.exists(session, email))
             throw new NonExistentEntityException();
 
-        return this.studentDAO.loadStudentByEmail(email);
-    }
-
-
-    /*
-        Situacoes regulares:
-        - Utilizador existe e esta' registado OU
-          Utilizador existe mas nao esta' registado (variavel registered = 0)
-            -> Retorna utilizador existente
-        - Utilizador nao existe OU
-          Utilizador existe mas esta' marcado como apagado (variavel deleted = 1)
-            -> Cria novo utilizador (com variavel registered = 0) e retorna-o
-        Excepcoes:
-        - Utilizador existe mas e' um professor
-            -> InvalidUserTypeException
-     */
-    @Override
-    public Student getOrCreateStudentByEmail(String email) {
-        return null;
+        Student student = this.studentDAO.loadStudentByEmail(session, email);
+        return student;
     }
 
     @Override
-    public boolean exists(int ID) throws PersistentException {
-        return this.studentDAO.exists(ID);
+    public boolean exists(PersistentSession session, int ID) throws PersistentException {
+        return this.studentDAO.exists(session, ID);
     }
 
     @Override
-    public boolean exists(String email) throws PersistentException {
-        return this.studentDAO.exists(email);
+    public boolean exists(PersistentSession session, String email) throws PersistentException {
+        return this.studentDAO.exists(session, email);
     }
 
     @Override
-    public boolean existsActive(String email) throws PersistentException {
-        return this.studentDAO.existsActive(email);
+    public boolean existsActive(PersistentSession session, String email) throws PersistentException {
+        return this.studentDAO.existsActive(session, email);
     }
 }

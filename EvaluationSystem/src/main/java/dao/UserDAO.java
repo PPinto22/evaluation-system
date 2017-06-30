@@ -21,12 +21,13 @@ import java.util.List;
 
 public interface UserDAO {
 	// Nosso codigo
-	User loadUserByAuthentication(String email, String password)
+	User loadUserByAuthentication(PersistentSession session, String email, String password)
 			throws PersistentException, InvalidUserException, UnconfirmedRegistrationException;
-	List<User> loadUsersByEmail(String email) throws PersistentException;
-	boolean exists(int ID) throws PersistentException;
-	boolean exists(String email) throws PersistentException;
-	boolean existsActive(String email) throws PersistentException;
+	List<User> loadUsersByEmail(PersistentSession session, String email) throws PersistentException;
+
+	boolean exists(PersistentSession session, int ID) throws PersistentException;
+	boolean exists(PersistentSession session, String email) throws PersistentException;
+	boolean existsActive(PersistentSession session, String email) throws PersistentException;
 
 	// Codigo Gerado
 	public User loadUserByORMID(int ID) throws PersistentException;

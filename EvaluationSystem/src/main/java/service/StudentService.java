@@ -4,27 +4,27 @@ import exception.*;
 import model.*;
 import model.Class;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 
 import java.util.List;
 import java.util.Map;
 
 public interface StudentService {
     Student createStudent();
-    Student addStudent(Student student, boolean register) throws MissingInformationException, PersistentException, ExistentEntityException;
-    Student getOrCreateStudentByEmail(String email);
-    Student getStudentByID(int ID) throws PersistentException, NonExistentEntityException;
-    Student getStudentByEmail(String email) throws NonExistentEntityException, PersistentException;
+    Student addStudent(PersistentSession session, Student student, boolean register) throws MissingInformationException, PersistentException, ExistentEntityException;
+    Student getStudentByID(PersistentSession session, int ID) throws PersistentException, NonExistentEntityException;
+    Student getStudentByEmail(PersistentSession session, String email) throws NonExistentEntityException, PersistentException;
     List<Group> getStudentGroups(Student student);
     List<Class> getStudentClasses(Student student);
 
-    Map<Group, Map<Exam, Score>> getStudentScores(Student student) throws PersistentException;
-    Map<Exam, Score> getStudentScoresByGroup(Student student, Group group) throws StudentNotInGroupException, PersistentException;
-    Score getStudentScoreByExam(Student student, Exam exam) throws PersistentException, StudentNotInGroupException, InvalidExamException;
-    boolean exists(int ID) throws PersistentException;
-    boolean exists(String email) throws PersistentException;
-    boolean existsActive(String email) throws PersistentException;
+    Map<Group, Map<Exam, Score>> getStudentScores(PersistentSession session, Student student) throws PersistentException;
+    Map<Exam, Score> getStudentScoresByGroup(PersistentSession session, Student student, Group group) throws StudentNotInGroupException, PersistentException;
+    Score getStudentScoreByExam(PersistentSession session, Student student, Exam exam) throws PersistentException, StudentNotInGroupException, InvalidExamException;
+    boolean exists(PersistentSession session, int ID) throws PersistentException;
+    boolean exists(PersistentSession session, String email) throws PersistentException;
+    boolean existsActive(PersistentSession session, String email) throws PersistentException;
 
     boolean inAGroup(Student student);
-    void leaveGroup(Student student, Group group) throws PersistentException, StudentNotInGroupException;
-    void delete(Student student) throws PersistentException;
+    void leaveGroup(PersistentSession session, Student student, Group group) throws PersistentException, StudentNotInGroupException;
+    void delete(PersistentSession session, Student student) throws PersistentException;
 }

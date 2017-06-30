@@ -15,8 +15,8 @@ import model.Exam;
 import org.orm.*;
 
 public interface ExamDAO {
-	boolean exists(int examID) throws PersistentException;
-	boolean exists(int groupID, String examName) throws PersistentException;
+	boolean exists(PersistentSession session, int examID) throws PersistentException;
+	boolean exists(PersistentSession session, int groupID, String examName) throws PersistentException;
 
 	public Exam loadExamByORMID(int ID) throws PersistentException;
 	public Exam getExamByORMID(int ID) throws PersistentException;

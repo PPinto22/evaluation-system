@@ -22,12 +22,12 @@ import java.util.List;
 @Service
 public class ExamDAOImpl implements ExamDAO {
 	@Override
-	public boolean exists(int examID) throws PersistentException {
-		return this.getExamByORMID(examID) != null;
+	public boolean exists(PersistentSession session, int examID) throws PersistentException {
+		return this.getExamByORMID(session, examID) != null;
 	}
 
-	public boolean exists(int groupID, String examName) throws PersistentException {
-		ExamCriteria criteria = new ExamCriteria();
+	public boolean exists(PersistentSession session, int groupID, String examName) throws PersistentException {
+		ExamCriteria criteria = new ExamCriteria(session);
 		criteria._groupId.eq(groupID);
 		criteria.name.eq(examName);
 		return loadExamByCriteria(criteria) != null;

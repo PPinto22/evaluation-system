@@ -11,6 +11,7 @@ import model.Answer;
 import model.Question;
 import model.Class;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public Question updateQuestion(Question question, String text, String category, Integer difficulty, List<Answer> answers)
+    public Question updateQuestion(PersistentSession session, Question question, String text, String category, Integer difficulty, List<Answer> answers)
             throws InvalidQuestionException, PersistentException, ExistentEntityException {
         String newText = (text == null || text.equals("")) ? question.getText() : text;
         String newCategory = (category == null || category.equals("")) ? question.getCategory() : category;
@@ -49,7 +50,7 @@ public class QuestionServiceImpl implements QuestionService{
             throw new InvalidQuestionException();
 
         if(!newQuestion.getText().equals(question.getText()) && !sameAnswers(question,newQuestion)){
-            if(exists(question.get_class(), newQuestion))
+            if(exists(session, question.get_class(), newQuestion))
                 throw new ExistentEntityException();
         }
 
@@ -64,13 +65,13 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public boolean questionInUse(Question question) throws PersistentException {
-        return questionScoreDAO.exists(question.getID());
+    public boolean questionInUse(PersistentSession session, Question question) throws PersistentException {
+        return questionScoreDAO.exists(session, question.getID());
     }
 
     @Override
-    public void delete(Question question) throws PersistentException, EntityNotRemovableException {
-        if(questionInUse(question))
+    public void delete(PersistentSession session, Question question) throws PersistentException, EntityNotRemovableException {
+        if(questionInUse(session, question))
             throw new EntityNotRemovableException();
 
         for(Answer answer: question._answers.toArray()){
@@ -82,10 +83,10 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public List<Question> listQuestionsByIDs(List<Integer> IDs) throws PersistentException, NonExistentEntityException {
+    public List<Question> listQuestionsByIDs(PersistentSession session, List<Integer> IDs) throws PersistentException, NonExistentEntityException {
         List<Question> questions = new ArrayList<>();
         for(int id: IDs){
-            questions.add(getQuestionByID(id));
+            questions.add(getQuestionByID(session, id));
         }
         return questions;
     }
@@ -96,20 +97,20 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public Question getQuestionByID(int ID) throws PersistentException, NonExistentEntityException {
-        if(!this.exists(ID))
+    public Question getQuestionByID(PersistentSession session, int ID) throws PersistentException, NonExistentEntityException {
+        if(!this.exists(session, ID))
             throw new NonExistentEntityException();
-        return questionDAO.loadQuestionByORMID(ID);
+        return questionDAO.loadQuestionByORMID(session, ID);
     }
 
     @Override
-    public boolean exists(int ID) throws PersistentException {
-        return questionDAO.getQuestionByORMID(ID) != null;
+    public boolean exists(PersistentSession session, int ID) throws PersistentException {
+        return questionDAO.getQuestionByORMID(session, ID) != null;
     }
 
     @Override
-    public boolean exists(Class cl, Question question) throws PersistentException {
-        List<Question> questions = questionDAO.listQuestionsByClassAndText(cl.getID(),question.getText());
+    public boolean exists(PersistentSession session, Class cl, Question question) throws PersistentException {
+        List<Question> questions = questionDAO.listQuestionsByClassAndText(session, cl.getID(), question.getText());
         if(questions.isEmpty())
             return false;
 
