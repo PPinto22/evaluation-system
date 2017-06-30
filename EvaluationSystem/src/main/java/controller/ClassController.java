@@ -1,9 +1,6 @@
 package controller;
 
-import exception.ExistentEntityException;
-import exception.InvalidClaimsException;
-import exception.InvalidQuestionException;
-import exception.NonExistentEntityException;
+import exception.*;
 import io.jsonwebtoken.Claims;
 import model.*;
 import model.Class;
@@ -26,9 +23,7 @@ import java.util.Set;
 
 import static controller.ErrorMessages.*;
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping(value = "/api/classes")
@@ -77,6 +72,29 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(CLASS_EXISTS), NOT_ACCEPTABLE);
         }
     }
+
+    @RequestMapping(value = "/{id:[\\d]+}", method = DELETE)
+    public ResponseEntity<Object> updateClass(@PathVariable int id,
+                                              HttpServletRequest request) {
+        try {
+            User clientUser = jwtService.getUser((Claims) request.getAttribute("claims"));
+            Class cl = classService.getClassByID(id);
+            if (clientUser.getID() != cl.get_teacher().getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            classService.delete(cl);
+            return new ResponseEntity<Object>(OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
+        } catch (EntityNotRemovableException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(CLASS_NOT_REMOVABLE), NOT_ACCEPTABLE);
+        }
+    }
+
 
     @RequestMapping(value = "/{classID:[\\d]+}/groups", method = POST)
     public ResponseEntity<Object> postGroup(@PathVariable int classID, @RequestBody Group group, HttpServletRequest request){

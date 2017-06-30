@@ -1,11 +1,14 @@
 package controller;
 
 import exception.InvalidAnswerException;
+import exception.InvalidClaimsException;
 import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
+import io.jsonwebtoken.Claims;
 import model.Answer;
 import model.Question;
 import model.Submission;
+import model.User;
 import org.orm.PersistentException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +63,25 @@ public class SubmissionController {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_SUBMISSION), NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/{submissionID:[\\d]+}", method = DELETE)
+    public ResponseEntity<Object> deleteSubmission(@PathVariable int submissionID, HttpServletRequest request){
+        try {
+            User user = jwtService.getUser((Claims) request.getAttribute("claims"));
+            Submission submission = submissionService.getSubmissionByID(submissionID);
+            if(submission.get_student().getID() != user.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+
+            submissionService.deleteSubmission(submission);
+            return new ResponseEntity<Object>(OK);
+        } catch (PersistentException e){
+            return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_SUBMISSION), NOT_FOUND);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         }
     }
 

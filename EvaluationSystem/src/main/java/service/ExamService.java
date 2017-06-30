@@ -16,7 +16,9 @@ public interface ExamService {
     boolean examContainsQuestion(Exam exam, Question question) throws PersistentException;
     boolean examHasStarted(Exam exam);
     boolean examHasFinished(Exam exam);
+    boolean examHasSubmissions(Exam exam) throws PersistentException;
     QuestionScore getQuestionScore(Exam exam, Question question) throws NonExistentEntityException;
+    void deleteExam(Exam exam) throws EntityNotRemovableException, PersistentException;
     Exam getExamByID(int examID) throws PersistentException, NonExistentEntityException;
     Exam addExamToGroup(Group group, Exam exam) throws PersistentException, ExistentEntityException;
     Exam updateExam(Exam exam, String name, Long beginDate, Integer duration) throws PersistentException, ExistentEntityException;

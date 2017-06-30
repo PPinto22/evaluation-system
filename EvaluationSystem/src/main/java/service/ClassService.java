@@ -1,9 +1,6 @@
 package service;
 
-import exception.ExistentEntityException;
-import exception.InvalidQuestionException;
-import exception.MissingInformationException;
-import exception.NonExistentEntityException;
+import exception.*;
 import model.Class;
 import model.Group;
 import model.Question;
@@ -22,9 +19,9 @@ public interface ClassService {
     List<Question> listClassQuestions(Class cl) throws PersistentException;
     List<Question> listClassQuestionsByCategoryAndDifficulty(Class cl, String category, int difficulty) throws PersistentException;
     Set<String> getClassCategories(Class cl) throws PersistentException;
-    void delete(Class cl) throws PersistentException;
+    void delete(Class cl) throws PersistentException, EntityNotRemovableException;
     boolean exists(int id) throws PersistentException;
-
+    boolean classHasSubmissions(Class cl) throws PersistentException;
     boolean exists(Teacher teacher, String className) throws PersistentException;
     Group addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException;
     Question addQuestionToClass(Class cl, Question question) throws InvalidQuestionException, PersistentException, ExistentEntityException;

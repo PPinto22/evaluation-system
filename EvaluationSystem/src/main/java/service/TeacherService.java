@@ -1,5 +1,6 @@
 package service;
 
+import exception.EntityNotRemovableException;
 import exception.ExistentEntityException;
 import exception.MissingInformationException;
 import exception.NonExistentEntityException;
@@ -22,4 +23,7 @@ public interface TeacherService {
     boolean exists(int ID) throws PersistentException;
     boolean exists(String email) throws PersistentException;
     boolean existsActive(String email) throws PersistentException;
+
+    void delete(Teacher teacher) throws PersistentException;
+    boolean hasStudentSubmissions(Teacher teacher) throws PersistentException;
 }

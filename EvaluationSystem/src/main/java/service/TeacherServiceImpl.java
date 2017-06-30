@@ -2,10 +2,7 @@ package service;
 
 
 import dao.TeacherDAO;
-import exception.ExistentEntityException;
-import exception.InvalidUserTypeException;
-import exception.MissingInformationException;
-import exception.NonExistentEntityException;
+import exception.*;
 import model.Class;
 import model.Group;
 import model.Teacher;
@@ -35,6 +32,34 @@ public class TeacherServiceImpl implements TeacherService{
 
     public TeacherServiceImpl(TeacherDAO teacherDAO) {
         this.teacherDAO = teacherDAO;
+    }
+
+    @Override
+    public void delete(Teacher teacher) throws PersistentException{
+        if(hasStudentSubmissions(teacher)){
+            teacher.setDeleted(false);
+            teacher.setRegistered(true);
+            teacherDAO.save(teacher);
+        } else {
+            for (Class cl : teacher._classes.toArray()) {
+                try {
+                    classService.delete(cl);
+                } catch (EntityNotRemovableException e) {
+                    throw new PersistentException(); // Nunca deve acontecer
+                }
+            }
+
+            teacherDAO.delete(teacher);
+        }
+    }
+
+    @Override
+    public boolean hasStudentSubmissions(Teacher teacher) throws PersistentException {
+        for(Class cl: teacher._classes.toArray()){
+            if(classService.classHasSubmissions(cl))
+                return true;
+        }
+        return false;
     }
 
     @Override

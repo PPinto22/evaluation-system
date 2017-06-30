@@ -48,6 +48,26 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
+    public void deleteExam(Exam exam) throws EntityNotRemovableException, PersistentException {
+        if(examHasSubmissions(exam))
+            throw new EntityNotRemovableException("Exam already has submissions");
+
+        for(Submission submission: exam._submissions.toArray()){
+            submissionService.deleteSubmission(submission);
+        }
+        for(QuestionScore questionScore: exam._questions.toArray()){
+            questionScoreDAO.deleteAndDissociate(questionScore);
+        }
+        exam.get_group()._exams.remove(exam);
+        examDAO.delete(exam);
+    }
+
+    @Override
+    public boolean examHasSubmissions(Exam exam) throws PersistentException {
+        return submissionService.exists(exam);
+    }
+
+    @Override
     public Exam updateExam(Exam exam, String name, Long beginDate, Integer duration)
             throws PersistentException, ExistentEntityException {
         if(name != null && !name.equals(exam.getName()) && exists(exam.get_group(), name))

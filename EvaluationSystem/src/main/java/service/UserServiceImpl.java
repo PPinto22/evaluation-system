@@ -55,6 +55,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User update(User user, String firstName, String lastName, String password) throws PersistentException {
+        if(firstName != null || !firstName.equals(""))
+            user.setFirstName(firstName);
+        if(lastName != null || !lastName.equals(""))
+            user.setLastName(lastName);
+        if(password != null || !password.equals("")) {
+            user.setPassword(password);
+            user.hashPassword();
+        }
+        userDAO.save(user);
+        return user;
+    }
+
+    @Override
     public User login(String email, String password) throws PersistentException, InvalidAuthenticationException, UnconfirmedRegistrationException {
         password = User.getHash(password);
         if(!userDAO.exists(email)){
@@ -134,7 +148,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void delete(User user) throws PersistentException {
-        userDAO.delete(user);
+        switch (user.getClass().getSimpleName()){
+            case "Teacher":
+                teacherService.delete((Teacher)user);
+                break;
+            case "Student":
+                studentService.delete((Student)user);
+                break;
+        }
     }
 
     @Override

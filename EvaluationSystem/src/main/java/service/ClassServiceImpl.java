@@ -3,10 +3,7 @@ package service;
 import dao.ClassDAO;
 import dao.QuestionDAO;
 import dao.TeacherDAO;
-import exception.ExistentEntityException;
-import exception.InvalidQuestionException;
-import exception.MissingInformationException;
-import exception.NonExistentEntityException;
+import exception.*;
 import model.Class;
 import model.Group;
 import model.Question;
@@ -130,10 +127,26 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public void delete(Class cl) throws PersistentException {
+    public void delete(Class cl) throws PersistentException, EntityNotRemovableException {
+        if(classHasSubmissions(cl))
+            throw new EntityNotRemovableException();
         Teacher teacher = cl.get_teacher();
+        for(Group group: cl._groups.toArray()){
+            groupService.delete(group);
+        }
+        for(Question question: cl._question.toArray()){
+            questionService.delete(question);
+        }
         teacher._classes.remove(cl);
         this.classDAO.delete(cl);
+    }
+
+    public boolean classHasSubmissions(Class cl) throws PersistentException {
+        for(Group group: cl._groups.toArray()){
+            if(groupService.groupHasSubmissions(group))
+                return true;
+        }
+        return false;
     }
 
     @Override

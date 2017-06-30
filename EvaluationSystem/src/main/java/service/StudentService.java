@@ -23,4 +23,8 @@ public interface StudentService {
     boolean exists(int ID) throws PersistentException;
     boolean exists(String email) throws PersistentException;
     boolean existsActive(String email) throws PersistentException;
+
+    boolean inAGroup(Student student);
+    void leaveGroup(Student student, Group group) throws PersistentException, StudentNotInGroupException;
+    void delete(Student student) throws PersistentException;
 }
