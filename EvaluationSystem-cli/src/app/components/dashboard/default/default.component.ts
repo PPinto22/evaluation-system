@@ -30,7 +30,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.classAlreadyExists = false;
     this.classAsCreate = false;
-    this.breadCrumb.setBreadCrum(['DashBoard']);
+    this.breadCrumb.setBreadCrum(['Dashboard']);
   }
 
   ngAfterViewInit() {

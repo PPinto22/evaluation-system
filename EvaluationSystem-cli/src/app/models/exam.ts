@@ -1,4 +1,5 @@
 import {Group} from './group';
+import {Question} from './question';
 /**
  * Created by pedro on 26-06-2017.
  */

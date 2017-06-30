@@ -70,6 +70,15 @@
         <a (click)="logout()" class="mb-control" ><span class="fa fa-sign-out"></span></a>
       </li>
       <!-- END SIGN OUT -->
+      <li [routerLink]="['/dashboard','notifications']" class="xn-icon-button pull-right" *ngIf="!isTeacher()">
+        <a><span class="fa fa-tasks"></span></a>
+        <div class="informer informer-danger">{{notifications.length}}</div>
+      </li>
+    </ul>
+
+
+    <ul class="breadcrumb">
+      <li >{{nameInToggleNavigation}}</li>
     </ul>
 
     <div class="page-content-wrap">

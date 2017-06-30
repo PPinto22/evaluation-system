@@ -25,4 +25,11 @@ export class ExamsService {
             .map( this.httpUtil.extrairDados );
   }
 
+  // GET /api/exams/{exam_id}
+  getExamById( examId: number ): Observable<any> {
+    return this.http.get( this.httpUtil.url('/api/exams/' + examId),
+      this.httpUtil.headers(this.authentication.getToken()) )
+      .map( this.httpUtil.extrairDados );
+  }
+
 }

@@ -1,3 +1,73 @@
-<p>
-  exams works!
-</p>
+<br>
+<div class="row">
+  <div class="col-lg-12 col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading ui-draggable-handle">
+        <h3 class="panel-title"></h3>
+        <ul class="panel-controls">
+          <li><a><span class="fa fa-edit"></span></a></li>
+          <li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+        </ul>
+      </div>
+      <div class="panel-body">
+        <div class="col-md-12">
+          <div class="col-md-3 col-sm-3 col-xs-5">
+            <label class="control-label">Class:</label>
+          </div>
+          <div class="input-group col-md-9 col-sm-9 col-xs-7">
+            <span class="text">{{getClassName()}}</span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-3 col-sm-3 col-xs-5">
+            <label class="control-label">Group:</label>
+          </div>
+          <div class="input-group col-md-9 col-sm-9 col-xs-7">
+            <span class="text">{{getClassAbbreviation()}}</span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-3 col-sm-3 col-xs-5">
+            <label class="control-label">Teacher:</label>
+          </div>
+          <div class="input-group col-md-9 col-sm-9 col-xs-7">
+            <span class="text">{{getTeacher()}}</span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-3 col-sm-3 col-xs-5">
+            <label class="control-label">Date:</label>
+          </div>
+          <div class="input-group col-md-9 col-sm-9 col-xs-7">
+            <span class="text">{{exam.beginDate | date:'EEEE, d MMMM y m:j' }} </span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-3 col-sm-3 col-xs-5">
+            <label class="control-label">Duration:</label>
+          </div>
+          <div class="input-group col-md-9 col-sm-9 col-xs-7">
+            <span class="text">{{exam.duration}} minutes </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="isTeacher()">
+  <div class="col-lg-12 col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading ui-draggable-handle">
+        <h3 class="panel-title">Exam Preview</h3>
+        <ul class="panel-controls">
+        </ul>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <app-question-preview class="border-group" *ngFor="let question of questions" [question]="question"></app-question-preview>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

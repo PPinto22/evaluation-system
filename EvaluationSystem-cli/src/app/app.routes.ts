@@ -19,6 +19,7 @@ import {GroupViewComponent} from './components/dashboard/class/groups/group-view
 import {QuestionsComponent} from './components/dashboard/class/questions/questions.component';
 import {QuestionCreateComponent} from './components/dashboard/class/questions/question-create/question-create.component';
 import {ExamsComponent} from 'app/components/dashboard/class/exams/exams.component';
+import {NotificationComponent} from './components/notification/notification.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
@@ -28,8 +29,8 @@ export const routes: Routes = [
     children: [
       { path: '', component: DefaultComponent },
       { path: 'classes/:class_id/groups/:group_id/exams/new', component: ExamCreateComponent },
-      { path: 'classes/:class_id/groups/:group_id/exams/:exams_id', component: ExamsComponent },
-      { path: 'classes/:class_id/groups/:group_id/exams/:exams_id/submit', component: ExamCreateComponent },
+      { path: 'classes/:class_id/groups/:group_id/exams/:exam_id', component: ExamsComponent },
+      { path: 'classes/:class_id/groups/:group_id/exams/:exam_id/submit', component: ExamCreateComponent },
 
 
       { path: 'classes/:class_id/questions/new', component: QuestionCreateComponent},
@@ -42,6 +43,7 @@ export const routes: Routes = [
 
       { path: 'schedule', component: ScheduleComponent },
       { path: 'results', component: ResultsComponent },
+      { path: 'notifications', component: NotificationComponent }
     ]
   }
 
