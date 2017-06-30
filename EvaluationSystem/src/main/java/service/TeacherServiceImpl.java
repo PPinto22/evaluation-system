@@ -94,7 +94,6 @@ public class TeacherServiceImpl implements TeacherService{
 
     @Override
     public List<Class> getClasses(Teacher teacher) {
-        System.err.println("DEBUG:SIZE >>"+ teacher._classes.size());
         return Arrays.asList(teacher._classes.toArray("abbreviation", true));
     }
 
