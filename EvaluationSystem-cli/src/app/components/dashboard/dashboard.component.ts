@@ -125,11 +125,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     switch ( node_ids.length ) {
       case 1: {
         this.clearCollapseLevel(1, node_ids[0]);
+        this.clearCollapseLevel(2, -1);
+        this.clearCollapseLevel(3, -1);
         break;
       }
       case 2: {
         this.clearCollapseLevel(1, node_ids[0]);
         this.clearCollapseLevel(2, node_ids[1]);
+        this.clearCollapseLevel(3, -1);
+
         break;
       }
       case 3: {
