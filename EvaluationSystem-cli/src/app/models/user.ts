@@ -11,6 +11,7 @@ export class User {
   private _lastName: string;
   private _type: string;
   private _token: string;
+  private _active: boolean;
 
   constructor(id: number, email: string, firstName: string, lastName: string, type: string, token: string) {
     this._id = id;
@@ -19,6 +20,15 @@ export class User {
     this._lastName = lastName;
     this._type = type;
     this._token = token;
+  }
+
+
+  get active(): boolean {
+    return this._active;
+  }
+
+  set active(value: boolean) {
+    this._active = value;
   }
 
   isTeacher(): boolean {

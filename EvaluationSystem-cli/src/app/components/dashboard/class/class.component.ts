@@ -24,7 +24,7 @@ export class ClassComponent implements OnInit, AfterViewInit {
 
   constructor(
     private authentication: AuthenticationService,
-    private breadCrumb: BreadCrumbService,
+    private breadCrumbService: BreadCrumbService,
     private route: ActivatedRoute,
     private _class: ClassesService
   ) {
@@ -37,13 +37,17 @@ export class ClassComponent implements OnInit, AfterViewInit {
       this.classId = +params['class_id'];
       this.getClassInformation();
     });
-    this.breadCrumb.setBreadCrum(['Classes']);
   }
 
   ngAfterViewInit() {
     x_navigation();
     page_content_onresize();
   }
+
+  private setBreadCrumb(): void {
+    this.breadCrumbService.setBreadCrum(['Classes', this.classInformation.name]);
+  }
+
 
   public isTeacher(): boolean {
     return this.authentication.isTeacher();
@@ -53,6 +57,7 @@ export class ClassComponent implements OnInit, AfterViewInit {
     this._class.getById(this.classId).subscribe(
       resultado => {
         this.createClass(resultado);
+        this.setBreadCrumb();
       },
       error => {
         console.log(error);

@@ -6,13 +6,21 @@ export class Answer {
   private _id: number;
   private _checked: boolean;
   private _text: string;
-
+  private _order: number;
 
   constructor(checked: boolean, text: string) {
     this._checked = checked;
     this._text = text;
   }
 
+
+  get order(): number {
+    return this._order;
+  }
+
+  set order(value: number) {
+    this._order = value;
+  }
 
   get id(): number {
     return this._id;

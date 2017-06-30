@@ -16,7 +16,7 @@ declare var page_content_onresize: any;
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
-  private nameInToggleNavigation;
+  private nameInToggleNavigation: string;
   private page_navigation_toggled: boolean;
   private collapse_struture: any;
 
@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     this.route.params.subscribe( params => {
       this.getClasses();
     });
+    this.breadCrumb.setBreadCrum(['Dashboard']);
   }
 
   private getClasses(): void {
@@ -95,7 +96,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
   public setNamebreadCrum() {
     this.breadCrumb.breadCrumDate.subscribe( value => {
-        this.nameInToggleNavigation = value.pop();
+      this.nameInToggleNavigation = value.pop();
+
       }
     );
   }

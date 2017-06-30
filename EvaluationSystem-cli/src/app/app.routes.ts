@@ -28,8 +28,8 @@ export const routes: Routes = [
     children: [
       { path: '', component: DefaultComponent },
       { path: 'classes/:class_id/groups/:group_id/exams/new', component: ExamCreateComponent },
-      { path: 'classes/:class_id/groups/:group_id/exams/:exams_id', component: ExamsComponent },
-      { path: 'classes/:class_id/groups/:group_id/exams/:exams_id/submit', component: ExamCreateComponent },
+      { path: 'classes/:class_id/groups/:group_id/exams/:exam_id', component: ExamsComponent },
+      { path: 'classes/:class_id/groups/:group_id/exams/:exam_id/submit', component: ExamCreateComponent },
 
 
       { path: 'classes/:class_id/questions/new', component: QuestionCreateComponent},

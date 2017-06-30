@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
+import {BreadCrumbService} from '../../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-results',
@@ -9,10 +10,16 @@ import {AuthenticationService} from '../../../services/authentication.service';
 export class ResultsComponent implements OnInit {
 
   constructor(
-    private authentication: AuthenticationService
+    private authentication: AuthenticationService,
+    private breadCrumbService: BreadCrumbService
   ) { }
 
   ngOnInit() {
+    this.setBreadCrumb();
+  }
+
+  private setBreadCrumb(): void {
+    this.breadCrumbService.setBreadCrum(['Results']);
   }
 
   public isTeacher(): boolean {
