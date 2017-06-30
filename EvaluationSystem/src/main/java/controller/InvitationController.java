@@ -35,7 +35,7 @@ public class InvitationController {
         this.notificationService = notificationService;
     }
 
-    @RequestMapping(value = "/{id:[\\d]+}/accept", method = GET)
+    @RequestMapping(value = "/{id:[\\d]+}/accept", method = POST)
     public ResponseEntity<Object> accept(@PathVariable int id, HttpServletRequest request){
         try {
             User user = jwtService.getUser((Claims)request.getAttribute("claims"));
@@ -56,7 +56,7 @@ public class InvitationController {
         }
     }
 
-    @RequestMapping(value = "/{id:[\\d]+}/decline", method = GET)
+    @RequestMapping(value = "/{id:[\\d]+}/decline", method = POST)
     public ResponseEntity<Object> decline(@PathVariable int id, HttpServletRequest request){
         try {
             User user = jwtService.getUser((Claims)request.getAttribute("claims"));

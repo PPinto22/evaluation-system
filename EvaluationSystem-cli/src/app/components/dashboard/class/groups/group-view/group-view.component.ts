@@ -73,8 +73,18 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     return this.authentication.isTeacher();
   }
 
-  private removeStudent(email): void {
-
+  private removeStudent(id: number): void {
+    this.students.deleteStudentById(this.groupId, id).subscribe(
+      resultado => {
+        console.log(resultado);
+        const student = this.allStudentsOfGroup.find( x => x.id === id);
+        const studentIndex = this.allStudentsOfGroup.indexOf(student);
+        this.allStudentsOfGroup.splice(studentIndex, 1);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
 

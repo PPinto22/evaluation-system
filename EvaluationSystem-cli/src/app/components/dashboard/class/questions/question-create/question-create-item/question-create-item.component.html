@@ -1,16 +1,21 @@
+<span (click)="removeQuestion()" class="glyphicon glyphicon-remove pull-right text-danger"></span>
 <br>
 <div class="row border-group">
-  <form role="form">
+  <form class="form-horizontal" (ngSubmit)="f_createQuestion.form.valid && saveQuestion()" #f_createQuestion="ngForm" novalidate>
     <div class="col-md-4 pull-right">
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
         <div class="col-md-3 col-sm-3 col-xs-5">
           <label class="control-label">Category:</label>
         </div>
         <div class="input-group col-md-9 col-sm-9 col-xs-7">
-          <input type="text" class="form-control" autocomplete="off"/>
+          <input type="text" name="category" [(ngModel)]="quest.category" #category="ngModel" value="" class="form-control" autocomplete="off" list="categories" required>
           <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+          <datalist id="categories">
+            <option *ngFor="let categorie of allCategories" value="{{categorie}}">
+          </datalist>
+          <span class="help-block"></span>
         </div>
-        <span class="help-block"></span>
+        <div *ngIf="f_createQuestion.submitted && !category.valid" class="help-block">First Name is required</div>
       </div>
 
 
@@ -19,7 +24,11 @@
           <label class="control-label">Dificulty:</label>
         </div>
         <div class="input-group col-md-9 col-sm-9 col-xs-7">
-          <input type="text" class="form-control" autocomplete="off"/>
+          <select name="refresh" id="dificulty" [(ngModel)]="quest.dificulty" #dificulty="ngModel" class="form-control">
+            <option value="1">Easy</option>
+            <option value="2">Normal</option>
+            <option value="3">Hard</option>
+          </select>
           <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
         </div>
         <span class="help-block"></span>
@@ -34,19 +43,27 @@
             <label class="control-label">Question:</label>
           </div>
           <div class="col-md-9 col-sm-9 col-xs-7">
-            <textarea type="text" class="form-control" rows="2"></textarea>
+            <textarea name="questionText" #questionText="ngModel" [(ngModel)]="quest.questionText" type="text" class="form-control" rows="2" required></textarea>
             <span class="help-block"></span>
+            <div *ngIf="f_createQuestion.submitted && !questionText.valid" class="help-block">Question is required</div>
           </div>
         </div>
       </div>
 
+
+      <div class="col-md-offset-4 col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+        <div *ngIf="needSelectRadio" class="alert alert-danger" role="alert">
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <strong>Need to select a answer!</strong>
+        </div>
+      </div>
 
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
         <div class="col-md-3 col-sm-3 col-xs-6">
           <label class=" col-md-12 control-label">Answer:</label>
         </div>
         <div class="col-md-9 col-sm-9 col-xs-6">
-          <app-answer-create *ngFor=" let answer of answers" [answer]="answer"></app-answer-create>
+          <app-answer-create *ngFor=" let answer of answers; let i = index" [i]=i [answer]="answer" [saveanswer]="saveanswer" (removeAnswer)="removeAnswerFromQuestion($event)" [changeSave]="changeSave" [viewRemoveAnswer]="removeAnswer" (clickRadio)="correctAnswer($event)"></app-answer-create>
           <div class="col-md-6 col-md-offset-6">
             <button (click)="addAnswer()" class="btn btn-block btn-primary ">
               <span class="fa fa-plus-square"></span>Add Answer
@@ -59,7 +76,7 @@
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="col-md-3 pull-right">
-          <button (click)="saveQuestion()" type="button" class="btn btn-success btn-block">Save</button>
+          <button type="submit" class="btn btn-success btn-block">Save</button>
         </div>
       </div>
     </div>

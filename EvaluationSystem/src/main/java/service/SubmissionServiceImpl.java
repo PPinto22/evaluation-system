@@ -1,5 +1,6 @@
 package service;
 
+import dao.QuestionSubmissionDAO;
 import dao.SubmissionDAO;
 import exception.ExistentEntityException;
 import exception.InvalidAnswerException;
@@ -15,9 +16,10 @@ import java.util.*;
 @Service
 public class SubmissionServiceImpl implements SubmissionService{
 
-    SubmissionDAO submissionDAO;
     ExamService examService;
     QuestionService questionService;
+    QuestionSubmissionDAO questionSubmissionDAO;
+    SubmissionDAO submissionDAO;
 
     @Autowired
     public void setQuestionService(QuestionService questionService) {
@@ -27,8 +29,25 @@ public class SubmissionServiceImpl implements SubmissionService{
     public void setExamService(ExamService examService) {
         this.examService = examService;
     }
-    public SubmissionServiceImpl(SubmissionDAO submissionDAO) {
+
+    public SubmissionServiceImpl(QuestionSubmissionDAO questionSubmissionDAO, SubmissionDAO submissionDAO) {
+        this.questionSubmissionDAO = questionSubmissionDAO;
         this.submissionDAO = submissionDAO;
+    }
+
+    @Override
+    public boolean exists(Exam exam) throws PersistentException {
+        return submissionDAO.existsExam(exam.getID());
+    }
+
+    @Override
+    public void deleteSubmission(Submission submission) throws PersistentException {
+        for(QuestionSubmission qSub: submission._questionSubmissions.toArray()){
+            submission._questionSubmissions.remove(qSub);
+            questionSubmissionDAO.delete(qSub);
+        }
+
+        submissionDAO.deleteAndDissociate(submission);
     }
 
     @Override

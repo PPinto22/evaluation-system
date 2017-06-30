@@ -3,6 +3,7 @@ package service;
 import dao.AnswerDAO;
 import dao.QuestionDAO;
 import dao.QuestionScoreDAO;
+import exception.EntityNotRemovableException;
 import exception.ExistentEntityException;
 import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
@@ -65,6 +66,19 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public boolean questionInUse(Question question) throws PersistentException {
         return questionScoreDAO.exists(question.getID());
+    }
+
+    @Override
+    public void delete(Question question) throws PersistentException, EntityNotRemovableException {
+        if(questionInUse(question))
+            throw new EntityNotRemovableException();
+
+        for(Answer answer: question._answers.toArray()){
+            question._answers.remove(answer);
+            answerDAO.delete(answer);
+        }
+        question.get_class()._question.remove(question);
+        questionDAO.delete(question);
     }
 
     @Override

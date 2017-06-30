@@ -16,7 +16,10 @@ public interface SubmissionService {
     QuestionSubmission getQuestionSubmission(Submission submission, Question question) throws NonExistentEntityException;
     boolean exists(int ID) throws PersistentException;
     boolean exists(Student student, Exam exam) throws PersistentException;
+    boolean exists(Exam exam) throws PersistentException;
 
     Submission submit(Student student, Exam exam, Map<Question, Answer> answers) throws ExistentEntityException, PersistentException, InvalidQuestionException, InvalidAnswerException;
     Submission updateSubmission(Submission submission, Map<Question, Answer> answers) throws InvalidAnswerException, PersistentException, InvalidQuestionException;
+
+    void deleteSubmission(Submission submission) throws PersistentException;
 }

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class GroupServiceImpl implements GroupService{
@@ -127,10 +126,33 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public void delete(Group group) throws PersistentException {
-        Class cl = group.get_class();
-        cl._groups.remove(group);
+    public void delete(Group group) throws PersistentException, EntityNotRemovableException {
+        if(groupHasSubmissions(group))
+            throw new EntityNotRemovableException();
+
+        for(Exam exam: group._exams.toArray()){
+            examService.deleteExam(exam);
+        }
+
+        for(GroupStudent groupStudent: group._students.toArray()){
+            try {
+                GroupInvitation groupInvitation = notificationService.getGroupInvitation(group, groupStudent.get_student());
+                notificationService.removeGroupInvitation(groupInvitation);
+            } catch(NonExistentEntityException e){}
+            groupStudentDAO.deleteAndDissociate(groupStudent);
+        }
+
+        group.get_class()._groups.remove(group);
         this.groupDAO.delete(group);
+    }
+
+    @Override
+    public boolean groupHasSubmissions(Group group) throws PersistentException {
+        for(Exam exam: group._exams.toArray()){
+            if(examService.examHasSubmissions(exam))
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -188,16 +210,27 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public void removeStudentFromGroup(Group group, Student student) throws PersistentException, NonExistentEntityException {
+    public void removeStudentFromGroup(Group group, Student student)
+            throws PersistentException, NonExistentEntityException, EntityNotRemovableException {
         GroupStudent groupStudent = this.groupStudentDAO.loadGroupStudentByGroupAndStudent(
                 group.getID(), student.getID());
         if(groupStudent == null)
             throw new NonExistentEntityException();
 
+        if(groupStudent.isAccepted()){
+            for(Exam exam: group._exams.toArray()){
+                if(submissionService.exists(student,exam))
+                    throw new EntityNotRemovableException();
+            }
+        }
+
+        student._groups.remove(groupStudent);
         group._students.remove(groupStudent);
         this.groupStudentDAO.delete(groupStudent);
-        GroupInvitation groupInvitation = notificationService.getGroupInvitation(group,student);
-        notificationService.removeGroupInvitation(groupInvitation);
+        try {
+            GroupInvitation groupInvitation = notificationService.getGroupInvitation(group, student);
+            notificationService.removeGroupInvitation(groupInvitation);
+        } catch(NonExistentEntityException e){}
     }
 
     private GroupStudent createGroupStudent(Group group, Student student){

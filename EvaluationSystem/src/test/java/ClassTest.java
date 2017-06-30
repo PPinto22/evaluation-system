@@ -1,3 +1,4 @@
+import exception.EntityNotRemovableException;
 import exception.ExistentEntityException;
 import exception.NonExistentEntityException;
 import model.Class;
@@ -73,7 +74,7 @@ public class ClassTest {
     }
 
     @After
-    public void cleanup() throws PersistentException {
+    public void cleanup() throws PersistentException, EntityNotRemovableException {
         classService.delete(cl);
         userService.delete(teacher);
     }

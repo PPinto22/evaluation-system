@@ -69,8 +69,31 @@ public class ExamController {
         }
     }
 
+    @RequestMapping(value = "/{examID:[\\d]+}", method = DELETE)
+    public ResponseEntity<Object> deleteExam(@PathVariable int examID,
+                                             HttpServletRequest request) {
+        try {
+            User user = jwtService.getUser((Claims) request.getAttribute("claims"));
+            Exam exam = examService.getExamByID(examID);
+            Group group = exam.get_group();
+            Class cl = group.get_class();
+            if(cl.get_teacher().getID() != user.getID())
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            @RequestMapping(value = "/{examID:[\\d]+}", method = GET)
+            examService.deleteExam(exam);
+            return new ResponseEntity<Object>(OK);
+        } catch (PersistentException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
+        } catch (InvalidClaimsException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        } catch (NonExistentEntityException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_EXAM), NOT_FOUND);
+        } catch (EntityNotRemovableException e) {
+            return new ResponseEntity<Object>(new ErrorWrapper(EXAM_NOT_REMOVABLE), NOT_ACCEPTABLE);
+        }
+    }
+
+    @RequestMapping(value = "/{examID:[\\d]+}", method = GET)
     public ResponseEntity<Object> getExam(@PathVariable int examID, HttpServletRequest request){
         try{
             User user = jwtService.getUser((Claims)request.getAttribute("claims"));

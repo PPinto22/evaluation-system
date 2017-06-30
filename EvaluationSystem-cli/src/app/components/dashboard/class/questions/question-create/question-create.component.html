@@ -1,5 +1,18 @@
 <br>
 
+<div *ngIf="questionsAddOk" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+  <div class="alert alert-success" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>Questions add!</strong>
+  </div>
+</div>
+<div *ngIf="justOnQuestion" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+  <div class="alert alert-success" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>One Question Add!</strong>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-3 pull-right">
     <button (click)="saveQuestion()" type="button" class="btn btn-success btn-block">Save</button>
@@ -19,7 +32,7 @@
       </div>
       <div class="panel-body">
         <div class="panel-body" >
-          <app-question-create-item *ngFor="let question of questions" [question]="question"></app-question-create-item>
+          <app-question-create-item *ngFor="let question of questions" [classId]="classId" [question]="question" [allCategories]="categories" [saveAll]="saveAll" (questionPostOK)="questionPostOk($event)" (removeQuestio)="removeQuestion()" (saveQuestionButton)="saveQuestionButton($event)"></app-question-create-item>
         </div>
       </div>
     </div>

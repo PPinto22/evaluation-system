@@ -1,5 +1,7 @@
 package service;
 
+import dao.GroupStudentDAO;
+import dao.NotificationDAO;
 import dao.StudentDAO;
 import exception.*;
 import model.*;
@@ -17,7 +19,10 @@ public class StudentServiceImpl implements StudentService{
     SubmissionService submissionService;
     GroupService groupService;
     ExamService examService;
+    NotificationService notificationService;
     StudentDAO studentDAO;
+    GroupStudentDAO groupStudentDAO;
+    NotificationDAO notificationDAO;
 
     @Autowired
     public void setExamService(ExamService examService) {
@@ -35,9 +40,54 @@ public class StudentServiceImpl implements StudentService{
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+    @Autowired
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
 
-    public StudentServiceImpl(StudentDAO studentDAO) {
+    public StudentServiceImpl(StudentDAO studentDAO, GroupStudentDAO groupStudentDAO, NotificationDAO notificationDAO) {
         this.studentDAO = studentDAO;
+        this.groupStudentDAO = groupStudentDAO;
+        this.notificationDAO = notificationDAO;
+    }
+
+    @Override
+    public boolean inAGroup(Student student) {
+        return !student._groups.isEmpty();
+    }
+
+    @Override
+    public void delete(Student student) throws PersistentException {
+        if(inAGroup(student)){
+            for(GroupStudent groupStudent: student._groups.toArray()){
+                try {
+                    leaveGroup(student, groupStudent.get_group());
+                } catch (StudentNotInGroupException e) {}
+            }
+            student.setRegistered(false);
+            student.setDeleted(true);
+            studentDAO.save(student);
+        } else {
+            for(Notification notification: student._notifications.toArray()){
+                student._notifications.remove(notification);
+                notificationDAO.delete(notification);
+            }
+            studentDAO.delete(student);
+        }
+    }
+
+    @Override
+    public void leaveGroup(Student student, Group group) throws PersistentException, StudentNotInGroupException {
+        if(!groupStudentDAO.exists(group.getID(), student.getID()))
+            throw new StudentNotInGroupException();
+        GroupStudent groupStudent = groupStudentDAO.loadGroupStudentByGroupAndStudent(group.getID(), student.getID());
+        groupStudent.setAccepted(false);
+        groupStudentDAO.save(groupStudent);
+
+        try{
+            GroupInvitation groupInvitation = notificationService.getGroupInvitation(group, student);
+            notificationService.removeGroupInvitation(groupInvitation);
+        } catch (NonExistentEntityException e) {}
     }
 
     @Override

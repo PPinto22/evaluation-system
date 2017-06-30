@@ -14,12 +14,13 @@ public interface GroupService {
     Group getGroupByName(Class cl, String name) throws PersistentException, NonExistentEntityException;
     Group addGroup(Group group) throws PersistentException;
     Group updateGroup(Group group, String name) throws PersistentException, ExistentEntityException;
-    void delete(Group group) throws PersistentException;
+    void delete(Group group) throws PersistentException, EntityNotRemovableException;
     boolean exists(int ID) throws PersistentException;
     boolean exists(Class cl, String name) throws PersistentException;
+    boolean groupHasSubmissions(Group group) throws PersistentException;
     List<GroupStudent> getGroupStudents(Group group);
     GroupStudent addStudentToGroupByEmail(Group group, String email) throws PersistentException, InvalidUserTypeException, ExistentEntityException;
-    void removeStudentFromGroup(Group group, Student student) throws PersistentException, NonExistentEntityException;
+    void removeStudentFromGroup(Group group, Student student) throws PersistentException, NonExistentEntityException, EntityNotRemovableException;
     boolean userHasAccess(Group group, User user);
     boolean studentInGroup(Student student, Group group);
     boolean questionInExams(Group group, Question question) throws PersistentException;

@@ -1,15 +1,15 @@
 package service;
 
 
+import dao.ClassesPersistentManager;
 import dao.TeacherDAO;
-import exception.ExistentEntityException;
-import exception.InvalidUserTypeException;
-import exception.MissingInformationException;
-import exception.NonExistentEntityException;
+import exception.*;
 import model.Class;
 import model.Group;
 import model.Teacher;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
+import org.orm.PersistentTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +35,34 @@ public class TeacherServiceImpl implements TeacherService{
 
     public TeacherServiceImpl(TeacherDAO teacherDAO) {
         this.teacherDAO = teacherDAO;
+    }
+
+    @Override
+    public void delete(Teacher teacher) throws PersistentException{
+        if(hasStudentSubmissions(teacher)){
+            teacher.setDeleted(false);
+            teacher.setRegistered(true);
+            teacherDAO.save(teacher);
+        } else {
+            for (Class cl : teacher._classes.toArray()) {
+                try {
+                    classService.delete(cl);
+                } catch (EntityNotRemovableException e) {
+                    throw new PersistentException(); // Nunca deve acontecer
+                }
+            }
+
+            teacherDAO.delete(teacher);
+        }
+    }
+
+    @Override
+    public boolean hasStudentSubmissions(Teacher teacher) throws PersistentException {
+        for(Class cl: teacher._classes.toArray()){
+            if(classService.classHasSubmissions(cl))
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -66,6 +94,7 @@ public class TeacherServiceImpl implements TeacherService{
 
     @Override
     public List<Class> getClasses(Teacher teacher) {
+        System.err.println("DEBUG:SIZE >>"+ teacher._classes.size());
         return Arrays.asList(teacher._classes.toArray("abbreviation", true));
     }
 

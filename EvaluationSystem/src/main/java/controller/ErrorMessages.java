@@ -37,4 +37,9 @@ public class ErrorMessages {
     public static final String INSUFFICIENT_QUESTIONS = "Insufficient questions";
     public static final String DUPLICATE_QUESTIONS = "Duplicate questions";
     public static final String NO_PERMISSION = "No permission";
+    public static final String STUDENT_NOT_REMOVABLE = "Student cannot be removed";
+    public static final String EXAM_NOT_REMOVABLE = "Exam cannot be removed";
+    public static final String GROUP_NOT_REMOVABLE = "Group cannot be removed";
+    public static final String CLASS_NOT_REMOVABLE = "Class cannot be removed";
+    public static final String QUESTION_NOT_REMOVABLE = "Question cannot be removed";
 }

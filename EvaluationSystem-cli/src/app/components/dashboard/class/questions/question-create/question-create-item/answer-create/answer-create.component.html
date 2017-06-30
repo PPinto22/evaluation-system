@@ -1,7 +1,10 @@
 <div class="col-md-1 col-sm-1 col-xs-4">
-  <input type="radio" name="checked">
+  <input (click)="getValue()" type="radio" value=i name="checked">
 </div>
 <div class="col-md-11 col-sm-11 col-xs-8">
-  <textarea type="text" class="form-control" rows="2"></textarea>
+  <textarea name="answerText" #answerText="ngModel" [(ngModel)]="answe.answerText" type="text" class="form-control" rows="2" required></textarea>
   <span class="help-block"></span>
+  <div *ngIf="!answerText.valid && saveanswer" class="help-block">Answer is required</div>
 </div>
+
+<span *ngIf="oldViewRemoveAnswer" (click)="removeAnserFromQuestion()" class="glyphicon glyphicon-remove pull-right text-danger"></span>
