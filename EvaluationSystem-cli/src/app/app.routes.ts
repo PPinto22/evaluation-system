@@ -19,6 +19,7 @@ import {GroupViewComponent} from './components/dashboard/class/groups/group-view
 import {QuestionsComponent} from './components/dashboard/class/questions/questions.component';
 import {QuestionCreateComponent} from './components/dashboard/class/questions/question-create/question-create.component';
 import {ExamsComponent} from 'app/components/dashboard/class/exams/exams.component';
+import {NotificationComponent} from './components/notification/notification.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent , pathMatch: 'full', canActivate: [LoginGuardService]   },
@@ -42,6 +43,7 @@ export const routes: Routes = [
 
       { path: 'schedule', component: ScheduleComponent },
       { path: 'results', component: ResultsComponent },
+      { path: 'notifications', component: NotificationComponent }
     ]
   }
 
