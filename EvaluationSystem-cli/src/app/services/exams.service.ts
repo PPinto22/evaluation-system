@@ -25,4 +25,16 @@ export class ExamsService {
             .map( this.httpUtil.extrairDados );
   }
 
+  // POST /api/groups/{group_id}/exams
+  createExamByGroupId ( groupId: number, beginDate: number, duration: number, name: string, questionIds: number[] ): Observable<any> {
+    return this.http.post( this.httpUtil.url('/api/groups/' + groupId + '/exams'),
+      JSON.stringify({
+        beginDate: beginDate,
+        duration: duration,
+        name: name,
+        questionIDs: questionIds
+      }), this.httpUtil.headers(this.authentication.getToken()))
+      .map(this.httpUtil.extrairDados);
+    }
+
 }

@@ -19,7 +19,7 @@
             <label class="col-md-3 control-label">Dificulty:</label>
           </div>
           <div class="col-md-8">
-            <select class="form-control select" name="dificult" [(ngModel)]="questionModel.dificult" required>
+            <select (click)="removeFromallQuestionsAvailables()" class="form-control select" name="dificult" [(ngModel)]="questionModel.dificult" required>
               <option *ngFor="let dificult of dificultys" [value]="dificult.value" >{{dificult.dificulty}}</option>
             </select>
           </div>

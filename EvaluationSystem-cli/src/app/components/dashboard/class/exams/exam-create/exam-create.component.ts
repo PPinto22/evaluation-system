@@ -3,6 +3,7 @@ import {Question} from '../../../../../models/question';
 import {CategoriesService} from '../../../../../services/categories.service';
 import {ActivatedRoute} from '@angular/router';
 import {QuestionsService} from '../../../../../services/questions.service';
+import {ExamsService} from '../../../../../services/exams.service';
 
 declare var page_content_onresize: any;
 
@@ -22,13 +23,17 @@ export class ExamCreateComponent implements OnInit {
   private updateDificulty = false;
   private allGenerateNow: Map<string, Map<number, Array<number>>>;
 
+  private questionsIds: number[];
+
   constructor(
     private question: QuestionsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private exam: ExamsService
   ) {
     this.route.params.subscribe(params => {
       this.groupId = +params['group_id'];
     });
+    this.questionsIds = [];
     this.categoriesName = [];
     this.allGenerateNow = new Map<string, Map<number, Array<number>>>();
   }
@@ -67,18 +72,51 @@ export class ExamCreateComponent implements OnInit {
   }
 
   public createExam(): void {
-    if ( this.examCreate.nameExam && this.examCreate.questionNumber && this.examCreate.dateExam && this.examCreate.hourExam ) {
-
+    if ( this.examCreate.nameExam && this.examCreate.questionNumber && this.examCreate.duration && this.examCreate.dateExam && this.examCreate.hourExam ) {
+      if ( this.examCreate.duration > 0) {
+        const dateNow = new Date();
+        const dateExameChoise = new Date(this.examCreate.dateExam);
+        if (dateNow < dateExameChoise) {
+          if (this.validateAllQuestions()) {
+            this.exam.createExamByGroupId(this.groupId, dateExameChoise.getTime(), this.examCreate.duration, this.examCreate.nameExam, this.questionsIds).subscribe(
+              resultado => {
+                console.log(resultado);
+                console.log('resultado EXAME COMPLETO');
+              },
+              error => {
+                console.log(error);
+              }
+            );
+          }
+        } else {
+          // TODO avisar data errada
+        }
+      } else {
+        console.log('dada');
+      }
     }
   }
 
-  public validateAll(): void {
+  public validateAllQuestions(): boolean {
+    let allok = true;
+    this.questionsIds = [];
+    for ( const quest of this.questions ) {
+      if ( !quest.id ) {
+        allok = false;
+        break;
+      }
+      this.questionsIds.push(quest.id);
+    }
+    return allok;
+  }
+
+  public validateAll(): Date {
       const p = new Date(this.examCreate.dateExam);
       const hours = this.examCreate.hourExam[0] + this.examCreate.hourExam[1];
       const minutes = this.examCreate.hourExam[3] + this.examCreate.hourExam[4];
       p.setMinutes(+minutes);
       p.setHours(+hours);
-      console.log(p);
+      return p;
   }
 
   public removeQuest($event): void {
@@ -114,17 +152,17 @@ export class ExamCreateComponent implements OnInit {
 
         const categoryexist = this.allGenerateNow.get(quest.category);
 
-        if (categoryexist.get(quest.dificulty)) {
+        if (categoryexist.get(+quest.dificulty)) {
 
-          if ( !this.allGenerateNow.get(quest.category).get(quest.dificulty).find(x => x === quest.id) ) {
-            this.allGenerateNow.get(quest.category).get(quest.dificulty).push(quest.id);
+          if ( !this.allGenerateNow.get(quest.category).get(+quest.dificulty).find(x => x === quest.id) ) {
+            this.allGenerateNow.get(quest.category).get(+quest.dificulty).push(quest.id);
           }
 
         } else {
 
           const newArray: number[] = new Array();
           newArray.push(quest.id);
-          this.allGenerateNow.get(quest.category).set(quest.dificulty, newArray);
+          this.allGenerateNow.get(quest.category).set(+quest.dificulty, newArray);
 
         }
       } else {
@@ -132,7 +170,7 @@ export class ExamCreateComponent implements OnInit {
         const newArray: Array<number> = new Array();
         newArray.push(quest.id);
         const newMap: Map<number, number[]> = new Map<number, number[]>();
-        newMap.set(quest.dificulty, newArray);
+        newMap.set(+quest.dificulty, newArray);
         this.allGenerateNow.set(quest.category, newMap);
 
       }
@@ -143,6 +181,14 @@ export class ExamCreateComponent implements OnInit {
         this.updateDificulty = true;
       }
     }, 1);
+  }
+
+  public changeNow(): void {
+    if (this.updateDificulty) {
+      this.updateDificulty = false;
+    } else {
+      this.updateDificulty = true;
+    }
   }
 
 
