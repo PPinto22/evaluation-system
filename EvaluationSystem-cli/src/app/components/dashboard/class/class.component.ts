@@ -1,10 +1,11 @@
 import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {BreadCrumbService} from '../../../services/breadcrumb.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ClassesService} from '../../../services/classes.service';
 import {Class} from '../../../models/class';
 import {User} from '../../../models/user';
+import {Exception} from "../../../execption/exception";
 
 declare var $: any;
 declare var x_navigation: any;
@@ -26,7 +27,8 @@ export class ClassComponent implements OnInit, AfterViewInit {
     private authentication: AuthenticationService,
     private breadCrumbService: BreadCrumbService,
     private route: ActivatedRoute,
-    private _class: ClassesService
+    private _class: ClassesService,
+    private exception: Exception
   ) {
     this.classInformation = new Class('', '');
     this.teacherClass = new User(-1, '', '', '', '', '');
@@ -60,6 +62,7 @@ export class ClassComponent implements OnInit, AfterViewInit {
         this.setBreadCrumb();
       },
       error => {
+        this.exception.errorHandlingInvalidToken(error);
         console.log(error);
       }
     );

@@ -1,0 +1,69 @@
+<br>
+<div class="row">
+  <div class="col-md-6 col-sm-6 col-xs-12">
+    <form>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Filter Students:</label>
+        <div class="col-md-9">
+          <div class="input-group">
+            <!--<input type="text" class="input-block-level form-control" autocomplete="off" placeholder="Search for student">-->
+            <input type="text" class="form-control" autocomplete="off" placeholder="Search for student"/>
+            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+          </div>
+          <span class="help-block"></span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- START RESPONSIVE TABLES -->
+<div class="panel panel-default">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">Results</h3>
+    <ul class="panel-controls">
+      <li><a (click)="refreshResultExam()" class="control-info"><span class="glyphicon glyphicon-refresh"></span></a></li>
+    </ul>
+  </div>
+
+  <div class="panel-body panel-body-table">
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-actions">
+        <thead>
+        <tr>
+          <th class="text-center">Student</th>
+          <th class="text-center" width="150">Correct Answers</th>
+          <th class="text-center" width="150">Score</th>
+          <th class="text-center" width="110">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
+        <tr id="trow_1">
+          <td class="text-center"><strong>Rui Jorge</strong></td>
+          <td class="text-center"><strong>10/20</strong></td>
+          <td class="text-center"><strong>19.8</strong></td>
+          <td>
+            <button [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submission','1']" type="button" class="btn btn-primary btn-rounded btn-sm">View Details</button>
+          </td>
+        </tr>
+
+        <tr id="trow_2">
+          <td class="text-center"><strong>Rui Jorge</strong></td>
+          <td class="text-center"><strong>10/20</strong></td>
+          <td class="text-center"><strong>19.8</strong></td>
+          <td>
+            <button [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submission','1']" type="button" class="btn btn-primary btn-rounded btn-sm">View Details</button>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+<!-- END RESPONSIVE TABLES -->

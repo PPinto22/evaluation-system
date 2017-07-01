@@ -21,4 +21,15 @@ export class UserService {
         this.httpUtil.headers(this.authentication.getToken()) )
       .map( this.httpUtil.extrairDados );
   }
+
+  updateUserById(user_id: number, firstName: string, lastName: string, password: string ): Observable<any> {
+    return this.http.put( this.httpUtil.url('/api/users/' + user_id),
+      JSON.stringify({
+        firstName: firstName,
+        lastName: lastName,
+        password: password
+        }
+      ), this.httpUtil.headers(this.authentication.getToken()))
+      .map(this.httpUtil.extrairDados);
+  }
 }

@@ -29,4 +29,8 @@ export class ResultsComponent implements OnInit {
   public isStudent(): boolean {
     return this.authentication.isSudent();
   }
+
+  public refresResults(): void {
+    // TODO fazer o refhres do exames
+  }
 }
