@@ -46,8 +46,8 @@
       <div class="col-md-9 col-sm-9 col-xs-6">
         <div class="col-md-12" *ngFor="let answer of question.answers">
           <div class="col-md-1 col-sm-1 col-xs-4">
-            <span *ngIf="answer.checked" class="fa fa-check-circle-o text-success"></span>
-            <span *ngIf="!answer.checked" class="fa fa-circle-o text-danger"></span>
+            <span *ngIf="answer.correct" class="fa fa-check-circle-o text-success"></span>
+            <span *ngIf="!answer.correct" class="fa fa-circle-o text-danger"></span>
           </div>
           <div class="col-md-11 col-sm-11 col-xs-8">
             <span class="text">{{answer.text}}</span>
