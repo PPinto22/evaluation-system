@@ -22,7 +22,8 @@ public class SubmissionWrapper {
             this.score = null;
         }
         else {
-            this.score = submission.getScore();
+            float score = submission.getScore();
+            this.score = score > 20 ? 20:score;
             this.questions = new ArrayList<>();
             Map<QuestionScore, QuestionSubmission> submitedMap = new HashMap<>();
             for (QuestionSubmission questionSubmission : submission._questionSubmissions.toArray()) {
