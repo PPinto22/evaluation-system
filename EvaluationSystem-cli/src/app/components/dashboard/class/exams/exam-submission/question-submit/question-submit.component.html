@@ -21,12 +21,12 @@
           <label class="col-md-12 control-label">Answer:</label>
         </div>
         <div class="col-md-9 col-sm-9 col-xs-6">
-          <div class="col-md-12" *ngFor="let answer of [1,1,2,2] ">
+          <div class="col-md-12" *ngFor="let answer of question.answers ">
             <div class="col-md-1 col-sm-1 col-xs-4">
-              <input type="radio" name="{{'name' + question.id}}">
+              <input [(ngModel)]="correctAnswer.correta" #getname()="ngModel" type="radio" [value]=answer.id name="{{'name' + question.id}}">
             </div>
             <div class="col-md-11 col-sm-11 col-xs-8">
-              <span class="text">{{answer }}</span>
+              <span class="text">{{answer.text }}</span>
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
 
     <div class="col-md-2 pull-right">
       <div class="col-md-12 ">
-        <button type="button" class="btn btn-primary btn-block">Save</button>
+        <button class="btn btn-block" [ngClass]="{  'btn-primary': !saveOk, 'btn-success': saveOk }" (click)="saveAnswerNow()" type="button" >Save</button>
       </div>
     </div>
   </div>
