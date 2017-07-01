@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from 'app/services/authentication.service';
 import {UserService} from '../../services/user.service';
+import {Exception} from '../../execption/exception';
 
 declare var x_navigation: any;
 declare var page_content_onresize: any;
@@ -17,10 +18,14 @@ export class ProfileComponent implements OnInit {
   private loading = false;
   private differentPassword = false;
   private updatedSuccess = false;
+  private updatedError = false;
+
+
 
   constructor(
     private autentication: AuthenticationService,
-    private usersService: UserService
+    private usersService: UserService,
+    private exception: Exception
   ) { }
 
   ngOnInit() {
@@ -44,11 +49,17 @@ export class ProfileComponent implements OnInit {
         this.autentication.userLogged.firstName = result.firstName;
         this.autentication.userLogged.lastName = result.lastName;
         this.updatedSuccess = true;
+      },
+      error => {
+        this.exception.errorHandlingInvalidToken(error);
+        this.updatedError = true;
+        // TODO ver se isto funciona do error
       }
     );
   }
 
   onSubmit(): void {
+    this.updatedError = false;
     this.updateProfile();
   }
 

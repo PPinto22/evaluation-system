@@ -27,8 +27,6 @@ export class ListClassComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    x_navigation();
-    page_content_onresize();
   }
 
   private getAllGroups() {

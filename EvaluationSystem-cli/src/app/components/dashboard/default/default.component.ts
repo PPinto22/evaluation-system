@@ -3,6 +3,7 @@ import {AuthenticationService} from '../../../services/authentication.service';
 import {BreadCrumbService} from '../../../services/breadcrumb.service';
 import {ClassesService} from '../../../services/classes.service';
 import {Exception} from '../../../execption/exception';
+import {Router} from "@angular/router";
 
 declare var $: any;
 declare var x_navigation: any;
@@ -24,7 +25,8 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     private authentication: AuthenticationService,
     private breadCrumb: BreadCrumbService,
     private classes: ClassesService,
-    private exception: Exception
+    private exception: Exception,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -56,8 +58,10 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         this.classAsCreate = true;
         this.new_class_add = {};
         console.log(resultado);
+        this.router.navigate(['/dashboard', 'classes', resultado.id]);
       },
       error => {
+        this.exception.errorHandlingInvalidToken(error);
         if ( error.status === 406) {
           this.classAlreadyExists = this.exception.errorHandlingCreateClass(error);
         }
