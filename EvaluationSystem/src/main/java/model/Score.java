@@ -15,6 +15,11 @@ public class Score {
         this.score = 0;
     }
 
+    public Score(float score){
+        this.submission = null;
+        this.score = score;
+    }
+
     public Submission getSubmission() {
         return submission;
     }

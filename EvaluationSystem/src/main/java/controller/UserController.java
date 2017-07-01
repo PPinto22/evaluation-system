@@ -195,7 +195,7 @@ public class UserController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
-        } catch (StudentNotInGroupException e) {
+        } catch (UserNotInGroupException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
         } finally {
             session.close();
@@ -313,33 +313,30 @@ public class UserController {
         PersistentSession session = null;
         try {
             session = ClassesPersistentManager.instance().getSession();
-            User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
-            Student student = studentService.getStudentByID(session, studentID);
-            if(student.getID() != clientUser.getID())
+            User user = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
+            if(studentID != user.getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             try {
                 Exam exam = getExamFromRequests(session, requestParams);
-                Score score = studentService.getStudentScoreByExam(session, student, exam);
+                Score score = userService.getExamScore(session, user, exam);
                 return new ResponseEntity<Object>(new ScoreWrapper(score), OK);
-            } catch (NonExistentEntityException | StudentNotInGroupException | InvalidExamException e){
+            } catch (NonExistentEntityException | UserNotInGroupException | InvalidExamException e){
                 return new ResponseEntity<Object>(new ErrorWrapper(INVALID_EXAM), NOT_ACCEPTABLE);
             } catch (NoSuchParamException e) { // No such exam; try group
                 try {
                     Group group = getGroupFromRequests(session, requestParams);
-                    Map<Exam, Score> examScoreMap = studentService.getStudentScoresByGroup(session, student, group);
+                    Map<Exam, Score> examScoreMap = userService.getUserScoresByGroup(session, user, group);
                     return new ResponseEntity<Object>(new ExamsScoresWrapper(examScoreMap), OK);
-                } catch (NonExistentEntityException | StudentNotInGroupException e1) {
+                } catch (NonExistentEntityException | UserNotInGroupException e1) {
                     return new ResponseEntity<Object>(new ErrorWrapper(INVALID_GROUP), NOT_ACCEPTABLE);
                 } catch (NoSuchParamException e1) { // No such group; list all
-                    Map<Group, Map<Exam, Score>> groupExamMap = studentService.getStudentScores(session, student);
+                    Map<Group, Map<Exam, Score>> groupExamMap = userService.getUserScores(session, user);
                     return new ResponseEntity<Object>(new GroupsExamsScoresWrapper(groupExamMap), OK);
                 }
             }
         } catch (PersistentException e){
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
-        } catch (NonExistentEntityException e) {
-            return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_STUDENT), NOT_FOUND);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         } finally {

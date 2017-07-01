@@ -1,15 +1,13 @@
 package service;
 
-import exception.ExistentEntityException;
-import exception.MissingInformationException;
-import exception.NonExistentEntityException;
-import model.Group;
-import model.Teacher;
+import exception.*;
+import model.*;
 import model.Class;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TeacherService {
 
@@ -26,4 +24,8 @@ public interface TeacherService {
 
     void delete(PersistentSession session, Teacher teacher) throws PersistentException;
     boolean hasStudentSubmissions(PersistentSession session, Teacher teacher) throws PersistentException;
+
+    Score getScoreByExam(PersistentSession session, Teacher teacher, Exam exam) throws InvalidExamException, UserNotInGroupException;
+    Map<Exam,Score> getScoresByGroup(PersistentSession session, Teacher teacher, Group group) throws UserNotInGroupException;
+    Map<Group,Map<Exam,Score>> getScores(PersistentSession session, Teacher teacher);
 }

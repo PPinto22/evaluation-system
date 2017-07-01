@@ -1064,12 +1064,13 @@ ___
 
 #### GET /api/submissions/{submission_id}
 ### Response
-> Se o aluno não tiver respondido a alguma questão, o campo *answer* não aparece.
-> Se o exame já tiver terminado, então também é indicado se as respostas estão certas ou não.
+Se o aluno não tiver respondido a alguma questão, o campo *answer* não aparece.
+Se o exame já tiver terminado, então também é indicado se as respostas estão certas ou não e o *score*
 
 ```json
 {
   "id": 1,
+  "score": 2.5,
   "questions": [
     {
       "question": {
@@ -1374,7 +1375,7 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **FORBIDDEN (550)**
 
 #### GET /api/users/{user_id}/scores
-Este método só funciona com utilizadores do tipo *student*. Para os professores saberem as notas dos alunos, utilizar [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores) ou [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores).
+Caso o utilizador seja um professor, os *scores* são as médias dos resultados dos alunos. O campo *submissionID* nunca existe neste caso.
 
 ### Parameters
 - exam=ID
