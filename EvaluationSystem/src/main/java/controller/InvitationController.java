@@ -45,7 +45,7 @@ public class InvitationController {
             User user = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             GroupInvitation groupInvitation = (GroupInvitation) notificationService.getNotificationByID(session, id);
             if(user.getID() != groupInvitation.get_user().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             Group group = notificationService.acceptInvitation(session, groupInvitation);
             return new ResponseEntity<Object>(new GroupClassWrapper(group), OK);
@@ -70,7 +70,7 @@ public class InvitationController {
             User user = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             GroupInvitation groupInvitation = (GroupInvitation) notificationService.getNotificationByID(session, id);
             if(user.getID() != groupInvitation.get_user().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             notificationService.declineInvitation(groupInvitation);
             return new ResponseEntity<Object>(new Object(), OK);

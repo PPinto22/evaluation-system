@@ -69,7 +69,7 @@ public class GroupController {
             User clientUser = jwtService.getUser(session,(Claims) request.getAttribute("claims"));
             Group group = this.groupService.getGroupByID(session, id);
             if(group.get_class().get_teacher().getID() != clientUser.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             group = groupService.updateGroup(session, group, groupWrapper.getName());
             return new ResponseEntity<Object>(new GroupClassWrapper(group), OK);
@@ -95,7 +95,7 @@ public class GroupController {
             User clientUser = jwtService.getUser(session,(Claims) request.getAttribute("claims"));
             Group group = this.groupService.getGroupByID(session, id);
             if(group.get_class().get_teacher().getID() != clientUser.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             groupService.delete(session, group);
             return new ResponseEntity<Object>(new Object(), OK);
@@ -123,7 +123,7 @@ public class GroupController {
             Class cl = group.get_class();
 
             if(cl.get_teacher().getID() != user.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             List<GroupStudentPOSTWrapper> groupStudents = new ArrayList<>();
             for(String email: studentEmails){
@@ -179,7 +179,7 @@ public class GroupController {
             User user = jwtService.getUser(session,(Claims)request.getAttribute("claims"));
             group = groupService.getGroupByID(session, groupID);
             if(group.get_class().get_teacher().getID() != user.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             Student student = studentService.getStudentByID(session, studentID);
             groupService.removeStudentFromGroup(session, group, student);
@@ -210,7 +210,7 @@ public class GroupController {
             Group group = groupService.getGroupByID(session, groupID);
             Class cl = group.get_class();
             if(user.getID() != cl.get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             Map<String, Map<Integer, List<Question>>> questions =
                     groupService.getAvailableQuestions(session, group);
@@ -251,7 +251,7 @@ public class GroupController {
             Group group = groupService.getGroupByID(session, groupID);
             Class cl = group.get_class();
             if(user.getID() != cl.get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             Exam exam = examService.createExam(session,
                     examWrapper.getName(),
@@ -299,7 +299,7 @@ public class GroupController {
             Group group = groupService.getGroupByID(session, groupID);
             Class cl = group.get_class();
             if(user.getID() != cl.get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             String category = questionWrapper.getCategory();
             int difficulty = questionWrapper.getDifficulty();
@@ -338,7 +338,7 @@ public class GroupController {
             Group group = groupService.getGroupByID(session, groupID);
             Class cl = group.get_class();
             if(user.getID() != cl.get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             List<String> categories = new ArrayList<>();
             List<Integer> difficulties = new ArrayList<>();
@@ -381,7 +381,7 @@ public class GroupController {
             Group group = groupService.getGroupByID(session, groupID);
 
             if(!groupService.userHasAccess(group,user))
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             if(ongoing != null){
                 return new ResponseEntity<Object>(examService.getOngoingExamsByGroup(group), OK);
@@ -416,7 +416,7 @@ public class GroupController {
             Group group = groupService.getGroupByID(session, groupID);
 
             if(!groupService.userHasAccess(group,user))
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             Map<Student, Map<Exam, Score>> scoreMap = groupService.getGroupScores(session, group);
             return new ResponseEntity<Object>(new StudentsExamsScoresWrapper(scoreMap), OK);

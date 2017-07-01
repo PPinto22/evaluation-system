@@ -58,7 +58,7 @@ public class ExamController {
             Group group = exam.get_group();
             Class cl = group.get_class();
             if(cl.get_teacher().getID() != user.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
             exam = examService.updateExam(session, exam, examWrapper.getName(), examWrapper.getBeginDate(), examWrapper.getDuration());
             return new ResponseEntity<Object>(new ExamWrapper(exam, true, true), OK);
         } catch (PersistentException e) {
@@ -85,7 +85,7 @@ public class ExamController {
             Group group = exam.get_group();
             Class cl = group.get_class();
             if(cl.get_teacher().getID() != user.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
             examService.deleteExam(session, exam);
             return new ResponseEntity<Object>(new Object(), OK);
         } catch (PersistentException e) {
@@ -114,11 +114,11 @@ public class ExamController {
                 case "Teacher":
                     if(user.getID() == cl.get_teacher().getID())
                         return new ResponseEntity<Object>(new ExamWrapper(exam,false, false), OK);
-                    return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                    return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
                 case "Student":
                     Student student = (Student)user;
                     if(!groupService.studentInGroup(student,group))
-                        return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                        return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
                     if(examService.examHasStarted(exam))
                         return new ResponseEntity<Object>(new ExamWrapper(exam, false, true), OK);
                     return new ResponseEntity<Object>(new ExamWrapper(exam, true, true), OK);
@@ -148,11 +148,11 @@ public class ExamController {
             Exam exam = examService.getExamByID(session, examID);
             Group group = exam.get_group();
             if(!(user instanceof Student))
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             Student student = (Student) user;
             if (!groupService.studentInGroup(student, group))
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
             if (submissionService.exists(session, student, exam))
                 return new ResponseEntity<>(new ErrorWrapper(SUBMISSION_EXISTS), NOT_ACCEPTABLE);
 
@@ -196,7 +196,7 @@ public class ExamController {
             Exam exam = examService.getExamByID(session, examID);
 
             if(!groupService.userHasAccess(exam.get_group(),user))
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
             Map<Student, Score> scoreMap = examService.getExamScores(session, exam);
             return new ResponseEntity<Object>(new StudentsScoresWrapper(scoreMap), OK);
         } catch (PersistentException e){
