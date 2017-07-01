@@ -28,38 +28,12 @@ Need Tests
 
 ## Backend - Spring and Hibernate
 
-### Build and Run Postgres
-
-Build image of postgres for docker.
+### Build and Run
 ```
-cd Docker/postgres/
-docker build -t eg_postgresql .
+./docker_build.sh
 ```
-
-First time create container and run with:
 ```
-docker run --net="bridge" -p 5432:5432 -P --name pg_test eg_postgresql
-```
-
-Next times, to start container make:
-```
-docker start pg_test
-```
-
-### Build and Run Spring
-```
-cd EvaluationSystem/
-mvn package
-cp target/evalsys-backend-1.0.jar ../Docker/spring/
-cd ../Docker/spring
-docker build -t evalsys-backend .
-docker run --net="bridge" -p 8080:8080 evalsys-backend
-```
-
-or
-
-```
-./docker_backend.sh
+./docker_run.sh
 ```
 
 ### Authentication
@@ -684,6 +658,9 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 - **UNAUTHORIZED (401)** - *No permission*
 
 #### GET /api/groups/{group_id}/exams
+### Parameters
+- *ongoing*: Faz com que seja retornada apenas uma lista dos exames a decorrer.
+
 ### Response
 ```json
 {
@@ -716,6 +693,8 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 - **UNAUTHORIZED (401)** - *No permission*
 
 #### POST /api/groups/{group_id}/exams
+
+
 ### Body
 ```json
 {
@@ -1315,6 +1294,9 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 
 
 #### GET /api/users/{user_id}/exams
+### Parameters
+- *ongoing*: Faz com que seja retornada apenas uma lista dos exames a decorrer.
+
 ### Response
 ```json
 {
