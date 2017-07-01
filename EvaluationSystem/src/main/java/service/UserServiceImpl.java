@@ -2,14 +2,13 @@ package service;
 
 import dao.*;
 import exception.*;
-import model.Student;
-import model.Teacher;
-import model.User;
+import model.*;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -67,6 +66,39 @@ public class UserServiceImpl implements UserService{
         }
         userDAO.save(user);
         return user;
+    }
+
+    @Override
+    public Map<Group, Map<Exam, Score>> getUserScores(PersistentSession session, User user) throws PersistentException {
+        switch (user.getClass().getSimpleName()){
+            case "Student":
+                return studentService.getStudentScores(session,(Student)user);
+            case "Teacher":
+                return teacherService.getScores(session, (Teacher)user);
+        }
+        throw new PersistentException();
+    }
+
+    @Override
+    public Map<Exam, Score> getUserScoresByGroup(PersistentSession session, User user, Group group) throws UserNotInGroupException, PersistentException {
+        switch (user.getClass().getSimpleName()){
+            case "Student":
+                return studentService.getStudentScoresByGroup(session,(Student)user, group);
+            case "Teacher":
+                return teacherService.getScoresByGroup(session, (Teacher)user, group);
+        }
+        throw new PersistentException();
+    }
+
+    @Override
+    public Score getExamScore(PersistentSession session, User user, Exam exam) throws PersistentException, UserNotInGroupException, InvalidExamException {
+        switch (user.getClass().getSimpleName()){
+            case "Student":
+                return studentService.getStudentScoreByExam(session,(Student)user, exam);
+            case "Teacher":
+                return teacherService.getScoreByExam(session, (Teacher)user, exam);
+        }
+        throw new PersistentException();
     }
 
     @Override

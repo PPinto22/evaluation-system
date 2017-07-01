@@ -63,7 +63,7 @@ public class StudentServiceImpl implements StudentService{
             for(GroupStudent groupStudent: student._groups.toArray()){
                 try {
                     leaveGroup(session, student, groupStudent.get_group());
-                } catch (StudentNotInGroupException e) {}
+                } catch (UserNotInGroupException e) {}
             }
             student.setRegistered(false);
             student.setDeleted(true);
@@ -78,9 +78,9 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public void leaveGroup(PersistentSession session, Student student, Group group) throws PersistentException, StudentNotInGroupException {
+    public void leaveGroup(PersistentSession session, Student student, Group group) throws PersistentException, UserNotInGroupException {
         if(!groupStudentDAO.exists(session, group.getID(), student.getID()))
-            throw new StudentNotInGroupException();
+            throw new UserNotInGroupException();
         GroupStudent groupStudent = groupStudentDAO.loadGroupStudentByGroupAndStudent(session, group.getID(), student.getID());
         groupStudent.setAccepted(false);
         groupStudentDAO.save(groupStudent);
@@ -114,9 +114,9 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public Map<Exam, Score> getStudentScoresByGroup(PersistentSession session, Student student, Group group)
-            throws StudentNotInGroupException, PersistentException {
+            throws UserNotInGroupException, PersistentException {
         if(!groupService.studentInGroup(student,group))
-            throw new StudentNotInGroupException();
+            throw new UserNotInGroupException();
 
         Map<Exam, Score> scoreMap = new TreeMap<>();
         for(Exam exam: group.getExams()){
@@ -135,11 +135,11 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public Score getStudentScoreByExam(PersistentSession session, Student student, Exam exam)
-            throws PersistentException, StudentNotInGroupException, InvalidExamException {
+            throws PersistentException, UserNotInGroupException, InvalidExamException {
         if(!examService.examHasFinished(exam))
             throw new InvalidExamException();
         if(!groupService.studentInGroup(student,exam.get_group()))
-            throw new StudentNotInGroupException();
+            throw new UserNotInGroupException();
         Score score = null;
         try {
             Submission submission = submissionService.getSubmissionByStudentAndExam(session, student, exam);

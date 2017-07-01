@@ -83,7 +83,7 @@ public class SubmissionController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             submissionService.deleteSubmission(submission);
-            return new ResponseEntity<Object>(new Object(), OK);
+            return new ResponseEntity<Object>(NO_CONTENT);
         } catch (PersistentException e){
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {

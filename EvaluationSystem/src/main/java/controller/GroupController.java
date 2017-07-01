@@ -183,7 +183,7 @@ public class GroupController {
 
             Student student = studentService.getStudentByID(session, studentID);
             groupService.removeStudentFromGroup(session, group, student);
-            return new ResponseEntity<Object>(new Object(), OK);
+            return new ResponseEntity<Object>(NO_CONTENT);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
