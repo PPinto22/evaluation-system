@@ -56,7 +56,7 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public Group updateGroup(PersistentSession session, Group group, String name) throws PersistentException, ExistentEntityException {
-        if(name != null & !name.equals(group.getName()) && exists(session, group.get_class(), name))
+        if(name != null && !name.equals(group.getName()) && exists(session, group.get_class(), name))
             throw new ExistentEntityException();
 
         if(name != null && !name.equals(""))

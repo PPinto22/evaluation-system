@@ -57,11 +57,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User update(User user, String firstName, String lastName, String password) throws PersistentException {
-        if(firstName != null || !firstName.equals(""))
+        if(firstName != null && !firstName.equals(""))
             user.setFirstName(firstName);
-        if(lastName != null || !lastName.equals(""))
+        if(lastName != null && !lastName.equals(""))
             user.setLastName(lastName);
-        if(password != null || !password.equals("")) {
+        if(password != null && !password.equals("")) {
             user.setPassword(password);
             user.hashPassword();
         }
