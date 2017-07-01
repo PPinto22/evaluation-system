@@ -23,15 +23,15 @@ import java.util.List;
 public class QuestionScoreDAOImpl implements QuestionScoreDAO {
 
 	@Override
-	public boolean exists(int questionID) throws PersistentException {
-		QuestionScoreCriteria criteria = new QuestionScoreCriteria();
+	public boolean exists(PersistentSession session, int questionID) throws PersistentException {
+		QuestionScoreCriteria criteria = new QuestionScoreCriteria(session);
 		criteria._questionId.eq(questionID);
 		return loadQuestionScoreByCriteria(criteria) != null;
 	}
 
 	@Override
-	public boolean exists(int questionID, int examID) throws PersistentException {
-		QuestionScoreCriteria criteria = new QuestionScoreCriteria();
+	public boolean exists(PersistentSession session, int questionID, int examID) throws PersistentException {
+		QuestionScoreCriteria criteria = new QuestionScoreCriteria(session);
 		criteria._questionId.eq(questionID);
 		criteria._examId.eq(examID);
 		return loadQuestionScoreByCriteria(criteria) != null;

@@ -23,8 +23,8 @@ import java.util.List;
 @Repository
 public class AnswerDAOImpl implements AnswerDAO {
 	@Override
-	public boolean exists(int ID) throws PersistentException {
-		return this.getAnswerByORMID(ID) != null;
+	public boolean exists(PersistentSession session, int ID) throws PersistentException {
+		return this.getAnswerByORMID(session, ID) != null;
 	}
 
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(AnswerDAOImpl.class);

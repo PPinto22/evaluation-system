@@ -25,21 +25,21 @@ import java.util.List;
 @Repository
 public class GroupDAOImpl implements GroupDAO {
 	@Override
-	public boolean exists(int ID) throws PersistentException {
-		GroupCriteria criteria = new GroupCriteria();
+	public boolean exists(PersistentSession session, int ID) throws PersistentException {
+		GroupCriteria criteria = new GroupCriteria(session);
 		criteria.ID.eq(ID);
 		Group group = this.loadGroupByCriteria(criteria);
 		return group != null;
 	}
 
 	@Override
-	public boolean exists(Class cl, String name) throws PersistentException {
-		return this.loadGroupByName(cl,name) != null;
+	public boolean exists(PersistentSession session, Class cl, String name) throws PersistentException {
+		return this.loadGroupByName(session, cl, name) != null;
 	}
 
 	@Override
-	public Group loadGroupByName(Class cl, String name) throws PersistentException {
-		GroupCriteria criteria = new GroupCriteria();
+	public Group loadGroupByName(PersistentSession session, Class cl, String name) throws PersistentException {
+		GroupCriteria criteria = new GroupCriteria(session);
 		criteria.name.eq(name);
 		criteria._classId.eq(cl.getID());
 		Group group = this.loadGroupByCriteria(criteria);

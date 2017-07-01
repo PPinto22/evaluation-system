@@ -7,6 +7,7 @@ import exception.*;
 import model.*;
 import model.Class;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +49,8 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
-    public void deleteExam(Exam exam) throws EntityNotRemovableException, PersistentException {
-        if(examHasSubmissions(exam))
+    public void deleteExam(PersistentSession session, Exam exam) throws EntityNotRemovableException, PersistentException {
+        if(examHasSubmissions(session, exam))
             throw new EntityNotRemovableException("Exam already has submissions");
 
         for(Submission submission: exam._submissions.toArray()){
@@ -63,14 +64,14 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
-    public boolean examHasSubmissions(Exam exam) throws PersistentException {
-        return submissionService.exists(exam);
+    public boolean examHasSubmissions(PersistentSession session, Exam exam) throws PersistentException {
+        return submissionService.exists(session, exam);
     }
 
     @Override
-    public Exam updateExam(Exam exam, String name, Long beginDate, Integer duration)
+    public Exam updateExam(PersistentSession session, Exam exam, String name, Long beginDate, Integer duration)
             throws PersistentException, ExistentEntityException {
-        if(name != null && !name.equals(exam.getName()) && exists(exam.get_group(), name))
+        if(name != null && !name.equals(exam.getName()) && exists(session, exam.get_group(), name))
             throw new ExistentEntityException();
 
         if(name != null && !name.equals(""))
@@ -87,7 +88,7 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
-    public Map<Student, Score> getExamScores(Exam exam) throws PersistentException, InvalidExamException {
+    public Map<Student, Score> getExamScores(PersistentSession session, Exam exam) throws PersistentException, InvalidExamException {
         if(!examHasFinished(exam))
             throw new InvalidExamException();
 
@@ -95,7 +96,7 @@ public class ExamServiceImpl implements ExamService{
         for(GroupStudent groupStudent: exam.get_group()._students.toArray()){
             Student student = groupStudent.get_student();
             try {
-                Submission submission = submissionService.getSubmissionByStudentAndExam(student, exam);
+                Submission submission = submissionService.getSubmissionByStudentAndExam(session, student, exam);
                 studentMap.put(student, new Score(submission));
             }catch (NonExistentEntityException e) {
                 studentMap.put(student, new Score());
@@ -126,6 +127,22 @@ public class ExamServiceImpl implements ExamService{
                 break;
         }
         return getGroupsExams(groups);
+    }
+
+    @Override
+    public Set<Exam> getOngoingExamsByUser(User user){
+        Map<String, Set<Exam>> allExams = getExamsByUser(user);
+        return allExams.containsKey("Ongoing") ?
+                allExams.get("Ongoing"):
+                new TreeSet<>();
+    }
+
+    @Override
+    public Set<Exam> getOngoingExamsByGroup(Group group) {
+        Map<String, Set<Exam>> allExams = getExamsByGroup(group);
+        return allExams.containsKey("Ongoing") ?
+                allExams.get("Ongoing"):
+                new TreeSet<>();
     }
 
     private Map<String, Set<Exam>> getGroupsExams(List<Group> groups){
@@ -161,10 +178,10 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
-    public Exam getExamByID(int examID) throws PersistentException, NonExistentEntityException {
-        if(!exists(examID))
+    public Exam getExamByID(PersistentSession session, int examID) throws PersistentException, NonExistentEntityException {
+        if(!exists(session, examID))
             throw new NonExistentEntityException();
-        return examDAO.loadExamByORMID(examID);
+        return examDAO.loadExamByORMID(session, examID);
     }
 
     @Override
@@ -188,7 +205,7 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
-    public Exam createExam(String name, int minutes, long beginDate, List<Integer> questionIDs, Group group)
+    public Exam createExam(PersistentSession session, String name, int minutes, long beginDate, List<Integer> questionIDs, Group group)
             throws InvalidExamException, PersistentException, InvalidQuestionException, ExistentEntityException {
         Exam exam = new Exam();
         if(name == null || name.equals(""))
@@ -198,7 +215,7 @@ public class ExamServiceImpl implements ExamService{
 
         //if(!validateDate(beginDate))
         //    throw new InvalidExamException("date");
-        if(exists(group, name))
+        if(exists(session, group, name))
             throw new ExistentEntityException();
         if(hasDuplicates(questionIDs))
             throw new InvalidExamException("duplicates");
@@ -210,7 +227,7 @@ public class ExamServiceImpl implements ExamService{
         Class cl = group.get_class();
         for (int i = 0; i<questionIDs.size(); i++) {
             int qid = questionIDs.get(i);
-            Question question = questionDAO.getQuestionByORMID(qid);
+            Question question = questionDAO.getQuestionByORMID(session, qid);
             if(question == null || question.get_class().getID() != cl.getID())
                 throw new InvalidQuestionException(""+qid);
             QuestionScore questionScore = new QuestionScore();
@@ -234,23 +251,23 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
-    public boolean exists(int examID) throws PersistentException {
-        return examDAO.exists(examID);
+    public boolean exists(PersistentSession session, int examID) throws PersistentException {
+        return examDAO.exists(session, examID);
     }
 
     @Override
-    public boolean exists(Group group, String examName) throws PersistentException {
-        return examDAO.exists(group.getID(),examName);
+    public boolean exists(PersistentSession session, Group group, String examName) throws PersistentException {
+        return examDAO.exists(session, group.getID(), examName);
     }
 
     @Override
-    public boolean examContainsQuestion(Exam exam, Question question) throws PersistentException {
-        return questionScoreDAO.exists(question.getID(),exam.getID());
+    public boolean examContainsQuestion(PersistentSession session, Exam exam, Question question) throws PersistentException {
+        return questionScoreDAO.exists(session, question.getID(), exam.getID());
     }
 
     @Override
-    public Exam addExamToGroup(Group group, Exam exam) throws PersistentException, ExistentEntityException {
-        if(exists(group, exam.getName()))
+    public Exam addExamToGroup(PersistentSession session, Group group, Exam exam) throws PersistentException, ExistentEntityException {
+        if(exists(session, group, exam.getName()))
             throw new ExistentEntityException();
         exam.set_group(group);
         group._exams.add(exam);
@@ -259,8 +276,9 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
-    public Question generateExamQuestion(Group group, String category, int difficulty, List<Question> excludedQuestions) throws PersistentException, InsufficientQuestionsException {
-        List<Question> availableQuestions = groupService.listAvailableQuestionByCategoryAndDifficulty(group,category,difficulty);
+    public Question generateExamQuestion(PersistentSession session, Group group, String category, int difficulty, List<Question> excludedQuestions)
+            throws PersistentException, InsufficientQuestionsException {
+        List<Question> availableQuestions = groupService.listAvailableQuestionByCategoryAndDifficulty(session, group, category, difficulty);
         for(Question question: excludedQuestions){
             if(availableQuestions.contains(question))
                 availableQuestions.remove(question);
@@ -274,12 +292,12 @@ public class ExamServiceImpl implements ExamService{
     }
 
     @Override
-    public List<Question> generateExamQuestions(Group group, List<String> categories, List<Integer> difficulties)
+    public List<Question> generateExamQuestions(PersistentSession session, Group group, List<String> categories, List<Integer> difficulties)
             throws PersistentException, InvalidInputException, InsufficientQuestionsException {
         if(categories.size() != difficulties.size())
             throw new InvalidInputException("Categories and dificulties lists must be the same size");
 
-        Map<String, Map<Integer, List<Question>>> categoriesMap = groupService.getAvailableQuestions(group);
+        Map<String, Map<Integer, List<Question>>> categoriesMap = groupService.getAvailableQuestions(session, group);
         List<Question> res = new ArrayList<>();
         for(int i = 0; i<categories.size(); i++){
             String category = categories.get(i);

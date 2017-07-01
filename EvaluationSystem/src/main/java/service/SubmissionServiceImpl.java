@@ -8,6 +8,7 @@ import exception.InvalidQuestionException;
 import exception.NonExistentEntityException;
 import model.*;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +37,8 @@ public class SubmissionServiceImpl implements SubmissionService{
     }
 
     @Override
-    public boolean exists(Exam exam) throws PersistentException {
-        return submissionDAO.existsExam(exam.getID());
+    public boolean exists(PersistentSession session, Exam exam) throws PersistentException {
+        return submissionDAO.existsExam(session, exam.getID());
     }
 
     @Override
@@ -51,39 +52,41 @@ public class SubmissionServiceImpl implements SubmissionService{
     }
 
     @Override
-    public Submission getSubmissionByStudentAndExam(Student student, Exam exam) throws PersistentException, NonExistentEntityException {
-        if(!submissionDAO.exists(student.getID(), exam.getID()))
+    public Submission getSubmissionByStudentAndExam(PersistentSession session, Student student, Exam exam)
+            throws PersistentException, NonExistentEntityException {
+        if(!submissionDAO.exists(session, student.getID(), exam.getID()))
             throw new NonExistentEntityException();
 
-        return submissionDAO.loadSubmissionByStudentAndExam(student.getID(),exam.getID());
+        return submissionDAO.loadSubmissionByStudentAndExam(session, student.getID(), exam.getID());
     }
 
     @Override
-    public Submission updateSubmission(Submission submission, Map<Question, Answer> answers) throws InvalidAnswerException, PersistentException, InvalidQuestionException {
-        addAnswersToSubmission(submission, answers);
+    public Submission updateSubmission(PersistentSession session, Submission submission, Map<Question, Answer> answers)
+            throws InvalidAnswerException, PersistentException, InvalidQuestionException {
+        addAnswersToSubmission(session, submission, answers);
         submissionDAO.save(submission);
         return submission;
     }
 
     @Override
-    public Submission submit(Student student, Exam exam, Map<Question, Answer> answers)
+    public Submission submit(PersistentSession session, Student student, Exam exam, Map<Question, Answer> answers)
             throws ExistentEntityException, PersistentException, InvalidQuestionException, InvalidAnswerException {
-        if(exists(student,exam))
+        if(exists(session, student, exam))
             throw new ExistentEntityException();
 
         Submission submission = new Submission();
         submission.set_student(student);
         submission.set_exam(exam);
-        addAnswersToSubmission(submission, answers);
+        addAnswersToSubmission(session, submission, answers);
         submissionDAO.save(submission);
         return submission;
     }
 
-    private void addAnswersToSubmission(Submission submission, Map<Question, Answer> answers)
+    private void addAnswersToSubmission(PersistentSession session, Submission submission, Map<Question, Answer> answers)
             throws InvalidQuestionException, InvalidAnswerException, PersistentException {
         for(Question question: answers.keySet()){
             Answer answer = answers.get(question);
-            if(!examService.examContainsQuestion(submission.get_exam(),question))
+            if(!examService.examContainsQuestion(session, submission.get_exam(), question))
                 throw new InvalidQuestionException();
             if(!questionService.questionContainsAnswer(question,answer))
                 throw new InvalidAnswerException();
@@ -126,19 +129,19 @@ public class SubmissionServiceImpl implements SubmissionService{
     }
 
     @Override
-    public Submission getSubmissionByID(int ID) throws PersistentException, NonExistentEntityException {
-        if(!submissionDAO.exists(ID))
+    public Submission getSubmissionByID(PersistentSession session, int ID) throws PersistentException, NonExistentEntityException {
+        if(!submissionDAO.exists(session, ID))
             throw new NonExistentEntityException();
-        return submissionDAO.loadSubmissionByORMID(ID);
+        return submissionDAO.loadSubmissionByORMID(session, ID);
     }
 
     @Override
-    public boolean exists(int ID) throws PersistentException {
-        return submissionDAO.exists(ID);
+    public boolean exists(PersistentSession session, int ID) throws PersistentException {
+        return submissionDAO.exists(session, ID);
     }
 
     @Override
-    public boolean exists(Student student, Exam exam) throws PersistentException {
-        return submissionDAO.exists(student.getID(), exam.getID());
+    public boolean exists(PersistentSession session, Student student, Exam exam) throws PersistentException {
+        return submissionDAO.exists(session, student.getID(), exam.getID());
     }
 }

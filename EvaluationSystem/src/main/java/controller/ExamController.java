@@ -1,11 +1,13 @@
 package controller;
 
+import dao.ClassesPersistentManager;
 import exception.*;
 import io.jsonwebtoken.Claims;
 import model.*;
 import model.Class;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,16 +49,17 @@ public class ExamController {
     @RequestMapping(value = "/{examID:[\\d]+}", method = PUT)
     public ResponseEntity<Object> getExam(@PathVariable int examID,
                                           @RequestBody ExamPUTWrapper examWrapper,
-                                          HttpServletRequest request) {
+                                          HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
         try {
-            User user = jwtService.getUser((Claims) request.getAttribute("claims"));
-            Exam exam = examService.getExamByID(examID);
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session, (Claims) request.getAttribute("claims"));
+            Exam exam = examService.getExamByID(session, examID);
             Group group = exam.get_group();
             Class cl = group.get_class();
             if(cl.get_teacher().getID() != user.getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
-
-            exam = examService.updateExam(exam, examWrapper.getName(), examWrapper.getBeginDate(), examWrapper.getDuration());
+            exam = examService.updateExam(session, exam, examWrapper.getName(), examWrapper.getBeginDate(), examWrapper.getDuration());
             return new ResponseEntity<Object>(new ExamWrapper(exam, true, true), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
@@ -66,21 +69,24 @@ public class ExamController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_EXAM), NOT_FOUND);
         } catch (ExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(EXAM_EXISTS), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/{examID:[\\d]+}", method = DELETE)
     public ResponseEntity<Object> deleteExam(@PathVariable int examID,
-                                             HttpServletRequest request) {
+                                             HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
         try {
-            User user = jwtService.getUser((Claims) request.getAttribute("claims"));
-            Exam exam = examService.getExamByID(examID);
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session, (Claims) request.getAttribute("claims"));
+            Exam exam = examService.getExamByID(session, examID);
             Group group = exam.get_group();
             Class cl = group.get_class();
             if(cl.get_teacher().getID() != user.getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
-
-            examService.deleteExam(exam);
+            examService.deleteExam(session, exam);
             return new ResponseEntity<Object>(OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
@@ -90,32 +96,32 @@ public class ExamController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_EXAM), NOT_FOUND);
         } catch (EntityNotRemovableException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(EXAM_NOT_REMOVABLE), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/{examID:[\\d]+}", method = GET)
-    public ResponseEntity<Object> getExam(@PathVariable int examID, HttpServletRequest request){
-        try{
-            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
-            Exam exam = examService.getExamByID(examID);
+    public ResponseEntity<Object> getExam(@PathVariable int examID, HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
+        try {
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
+            Exam exam = examService.getExamByID(session, examID);
             Group group = exam.get_group();
             Class cl = group.get_class();
             switch (user.getClass().getSimpleName()){
                 case "Teacher":
                     if(user.getID() == cl.get_teacher().getID())
                         return new ResponseEntity<Object>(new ExamWrapper(exam,false, false), OK);
-                    else
-                        return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                    return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
                 case "Student":
                     Student student = (Student)user;
-                    if(!groupService.studentInGroup(student,group)) {
-                            return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
-                    }
-
+                    if(!groupService.studentInGroup(student,group))
+                        return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
                     if(examService.examHasStarted(exam))
-                            return new ResponseEntity<Object>(new ExamWrapper(exam,false,true), OK);
-                    else
-                        return new ResponseEntity<Object>(new ExamWrapper(exam, true, true), OK);
+                        return new ResponseEntity<Object>(new ExamWrapper(exam, false, true), OK);
+                    return new ResponseEntity<Object>(new ExamWrapper(exam, true, true), OK);
                 default:
                     return null; // Nunca acontece
             }
@@ -125,6 +131,8 @@ public class ExamController {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_EXAM), NOT_FOUND);
+        } finally {
+            session.close();
         }
     }
 
@@ -132,22 +140,24 @@ public class ExamController {
     @RequestMapping(value = "/{examID:[\\d]+}/submissions", method = POST)
     public ResponseEntity<Object> postSubmission(@PathVariable int examID,
                                                  @RequestBody Map<Integer, Integer> answersMap,
-                                                 HttpServletRequest request){
-        try{
-            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
-            Exam exam = examService.getExamByID(examID);
+                                                 HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
+        try {
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
+            Exam exam = examService.getExamByID(session, examID);
             Group group = exam.get_group();
             if(!(user instanceof Student))
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
-            Student student = (Student)user;
-            if(!groupService.studentInGroup(student,group))
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            if(submissionService.exists(student,exam))
+            Student student = (Student) user;
+            if (!groupService.studentInGroup(student, group))
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+            if (submissionService.exists(session, student, exam))
                 return new ResponseEntity<>(new ErrorWrapper(SUBMISSION_EXISTS), NOT_ACCEPTABLE);
 
-            Map<Question, Answer> answers = this.getAnswers(answersMap);
-            Submission submission = submissionService.submit(student, exam, answers);
+            Map<Question, Answer> answers = this.getAnswers(session, answersMap);
+            Submission submission = submissionService.submit(session, student, exam, answers);
             return new ResponseEntity<Object>(new SubmissionWrapper(submission, false, true), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
@@ -161,29 +171,33 @@ public class ExamController {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION), NOT_ACCEPTABLE);
         } catch (ExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(SUBMISSION_EXISTS), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
 
-    private Map<Question, Answer> getAnswers(Map<Integer, Integer> answersMap) throws PersistentException, NonExistentEntityException {
+    private Map<Question, Answer> getAnswers(PersistentSession session, Map<Integer, Integer> answersMap)
+            throws PersistentException, NonExistentEntityException {
         Map<Question, Answer> answers = new HashMap<>();
         for(int qid: answersMap.keySet()){
-            Question question = questionService.getQuestionByID(qid);
-            Answer answer = answerService.getAnswerByID(answersMap.get(qid));
+            Question question = questionService.getQuestionByID(session, qid);
+            Answer answer = answerService.getAnswerByID(session, answersMap.get(qid));
             answers.put(question, answer);
         }
         return answers;
     }
 
     @RequestMapping(value = "/{examID:[\\d]+}/scores", method = GET)
-    public ResponseEntity<Object> getScores(@PathVariable int examID, HttpServletRequest request){
+    public ResponseEntity<Object> getScores(@PathVariable int examID, HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
         try {
-            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
-            Exam exam = examService.getExamByID(examID);
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
+            Exam exam = examService.getExamByID(session, examID);
 
             if(!groupService.userHasAccess(exam.get_group(),user))
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
-
-            Map<Student, Score> scoreMap = examService.getExamScores(exam);
+            Map<Student, Score> scoreMap = examService.getExamScores(session, exam);
             return new ResponseEntity<Object>(new StudentsScoresWrapper(scoreMap), OK);
         } catch (PersistentException e){
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
@@ -193,6 +207,8 @@ public class ExamController {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         } catch (InvalidExamException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_EXAM), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
 

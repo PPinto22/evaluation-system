@@ -1,11 +1,13 @@
 package db;
 
+import dao.ClassesPersistentManager;
 import exception.ExistentEntityException;
 import exception.MissingInformationException;
 import exception.UnconfirmedRegistrationException;
 import model.*;
 import model.Class;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -35,6 +37,8 @@ public class PopulateDB implements CommandLineRunner {
     @Autowired
     NotificationService notifSrv;
 
+    private static PersistentSession session = null;
+
     public static final int N_TEACHERS = 10;
     public static final int N_STUDENTS = 10;
     public static final int N_TEACHER_CLASSES = 2;
@@ -54,8 +58,14 @@ public class PopulateDB implements CommandLineRunner {
         System.exit(0);
     }
 
+    private PersistentSession getSession() throws PersistentException {
+        if(session == null || !session.isOpen())
+            session = ClassesPersistentManager.instance().getSession();
+        return session;
+    }
+
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws PersistentException {
         addStudents();
         addTeachers();
         addClasses();
@@ -69,7 +79,7 @@ public class PopulateDB implements CommandLineRunner {
         for(Class cl: this.classes.values()){
             for(Question question: this.getQuestions())
                 try{
-                    classSrv.addQuestionToClass(cl, question);
+                    classSrv.addQuestionToClass(getSession(), cl, question);
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -111,7 +121,7 @@ public class PopulateDB implements CommandLineRunner {
                     case "GroupInvitation":
                         GroupInvitation invitation = (GroupInvitation)notification;
                         try{
-                            notifSrv.acceptInvitation(invitation);
+                            notifSrv.acceptInvitation(getSession(), invitation);
                         } catch (UnconfirmedRegistrationException e) {
                             // Utilizador nao registado; nao e possivel aceitar.
                         } catch (PersistentException e) {
@@ -131,18 +141,17 @@ public class PopulateDB implements CommandLineRunner {
                 int j = (group_i*(N_GROUPS_STUDENTS-1) + i) % (N_STUDENTS-1) + 1;
                 try {
                     Student student = this.students.get(j);
-                    GroupStudent groupStudent = groupSrv.addStudentToGroupByEmail(
-                            group, student.getEmail()
-                            );
+                    GroupStudent groupStudent = groupSrv.addStudentToGroupByEmail(getSession(),
+                            group,
+                            student.getEmail());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             try{
-                GroupStudent groupStudent = groupSrv.addStudentToGroupByEmail(
+                GroupStudent groupStudent = groupSrv.addStudentToGroupByEmail(getSession(),
                         group,
-                        "email"+this.students.size()+this.teachers.size()+1
-                );
+                        "email"+this.students.size()+this.teachers.size()+1);
                 Student student = groupStudent.get_student();
                 this.students.put(student.getID(),student);
             } catch (Exception e){ e.printStackTrace(); }
@@ -167,7 +176,7 @@ public class PopulateDB implements CommandLineRunner {
         int i = this.groups.size()+1;
         Group group = new Group();
         group.setName("Name"+i);
-        group = this.classSrv.addGroupToClass(cl, group);
+        group = this.classSrv.addGroupToClass(getSession(), cl, group);
         this.groups.put(group.getID(), group);
     }
 
@@ -188,7 +197,7 @@ public class PopulateDB implements CommandLineRunner {
         Class cl = new Class();
         cl.setAbbreviation("Abbreviation"+i);
         cl.setName("Name"+i);
-        cl = teacherSrv.addClassToTeacher(teacher, cl);
+        cl = teacherSrv.addClassToTeacher(getSession(), teacher, cl);
         this.classes.put(cl.getID(), cl);
     }
 
@@ -221,7 +230,7 @@ public class PopulateDB implements CommandLineRunner {
         signup.setFirstName("firstName"+i);
         signup.setLastName("lastName"+i);
 
-        User user = userSrv.signup(signup, type, true);
+        User user = userSrv.signup(getSession(), signup, type, true);
 
         switch (type){
             case "student":

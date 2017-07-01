@@ -23,21 +23,21 @@ import java.util.List;
 public class GroupStudentDAOImpl implements GroupStudentDAO {
 
 	@Override
-	public GroupStudent loadGroupStudentByGroupAndStudent(int groupID, int studentID) throws PersistentException {
-		GroupStudentCriteria criteria = new GroupStudentCriteria();
+	public GroupStudent loadGroupStudentByGroupAndStudent(PersistentSession session, int groupID, int studentID) throws PersistentException {
+		GroupStudentCriteria criteria = new GroupStudentCriteria(session);
 		criteria._groupId.eq(groupID);
 		criteria._studentId.eq(studentID);
 		return this.loadGroupStudentByCriteria(criteria);
 	}
 
 	@Override
-	public boolean exists(int id) throws PersistentException {
-		return this.getGroupStudentByORMID(id) != null;
+	public boolean exists(PersistentSession session, int id) throws PersistentException {
+		return this.getGroupStudentByORMID(session, id) != null;
 	}
 
 	@Override
-	public boolean exists(int groupID, int studentID) throws PersistentException {
-		GroupStudentCriteria criteria = new GroupStudentCriteria();
+	public boolean exists(PersistentSession session, int groupID, int studentID) throws PersistentException {
+		GroupStudentCriteria criteria = new GroupStudentCriteria(session);
 		criteria._groupId.eq(groupID);
 		criteria._studentId.eq(studentID);
 		return this.loadGroupStudentByCriteria(criteria) != null;

@@ -5,6 +5,7 @@ import exception.NonExistentEntityException;
 import io.jsonwebtoken.*;
 import model.User;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.stereotype.Service;
 import service.UserService;
 
@@ -36,7 +37,7 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, signingKey).compact();
     }
 
-    public User getUser(Claims claims) throws InvalidClaimsException, PersistentException {
+    public User getUser(PersistentSession session, Claims claims) throws InvalidClaimsException, PersistentException {
         int userID;
         try {
             userID = Integer.parseInt(claims.getSubject());
@@ -44,7 +45,7 @@ public class JwtService {
             throw new InvalidClaimsException();
         }
         try{
-            return userService.getUserByID(userID);
+            return userService.getUserByID(session, userID);
         } catch (NonExistentEntityException e) {
             throw new InvalidClaimsException();
         }

@@ -1,11 +1,13 @@
 package controller;
 
+import dao.ClassesPersistentManager;
 import exception.*;
 import io.jsonwebtoken.Claims;
 import model.Answer;
 import model.Question;
 import model.User;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,10 +42,12 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/{id:[\\d]+}", method = GET)
-    public ResponseEntity<Object> getQuestion(@PathVariable int id, HttpServletRequest request){
+    public ResponseEntity<Object> getQuestion(@PathVariable int id, HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
         try {
-            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
-            Question question = questionService.getQuestionByID(id);
+            session = ClassesPersistentManager.instance().getSession();
+            User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
+            Question question = questionService.getQuestionByID(session, id);
             if(clientUser.getID() != question.get_class().get_teacher().getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
@@ -54,19 +58,23 @@ public class QuestionController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_QUESTION), NOT_FOUND);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/{id:[\\d]+}", method = DELETE)
     public ResponseEntity<Object> updateQuestion(@PathVariable int id,
-                                                 HttpServletRequest request) {
+                                                 HttpServletRequest request)  throws PersistentException{
+        PersistentSession session = null;
         try {
-            User clientUser = jwtService.getUser((Claims) request.getAttribute("claims"));
-            Question question = questionService.getQuestionByID(id);
+            session = ClassesPersistentManager.instance().getSession();
+            User clientUser = jwtService.getUser(session, (Claims) request.getAttribute("claims"));
+            Question question = questionService.getQuestionByID(session, id);
             if (clientUser.getID() != question.get_class().get_teacher().getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            questionService.delete(question);
+            questionService.delete(session, question);
 
             return new ResponseEntity<Object>(OK);
         } catch (PersistentException e) {
@@ -77,27 +85,31 @@ public class QuestionController {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
         } catch (EntityNotRemovableException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(QUESTION_NOT_REMOVABLE), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/{id:[\\d]+}", method = PUT)
     public ResponseEntity<Object> updateQuestion(@PathVariable int id,
                                                  @RequestBody QuestionWrapper questionWrapper,
-                                                 HttpServletRequest request){
+                                                 HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
         try {
-            User clientUser = jwtService.getUser((Claims)request.getAttribute("claims"));
-            Question question = questionService.getQuestionByID(id);
+            session = ClassesPersistentManager.instance().getSession();
+            User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
+            Question question = questionService.getQuestionByID(session, id);
             if(clientUser.getID() != question.get_class().get_teacher().getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            if (questionService.questionInUse(question))
+            if (questionService.questionInUse(session, question))
                 return new ResponseEntity<Object>(new ErrorWrapper(QUESTION_IN_USE), NOT_ACCEPTABLE);
 
             String text = questionWrapper.getText();
             String category = questionWrapper.getCategory();
             Integer difficulty = questionWrapper.getDifficulty();
             List<Answer> answers = getAnswersFromWrapper(questionWrapper);
-            question = questionService.updateQuestion(question, text, category, difficulty, answers);
+            question = questionService.updateQuestion(session, question, text, category, difficulty, answers);
 
             return new ResponseEntity<Object>(new QuestionWrapper(question,false), OK);
         } catch (PersistentException e) {
@@ -110,6 +122,8 @@ public class QuestionController {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION), NOT_ACCEPTABLE);
         } catch (ExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(QUESTION_EXISTS), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
 

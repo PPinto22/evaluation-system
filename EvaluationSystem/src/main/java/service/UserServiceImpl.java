@@ -6,6 +6,7 @@ import model.Student;
 import model.Teacher;
 import model.User;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,20 +36,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUserByID(int userID) throws PersistentException, NonExistentEntityException {
-        if(!this.userDAO.exists(userID))
+    public User getUserByID(PersistentSession session, int userID) throws PersistentException, NonExistentEntityException {
+        if(!this.userDAO.exists(session, userID))
             throw new NonExistentEntityException();
 
-        return userDAO.getUserByORMID(userID);
+        return userDAO.getUserByORMID(session, userID);
     }
 
     @Override
-    public User getUserByEmail(String email, String type) throws NonExistentEntityException, PersistentException, InvalidUserTypeException {
+    public User getUserByEmail(PersistentSession session, String email, String type) throws NonExistentEntityException, PersistentException, InvalidUserTypeException {
         switch (type.toLowerCase()){
             case "student":
-                return this.studentService.getStudentByEmail(email);
+                return this.studentService.getStudentByEmail(session, email);
             case "teacher":
-                return this.teacherService.getTeacherByEmail(email);
+                return this.teacherService.getTeacherByEmail(session, email);
             default:
                 throw new InvalidUserTypeException();
         }
@@ -56,11 +57,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User update(User user, String firstName, String lastName, String password) throws PersistentException {
-        if(firstName != null || !firstName.equals(""))
+        if(firstName != null && !firstName.equals(""))
             user.setFirstName(firstName);
-        if(lastName != null || !lastName.equals(""))
+        if(lastName != null && !lastName.equals(""))
             user.setLastName(lastName);
-        if(password != null || !password.equals("")) {
+        if(password != null && !password.equals("")) {
             user.setPassword(password);
             user.hashPassword();
         }
@@ -69,15 +70,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User login(String email, String password) throws PersistentException, InvalidAuthenticationException, UnconfirmedRegistrationException {
+    public User login(PersistentSession session, String email, String password) throws PersistentException, InvalidAuthenticationException, UnconfirmedRegistrationException {
         password = User.getHash(password);
-        if(!userDAO.exists(email)){
+        if(!userDAO.exists(session, email)){
             throw new InvalidAuthenticationException();
         }
 
         User user = null;
         try {
-            user = userDAO.loadUserByAuthentication(email,password);
+            user = userDAO.loadUserByAuthentication(session, email, password);
         } catch (UnconfirmedRegistrationException e) {
             throw new UnconfirmedRegistrationException();
         } catch (InvalidUserException e) {
@@ -90,27 +91,27 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User signup(User userDetails, String type, boolean confirmRegistration)
+    public User signup(PersistentSession session, User userDetails, String type, boolean confirmRegistration)
             throws PersistentException, MissingInformationException, ExistentEntityException, InvalidUserTypeException {
         if(userDetails.isMissingInformation() || type == null){
             throw new MissingInformationException();
         }
 
-        if(this.existsActive(userDetails.getEmail()))
+        if(this.existsActive(session, userDetails.getEmail()))
             throw new ExistentEntityException();
 
         try {
-            User user = this.getUserByEmail(userDetails.getEmail(), type);
-            return this.setupAndUpdate(userDetails, type, confirmRegistration);
+            User user = this.getUserByEmail(session, userDetails.getEmail(), type);
+            return this.setupAndUpdate(session, userDetails, type, confirmRegistration);
         } catch (NonExistentEntityException e) {
             return this.setupAndSave(userDetails,type, confirmRegistration);
         }
     }
 
-    private User setupAndUpdate(User userDetails, String type, boolean register) throws NonExistentEntityException, PersistentException {
+    private User setupAndUpdate(PersistentSession session, User userDetails, String type, boolean register) throws NonExistentEntityException, PersistentException {
         User user = null;
         try {
-            user = this.getUserByEmail(userDetails.getEmail(), type);
+            user = this.getUserByEmail(session, userDetails.getEmail(), type);
         } catch (InvalidUserTypeException e) {
             e.printStackTrace();
         }
@@ -147,28 +148,28 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void delete(User user) throws PersistentException {
+    public void delete(PersistentSession session, User user) throws PersistentException {
         switch (user.getClass().getSimpleName()){
             case "Teacher":
-                teacherService.delete((Teacher)user);
+                teacherService.delete(session, (Teacher)user);
                 break;
             case "Student":
-                studentService.delete((Student)user);
+                studentService.delete(session, (Student)user);
                 break;
         }
     }
 
     @Override
-    public boolean exists(int ID) throws PersistentException {
-        return this.userDAO.exists(ID);
+    public boolean exists(PersistentSession session, int ID) throws PersistentException {
+        return this.userDAO.exists(session, ID);
     }
 
     @Override
-    public boolean exists(String email) throws PersistentException {
-        return this.userDAO.exists(email);
+    public boolean exists(PersistentSession session, String email) throws PersistentException {
+        return this.userDAO.exists(session, email);
     }
 
-    public boolean existsActive(String email) throws PersistentException {
-        return this.userDAO.existsActive(email);
+    public boolean existsActive(PersistentSession session, String email) throws PersistentException {
+        return this.userDAO.existsActive(session, email);
     }
 }

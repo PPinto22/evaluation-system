@@ -18,7 +18,7 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface GroupInvitationDAO {
-	public GroupInvitation loadGroupInvitationByGroupAndStudent(Group group, Student student) throws PersistentException;
+	public GroupInvitation loadGroupInvitationByGroupAndStudent(PersistentSession session, Group group, Student student) throws PersistentException;
 
 	public GroupInvitation loadGroupInvitationByORMID(int ID) throws PersistentException;
 	public GroupInvitation getGroupInvitationByORMID(int ID) throws PersistentException;

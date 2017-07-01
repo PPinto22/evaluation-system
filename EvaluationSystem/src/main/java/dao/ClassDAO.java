@@ -19,9 +19,9 @@ import org.hibernate.LockMode;
 public interface ClassDAO {
 
 	//Nosso codigo
-	boolean exists(int ID) throws PersistentException;
-	boolean exists(int teacherID, String className) throws PersistentException;
-	Class getClassByName(int teacherID, String className) throws PersistentException, NonExistentEntityException;
+	boolean exists(PersistentSession session, int ID) throws PersistentException;
+	boolean exists(PersistentSession session, int teacherID, String className) throws PersistentException;
+	Class getClassByName(PersistentSession session, int teacherID, String className) throws PersistentException, NonExistentEntityException;
 
 	//Codigo gerado
 	public Class loadClassByORMID(int ID) throws PersistentException;

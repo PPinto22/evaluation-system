@@ -24,28 +24,28 @@ import java.util.List;
 public class SubmissionDAOImpl implements SubmissionDAO {
 
 	@Override
-	public boolean existsExam(int examID) throws PersistentException {
-		SubmissionCriteria criteria = new SubmissionCriteria();
+	public boolean existsExam(PersistentSession session, int examID) throws PersistentException {
+		SubmissionCriteria criteria = new SubmissionCriteria(session);
 		criteria._examId.eq(examID);
 		return loadSubmissionByCriteria(criteria) != null;
 	}
 
 	@Override
-	public Submission loadSubmissionByStudentAndExam(int studentID, int examID) throws PersistentException {
-		SubmissionCriteria criteria = new SubmissionCriteria();
+	public Submission loadSubmissionByStudentAndExam(PersistentSession session, int studentID, int examID) throws PersistentException {
+		SubmissionCriteria criteria = new SubmissionCriteria(session);
 		criteria._examId.eq(examID);
 		criteria._studentId.eq(studentID);
 		return this.loadSubmissionByCriteria(criteria);
 	}
 
 	@Override
-	public boolean exists(int ID) throws PersistentException {
-		return this.getSubmissionByORMID(ID) != null;
+	public boolean exists(PersistentSession session, int ID) throws PersistentException {
+		return this.getSubmissionByORMID(session, ID) != null;
 	}
 
 	@Override
-	public boolean exists(int studentID, int examID) throws PersistentException {
-		SubmissionCriteria criteria = new SubmissionCriteria();
+	public boolean exists(PersistentSession session, int studentID, int examID) throws PersistentException {
+		SubmissionCriteria criteria = new SubmissionCriteria(session);
 		criteria._studentId.eq(studentID);
 		criteria._examId.eq(examID);
 		return this.loadSubmissionByCriteria(criteria) != null;

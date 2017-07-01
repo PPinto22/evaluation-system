@@ -24,32 +24,32 @@ import java.util.List;
 @Repository
 public class TeacherDAOImpl implements TeacherDAO {
 	@Override
-	public Teacher loadTeacherByEmail(String email) throws PersistentException {
-		TeacherCriteria criteria = new TeacherCriteria();
+	public Teacher loadTeacherByEmail(PersistentSession session, String email) throws PersistentException {
+		TeacherCriteria criteria = new TeacherCriteria(session);
 		criteria.email.eq(email);
 		criteria.deleted.eq(false);
 		return this.loadTeacherByCriteria(criteria);
 	}
 
 	@Override
-	public boolean exists(int ID) throws PersistentException {
-		TeacherCriteria criteria = new TeacherCriteria();
+	public boolean exists(PersistentSession session, int ID) throws PersistentException {
+		TeacherCriteria criteria = new TeacherCriteria(session);
 		criteria.ID.eq(ID);
 		criteria.deleted.eq(false);
 		return this.loadTeacherByCriteria(criteria) != null;
 	}
 
 	@Override
-	public boolean exists(String email) throws PersistentException {
-		TeacherCriteria criteria = new TeacherCriteria();
+	public boolean exists(PersistentSession session, String email) throws PersistentException {
+		TeacherCriteria criteria = new TeacherCriteria(session);
 		criteria.email.eq(email);
 		criteria.deleted.eq(false);
 		return this.loadTeacherByCriteria(criteria) != null;
 	}
 
 	@Override
-	public boolean existsActive(String email) throws PersistentException {
-		TeacherCriteria criteria = new TeacherCriteria();
+	public boolean existsActive(PersistentSession session, String email) throws PersistentException {
+		TeacherCriteria criteria = new TeacherCriteria(session);
 		criteria.email.eq(email);
 		criteria.registered.eq(true);
 		criteria.deleted.eq(false);

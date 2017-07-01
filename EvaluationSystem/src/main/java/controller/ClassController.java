@@ -1,10 +1,12 @@
 package controller;
 
+import dao.ClassesPersistentManager;
 import exception.*;
 import io.jsonwebtoken.Claims;
 import model.*;
 import model.Class;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,29 +40,35 @@ public class ClassController {
     }
 
     @RequestMapping(value = "/{id:[\\d]+}", method = GET)
-    public ResponseEntity<Object> getClass(@PathVariable int id){
+    public ResponseEntity<Object> getClass(@PathVariable int id) throws PersistentException {
         Class cl = null;
+        PersistentSession session = null;
         try {
-            cl = classService.getClassByID(id);
+            session = ClassesPersistentManager.instance().getSession();
+            cl = classService.getClassByID(session, id);
+            return new ResponseEntity<Object>(new ClassTeacherWrapper(cl),OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), HttpStatus.NOT_FOUND);
+        } finally {
+            session.close();
         }
-        return new ResponseEntity<Object>(new ClassTeacherWrapper(cl),OK);
     }
 
     @RequestMapping(value = "/{id:[\\d]+}", method = PUT)
     public ResponseEntity<Object> updateClass(@PathVariable int id,
                                               @RequestBody Class clWrapper,
-                                              HttpServletRequest request) {
+                                              HttpServletRequest request) throws PersistentException {
+        PersistentSession session = null;
         try {
-            User clientUser = jwtService.getUser((Claims) request.getAttribute("claims"));
-            Class cl = classService.getClassByID(id);
+            session = ClassesPersistentManager.instance().getSession();
+            User clientUser = jwtService.getUser(session,(Claims) request.getAttribute("claims"));
+            Class cl = classService.getClassByID(session, id);
             if (clientUser.getID() != cl.get_teacher().getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            cl = classService.updateClass(cl, clWrapper.getName(), clWrapper.getAbbreviation());
+            cl = classService.updateClass(session, cl, clWrapper.getName(), clWrapper.getAbbreviation());
             return new ResponseEntity<Object>(new ClassTeacherWrapper(cl), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
@@ -70,19 +78,23 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
         } catch (ExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(CLASS_EXISTS), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/{id:[\\d]+}", method = DELETE)
     public ResponseEntity<Object> updateClass(@PathVariable int id,
-                                              HttpServletRequest request) {
+                                              HttpServletRequest request) throws PersistentException {
+        PersistentSession session = null;
         try {
-            User clientUser = jwtService.getUser((Claims) request.getAttribute("claims"));
-            Class cl = classService.getClassByID(id);
+            session = ClassesPersistentManager.instance().getSession();
+            User clientUser = jwtService.getUser(session,(Claims) request.getAttribute("claims"));
+            Class cl = classService.getClassByID(session, id);
             if (clientUser.getID() != cl.get_teacher().getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            classService.delete(cl);
+            classService.delete(session, cl);
             return new ResponseEntity<Object>(OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
@@ -92,19 +104,23 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
         } catch (EntityNotRemovableException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(CLASS_NOT_REMOVABLE), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
 
 
     @RequestMapping(value = "/{classID:[\\d]+}/groups", method = POST)
-    public ResponseEntity<Object> postGroup(@PathVariable int classID, @RequestBody Group group, HttpServletRequest request){
+    public ResponseEntity<Object> postGroup(@PathVariable int classID, @RequestBody Group group, HttpServletRequest request) throws PersistentException {
+        PersistentSession session = null;
         try {
-            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
-            Class cl = this.classService.getClassByID(classID);
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session,(Claims)request.getAttribute("claims"));
+            Class cl = this.classService.getClassByID(session, classID);
             if(!user.equals(cl.get_teacher()))
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            classService.addGroupToClass(cl, group);
+            classService.addGroupToClass(session, cl, group);
             return new ResponseEntity<Object>(new GroupClassWrapper(group), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
@@ -114,13 +130,17 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(GROUP_EXISTS), NOT_ACCEPTABLE);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        } finally {
+            session.close();
         }
     }
     
     @RequestMapping(value = "/{classID:[\\d]+}/groups", method = GET)
-    public ResponseEntity<Object> postGroup(@PathVariable int classID){
+    public ResponseEntity<Object> postGroup(@PathVariable int classID) throws PersistentException {
+        PersistentSession session = null;
         try {
-            Class cl = classService.getClassByID(classID);
+            session = ClassesPersistentManager.instance().getSession();
+            Class cl = classService.getClassByID(session, classID);
             List<GroupWrapper> groups = new ArrayList<>();
             for(Group group: cl._groups.toArray()){
                 groups.add(new GroupWrapper(group));
@@ -130,22 +150,25 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/{classID:[\\d]+}/questions", method = GET)
-    public ResponseEntity<Object> getQuestions(@PathVariable int classID, HttpServletRequest request){
+    public ResponseEntity<Object> getQuestions(@PathVariable int classID, HttpServletRequest request) throws PersistentException {
+        PersistentSession session = null;
         try {
-            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
-            Class cl = classService.getClassByID(classID);
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session,(Claims)request.getAttribute("claims"));
+            Class cl = classService.getClassByID(session, classID);
             if(!user.equals(cl.get_teacher()))
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
-            List<Question> questions = classService.listClassQuestions(cl);
+            List<Question> questions = classService.listClassQuestions(session, cl);
             List<QuestionWrapper> questionWrappers = new ArrayList<>();
-            for(Question question: questions)
+            for (Question question : questions)
                 questionWrappers.add(new QuestionWrapper(question, false));
-
             return new ResponseEntity<Object>(questionWrappers, OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
@@ -153,20 +176,24 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/{classID:[\\d]+}/questions", method = POST)
     public ResponseEntity<Object> postQuestions(@PathVariable int classID,
                                                 @RequestBody QuestionWrapper questionWrapper,
-                                                HttpServletRequest request){
+                                                HttpServletRequest request) throws PersistentException {
+        PersistentSession session = null;
         try {
-            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
-            Class cl = classService.getClassByID(classID);
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session,(Claims)request.getAttribute("claims"));
+            Class cl = classService.getClassByID(session, classID);
             if(user.getID() != cl.get_teacher().getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
             Question question = this.getQuestionFromWrapper(questionWrapper);
-            question = this.classService.addQuestionToClass(cl, question);
+            question = this.classService.addQuestionToClass(session, cl, question);
             return new ResponseEntity<Object>(new QuestionWrapper(question, false), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
@@ -178,18 +205,21 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(QUESTION_EXISTS), NOT_ACCEPTABLE);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/{classID:[\\d]+}/categories", method = GET)
-    public ResponseEntity<Object> getCategories(@PathVariable int classID, HttpServletRequest request){
+    public ResponseEntity<Object> getCategories(@PathVariable int classID, HttpServletRequest request) throws PersistentException {
+        PersistentSession session = null;
         try {
-            User user = jwtService.getUser((Claims)request.getAttribute("claims"));
-            Class cl = classService.getClassByID(classID);
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session,(Claims)request.getAttribute("claims"));
+            Class cl = classService.getClassByID(session, classID);
             if(!user.equals(cl.get_teacher()))
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
-
-            Set<String> categories = classService.getClassCategories(cl);
+            Set<String> categories = classService.getClassCategories(session, cl);
             return new ResponseEntity<Object>(categories, OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
@@ -197,6 +227,8 @@ public class ClassController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_AUTHENTICATION), UNAUTHORIZED);
+        } finally {
+            session.close();
         }
     }
 

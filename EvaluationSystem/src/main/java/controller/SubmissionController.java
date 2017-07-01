@@ -1,5 +1,6 @@
 package controller;
 
+import dao.ClassesPersistentManager;
 import exception.InvalidAnswerException;
 import exception.InvalidClaimsException;
 import exception.InvalidQuestionException;
@@ -10,6 +11,7 @@ import model.Question;
 import model.Submission;
 import model.User;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,25 +54,31 @@ public class SubmissionController {
         this.answerService = answerService;
     }
 
+    // TODO validar utilizador
     @RequestMapping(value = "/{submissionID:[\\d]+}", method = GET)
-    public ResponseEntity<Object> getSubmission(@PathVariable int submissionID, HttpServletRequest request){
-        // TODO validar utilizador
+    public ResponseEntity<Object> getSubmission(@PathVariable int submissionID, HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
         try {
-            Submission submission = submissionService.getSubmissionByID(submissionID);
+            session = ClassesPersistentManager.instance().getSession();
+            Submission submission = submissionService.getSubmissionByID(session, submissionID);
             boolean hideAnswers = !examService.examHasFinished(submission.get_exam());
             return new ResponseEntity<Object>(new SubmissionExamWrapper(submission, false, hideAnswers), OK);
         } catch (PersistentException e){
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_SUBMISSION), NOT_FOUND);
+        } finally {
+            session.close();
         }
     }
 
     @RequestMapping(value = "/{submissionID:[\\d]+}", method = DELETE)
-    public ResponseEntity<Object> deleteSubmission(@PathVariable int submissionID, HttpServletRequest request){
+    public ResponseEntity<Object> deleteSubmission(@PathVariable int submissionID, HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
         try {
-            User user = jwtService.getUser((Claims) request.getAttribute("claims"));
-            Submission submission = submissionService.getSubmissionByID(submissionID);
+            session = ClassesPersistentManager.instance().getSession();
+            User user = jwtService.getUser(session, (Claims) request.getAttribute("claims"));
+            Submission submission = submissionService.getSubmissionByID(session, submissionID);
             if(submission.get_student().getID() != user.getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
@@ -82,18 +90,22 @@ public class SubmissionController {
             return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_SUBMISSION), NOT_FOUND);
         } catch (InvalidClaimsException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+        } finally {
+            session.close();
         }
     }
 
+    // TODO validar utilizador
     @RequestMapping(value = "/{submissionID:[\\d]+}", method = PUT)
     public ResponseEntity<Object> updateSubmission(@PathVariable int submissionID,
                                                    @RequestBody Map<Integer, Integer> answersMap,
-                                                   HttpServletRequest request){
-        // TODO validar utilizador
+                                                   HttpServletRequest request) throws PersistentException{
+        PersistentSession session = null;
         try {
-            Submission submission = submissionService.getSubmissionByID(submissionID);
-            Map<Question, Answer> answers = getAnswers(answersMap);
-            submission = submissionService.updateSubmission(submission, answers);
+            session = ClassesPersistentManager.instance().getSession();
+            Submission submission = submissionService.getSubmissionByID(session, submissionID);
+            Map<Question, Answer> answers = getAnswers(session, answersMap);
+            submission = submissionService.updateSubmission(session, submission, answers);
             return new ResponseEntity<Object>(new SubmissionWrapper(submission, false, true), OK);
         } catch (PersistentException e){
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
@@ -103,13 +115,15 @@ public class SubmissionController {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_ANSWER), NOT_ACCEPTABLE);
         } catch (InvalidQuestionException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INVALID_QUESTION), NOT_ACCEPTABLE);
+        } finally {
+            session.close();
         }
     }
-    private Map<Question, Answer> getAnswers(Map<Integer, Integer> answersMap) throws PersistentException, NonExistentEntityException {
+    private Map<Question, Answer> getAnswers(PersistentSession session, Map<Integer, Integer> answersMap) throws PersistentException, NonExistentEntityException {
         Map<Question, Answer> answers = new HashMap<>();
         for(int qid: answersMap.keySet()){
-            Question question = questionService.getQuestionByID(qid);
-            Answer answer = answerService.getAnswerByID(answersMap.get(qid));
+            Question question = questionService.getQuestionByID(session, qid);
+            Answer answer = answerService.getAnswerByID(session, answersMap.get(qid));
             answers.put(question, answer);
         }
         return answers;
