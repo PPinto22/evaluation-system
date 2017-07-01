@@ -22,6 +22,8 @@ export class ExamCreateComponent implements OnInit {
   private allQuestionsAvailable: any = {};
   private updateDificulty = false;
   private allGenerateNow: Map<string, Map<number, Array<number>>>;
+  private saveAll = false;
+  private generateAll = false;
 
   private questionsIds: number[];
 
@@ -189,6 +191,29 @@ export class ExamCreateComponent implements OnInit {
     } else {
       this.updateDificulty = true;
     }
+  }
+
+  public generateAllNow(): void {
+    this.saveAll = !this.saveAll;
+    let allok = true;
+    setTimeout( () => {
+      for (const quest of this.questions) {
+        console.log(quest);
+        if (( (quest.dificulty + '') !== '-1' && quest.dificulty) && quest.category) {
+          console.log('entrei  aqui');
+        } else {
+          console.log(' lixo com esta');
+          allok = false;
+          break;
+        }
+      }
+      console.log(allok)
+      console.log('all ok')
+      if ( allok ) {
+        this.generateAll = true;
+      }
+
+    }, 1);
   }
 
 

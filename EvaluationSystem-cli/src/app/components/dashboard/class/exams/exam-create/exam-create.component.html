@@ -11,7 +11,7 @@
 <div class="row">
   <div class="col-md-4 col-md-offset-8 col-sm-6 col-sm-offset-6 col-xs-12">
     <div class="col-md-6">
-      <button type="button" class="btn btn-primary btn-block">Generate All</button>
+      <button (click)="generateAllNow()" type="button" class="btn btn-primary btn-block">Generate All</button>
     </div>
     <div class="col-md-6">
       <button type="submit" class="btn btn-primary btn-block">Create</button>
@@ -106,7 +106,7 @@
       </div>
       <div class="panel-body">
         <div class="panel-body" >
-            <app-question-add *ngFor="let question of questions" [groupId]="groupId" [question]="question" [updateDificulty]="updateDificulty" [categories]="categoriesName" [allQuestionsAvailable]="allQuestionsAvailable" [allGenerateNow]="allGenerateNow" (changeNow)="changeNow()" (removeQuestion)="removeQuest($event)" (removeFromAllQuestionsAvailable)="removeFromAllQuestionsAvailable($event)" ></app-question-add>
+            <app-question-add *ngFor="let question of questions" [groupId]="groupId" [question]="question" [updateDificulty]="updateDificulty" [saveAll]="saveAll" [generateAll]="generateAll" [categories]="categoriesName" [allQuestionsAvailable]="allQuestionsAvailable" [allGenerateNow]="allGenerateNow" (changeNow)="changeNow()" (removeQuestion)="removeQuest($event)" (removeFromAllQuestionsAvailable)="removeFromAllQuestionsAvailable($event)" ></app-question-add>
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@
 <div class="row">
   <div class="col-md-4 col-md-offset-8 col-sm-6 col-sm-offset-6 col-xs-12">
     <div class="col-md-6">
-      <button (click)="generateAll()" type="button" class="btn btn-primary btn-block">Generate All</button>
+      <button (click)="generateAllNow()" type="button" class="btn btn-primary btn-block">Generate All</button>
     </div>
     <div class="col-md-6">
       <button (click)="addQuestion()" type="button" class="btn btn-primary btn-block">Add Question</button>

@@ -16,6 +16,8 @@ export class QuestionAddComponent implements OnInit, OnChanges {
   @Input() groupId: number;
   @Input() updateDificulty: boolean;
   @Input() allGenerateNow: Map<string, Map<number, Array<number>>>;
+  @Input() saveAll: boolean;
+  @Input() generateAll: boolean;
 
   @Output() removeQuestion = new EventEmitter();
   @Output() removeFromAllQuestionsAvailable = new EventEmitter();
@@ -25,6 +27,7 @@ export class QuestionAddComponent implements OnInit, OnChanges {
   private toogle_display_details: boolean;
   private dificultys: any[];
   private questionModel: any = {};
+  private lastSaveAll: boolean;
 
   constructor(
     private quest: QuestionsService
@@ -33,6 +36,8 @@ export class QuestionAddComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.generateAll = false;
+    this.lastSaveAll = this.saveAll;
     this.display_details = false;
     this.toogle_display_details = false;
     this.questionModel.dificult = '-1';
@@ -46,13 +51,26 @@ export class QuestionAddComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
-    if ( !this.question.dificulty) {
+    if ( this.question.dificulty + '' === '-1') {
       this.display_details = false;
+      this.generateAll = false;
+      this.lastSaveAll = this.saveAll;
       this.toogle_display_details = false;
       this.questionModel.category = this.categories[0];
       this.questionModel.dificult = '-1';
       this.selectDificultyAvailable();
+    } else {
+      if ( this.lastSaveAll !== this.saveAll) {
+        this.lastSaveAll = this.saveAll;
+        this.question.category = this.questionModel.category;
+        this.question.dificulty = this.questionModel.dificult;
+      }else {
+        if ( this.generateAll ) {
+          this.generateQuestion();
+          this.generateAll = false;
+
+        }
+      }
     }
   }
 
@@ -92,7 +110,18 @@ export class QuestionAddComponent implements OnInit, OnChanges {
   }
 
   public removeQuestionNow(): void {
+    if (this.question.id ) {
+      // TODO fazer o metodo que volta a colocar lá essa questão que gerou visto que é a segunda vez que ele gera.
+      const questi = this.question;
+      this.removeFromGenerate(questi);
+    }
+    if ( this.questionModel.dificult !== '-1') {
+      this.allQuestionsAvailable[this.questionModel.category][this.questionModel.dificult].available = this.allQuestionsAvailable[this.questionModel.category][this.questionModel.dificult].available + 1;
+    }
+    this.question.dificulty = this.questionModel.dificult;
+    this.question.category = this.questionModel.category;
     this.removeQuestion.emit(this.question);
+
   }
 
   public generateQuestion(): void {
