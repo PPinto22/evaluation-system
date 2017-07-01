@@ -267,7 +267,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{userID:[\\d]+}/exams", method = GET)
-    public ResponseEntity<Object> getExams(@PathVariable int userID, HttpServletRequest request) throws PersistentException{
+    public ResponseEntity<Object> getExams(@PathVariable int userID,
+                                           @RequestParam(required = false) String ongoing,
+                                           HttpServletRequest request) throws PersistentException{
         PersistentSession session = null;
         try {
             session = ClassesPersistentManager.instance().getSession();
@@ -276,6 +278,9 @@ public class UserController {
             if(user.getID() != clientUser.getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
+            if(ongoing != null){
+                return new ResponseEntity<Object>(wrapExamList(examService.getOngoingExamsByUser(user), true), OK);
+            }
             ExamsWrapper examsWrapper = new ExamsWrapper(examService.getExamsByUser(user), true);
             return new ResponseEntity<Object>(examsWrapper, OK);
         } catch (PersistentException e){
@@ -287,6 +292,18 @@ public class UserController {
         } finally {
             session.close();
         }
+    }
+
+    private List<ExamWrapper> wrapExamList(Collection<Exam> exams, boolean showClass){
+        List<ExamWrapper> examWrappers = new ArrayList<>();
+        for(Exam exam: exams){
+            examWrappers.add(
+                    showClass ?
+                            new ExamClassWrapper(exam,true,true) :
+                            new ExamWrapper(exam,true,true)
+            );
+        }
+        return examWrappers;
     }
 
     @RequestMapping(value = "/{studentID:[\\d]+}/scores", method = GET)

@@ -33,4 +33,7 @@ public interface ExamService {
     Map<String, Set<Exam>> getExamsByClass(Class cl);
     Map<String, Set<Exam>> getExamsByGroup(Group group);
     Map<Student, Score> getExamScores(PersistentSession session, Exam exam) throws PersistentException, InvalidExamException;
+
+    Set<Exam> getOngoingExamsByUser(User user);
+    Set<Exam> getOngoingExamsByGroup(Group group);
 }

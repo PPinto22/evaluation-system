@@ -8,10 +8,7 @@ import model.Class;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import security.JwtService;
 import service.ExamService;
 import service.GroupService;
@@ -330,7 +327,6 @@ public class GroupController {
         }
     }
 
-
         @RequestMapping(value = "/{groupID:[\\d]+}/exams/generate", method = POST)
     public ResponseEntity<Object> generateExam(@PathVariable int groupID,
                                                @RequestBody Question[] questions,
@@ -373,8 +369,11 @@ public class GroupController {
         }
     }
 
+
     @RequestMapping(value = "/{groupID:[\\d]+}/exams", method = GET)
-    public ResponseEntity<Object> getExams(@PathVariable int groupID, HttpServletRequest request) throws PersistentException{
+    public ResponseEntity<Object> getExams(@PathVariable int groupID,
+                                           @RequestParam(required = false) String ongoing,
+                                           HttpServletRequest request) throws PersistentException{
         PersistentSession session = null;
         try {
             session = ClassesPersistentManager.instance().getSession();
@@ -384,6 +383,9 @@ public class GroupController {
             if(!groupService.userHasAccess(group,user))
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
+            if(ongoing != null){
+                return new ResponseEntity<Object>(examService.getOngoingExamsByGroup(group), OK);
+            }
             ExamsWrapper examsWrapper = new ExamsWrapper(examService.getExamsByGroup(group), false);
             return new ResponseEntity<Object>(examsWrapper, OK);
         } catch (PersistentException e){
@@ -395,6 +397,14 @@ public class GroupController {
         } finally {
             session.close();
         }
+    }
+
+    private List<ExamWrapper> wrapExamList(Collection<Exam> exams){
+        List<ExamWrapper> examWrappers = new ArrayList<>();
+        for(Exam exam: exams){
+            examWrappers.add(new ExamWrapper(exam,true,true));
+        }
+        return examWrappers;
     }
 
     @RequestMapping(value = "/{groupID:[\\d]+}/scores", method = GET)

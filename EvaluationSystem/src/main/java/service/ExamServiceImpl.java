@@ -129,6 +129,22 @@ public class ExamServiceImpl implements ExamService{
         return getGroupsExams(groups);
     }
 
+    @Override
+    public Set<Exam> getOngoingExamsByUser(User user){
+        Map<String, Set<Exam>> allExams = getExamsByUser(user);
+        return allExams.containsKey("Ongoing") ?
+                allExams.get("Ongoing"):
+                new TreeSet<>();
+    }
+
+    @Override
+    public Set<Exam> getOngoingExamsByGroup(Group group) {
+        Map<String, Set<Exam>> allExams = getExamsByGroup(group);
+        return allExams.containsKey("Ongoing") ?
+                allExams.get("Ongoing"):
+                new TreeSet<>();
+    }
+
     private Map<String, Set<Exam>> getGroupsExams(List<Group> groups){
         Map<String, Set<Exam>> examMap = new TreeMap<>();
         for(Group group: groups){
