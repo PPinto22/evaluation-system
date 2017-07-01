@@ -264,6 +264,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   public isStudent(): boolean {
-    return this.authentication.isTeacher();
+    return this.authentication.isSudent();
   }
 }

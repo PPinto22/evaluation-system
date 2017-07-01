@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from 'app/services/authentication.service';
+import {UserService} from '../../services/user.service';
+
+declare var x_navigation: any;
+declare var page_content_onresize: any;
+
 
 @Component({
   selector: 'app-profile',
@@ -10,10 +16,40 @@ export class ProfileComponent implements OnInit {
   private user: any = {};
   private loading = false;
   private differentPassword = false;
+  private updatedSuccess = false;
 
-  constructor() { }
+  constructor(
+    private autentication: AuthenticationService,
+    private usersService: UserService
+  ) { }
 
   ngOnInit() {
+    this.getUser();
+    x_navigation();
+    page_content_onresize();
+  }
+
+  public getUser(): void {
+    this.user.firstName = this.autentication.userLogged.firstName;
+    this.user.lastName = this.autentication.userLogged.lastName;
+    this.user.email = this.autentication.userLogged.email;
+    this.user.type = this.autentication.userLogged.type;
+  }
+
+  public updateProfile(): void {
+    // TODO fazer o service do update do user
+    console.log(this.user);
+    this.usersService.updateUserById(this.autentication.getUserId(), this.user.firstName, this.user.lastName, this.user.password).subscribe(
+      result => {
+        this.autentication.userLogged.firstName = result.firstName;
+        this.autentication.userLogged.lastName = result.lastName;
+        this.updatedSuccess = true;
+      }
+    );
+  }
+
+  onSubmit(): void {
+    this.updateProfile();
   }
 
   validPassword(): boolean {

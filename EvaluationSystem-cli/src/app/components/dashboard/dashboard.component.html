@@ -23,7 +23,7 @@
       <!-- FIXME Ver isto melhor-->
       <li class="xn-title" *ngIf="isStudent()">Exams OnGoing</li>
       <li *ngFor="let teste of ['Teste1']">
-        <a  [routerLink]="" routerLinkActive=""><span class="fa fa-desktop"></span> <span class="xn-text">{{teste}}</span></a>
+        <a  *ngIf="isStudent()" [routerLink]="" routerLinkActive=""><span class="fa fa-desktop"></span> <span class="xn-text">{{teste}}</span></a>
       </li>
 
 
