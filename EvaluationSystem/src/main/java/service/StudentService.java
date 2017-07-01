@@ -18,13 +18,13 @@ public interface StudentService {
     List<Class> getStudentClasses(Student student);
 
     Map<Group, Map<Exam, Score>> getStudentScores(PersistentSession session, Student student) throws PersistentException;
-    Map<Exam, Score> getStudentScoresByGroup(PersistentSession session, Student student, Group group) throws StudentNotInGroupException, PersistentException;
-    Score getStudentScoreByExam(PersistentSession session, Student student, Exam exam) throws PersistentException, StudentNotInGroupException, InvalidExamException;
+    Map<Exam, Score> getStudentScoresByGroup(PersistentSession session, Student student, Group group) throws UserNotInGroupException, PersistentException;
+    Score getStudentScoreByExam(PersistentSession session, Student student, Exam exam) throws PersistentException, UserNotInGroupException, InvalidExamException;
     boolean exists(PersistentSession session, int ID) throws PersistentException;
     boolean exists(PersistentSession session, String email) throws PersistentException;
     boolean existsActive(PersistentSession session, String email) throws PersistentException;
 
     boolean inAGroup(Student student);
-    void leaveGroup(PersistentSession session, Student student, Group group) throws PersistentException, StudentNotInGroupException;
+    void leaveGroup(PersistentSession session, Student student, Group group) throws PersistentException, UserNotInGroupException;
     void delete(PersistentSession session, Student student) throws PersistentException;
 }

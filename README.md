@@ -1374,7 +1374,7 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **FORBIDDEN (550)**
 
 #### GET /api/users/{user_id}/scores
-Este método só funciona com utilizadores do tipo *student*. Para os professores saberem as notas dos alunos, utilizar [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores) ou [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores).
+Caso o utilizador seja um professor, os *scores* são as médias dos resultados dos alunos. O campo *submissionID* nunca existe neste caso.
 
 ### Parameters
 - exam=ID

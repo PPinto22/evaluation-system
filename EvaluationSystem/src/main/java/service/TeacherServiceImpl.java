@@ -3,25 +3,32 @@ package service;
 
 import dao.TeacherDAO;
 import exception.*;
+import model.*;
 import model.Class;
-import model.Group;
-import model.Teacher;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class TeacherServiceImpl implements TeacherService{
 
+    private TeacherDAO teacherDAO;
     private UserService userService;
     private ClassService classService;
-    private TeacherDAO teacherDAO;
+    private ExamService examService;
+    private GroupService groupService;
 
+    @Autowired
+    public void setGroupService(GroupService groupService) {
+        this.groupService = groupService;
+    }
+    @Autowired
+    public void setExamService(ExamService examService) {
+        this.examService = examService;
+    }
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -33,6 +40,51 @@ public class TeacherServiceImpl implements TeacherService{
 
     public TeacherServiceImpl(TeacherDAO teacherDAO) {
         this.teacherDAO = teacherDAO;
+    }
+
+    @Override
+    public Score getScoreByExam(PersistentSession session, Teacher teacher, Exam exam)
+            throws InvalidExamException, UserNotInGroupException {
+        if(!examService.examHasFinished(exam))
+            throw new InvalidExamException();
+        if(teacher.getID() != exam.get_group().get_class().get_teacher().getID())
+            throw new UserNotInGroupException();
+        int totalScore = 0;
+        for(Submission submission: exam._submissions.toArray())
+            totalScore += submission.getScore();
+        float avgScore = totalScore == 0 ? 0 : totalScore / (float)exam._submissions.size();
+        return new Score(avgScore);
+    }
+
+    @Override
+    public Map<Exam, Score> getScoresByGroup(PersistentSession session, Teacher teacher, Group group) throws UserNotInGroupException {
+        Map<Exam, Score> examMap = new TreeMap<>();
+        if(teacher.getID() != group.get_class().get_teacher().getID())
+            throw new UserNotInGroupException();
+
+        for(Exam exam: group._exams.toArray()){
+            try {
+                Score score = getScoreByExam(session, teacher, exam);
+                examMap.put(exam, score);
+            } catch (InvalidExamException e) {}
+        }
+        return examMap;
+    }
+
+    @Override
+    public Map<Group, Map<Exam, Score>> getScores(PersistentSession session, Teacher teacher) {
+        Map<Group, Map<Exam, Score>> groupMap = new TreeMap<>();
+        for(Class cl: teacher._classes.toArray()){
+            for(Group group: cl._groups.toArray()){
+                Map<Exam, Score> examMap = null;
+                try {
+                    examMap = getScoresByGroup(session, teacher, group);
+                    if(!examMap.isEmpty())
+                        groupMap.put(group, examMap);
+                } catch (UserNotInGroupException e) {}
+            }
+        }
+        return groupMap;
     }
 
     @Override
