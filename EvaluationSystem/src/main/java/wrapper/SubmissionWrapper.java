@@ -10,15 +10,19 @@ import java.util.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SubmissionWrapper {
     private int id;
+    private Float score;
     List<QuestionSubmissionWrapper> questions;
 
     public SubmissionWrapper(){}
 
     public SubmissionWrapper(Submission submission, boolean hideQuestions, boolean hideAnswers){
         this.id = submission.getID();
-        if(hideQuestions)
+        if(hideQuestions) {
             this.questions = null;
+            this.score = null;
+        }
         else {
+            this.score = submission.getScore();
             this.questions = new ArrayList<>();
             Map<QuestionScore, QuestionSubmission> submitedMap = new HashMap<>();
             for (QuestionSubmission questionSubmission : submission._questionSubmissions.toArray()) {
@@ -31,6 +35,14 @@ public class SubmissionWrapper {
                     this.questions.add(new QuestionSubmissionWrapper(questionScore, hideAnswers));
             }
         }
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 
     public int getId() {
