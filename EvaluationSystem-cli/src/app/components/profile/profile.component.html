@@ -16,6 +16,11 @@
         <strong>Updated</strong> Updated with success
       </div>
 
+      <div *ngIf="updatedError" class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>Updated</strong> Updated with success
+      </div>
+
       <div *ngIf="differentPassword" class="alert alert-danger" role="alert">
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <strong>Invalid Password!</strong> Please use a same Password.

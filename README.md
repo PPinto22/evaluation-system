@@ -5,17 +5,32 @@
 
 
 ### Welcome Page (/)
-[] - Homepage
-[] - Login
-[] - Register
+- [] - Homepage
+- [x] - Login
+- [x] - Register
 
 ### Dashboard (/dashboard)
 - [] Profile
-- [] Schedule
+- [x] Schedule
 - [] Results
 - [] Notifications
+```
+Falta testar em caso de erro
+Depois do save apagar a password
+```
 - [] Classes
-- [] Group
+- [] GroupView
+- [] Group Create
+- [] Questions Create
+- [] Questions View
+- [] Class Results
+- [] Exam Create
+- [] Exam View Details
+- [] Exam Resolve (make submission)
+
+- [] Exam Submission Result  (Student)(Teacher)
+- [] Exam Submissions Results (Teacher)
+
 
 
 - DashBoard
@@ -1177,13 +1192,11 @@ ___
 ```
 ### Response
 ```json
-[
-  {
-   "name": "class1",
-   "abbreviation": "cl1",
-   "id": 1
-  }
-]
+{
+  "name": "class1",
+  "abbreviation": "cl1",
+  "id": 1
+}
 ```
 ### HttpStatus
 - **OK (200)**

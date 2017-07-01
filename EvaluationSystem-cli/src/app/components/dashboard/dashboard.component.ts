@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {BreadCrumbService} from '../../services/breadcrumb.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {GroupService} from '../../services/group.service';
 import {ClassesService} from '../../services/classes.service';
 import {Notification} from '../../models/notification';
@@ -9,6 +9,11 @@ import {NotificationService} from '../../services/notification.service';
 import {Class} from 'app/models/class';
 import {User} from '../../models/user';
 import {Group} from '../../models/group';
+import {ExamsService} from '../../services/exams.service';
+import {Exception} from '../../execption/exception';
+import {Exam} from '../../models/exam';
+import 'rxjs/add/operator/filter';
+
 
 declare var $: any;
 declare var x_navigation: any;
@@ -25,9 +30,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
   private nameInToggleNavigation: string;
   private page_navigation_toggled: boolean;
   private collapse_struture: any;
-  private numberOfNotifications: number;
 
   private notifications: Notification[];
+  private examsOnGoing: Exam[];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -35,30 +41,68 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     private breadCrumb: BreadCrumbService,
     private groupsService: GroupService,
     private classesService: ClassesService,
-    private notificationsService: NotificationService
+    private notificationsService: NotificationService,
+    private examsService: ExamsService,
+    private exception: Exception
   ) {
   }
 
   ngOnInit() {
     this.notifications = [];
-    this.numberOfNotifications = 0;
+    this.examsOnGoing = [];
     this.setNamebreadCrum();
     this.createNavbarStructure();
     this.page_navigation_toggled = false;
-    this.route.params.subscribe( params => {
-      this.getClasses();
-      // FIXME fazer o update das classes
-    });
+    this.getClasses();
+    this.initExamsOnGoing();
+    this.router.events
+      .filter(event => event instanceof NavigationStart)
+      .subscribe( (event: NavigationStart) => {
+        this.getClasses();
+      });
+
     this.breadCrumb.setBreadCrum(['Dashboard']);
   }
 
+
+  ngAfterViewInit() {
+    x_navigation();
+    page_content_onresize();
+    xn_panel_dragging();
+    if ( this.isStudent() ) {
+      this.initNotification();
+    }
+  }
+
+  ngOnChanges() {
+    x_navigation();
+  }
+
+  private initExamsOnGoing(): void {
+    this.getExamsOnGoing();
+    setInterval( () => {
+      this.getExamsOnGoing();
+    }, 1000 * 60);
+  }
   private initNotification(): void {
     this.getNotifications();
     setInterval( () => {
       this.getNotifications();
-    }, 5000 * 60);
+    }, 1000 * 60);
   }
 
+  private getExamsOnGoing(): void {
+    this.examsService.getExamsOnGoingByUserId( this.authentication.getUserId()).subscribe(
+      result => {
+        this.getOngoing(result);
+        console.log('teste exames on going');
+        console.log(this.examsOnGoing);
+      },
+      error => {
+        this.exception.errorHandlingInvalidToken(error);
+      }
+    );
+  }
   private getNotifications(): void {
     this.notificationsService.getUserNotification( this.authentication.getUserId() ).subscribe(
       result => {
@@ -92,8 +136,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
       }
     );
   }
-
-
   private getClasses(): void {
     this.classesService.getAllClassesByUser( this.authentication.getUserId() ).subscribe(
       result => {
@@ -122,12 +164,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
       }
     );
   }
-
   private getGroups(class_dash: any, class_id: number): void {
     this.groupsService.getGroupByClass(class_id).subscribe(
       result => {
         for (const group of result) {
-          const group_dash = class_dash.children.find(obj => class_id === obj.id);
+          const group_dash = class_dash.children.find(obj => group.id === obj.id);
           if (!group_dash) { // não existe o grupo
             class_dash.children.push({
               level: 3,
@@ -152,19 +193,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     );
   }
 
-  ngAfterViewInit() {
-    x_navigation();
-    page_content_onresize();
-    xn_panel_dragging();
-    if ( this.isStudent() ) {
-      this.initNotification();
-    }
-  }
-
-  ngOnChanges() {
-    x_navigation();
-  }
-
   private createNavbarStructure(): void {
     this.collapse_struture = [
       { id: 0, level: 1, name: 'Dashboard', route: ['/dashboard'], isCollapsed: false },
@@ -173,7 +201,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
       { id: 3, level: 1, name: 'Classes', route: [], isCollapsed: false , children: []}
     ];
   }
-
   public navigateRoute(route: string[], collapse_node: any, node_ids: number[]) {
 
     switch ( node_ids.length ) {
@@ -204,7 +231,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
       this.router.navigate(route);
     }
   }
-
   public clearCollapseLevel(level: number, noclear: number) {
 
     switch ( level ) {
@@ -249,7 +275,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
   public getUserName(): string {
     return this.authentication.getUserName();
   }
-
   public getUserType(): string {
     return this.authentication.userLogged.type;
   }
@@ -258,12 +283,33 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     this.authentication.logout();
     this.router.navigate(['/']);
   }
-
   public isTeacher(): boolean {
     return this.authentication.isTeacher();
   }
-
   public isStudent(): boolean {
     return this.authentication.isSudent();
+  }
+
+
+  private getOngoing (exams): void {
+    for (const exam of exams) {
+      this.examsOnGoing.push(this.createExam(exam));
+    }
+  }
+  private createExam(exam): Exam {
+    const teacher = exam.group._class.teacher;
+    const _teacher =  new User( teacher.id, teacher.email, teacher.firstName, teacher.lastName, teacher.type, '');
+    const classe = exam.group._class;
+    const _classe = new Class( classe.name, classe.abbreviation);
+    _classe.id = classe.id;
+    _classe.user = _teacher;
+    const group = exam.group;
+    const _group = new Group(group.name);
+    _group.id = group.id;
+    _group.class = _classe;
+    const examnew = new Exam( exam.name, exam.beginDate, exam.duration);
+    examnew.id = exam.id;
+    examnew.group = _group;
+    return examnew;
   }
 }

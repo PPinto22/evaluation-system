@@ -21,9 +21,9 @@
         </div>
       </li>
       <!-- FIXME Ver isto melhor-->
-      <li class="xn-title" *ngIf="isStudent()">Exams OnGoing</li>
-      <li *ngFor="let teste of ['Teste1']">
-        <a  *ngIf="isStudent()" [routerLink]="" routerLinkActive=""><span class="fa fa-desktop"></span> <span class="xn-text">{{teste}}</span></a>
+      <li class="xn-title">Exams OnGoing</li>
+      <li *ngFor="let exam of examsOnGoing">
+        <a [routerLink]="" routerLinkActive=""><span class="fa fa-desktop"></span> <span class="xn-text">{{exam.name}}</span></a>
       </li>
 
 
