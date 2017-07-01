@@ -109,7 +109,7 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
         console.log(result);
       },
       error => {
-        this.exception.errorHandlingInvalidToken(error);
+        // this.exception.errorHandlingInvalidToken(error);
       }
     );
   }

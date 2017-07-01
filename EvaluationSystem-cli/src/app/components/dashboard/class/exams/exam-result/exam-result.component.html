@@ -12,7 +12,7 @@
   <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading ui-draggable-handle">
-        <h3 class="panel-title">Exam OnGoing </h3>
+        <h3 class="panel-title">{{nameExam}} </h3>
         <div class="pull-right">
           <label class="label-control">Score:</label>
           <span>192.1</span>
@@ -20,7 +20,7 @@
       </div>
       <div class="panel-body">
         <div class="panel-body" >
-          <app-question-preview *ngFor="let question of questions" [question]="question"></app-question-preview>
+          <app-question-preview *ngFor="let question of questions; let i = index" [choiseanswersId]="choiseanswersId[i]" [question]="question"></app-question-preview>
         </div>
       </div>
     </div>

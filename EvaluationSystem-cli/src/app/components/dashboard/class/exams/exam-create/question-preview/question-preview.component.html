@@ -15,10 +15,10 @@
 
     <div class="form-group col-md-12 col-sm-12 col-xs-12">
       <div class="col-md-3 col-sm-3 col-xs-5">
-        <label class="control-label">Dificulty:</label>
+        <label class="control-label">Difficulty:</label>
       </div>
       <div class="input-group col-md-9 col-sm-9 col-xs-7">
-        <span class="text">{{question.dificulty}}</span>
+        <span class="text">{{getDifficulty()}}</span>
       </div>
       <span class="help-block"></span>
     </div>
@@ -47,7 +47,8 @@
         <div class="col-md-12" *ngFor="let answer of question.answers">
           <div class="col-md-1 col-sm-1 col-xs-4">
             <span *ngIf="answer.correct" class="fa fa-check-circle-o text-success"></span>
-            <span *ngIf="!answer.correct" class="fa fa-circle-o text-danger"></span>
+            <span *ngIf="answer.id === choiseanswersId && !answer.correct" class="fa fa-times-circle text-danger"></span>
+            <span *ngIf="!(answer.id === choiseanswersId) && !answer.correct " class="fa fa-circle-o text-danger"></span>
           </div>
           <div class="col-md-11 col-sm-11 col-xs-8">
             <span class="text">{{answer.text}}</span>
