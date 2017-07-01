@@ -4,9 +4,10 @@ import {AuthenticationService} from '../../../../services/authentication.service
 import {Group} from '../../../../models/group';
 import {Class} from '../../../../models/class';
 import {User} from '../../../../models/user';
+import {Exception} from "../../../../execption/exception";
 
-declare var x_navigation: any;
-declare var page_content_onresize:  any;
+declare var onReady: any;
+
 
 @Component({
   selector: 'app-list-class',
@@ -17,8 +18,10 @@ export class ListClassComponent implements OnInit, AfterViewInit {
 
   allGroups: Array<Group>;
 
-  constructor(private group: GroupService,
-              private authentication: AuthenticationService) {
+  constructor(private groupsService: GroupService,
+              private authentication: AuthenticationService,
+              private exception: Exception
+  ) {
     this.allGroups = new Array<Group>();
   }
 
@@ -27,15 +30,16 @@ export class ListClassComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    console.log('ngAfterViewInit List-class');
+    // onReady();
   }
 
   private getAllGroups() {
-    this.group.getGroupByUser(this.authentication.getUserId()).subscribe(
+    this.groupsService.getGroupByUser(this.authentication.getUserId()).subscribe(
       resultado => {
         for ( const group of resultado){
           this.allGroups.push(this.createGroup(group));
         }
-        page_content_onresize();
       },
       error => {
         console.log(error);
@@ -57,11 +61,17 @@ export class ListClassComponent implements OnInit, AfterViewInit {
     return _group;
   }
 
-  protected deleteGroup( id: string ): void {
+  protected deleteGroup( group_id: number ): void {
+    this.groupsService.deleteGroupById( group_id ).subscribe(
+      error => {
+        console.log(error);
+        this.exception.errorHandlingInvalidToken(error);
+      }
+    );
     // TODO fazer delete do group
   }
 
-  protected  editGroup( id: string ): void {
+  protected  editGroup( group_id: number ): void {
     // TODO fazer edit do group
   }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {BreadCrumbService} from '../../../services/breadcrumb.service';
 import {ClassesService} from '../../../services/classes.service';
@@ -7,14 +7,15 @@ import {Router} from "@angular/router";
 
 declare var $: any;
 declare var x_navigation: any;
-declare var page_content_onresize:  any;
+declare var page_content_onresize: any;
+declare var onReady: any;
 
 @Component({
   selector: 'app-default',
   templateUrl: './default.component.html',
   styleUrls: ['./default.component.css']
 })
-export class DefaultComponent implements OnInit, AfterViewInit {
+export class DefaultComponent implements OnInit, AfterViewInit, OnChanges {
 
   private classAlreadyExists: boolean;
   private new_class_add: any = {};
@@ -35,11 +36,20 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     this.breadCrumb.setBreadCrum(['Dashboard']);
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+  }
+
+
   ngAfterViewInit() {
-    x_navigation();
-    page_content_onresize();
+    console.log('ngAfterViewInit Default')
+    // onReady();
+    // x_navigation();
+    // page_content_onresize();
     this.scroll();
   }
+
+
+
 
   private scroll(): void {
     $('.scroll').mCustomScrollbar({
