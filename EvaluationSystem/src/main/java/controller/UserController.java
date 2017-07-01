@@ -70,7 +70,7 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             User user = userService.getUserByID(session, id);
             if(clientUser.getID() != user.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             user = userService.update(user, userWrapper.getFirstName(), userWrapper.getLastName(), userWrapper.getPassword());
             return new ResponseEntity<Object>(new UserWrapper(user), OK);
@@ -93,10 +93,10 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             User user = userService.getUserByID(session, id);
             if(clientUser.getID() != user.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             userService.delete(session, user);
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(NO_CONTENT);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
@@ -116,7 +116,7 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             User user = userService.getUserByID(session, id);
             if(clientUser.getID() != user.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             List<NotificationWrapper> notifications = new ArrayList<>();
             for(Notification notification: user._notifications.toArray()){
@@ -145,7 +145,7 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             User user = userService.getUserByID(session, id);
             if(clientUser.getID() != user.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             Set<GroupWrapper> groups = new TreeSet<>();
             switch (user.getClass().getSimpleName()){
@@ -179,13 +179,13 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             student = studentService.getStudentByID(session, studentID);
             if(clientUser.getID() != student.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
             Group group = groupService.getGroupByID(session, groupID);
             if(!groupService.studentInGroup(student,group))
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
 
             studentService.leaveGroup(session, student, group);
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(NO_CONTENT);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
@@ -210,7 +210,7 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             User user = userService.getUserByID(session, userID);
             if(user.getID() != clientUser.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             Set<ClassWrapper> classes = new TreeSet<>();
             switch (user.getClass().getSimpleName()){
@@ -247,7 +247,7 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             Teacher teacher = teacherService.getTeacherByID(session, teacherID);
             if(clientUser.getID() != teacher.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             teacherService.addClassToTeacher(session, teacher, cl);
             return new ResponseEntity<Object>(new ClassWrapper(cl), OK);
@@ -276,7 +276,7 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             User user = userService.getUserByID(session, userID);
             if(user.getID() != clientUser.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             if(ongoing != null){
                 return new ResponseEntity<Object>(wrapExamList(examService.getOngoingExamsByUser(user), true), OK);
@@ -316,7 +316,7 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             Student student = studentService.getStudentByID(session, studentID);
             if(student.getID() != clientUser.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             try {
                 Exam exam = getExamFromRequests(session, requestParams);
@@ -357,7 +357,7 @@ public class UserController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             Student student  = studentService.getStudentByID(session, studentID);
             if(student.getID() != clientUser.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             List<SubmissionExamWrapper> submissionWrappers = new ArrayList<>();
             try {

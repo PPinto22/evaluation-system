@@ -67,6 +67,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   ngAfterViewInit() {
+    x_navigation();
+    page_content_onresize();
     if ( this.isStudent() ) {
       this.initNotification();
     }
@@ -74,6 +76,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnChanges() {
     x_navigation();
+    page_content_onresize();
   }
 
   private initExamsOnGoing(): void {

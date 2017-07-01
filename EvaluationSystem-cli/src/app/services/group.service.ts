@@ -43,4 +43,11 @@ export class GroupService {
       }), this.httpUtil.headers(this.authentication.getToken()))
       .map(this.httpUtil.extrairDados);
   }
+
+  // DELETE /api/groups/{group_id}
+  deleteGroupById( group_id: number ): Observable<any> {
+    return this.http.delete( this.httpUtil.url('/api/groups/' + group_id),
+      this.httpUtil.headers(this.authentication.getToken()))
+      .map(this.httpUtil.extrairDados);
+  }
 }

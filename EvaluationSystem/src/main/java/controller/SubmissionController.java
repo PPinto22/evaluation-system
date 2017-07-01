@@ -80,10 +80,10 @@ public class SubmissionController {
             User user = jwtService.getUser(session, (Claims) request.getAttribute("claims"));
             Submission submission = submissionService.getSubmissionByID(session, submissionID);
             if(submission.get_student().getID() != user.getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             submissionService.deleteSubmission(submission);
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(NO_CONTENT);
         } catch (PersistentException e){
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {

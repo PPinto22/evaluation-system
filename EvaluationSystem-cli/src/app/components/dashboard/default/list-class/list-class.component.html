@@ -20,13 +20,14 @@
           <tbody>
 
           <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
-          <tr *ngFor="let group of allGroups; let i = index" [routerLink]="['/dashboard','classes', group.class.id,'groups',group.id]">
-              <td class="text-center"><strong>{{group.class.abbreviation}}</strong></td>
-              <td class="text-center"><strong>{{group.class.name}}</strong></td>
-              <td class="text-center"><strong>{{group.name}}</strong></td>
+          <tr *ngFor="let group of allGroups" >
+              <td class="text-center" [routerLink]="['/dashboard','classes', group.class.id,'groups',group.id]"><strong>{{group.class.abbreviation}}</strong></td>
+              <td class="text-center" [routerLink]="['/dashboard','classes', group.class.id,'groups',group.id]"><strong>{{group.class.name}}</strong></td>
+              <td class="text-center" [routerLink]="['/dashboard','classes', group.class.id,'groups',group.id]"><strong>{{group.name}}</strong></td>
               <td>
-                <button class="btn btn-default btn-rounded btn-sm" (click)="editGroup(i);"><span class="fa fa-pencil"></span></button>
-                <button class="btn btn-danger btn-rounded btn-sm" (click)="deleteGroup(i);"><span class="fa fa-times"></span></button>
+                <!-- FIXME implementar o edit do grupo -->
+                <button disabled="true" class="btn btn-default btn-rounded btn-sm" (click)="editGroup(group.id);"><span class="fa fa-pencil"></span></button>
+                <button class="btn btn-danger btn-rounded btn-sm" (click)="deleteGroup(group.id);"><span class="fa fa-times"></span></button>
               </td>
           </tr>
           <!-- Apagar depois -->

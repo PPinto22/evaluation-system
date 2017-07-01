@@ -78,8 +78,9 @@ export class ExamCreateComponent implements OnInit {
       if ( this.examCreate.duration > 0) {
         // const dateNow = new Date();
         // const dateExameChoise = new Date(this.examCreate.dateExam);
+        const dateExameChoise = new Date();
+        // FIXME alterar isto
         // if (dateNow < dateExameChoise) {
-        const dateExameChoise = new Date(); //TODO tirar os prints e tirar esta linha
           if (this.validateAllQuestions()) {
             this.exam.createExamByGroupId(this.groupId, dateExameChoise.getTime(), this.examCreate.duration, this.examCreate.nameExam, this.questionsIds).subscribe(
               resultado => {
@@ -92,7 +93,7 @@ export class ExamCreateComponent implements OnInit {
             );
           }
         // } else {
-          // TODO avisar data errada
+        //   // TODO avisar data errada
         // }
       } else {
         console.log('dada');

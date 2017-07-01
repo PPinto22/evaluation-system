@@ -49,9 +49,6 @@ export class ListExameComponent implements OnInit, AfterViewInit {
         if (resultado.exams.History) {
           this.getAllHistory(resultado.exams.History);
         }
-        if (resultado.exams.Ongoing) {
-          this.getAllOngoing(resultado.exams.Ongoing);
-        }
         if (resultado.exams.Upcoming) {
           this.getAllComing(resultado.exams.Upcoming);
         }

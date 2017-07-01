@@ -49,7 +49,7 @@ public class QuestionController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             Question question = questionService.getQuestionByID(session, id);
             if(clientUser.getID() != question.get_class().get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             return new ResponseEntity<Object>(new QuestionWrapper(question,false), OK);
         } catch (PersistentException e) {
@@ -72,11 +72,11 @@ public class QuestionController {
             User clientUser = jwtService.getUser(session, (Claims) request.getAttribute("claims"));
             Question question = questionService.getQuestionByID(session, id);
             if (clientUser.getID() != question.get_class().get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             questionService.delete(session, question);
 
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(NO_CONTENT);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
@@ -100,7 +100,7 @@ public class QuestionController {
             User clientUser = jwtService.getUser(session, (Claims)request.getAttribute("claims"));
             Question question = questionService.getQuestionByID(session, id);
             if(clientUser.getID() != question.get_class().get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             if (questionService.questionInUse(session, question))
                 return new ResponseEntity<Object>(new ErrorWrapper(QUESTION_IN_USE), NOT_ACCEPTABLE);
