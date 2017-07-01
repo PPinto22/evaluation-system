@@ -66,7 +66,7 @@ public class ClassController {
             User clientUser = jwtService.getUser(session,(Claims) request.getAttribute("claims"));
             Class cl = classService.getClassByID(session, id);
             if (clientUser.getID() != cl.get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             cl = classService.updateClass(session, cl, clWrapper.getName(), clWrapper.getAbbreviation());
             return new ResponseEntity<Object>(new ClassTeacherWrapper(cl), OK);
@@ -92,7 +92,7 @@ public class ClassController {
             User clientUser = jwtService.getUser(session,(Claims) request.getAttribute("claims"));
             Class cl = classService.getClassByID(session, id);
             if (clientUser.getID() != cl.get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             classService.delete(session, cl);
             return new ResponseEntity<Object>(new Object(), OK);
@@ -118,7 +118,7 @@ public class ClassController {
             User user = jwtService.getUser(session,(Claims)request.getAttribute("claims"));
             Class cl = this.classService.getClassByID(session, classID);
             if(!user.equals(cl.get_teacher()))
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             classService.addGroupToClass(session, cl, group);
             return new ResponseEntity<Object>(new GroupClassWrapper(group), OK);
@@ -163,7 +163,7 @@ public class ClassController {
             User user = jwtService.getUser(session,(Claims)request.getAttribute("claims"));
             Class cl = classService.getClassByID(session, classID);
             if(!user.equals(cl.get_teacher()))
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
             List<Question> questions = classService.listClassQuestions(session, cl);
             List<QuestionWrapper> questionWrappers = new ArrayList<>();
@@ -191,7 +191,7 @@ public class ClassController {
             User user = jwtService.getUser(session,(Claims)request.getAttribute("claims"));
             Class cl = classService.getClassByID(session, classID);
             if(user.getID() != cl.get_teacher().getID())
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
             Question question = this.getQuestionFromWrapper(questionWrapper);
             question = this.classService.addQuestionToClass(session, cl, question);
             return new ResponseEntity<Object>(new QuestionWrapper(question, false), OK);
@@ -218,7 +218,7 @@ public class ClassController {
             User user = jwtService.getUser(session,(Claims)request.getAttribute("claims"));
             Class cl = classService.getClassByID(session, classID);
             if(!user.equals(cl.get_teacher()))
-                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
+                return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
             Set<String> categories = classService.getClassCategories(session, cl);
             return new ResponseEntity<Object>(categories, OK);
         } catch (PersistentException e) {

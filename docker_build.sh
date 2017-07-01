@@ -6,6 +6,8 @@ docker build -t evalsys-app .
 
 cd ../postgres
 docker build -t evalsys-pg .
+cd ../apache-modproxy
+docker build -t evalsys-proxy .
 cd ../../
 
 docker network create -d bridge evalsys-bridge
