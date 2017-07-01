@@ -20,19 +20,20 @@
             <th class="text-center" width="200">Group</th>
             <th class="text-center" width="110" *ngIf="isStudent()">Score</th>
             <th class="text-center" width="110" *ngIf="isTeacher()">Average Score</th>
-            <th class="text-center" width="110" *ngIf="isTeacher()">Actions</th>
+            <th class="text-center" width="110">Actions</th>
           </tr>
         </thead>
         <tbody>
 
         <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
-        <tr>
-          <td class="text-center"><strong>AA</strong></td>
-          <td class="text-center"><strong>Arquiteturas Aplicacionais</strong></td>
-          <td class="text-center"><strong>Grupo 2016/2017</strong></td>
-          <td class="text-center"><strong>19.8</strong></td>
+        <tr *ngFor="let submission of submissionResults">
+          <td class="text-center"><strong>{{submission.exam.name}}</strong></td>
+          <td class="text-center"><strong>{{submission.exam.group._class.name}}</strong></td>
+          <td class="text-center"><strong>{{submission.exam.group.name}}</strong></td>
+          <td class="text-center"><strong>{{submission.score}}</strong></td>
           <td>
-            <button type="button" class="btn btn-primary btn-rounded btn-sm">View Details</button>
+            <button [routerLink]="['/dashboard','classes',submission.exam.group._class.id,'groups',submission.exam.group._class.id,'exams',submission.exam.id,'submission',submission.id]" type="button" class="btn btn-primary btn-rounded btn-sm" *ngIf="isStudent()">View Details</button>
+            <button [routerLink]="['/dashboard','classes',submission.exam.group._class.id,'groups',submission.exam.group._class.id,'exams',submission.exam.id,'results']" type="button" class="btn btn-primary btn-rounded btn-sm" *ngIf="isTeacher()">View Details</button>
           </td>
         </tr>
         </tbody>

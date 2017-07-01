@@ -50,6 +50,7 @@ import { ExamResultComponent } from './components/dashboard/class/exams/exam-res
 import { ExamResultAllComponent } from './components/dashboard/class/exams/exam-result-all/exam-result-all.component';
 import { ClassScoreComponent } from './components/dashboard/class/class-score/class-score.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import {ScoresService} from "./services/scores.service";
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     UserService,
     BreadCrumbService,
     ExamsService,
-    Exception
+    Exception,
+    ScoresService
   ],
   bootstrap: [AppComponent]
 })
