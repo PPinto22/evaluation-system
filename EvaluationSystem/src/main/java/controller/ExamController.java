@@ -87,7 +87,7 @@ public class ExamController {
             if(cl.get_teacher().getID() != user.getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
             examService.deleteExam(session, exam);
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(new Object(), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
         } catch (InvalidClaimsException e) {

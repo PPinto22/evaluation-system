@@ -96,7 +96,7 @@ public class UserController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
             userService.delete(session, user);
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(new Object(), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
@@ -185,7 +185,7 @@ public class UserController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_GROUP), NOT_FOUND);
 
             studentService.leaveGroup(session, student, group);
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(new Object(), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {

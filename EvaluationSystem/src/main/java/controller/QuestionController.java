@@ -76,7 +76,7 @@ public class QuestionController {
 
             questionService.delete(session, question);
 
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(new Object(), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {

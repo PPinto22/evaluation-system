@@ -98,7 +98,7 @@ public class GroupController {
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), UNAUTHORIZED);
 
             groupService.delete(session, group);
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(new Object(), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(INTERNAL_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
@@ -183,7 +183,7 @@ public class GroupController {
 
             Student student = studentService.getStudentByID(session, studentID);
             groupService.removeStudentFromGroup(session, group, student);
-            return new ResponseEntity<Object>(OK);
+            return new ResponseEntity<Object>(new Object(), OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
         } catch (NonExistentEntityException e) {
