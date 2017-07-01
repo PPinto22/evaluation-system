@@ -55,11 +55,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     this.page_navigation_toggled = false;
     this.getClasses();
     this.initExamsOnGoing();
-    this.router.events
-      .filter(event => event instanceof NavigationStart)
-      .subscribe( (event: NavigationStart) => {
-        this.getClasses();
-      });
+    // this.router.events
+    //   .filter(event => event instanceof NavigationStart)
+    //   .subscribe( (event: NavigationStart) => {
+    //     console.log('change router');
+    //     this.getClasses();
+    //   });
 
     this.breadCrumb.setBreadCrum(['Dashboard']);
   }
@@ -91,6 +92,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
   private getExamsOnGoing(): void {
     this.examsService.getExamsOnGoingByUserId( this.authentication.getUserId()).subscribe(
       result => {
+        this.examsOnGoing = [];
         this.getOngoing(result);
         console.log('teste exames on going');
         console.log(this.examsOnGoing);
