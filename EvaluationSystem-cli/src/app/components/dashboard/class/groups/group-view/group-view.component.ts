@@ -4,6 +4,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {StudentsService} from '../../../../../services/students.service';
 import {StudentsFilterGroup} from '../../../../../filters/students_filter_group';
 import {BreadCrumbService} from '../../../../../services/breadcrumb.service';
+import {GroupService} from '../../../../../services/group.service';
+import {Exception} from '../../../../../execption/exception';
+import {Group} from '../../../../../models/group';
+import {Class} from '../../../../../models/class';
 
 
 declare var $: any;
@@ -18,7 +22,10 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
 
   private order_date: boolean; // toggle booblen true if most recent frist or false for oldest frist
   private order_date_text: string;
+
+  private classId: number;
   private groupId: number;
+  private group: Group;
   private allStudentsOfGroup: Array<any>;
   private model: any = {};
 
@@ -26,7 +33,9 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     private router: ActivatedRoute,
     private authentication: AuthenticationService,
     private students: StudentsService,
-    private breadCrumbService: BreadCrumbService
+    private groupsService: GroupService,
+    private breadCrumbService: BreadCrumbService,
+    private exception: Exception
   ) {
     this.allStudentsOfGroup = new Array<any>();
   }
@@ -34,11 +43,17 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   ngOnInit() {
     this.order_date = true;
     this.order_date_text = 'most recent frist';
-    this.router.params.subscribe( params => {
-      this.groupId = params['group_id'];
-      this.getAllGroupStudents();
-     //  this.groupId = 2; // TODO tirar esta merda depois!
-      this.setBreadCrumb();
+    this.router.parent.params.subscribe( parent_params => {
+      this.classId = +parent_params['class_id'];
+
+      this.router.params.subscribe( params => {
+        this.groupId = +params['group_id'];
+        console.log(this.classId + '->' + this.groupId);
+        this.getGroup();
+        this.getAllGroupStudents();
+        this.setBreadCrumb();
+      });
+
     });
   }
 
@@ -87,8 +102,33 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     );
   }
 
+  private getGroup(): void {
+    this.groupsService.getGroupById(this.groupId).subscribe(
+      result => {
+        this.group = this.createGroup(result);
+        console.log(result);
+      },
+      error => {
+        this.exception.errorHandlingInvalidToken(error);
+      }
+    );
+  }
 
-   private getAllGroupStudents(): void {
+  private createGroup(group: any): Group {
+    const new_group = new Group(group.name);
+    new_group.id = group.id;
+    new_group.class = this.createClass(group._class);
+    return new_group;
+  }
+
+  private createClass(class_r: any): Class {
+    const newClass = new Class(class_r.name, class_r.abbreviation);
+    newClass.id = class_r.id;
+    return newClass;
+  }
+
+
+  private getAllGroupStudents(): void {
      this.allStudentsOfGroup = new Array<any>();
      this.students.getUserByGroupId(this.groupId).subscribe(
        resultado => {
@@ -104,7 +144,9 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
      );
    }
 
-
+  public getGroupName(): string {
+    return this.group ? this.group.name : '';
+  }
 
 
 }
