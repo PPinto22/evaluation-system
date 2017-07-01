@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user.type = 'student';
+    this.user.type = 'Student';
   }
 
   private register() {

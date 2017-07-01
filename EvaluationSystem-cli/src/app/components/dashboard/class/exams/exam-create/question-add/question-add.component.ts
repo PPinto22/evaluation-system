@@ -92,17 +92,19 @@ export class QuestionAddComponent implements OnInit, OnChanges {
 
   public generateQuestion(): void {
     if (this.questionModel.dificult) {
+      if (this.question.id) {
+        // TODO fazer o metodo que volta a colocar lá essa questão que gerou visto que é a segunda vez que ele gera.
+        this.removeFromGenerate(this.question);
+      }
       let allExclude = [];
       if ( this.allGenerateNow.get(this.questionModel.category) ) {
         if ( this.allGenerateNow.get(this.questionModel.category).get(this.questionModel.dificult) ) {
           allExclude = this.allGenerateNow.get(this.questionModel.category).get(this.questionModel.dificult);
         }
       }
+      console.log(allExclude);
       this.quest.createQuestionByGenerate(this.groupId, this.questionModel.category, this.questionModel.dificult, allExclude).subscribe(
         resultado => {
-          if (this.question.id) {
-            // TODO fazer o metodo que volta a colocar lá essa questão que gerou visto que é a segunda vez que ele gera.
-          }
           this.question.category = resultado.category;
           this.question.dificulty = resultado.difficulty;
           this.question.text = resultado.text;
@@ -121,5 +123,12 @@ export class QuestionAddComponent implements OnInit, OnChanges {
     const p = this.questionModel.dificult;
     this.allQuestionsAvailable[this.questionModel.category][p].available = this.allQuestionsAvailable[this.questionModel.category][p].available - 1;
     this.removeFromAllQuestionsAvailable.emit(this.question.id);
+  }
+
+  public removeFromGenerate(question: Question): void {
+    const p = question.dificulty;
+    const indexArray = this.allGenerateNow.get(question.category).get(question.dificulty).indexOf(question.id);
+    this.allGenerateNow.get(question.category).get(question.dificulty).splice(indexArray, 1);
+    this.allQuestionsAvailable[this.questionModel.category][p].available = this.allQuestionsAvailable[this.questionModel.category][p].available + 1;
   }
 }
