@@ -20,7 +20,7 @@
           <tbody>
 
           <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
-          <tr *ngFor="let group of allGroups; let i = index">
+          <tr *ngFor="let group of allGroups; let i = index" [routerLink]="['/dashboard','classes', group.class.id,'groups',group.id]">
               <td class="text-center"><strong>{{group.class.abbreviation}}</strong></td>
               <td class="text-center"><strong>{{group.class.name}}</strong></td>
               <td class="text-center"><strong>{{group.name}}</strong></td>

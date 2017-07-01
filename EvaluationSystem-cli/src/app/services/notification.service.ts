@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import {HttpUtilService} from './http-util.service';
 import {Router} from '@angular/router';
 import {AuthenticationService} from './authentication.service';
+import {Notification} from '../models/notification';
 
 @Injectable()
 export class NotificationService {
@@ -20,4 +21,20 @@ export class NotificationService {
             this.httpUtil.headers(this.authentication.getToken()) )
             .map( this.httpUtil.extrairDados );
   }
+  // GET /api/invitations/{invitation_id}/accept
+  acceptNotification( invitation_id: number ): Observable<any> {
+    console.log('accept');
+    return this.http.post( this.httpUtil.url('/api/invitations/' + invitation_id + '/accept'), JSON.stringify({}),
+      this.httpUtil.headers(this.authentication.getToken()) )
+      .map( this.httpUtil.extrairDados );
+  }
+
+  // GET /api/invitations/{invitation_id}/decline
+  declineNotification( invitation_id: number ): Observable<any> {
+    console.log('decline');
+    return this.http.post( this.httpUtil.url('/api/invitations/' + invitation_id + '/decline'), JSON.stringify({}),
+      this.httpUtil.headers(this.authentication.getToken()) )
+      .map( this.httpUtil.extrairDados );
+  }
+
 }

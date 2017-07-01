@@ -1,0 +1,70 @@
+<br>
+<br>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 ">
+    <div class="login-body">
+
+      <div class="col-md-4 col-md-offset-4">
+        <div class="profile-image profile-padding">
+          <img src="../assets/images/users/no-image.jpg"/>
+        </div>
+      </div>
+
+      <div *ngIf="updatedSuccess" class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>Updated</strong> Updated with success
+      </div>
+
+      <div *ngIf="differentPassword" class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>Invalid Password!</strong> Please use a same Password.
+      </div>
+
+      <form (ngSubmit)="onSubmit()" class="form-horizontal" method="post" #f_register="ngForm">
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="text" name="firstName" class="form-control" [(ngModel)]="user.firstName" placeholder="First Name"  #firstName="ngModel" required/>
+            <div *ngIf="f_register.submitted && !firstName.valid" class="help-block">First Name is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="text" name="lastName" class="form-control" [(ngModel)]="user.lastName" placeholder="Last Name" #lastName="ngModel" required/>
+            <div *ngIf="f_register.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="text" name="email" class="form-control" [(ngModel)]="user.email" placeholder="Email" #email="ngModel" disabled="true"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="password" name="password" class="form-control" [(ngModel)]="user.password" placeholder="Password" #password="ngModel" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <input type="password" name="confirmPassword" class="form-control" [(ngModel)]="user.confirmPassword" placeholder="Confirm Password" #confirmPassword="ngModel"/>
+            <div *ngIf="f_register.submitted && this.user.password && !confirmPassword.valid" class="help-block">Confirm Password is required</div>
+          </div>
+        </div>
+        <div class="form-group typeUser">
+          <label class="col-lg-3 col-md-3 col-sm-3 col-xs-4">Type User:</label>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4" id="ProductOwner">
+            <input type="radio" value="Student" name="type" [(ngModel)]="user.type" disabled="true"> Student
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4" id="ScrumMaster" >
+            <input type="radio" value="Teacher" name="type" [(ngModel)]="user.type" disabled="true"> Teacher
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-6 col-md-offset-6">
+            <button type="submit" [disabled]="loading" class="btn btn-info btn-block">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

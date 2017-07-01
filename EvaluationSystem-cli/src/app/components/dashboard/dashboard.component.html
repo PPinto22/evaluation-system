@@ -9,7 +9,7 @@
         <a [routerLink]="['/dashboard']">Evaluation</a>
         <a href="#page-top" class="x-navigation-control"></a>
       </li>
-      <li class="xn-profile">
+      <li class="xn-profile" [routerLink]="['/dashboard','profile']">
         <div class="profile">
           <div class="profile-image">
             <img src="../assets/images/users/no-image.jpg"/>
@@ -20,6 +20,13 @@
           </div>
         </div>
       </li>
+      <!-- FIXME Ver isto melhor-->
+      <li class="xn-title" *ngIf="isStudent()">Exams OnGoing</li>
+      <li *ngFor="let teste of ['Teste1']">
+        <a  *ngIf="isStudent()" [routerLink]="" routerLinkActive=""><span class="fa fa-desktop"></span> <span class="xn-text">{{teste}}</span></a>
+      </li>
+
+
       <li class="xn-title">Navigation</li>
 
       <li *ngFor="let col_node of collapse_struture; let col_node_pos = index" [ngClass]="{'xn-openable': col_node.children, 'active': col_node.isCollapsed}" >
@@ -70,6 +77,10 @@
         <a (click)="logout()" class="mb-control" ><span class="fa fa-sign-out"></span></a>
       </li>
       <!-- END SIGN OUT -->
+      <li [routerLink]="['/dashboard','notifications']" class="xn-icon-button pull-right" *ngIf="!isTeacher()">
+        <a><span class="fa fa-tasks"></span></a>
+        <div *ngIf="notifications.length>0"class="informer informer-danger">{{notifications.length}}</div>
+      </li>
     </ul>
 
     <div class="page-content-wrap">

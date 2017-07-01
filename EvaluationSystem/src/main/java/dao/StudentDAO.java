@@ -16,10 +16,10 @@ import org.orm.*;
 import org.hibernate.LockMode;
 
 public interface StudentDAO {
-	Student loadStudentByEmail(String email) throws PersistentException;
-	boolean exists(int ID) throws PersistentException;
-	boolean exists(String email) throws PersistentException;
-	boolean existsActive(String email) throws PersistentException;
+	Student loadStudentByEmail(PersistentSession session, String email) throws PersistentException;
+	boolean exists(PersistentSession session, int ID) throws PersistentException;
+	boolean exists(PersistentSession session, String email) throws PersistentException;
+	boolean existsActive(PersistentSession session, String email) throws PersistentException;
 
 	public Student loadStudentByORMID(int ID) throws PersistentException;
 	public Student getStudentByORMID(int ID) throws PersistentException;

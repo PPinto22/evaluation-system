@@ -1,8 +1,9 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../../../../services/authentication.service';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router} from '@angular/router';
 import {StudentsService} from '../../../../../services/students.service';
 import {StudentsFilterGroup} from '../../../../../filters/students_filter_group';
+import {BreadCrumbService} from '../../../../../services/breadcrumb.service';
 
 
 declare var $: any;
@@ -24,7 +25,8 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   constructor(
     private router: ActivatedRoute,
     private authentication: AuthenticationService,
-    private students: StudentsService
+    private students: StudentsService,
+    private breadCrumbService: BreadCrumbService
   ) {
     this.allStudentsOfGroup = new Array<any>();
   }
@@ -36,12 +38,18 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       this.groupId = params['group_id'];
       this.getAllGroupStudents();
      //  this.groupId = 2; // TODO tirar esta merda depois!
+      this.setBreadCrumb();
     });
   }
 
   ngAfterViewInit(): void {
     panels();
     this.scroll();
+  }
+
+  private setBreadCrumb(): void {
+    // FIXME adiconar o nome do grupo
+    this.breadCrumbService.setBreadCrum(['Class', , 'Group']);
   }
 
   private scroll(): void {

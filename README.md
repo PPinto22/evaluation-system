@@ -3,6 +3,21 @@
 ...
 ## FrontEnd - Angular 2
 
+
+### Welcome Page (/)
+[] - Homepage
+[] - Login
+[] - Register
+
+### Dashboard (/dashboard)
+- [] Profile
+- [] Schedule
+- [] Results
+- [] Notifications
+- [] Classes
+- [] Group
+
+
 - DashBoard
 ```
 Refresh - need someones changes

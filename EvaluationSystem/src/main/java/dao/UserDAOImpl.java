@@ -29,8 +29,8 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
 	@Override
-	public User loadUserByAuthentication(String email, String password) throws PersistentException, InvalidUserException, UnconfirmedRegistrationException {
-		UserCriteria criteria = new UserCriteria();
+	public User loadUserByAuthentication(PersistentSession session, String email, String password) throws PersistentException, InvalidUserException, UnconfirmedRegistrationException {
+		UserCriteria criteria = new UserCriteria(session);
 		criteria.email.eq(email);
 		criteria.password.eq(password);
 		criteria.deleted.eq(false);
@@ -46,39 +46,38 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public List<User> loadUsersByEmail(String email) throws PersistentException {
-		UserCriteria criteria = new UserCriteria();
+	public List<User> loadUsersByEmail(PersistentSession session, String email) throws PersistentException {
+		UserCriteria criteria = new UserCriteria(session);
 		criteria.email.eq(email);
 		criteria.deleted.eq(false);
 		return Arrays.asList(this.listUserByCriteria(criteria));
 	}
 
 	@Override
-	public boolean exists(String email) throws PersistentException {
-		UserCriteria criteria = new UserCriteria();
+	public boolean exists(PersistentSession session, String email) throws PersistentException {
+		UserCriteria criteria = new UserCriteria(session);
 		criteria.email.eq(email);
 		criteria.deleted.eq(false);
 		return this.loadUserByCriteria(criteria) != null;
 	}
 
 	@Override
-	public boolean exists(int ID) throws PersistentException {
-		UserCriteria criteria = new UserCriteria();
+	public boolean exists(PersistentSession session, int ID) throws PersistentException {
+		UserCriteria criteria = new UserCriteria(session);
 		criteria.ID.eq(ID);
 		criteria.deleted.eq(false);
 		return this.loadUserByCriteria(criteria) != null;
 	}
 
 	@Override
-	public boolean existsActive(String email) throws PersistentException {
-		UserCriteria criteria = new UserCriteria();
+	public boolean existsActive(PersistentSession session, String email) throws PersistentException {
+		UserCriteria criteria = new UserCriteria(session);
 		criteria.email.eq(email);
 		criteria.deleted.eq(false);
 		criteria.registered.eq(true);
 		return this.loadUserByCriteria(criteria) != null;
 	}
 
-	// Codigo gerado
 	private static final org.apache.log4j.Logger _logger = org.apache.log4j.Logger.getLogger(UserDAOImpl.class);
 	public User loadUserByORMID(int ID) throws PersistentException {
 		try {

@@ -9,6 +9,7 @@ import model.Group;
 import model.Question;
 import model.Teacher;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +47,9 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public Class updateClass(Class cl, String name, String abbreviation) throws PersistentException, ExistentEntityException {
-        if(name != null && !name.equals(cl.getName()) && exists(cl.get_teacher(), name))
+    public Class updateClass(PersistentSession session, Class cl, String name, String abbreviation)
+            throws PersistentException, ExistentEntityException {
+        if(name != null && !name.equals(cl.getName()) && exists(session, cl.get_teacher(), name))
             throw new ExistentEntityException();
         if(name != null && !name.equals(""))
             cl.setName(name);
@@ -59,18 +61,18 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public Class getClassByID(int id) throws PersistentException, NonExistentEntityException {
-        if(!classDAO.exists(id))
+    public Class getClassByID(PersistentSession session, int id) throws PersistentException, NonExistentEntityException {
+        if(!classDAO.exists(session, id))
             throw new NonExistentEntityException();
-        return this.classDAO.loadClassByORMID(id);
+        return this.classDAO.loadClassByORMID(session, id);
     }
 
     @Override
-    public Class getClassByName(Teacher teacher, String className) throws PersistentException, NonExistentEntityException {
-        if(!classDAO.exists(teacher.getID(), className))
+    public Class getClassByName(PersistentSession session, Teacher teacher, String className) throws PersistentException, NonExistentEntityException {
+        if(!classDAO.exists(session, teacher.getID(), className))
             throw new NonExistentEntityException();
 
-        return this.classDAO.getClassByName(teacher.getID(),className);
+        return classDAO.getClassByName(session, teacher.getID(), className);
     }
 
     @Override
@@ -82,8 +84,8 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public Group addGroupToClass(Class cl, Group group) throws PersistentException, ExistentEntityException {
-        if(this.groupService.exists(cl, group.getName()))
+    public Group addGroupToClass(PersistentSession session, Class cl, Group group) throws PersistentException, ExistentEntityException {
+        if(this.groupService.exists(session, cl, group.getName()))
             throw new ExistentEntityException();
 
         cl._groups.add(group);
@@ -93,18 +95,20 @@ public class ClassServiceImpl implements ClassService{
 
 
     @Override
-    public List<Question> listClassQuestions(Class cl) throws PersistentException {
-        return questionDAO.listQuestionsByClass(cl.getID());
+    public List<Question> listClassQuestions(PersistentSession session, Class cl) throws PersistentException {
+        return questionDAO.listQuestionsByClass(session, cl.getID());
     }
 
     @Override
-    public List<Question> listClassQuestionsByCategoryAndDifficulty(Class cl, String category, int difficulty) throws PersistentException {
-        return questionDAO.listQuestionsByClassCategoryAndDifficulty(cl.getID(), category, difficulty);
+    public List<Question> listClassQuestionsByCategoryAndDifficulty(PersistentSession session,
+                                                                    Class cl, String category,
+                                                                    int difficulty) throws PersistentException {
+        return questionDAO.listQuestionsByClassCategoryAndDifficulty(session, cl.getID(), category, difficulty);
     }
 
     @Override
-    public Set<String> getClassCategories(Class cl) throws PersistentException {
-        List<Question> questions = this.listClassQuestions(cl);
+    public Set<String> getClassCategories(PersistentSession session, Class cl) throws PersistentException {
+        List<Question> questions = this.listClassQuestions(session, cl);
         Set<String> categories = new TreeSet<>();
         for(Question question: questions)
             categories.add(question.getCategory());
@@ -112,12 +116,12 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public Question addQuestionToClass(Class cl, Question question)
+    public Question addQuestionToClass(PersistentSession session, Class cl, Question question)
             throws InvalidQuestionException, ExistentEntityException, PersistentException {
         if(!questionService.validate(question))
             throw new InvalidQuestionException();
 
-        if(questionService.exists(cl, question))
+        if(questionService.exists(session, cl, question))
             throw new ExistentEntityException();
 
         cl._question.add(question);
@@ -127,35 +131,35 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public void delete(Class cl) throws PersistentException, EntityNotRemovableException {
-        if(classHasSubmissions(cl))
+    public void delete(PersistentSession session, Class cl) throws PersistentException, EntityNotRemovableException {
+        if(classHasSubmissions(session, cl))
             throw new EntityNotRemovableException();
         Teacher teacher = cl.get_teacher();
         for(Group group: cl._groups.toArray()){
-            groupService.delete(group);
+            groupService.delete(session, group);
         }
         for(Question question: cl._question.toArray()){
-            questionService.delete(question);
+            questionService.delete(session, question);
         }
         teacher._classes.remove(cl);
         this.classDAO.delete(cl);
     }
 
-    public boolean classHasSubmissions(Class cl) throws PersistentException {
+    public boolean classHasSubmissions(PersistentSession session, Class cl) throws PersistentException {
         for(Group group: cl._groups.toArray()){
-            if(groupService.groupHasSubmissions(group))
+            if(groupService.groupHasSubmissions(session, group))
                 return true;
         }
         return false;
     }
 
     @Override
-    public boolean exists(int id) throws PersistentException {
-        return this.classDAO.exists(id);
+    public boolean exists(PersistentSession session, int id) throws PersistentException {
+        return this.classDAO.exists(session, id);
     }
 
     @Override
-    public boolean exists(Teacher teacher, String className) throws PersistentException {
-        return this.classDAO.exists(teacher.getID(), className);
+    public boolean exists(PersistentSession session, Teacher teacher, String className) throws PersistentException {
+        return this.classDAO.exists(session, teacher.getID(), className);
     }
 }

@@ -43,6 +43,13 @@ import { ExamsComponent } from './components/dashboard/class/exams/exams.compone
 import {ExamCreateComponent} from 'app/components/dashboard/class/exams/exam-create/exam-create.component';
 import {StudentsFilter} from './filters/students_filter';
 import {StudentsFilterGroup} from './filters/students_filter_group';
+import { NotificationComponent } from './components/notification/notification.component';
+import { ExamSubmissionComponent } from './components/dashboard/class/exams/exam-submission/exam-submission.component';
+import { QuestionSubmitComponent } from './components/dashboard/class/exams/exam-submission/question-submit/question-submit.component';
+import { ExamResultComponent } from './components/dashboard/class/exams/exam-result/exam-result.component';
+import { ExamResultAllComponent } from './components/dashboard/class/exams/exam-result-all/exam-result-all.component';
+import { ClassScoreComponent } from './components/dashboard/class/class-score/class-score.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +77,14 @@ import {StudentsFilterGroup} from './filters/students_filter_group';
     AnswerCreateComponent,
     ExamsComponent,
     StudentsFilter,
-    StudentsFilterGroup
+    StudentsFilterGroup,
+    NotificationComponent,
+    ExamSubmissionComponent,
+    QuestionSubmitComponent,
+    ExamResultComponent,
+    ExamResultAllComponent,
+    ClassScoreComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

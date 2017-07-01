@@ -23,8 +23,8 @@ import java.util.List;
 @Repository
 public class QuestionDAOImpl implements QuestionDAO {
 	@Override
-	public List<Question> listQuestionsByClassCategoryAndDifficulty(int classID, String category, int difficulty) throws PersistentException {
-		QuestionCriteria criteria = new QuestionCriteria();
+	public List<Question> listQuestionsByClassCategoryAndDifficulty(PersistentSession session, int classID, String category, int difficulty) throws PersistentException {
+		QuestionCriteria criteria = new QuestionCriteria(session);
 		criteria._classId.eq(classID);
 		criteria.category.eq(category);
 		criteria.difficulty.eq(difficulty);
@@ -32,26 +32,26 @@ public class QuestionDAOImpl implements QuestionDAO {
 	}
 
 	@Override
-	public boolean exists(int questionID) throws PersistentException {
-		return this.getQuestionByORMID(questionID) != null;
+	public boolean exists(PersistentSession session, int questionID) throws PersistentException {
+		return this.getQuestionByORMID(session, questionID) != null;
 	}
 
 	@Override
-	public boolean exists(int classID, String text) throws PersistentException {
-		return !this.listQuestionsByClassAndText(classID,text).isEmpty();
+	public boolean exists(PersistentSession session, int classID, String text) throws PersistentException {
+		return !this.listQuestionsByClassAndText(session, classID,text).isEmpty();
 	}
 
 	@Override
-	public List<Question> listQuestionsByClassAndText(int classID, String text) throws PersistentException {
-		QuestionCriteria criteria = new QuestionCriteria();
+	public List<Question> listQuestionsByClassAndText(PersistentSession session, int classID, String text) throws PersistentException {
+		QuestionCriteria criteria = new QuestionCriteria(session);
 		criteria._classId.eq(classID);
 		criteria.text.eq(text);
 		return Arrays.asList(this.listQuestionByCriteria(criteria));
 	}
 
 	@Override
-	public List<Question> listQuestionsByClass(int classID) throws PersistentException {
-		QuestionCriteria criteria = new QuestionCriteria();
+	public List<Question> listQuestionsByClass(PersistentSession session, int classID) throws PersistentException {
+		QuestionCriteria criteria = new QuestionCriteria(session);
 		criteria._classId.eq(classID);
 		return Arrays.asList(this.listQuestionByCriteria(criteria));
 	}

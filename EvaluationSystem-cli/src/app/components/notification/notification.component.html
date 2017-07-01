@@ -1,0 +1,50 @@
+<br>
+
+<div class="row">
+  <div class="col-md-12">
+    <!-- START RESPONSIVE TABLES -->
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+        <h3 class="panel-title">Notifications</h3>
+        <ul class="panel-controls">
+          <li><a (click)="refreshNotifications()" class="control-info"><span class="glyphicon glyphicon-refresh"></span></a></li>
+        </ul>
+      </div>
+
+      <div class="panel-body panel-body-table">
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-actions">
+            <thead>
+            <tr>
+              <th class="text-center" width="200">Class</th>
+              <th class="text-center" width="200">Group</th>
+              <th class="text-center">Teacher</th>
+              <th class="text-center" width="200">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
+
+            <tr *ngFor="let notification of getNotificationsFilter()">
+              <td class="text-center"><strong>{{notification.group._class.name}}</strong></td>
+              <td class="text-center"><strong>{{notification.group.name}}</strong></td>
+              <td class="text-center"><strong>{{notification.group._class.teacher.firstName}} {{notification.group._class.teacher.lastName}}({{notification.group._class.teacher.email}})</strong></td>
+              <td>
+                <button (click)="this.declineNotification(notification.id)" type="button" class="btn btn-danger btn-rounded btn-sm">Decline</button>
+                <button (click)="this.acceptNotification(notification.id)" type="button" class="btn btn-success btn-rounded btn-sm">Accept</button>
+              </td>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <!-- END RESPONSIVE TABLES -->
+
+  </div>
+</div>

@@ -4,6 +4,7 @@ import dao.AnswerDAO;
 import exception.NonExistentEntityException;
 import model.Answer;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,15 +17,15 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public Answer getAnswerByID(int ID) throws NonExistentEntityException, PersistentException {
-        if(!exists(ID))
+    public Answer getAnswerByID(PersistentSession session, int ID) throws NonExistentEntityException, PersistentException {
+        if(!exists(session, ID))
             throw new NonExistentEntityException();
 
-        return answerDAO.loadAnswerByORMID(ID);
+        return answerDAO.loadAnswerByORMID(session, ID);
     }
 
     @Override
-    public boolean exists(int ID) throws PersistentException {
-        return answerDAO.exists(ID);
+    public boolean exists(PersistentSession session, int ID) throws PersistentException {
+        return answerDAO.exists(session,ID);
     }
 }

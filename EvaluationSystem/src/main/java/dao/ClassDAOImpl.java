@@ -25,25 +25,24 @@ import java.util.List;
 @Repository
 public class ClassDAOImpl implements ClassDAO {
 
-	// Nosso codigo
 	@Override
-	public boolean exists(int ID) throws PersistentException {
-		ClassCriteria criteria = new ClassCriteria();
+	public boolean exists(PersistentSession session, int ID) throws PersistentException {
+		ClassCriteria criteria = new ClassCriteria(session);
 		criteria.ID.eq(ID);
 		return this.loadClassByCriteria(criteria) != null;
 	}
 
 	@Override
-	public boolean exists(int teacherID, String className) throws PersistentException {
-		ClassCriteria criteria = new ClassCriteria();
+	public boolean exists(PersistentSession session, int teacherID, String className) throws PersistentException {
+		ClassCriteria criteria = new ClassCriteria(session);
 		criteria._teacherId.eq(teacherID);
 		criteria.name.eq(className);
 		return this.loadClassByCriteria(criteria) != null;
 	}
 
 	@Override
-	public Class getClassByName(int teacherID, String className) throws PersistentException, NonExistentEntityException {
-		ClassCriteria criteria = new ClassCriteria();
+	public Class getClassByName(PersistentSession session, int teacherID, String className) throws PersistentException, NonExistentEntityException {
+		ClassCriteria criteria = new ClassCriteria(session);
 		criteria._teacherId.eq(teacherID);
 		criteria.name.eq(className);
 		Class cl = this.loadClassByCriteria(criteria);

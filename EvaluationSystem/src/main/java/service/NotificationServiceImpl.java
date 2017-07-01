@@ -7,6 +7,7 @@ import exception.NonExistentEntityException;
 import exception.UnconfirmedRegistrationException;
 import model.*;
 import org.orm.PersistentException;
+import org.orm.PersistentSession;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,11 +24,11 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public Notification getNotificationByID(int id) throws PersistentException, NonExistentEntityException {
-        if(!this.notificationDAO.exists(id))
+    public Notification getNotificationByID(PersistentSession session, int id) throws PersistentException, NonExistentEntityException {
+        if(!this.notificationDAO.exists(session, id))
             throw new NonExistentEntityException();
 
-        return this.notificationDAO.loadNotificationByORMID(id);
+        return this.notificationDAO.loadNotificationByORMID(session, id);
     }
 
     @Override
@@ -40,8 +41,8 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public GroupInvitation getGroupInvitation(Group group, Student student) throws PersistentException, NonExistentEntityException {
-        GroupInvitation groupInvitation = this.groupInvitationDAO.loadGroupInvitationByGroupAndStudent(group,student);
+    public GroupInvitation getGroupInvitation(PersistentSession session, Group group, Student student) throws PersistentException, NonExistentEntityException {
+        GroupInvitation groupInvitation = this.groupInvitationDAO.loadGroupInvitationByGroupAndStudent(session, group, student);
         if(groupInvitation == null)
             throw new NonExistentEntityException();
 
@@ -56,11 +57,8 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public Group acceptInvitation(GroupInvitation groupInvitation) throws PersistentException, UnconfirmedRegistrationException {
-        GroupStudent groupStudent = groupStudentDAO.loadGroupStudentByGroupAndStudent(
-                groupInvitation.get_group().getID(),
-                groupInvitation.get_user().getID()
-        );
+    public Group acceptInvitation(PersistentSession session, GroupInvitation groupInvitation) throws PersistentException, UnconfirmedRegistrationException {
+        GroupStudent groupStudent = groupStudentDAO.loadGroupStudentByGroupAndStudent(session,groupInvitation.get_group().getID(),groupInvitation.get_user().getID());
         Student student = groupStudent.get_student();
         if(!student.isRegistered())
             throw new UnconfirmedRegistrationException();

@@ -24,8 +24,8 @@ import java.util.List;
 @Repository
 public class GroupInvitationDAOImpl implements GroupInvitationDAO {
 	@Override
-	public GroupInvitation loadGroupInvitationByGroupAndStudent(Group group, Student student) throws PersistentException {
-		GroupInvitationCriteria criteria = new GroupInvitationCriteria();
+	public GroupInvitation loadGroupInvitationByGroupAndStudent(PersistentSession session, Group group, Student student) throws PersistentException {
+		GroupInvitationCriteria criteria = new GroupInvitationCriteria(session);
 		criteria._groupId.eq(group.getID());
 		criteria._userId.eq(student.getID());
 		return this.loadGroupInvitationByCriteria(criteria);
