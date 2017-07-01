@@ -10,6 +10,9 @@
 - [x] - Register
 
 ### Dashboard (/dashboard)
+```
+Falta fazer a parte de atualizar a navbar
+```
 - [] Profile
 - [x] Schedule
 - [] Results

@@ -11,7 +11,7 @@ export class ResultsComponent implements OnInit {
 
   constructor(
     private authentication: AuthenticationService,
-    private breadCrumbService: BreadCrumbService
+    private breadCrumbService: BreadCrumbService,
   ) { }
 
   ngOnInit() {

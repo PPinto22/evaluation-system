@@ -30,11 +30,14 @@ export class Exception {
   }
 
   errorHandlingInvalidToken(error: any): void {
-    const error_body = JSON.parse(error._body);
-    if ( error.status === 401 && (error_body.message === 'Invalid token' || error_body.message === 'Token expired')) {
-      this.authentication.logout();
-      this.router.navigate(['/login']);
+    if (error && error._body) {
+      const error_body = JSON.parse(error._body);
+      if ( error.status === 401 ) {
+        this.authentication.logout();
+        this.router.navigate(['/login']);
+      }
     }
+
   }
 
 }

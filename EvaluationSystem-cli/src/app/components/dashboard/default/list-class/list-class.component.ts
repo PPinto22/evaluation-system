@@ -4,7 +4,7 @@ import {AuthenticationService} from '../../../../services/authentication.service
 import {Group} from '../../../../models/group';
 import {Class} from '../../../../models/class';
 import {User} from '../../../../models/user';
-import {Exception} from "../../../../execption/exception";
+import {Exception} from '../../../../execption/exception';
 
 declare var onReady: any;
 
@@ -30,7 +30,6 @@ export class ListClassComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit List-class');
     // onReady();
   }
 
@@ -63,6 +62,9 @@ export class ListClassComponent implements OnInit, AfterViewInit {
 
   protected deleteGroup( group_id: number ): void {
     this.groupsService.deleteGroupById( group_id ).subscribe(
+      result => {
+        this.allGroups = this.allGroups.filter( obj => obj.id !== group_id );
+      },
       error => {
         console.log(error);
         this.exception.errorHandlingInvalidToken(error);
