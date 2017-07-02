@@ -1,0 +1,52 @@
+<br>
+<div class="row">
+  <div class="col-md-2 pull-right">
+    <button (click)="exportResults()" class="btn btn-block btn-primary ">
+      <span class="fa fa-eye"></span>Export to csv
+    </button>
+  </div>
+  <div class="col-md-6 col-sm-6 col-xs-12">
+    <form role="form">
+      <div class="form-group">
+        <div class="input-group">
+          <!--<input type="text" class="input-block-level form-control" autocomplete="off" placeholder="Search for student">-->
+          <input type="text" class="form-control" autocomplete="off" placeholder="Search for student"/>
+          <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<br>
+<div class="row">
+  <div class="col-md-12">
+    <!-- START RESPONSIVE TABLES -->
+    <div class="panel panel-default">
+      <div class="panel-body panel-body-table">
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-actions">
+            <thead>
+            <tr>
+              <th class="text-center" *ngFor="let test of header">{{test}}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
+            <tr *ngFor="let student of studentsScores">
+              <td class="text-center"><strong>{{student.name}}</strong></td>
+              <td class="text-center"><strong>{{student.email}}</strong></td>
+              <th class="text-center" *ngFor="let score of student.exams">{{score}}</th>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <!-- END RESPONSIVE TABLES -->
+  </div>
+</div>

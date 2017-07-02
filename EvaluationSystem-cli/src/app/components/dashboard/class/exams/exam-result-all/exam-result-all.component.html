@@ -43,10 +43,11 @@
 
         <tr *ngFor="let result of submissionResults">
           <td class="text-center"><strong>{{result.user.getNameActive()}}</strong></td>
-          <td class="text-center"><strong>{{10}}/{{20}}</strong></td>
+          <td class="text-center"><strong>{{result.correct}}/{{result.total}}</strong></td>
           <td class="text-center"><strong>{{result.score}}</strong></td>
           <td>
-            <button [routerLink]="['/dashboard','classes',class_id,'groups',group_id,'exams',exam_id,'submission',result.id]" type="button" class="btn btn-primary btn-rounded btn-sm">View Details</button>
+            <strong class="text-danger" *ngIf="!result.id" >No Submission</strong>
+            <button *ngIf="result.id" [routerLink]="['/dashboard','classes',class_id,'groups',group_id,'exams',exam_id,'submission',result.id]" type="button" class="btn btn-primary btn-rounded btn-sm">View Details</button>
           </td>
         </tr>
 

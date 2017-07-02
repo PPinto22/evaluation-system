@@ -38,6 +38,7 @@ export class ExamResultAllComponent implements OnInit {
   public getExamResults(exam_id: number): void {
     this.scoresService.getExamScore( exam_id ).subscribe(
       result => {
+        console.log('results all');
         console.log(result);
         this.submissionResults = [];
         for (const student of result.students) {
@@ -61,6 +62,8 @@ export class ExamResultAllComponent implements OnInit {
 
   private createSubmission(score: any): Submission {
     const new_submission = new Submission(score.submissionID, score.score);
+    new_submission.correct = score.correct;
+    new_submission.total = score.total;
     return new_submission;
   }
 
