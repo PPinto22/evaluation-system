@@ -13,6 +13,7 @@ import {ExamsService} from '../../services/exams.service';
 import {Exception} from '../../execption/exception';
 import {Exam} from '../../models/exam';
 import 'rxjs/add/operator/filter';
+import {NavbarService} from "../../services/navbar.service";
 
 
 declare var $: any;
@@ -46,26 +47,17 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
     private classesService: ClassesService,
     private notificationsService: NotificationService,
     private examsService: ExamsService,
-    private exception: Exception
-  ) {
-  }
+    private exception: Exception,
+    private navbarService: NavbarService
+  ) { }
 
   ngOnInit() {
     this.notifications = [];
     this.examsOnGoing = [];
-    this.setNamebreadCrum();
-    this.createNavbarStructure();
     this.page_navigation_toggled = false;
-    this.getClasses();
-    this.initExamsOnGoing();
-    // TODO altualizar a navbar
-    // this.router.events
-    //   .filter(event => event instanceof NavigationStart)
-    //   .subscribe( (event: NavigationStart) => {
-    //     console.log('change router');
-    //     this.getClasses();
-    //   });
-
+    this.initBreadCrum();
+    this.initNavbarUpdate(); // Update Navbar
+    this.initExamsOnGoing(); // Exams On going
     this.breadCrumb.setBreadCrum(['Dashboard']);
   }
 
@@ -73,7 +65,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
     clearInterval(this.intervalExamsOnGoing);
     clearInterval(this.intervalNotification);
   }
-
   ngAfterViewInit() {
     x_navigation();
     page_content_onresize();
@@ -81,12 +72,25 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
       this.initNotification();
     }
   }
-
   ngOnChanges() {
     x_navigation();
     page_content_onresize();
   }
 
+  private initNavbarUpdate(): void {
+    this.createNavbarStructure();
+    this.updateNavbar();
+    this.navbarService.navbarObservable.subscribe( value => {
+      this.updateNavbar();
+      }
+    );
+  }
+  private initBreadCrum(): void {
+    this.breadCrumb.breadCrumDate.subscribe( value => {
+        this.nameInToggleNavigation = value.pop();
+      }
+    );
+  }
   private initExamsOnGoing(): void {
     this.getExamsOnGoing();
     this.intervalExamsOnGoing = setInterval( () => {
@@ -195,13 +199,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
       });
   }
 
-  public setNamebreadCrum() {
-    this.breadCrumb.breadCrumDate.subscribe( value => {
-      this.nameInToggleNavigation = value.pop();
 
-      }
-    );
-  }
 
   private createNavbarStructure(): void {
     this.collapse_struture = [
@@ -320,5 +318,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
     examnew.id = exam.id;
     examnew.group = _group;
     return examnew;
+  }
+
+  public updateNavbar(): void {
+    this.getClasses();
   }
 }

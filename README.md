@@ -13,7 +13,7 @@
 ```
 Falta fazer a parte de atualizar a navbar
 ```
-- [] Profile
+- [x] Profile
 - [x] Schedule
 - [] Results
 - [] Notifications
@@ -245,7 +245,7 @@ ___
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
-- **FORBIDDEN (550)**
+- **UNAUTHORIZED (401)**
 - **NOT_FOUND (404)** - *No such class*
 - **NOT_ACCEPTABLE (406)** - *Class cannot be removed*
 
@@ -285,7 +285,7 @@ ___
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 
 #### POST /api/classes/{class_id}/questions
 ### Body
@@ -343,7 +343,7 @@ ___
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Invalid question*, *Question already exists*
 
 
@@ -359,7 +359,7 @@ ___
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 
 #### GET /api/classes/{class_id}/groups
 ### Response
@@ -412,7 +412,7 @@ ___
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such class*
 - **NOT_ACCEPTABLE (406)** - *Group already exists*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 ___
 
 #### GET /api/questions/{question_id}
@@ -438,7 +438,7 @@ ___
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such question*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 
 #### PUT /api/questions/{question_id}
 > Não é possível atualizar uma questão que esteja inserida num exame. Caso contrário, pode ser alterado qualquer um dos atributos *text*, *category*, *difficulty* ou *answers*.
@@ -489,7 +489,7 @@ ___
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such question*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Question in use*, *Question exists*, *Invalid question*
 
 #### DELETE /api/questions/{question_id}
@@ -499,7 +499,7 @@ A questão só pode ser removida se não pertencer a nenhum exame.
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such question*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Question cannot be removed*
 
 ___
@@ -562,7 +562,7 @@ ___
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)**
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Group already exists*
 
 #### DELETE /api/groups/{group_id}
@@ -572,7 +572,7 @@ Apaga um grupo apenas se este não tiver nenhuma submissão em algum dos seus ex
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)**
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Group cannot be removed*
 
 #### GET /api/groups/{group_id}/students
@@ -641,7 +641,7 @@ Apaga um grupo apenas se este não tiver nenhuma submissão em algum dos seus ex
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
-- **FORBIDDEN (550)**
+- **UNAUTHORIZED (401)**
 - **NOT FOUND (404)**
 
 #### DELETE /api/groups/{group_id}/students/{student_id}
@@ -688,7 +688,7 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such group*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 
 #### GET /api/groups/{group_id}/exams
 ### Parameters
@@ -723,7 +723,7 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such group*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 
 #### POST /api/groups/{group_id}/exams
 
@@ -776,7 +776,7 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such group*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Invalid name*, *Invalid duration*, *Invalid date*, *Duplicate questions*, *Invalid exam*, *Invalid question* (id **ID**)
 
 #### POST /api/groups/{group_id}/exams/generate
@@ -837,7 +837,7 @@ Não são necessariamente as mesmas perguntas associadas à disciplina porque al
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such group*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Invalid questions*, *Insufficient questions*
 
 #### POST /api/groups/{group_id}/exams/generate/question
@@ -876,7 +876,7 @@ Gera uma única questão para um exame.
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such group*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *No such question*, *Insufficient questions*
 
 #### GET /api/groups/{group_id}/scores
@@ -909,7 +909,7 @@ Gera uma única questão para um exame.
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such exam*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 ___
 
 #### GET /api/exams/{exam_id}
@@ -951,7 +951,7 @@ Se o utilizador for um aluno e o exame ainda não tiver começado, este método 
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such exam*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 
 #### DELETE /api/exams/{exam_id}
 Apaga um exame apenas se ainda não tiver sido feita nenhuma submissão.
@@ -959,7 +959,7 @@ Apaga um exame apenas se ainda não tiver sido feita nenhuma submissão.
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such exam*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Exam cannot be removed*
 
 #### PUT /api/exams/{exam_id}
@@ -983,7 +983,7 @@ Apaga um exame apenas se ainda não tiver sido feita nenhuma submissão.
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Exam already exists*
 
 
@@ -1010,7 +1010,7 @@ Apaga um exame apenas se ainda não tiver sido feita nenhuma submissão.
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such exam*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Invalid exam*
 
 #### POST /api/exams/{exam_id}/submissions
@@ -1061,19 +1061,18 @@ São retornadas todas as questões do exame, com a respetiva resposta do estudan
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such exam*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_ACCEPTABLE (406)** - *Existent submission*, *Invalid answer*, *Invalid question*
 ___
 
 #### GET /api/submissions/{submission_id}
 ### Response
-Se o aluno não tiver respondido a alguma questão, o campo *answer* não aparece.
-Se o exame já tiver terminado, então também é indicado se as respostas estão certas ou não e o *score*
+> Se o aluno não tiver respondido a alguma questão, o campo *answer* não aparece.
+> Se o exame já tiver terminado, então também é indicado se as respostas estão certas ou não.
 
 ```json
 {
   "id": 1,
-  "score": 20,
   "questions": [
     {
       "question": {
@@ -1111,7 +1110,7 @@ O funcionamento é igual a [POST /api/exams/{exam_id}/submission](#post-apiexams
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such submissions*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 
 ___
 #### GET /api/users/{user_id}
@@ -1155,7 +1154,7 @@ ___
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
-- **FORBIDDEN (550)**
+- **UNAUTHORIZED (401)**
 - **NOT_FOUND (404)** - *No such user*
 
 #### DELETE /api/users/{user_id}
@@ -1163,7 +1162,7 @@ ___
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such user*
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 
 #### POST api/users/{user_id}/classes
 ### Body
@@ -1213,9 +1212,6 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **NOT_FOUND (404)** - *No such user*
 
 #### GET /api/users/{user_id}/groups
-### Parameters
-- \_class=**ID**
-
 ### Response
 ```json
 [
@@ -1247,7 +1243,7 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
-- **FORBIDDEN (550)** - *No permission*
+- **UNAUTHORIZED (401)** - *No permission*
 - **NOT_FOUND (404)** - *No such user*, *No such group*
 
 #### GET /api/users/{user_id}/notifications
@@ -1282,7 +1278,7 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)**
-- **FORBIDDEN (550)**
+- **UNAUTHORIZED (401)**
 
 #### GET /api/users/{user_id}/submissions
 ### Parameters
@@ -1324,7 +1320,7 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such student*
-- **FORBIDDEN (550)**
+- **UNAUTHORIZED (401)**
 - **NOT_ACCEPTABLE (406)** - *Invalid group*, *Invalid exam*
 
 
@@ -1378,10 +1374,10 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)**
-- **FORBIDDEN (550)**
+- **UNAUTHORIZED (401)**
 
 #### GET /api/users/{user_id}/scores
-Caso o utilizador seja um professor, os *scores* são as médias dos resultados dos alunos. O campo *submissionID* nunca existe neste caso.
+Este método só funciona com utilizadores do tipo *student*. Para os professores saberem as notas dos alunos, utilizar [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores) ou [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores).
 
 ### Parameters
 - exam=ID
@@ -1427,7 +1423,7 @@ A resposta abaixo é enviada quando não é passado nenhum parâmetro. Caso seja
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)** - *No such student*
-- **FORBIDDEN (550)**
+- **UNAUTHORIZED (401)**
 - **NOT_ACCEPTABLE (406)** - *Invalid group*, *Invalid exam*
 ___
 
@@ -1450,12 +1446,12 @@ ___
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)**
-- **FORBIDDEN (550)**
+- **UNAUTHORIZED (401)**
 
 #### POST /api/invitations/{invitation_id}/decline
 ### HttpStatus
 - **OK (200)**
 - **INTERNAL_SERVER_ERROR (500)**
 - **NOT_FOUND (404)**
-- **FORBIDDEN (550)**
+- **UNAUTHORIZED (401)**
 ___

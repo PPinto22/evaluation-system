@@ -11,6 +11,7 @@ import {Class} from '../../../../../models/class';
 import {Exam} from "../../../../../models/exam";
 import {ExamsService} from "../../../../../services/exams.service";
 import {User} from "../../../../../models/user";
+import {NavbarService} from "../../../../../services/navbar.service";
 
 
 declare var $: any;
@@ -44,7 +45,8 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     private groupsService: GroupService,
     private breadCrumbService: BreadCrumbService,
     private exception: Exception,
-    private examsService: ExamsService
+    private examsService: ExamsService,
+    private navbarService: NavbarService
   ) {
     this.allStudentsOfGroup = new Array<any>();
   }
@@ -128,26 +130,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     );
   }
 
-  private createGroup(group: any): Group {
-    const new_group = new Group(group.name);
-    new_group.id = group.id;
-    new_group.class = this.createClass(group._class);
-    return new_group;
-  }
-
-  private createClass(class_r: any): Class {
-    const newClass = new Class(class_r.name, class_r.abbreviation);
-    newClass.id = class_r.id;
-    newClass.user = this.createUser(class_r.teacher);
-    return newClass;
-  }
-
-  private createUser(user: any): User {
-    const new_user: User = new User(user.id, user.email, user.firstName, user.lastName, user.type, '');
-    return new_user;
-  }
-
-
   private getAllStudentsOfGroup(): void {
      this.allStudentsOfGroup = new Array<any>();
      this.students.getUserByGroupId(this.groupId).subscribe(
@@ -167,11 +149,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   public getGroupName(): string {
     return this.group ? this.group.name : '';
   }
-
-// <tr id="trow_1" [routerLink]="['/dashboard','classes','1','groups','1','exams','1']">
-// <tr id="trow_2" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submit']">
-// <tr id="trow_3" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submission','1']">
-// <tr id="trow_4" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','results']">
 
   public getAllExamsOfGroup( group_id: number): void {
     this.examsService.getExamsByGroupId(group_id).subscribe(
@@ -195,25 +172,39 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       }
     );
   }
-
   private getAllHistory (exams): void {
     for ( const exam of exams){
       this.historyExams.push(this.createExam(exam));
     }
   }
-
   private getAllOngoing (exams): void {
     for (const exam of exams) {
       this.onGoingExams.push(this.createExam(exam));
     }
   }
-
   private getAllUpcoming (exams): void {
     for (const exam of exams) {
       this.upComingExams.push(this.createExam(exam));
     }
   }
 
+
+  private createGroup(group: any): Group {
+    const new_group = new Group(group.name);
+    new_group.id = group.id;
+    new_group.class = this.createClass(group._class);
+    return new_group;
+  }
+  private createClass(class_r: any): Class {
+    const newClass = new Class(class_r.name, class_r.abbreviation);
+    newClass.id = class_r.id;
+    newClass.user = this.createUser(class_r.teacher);
+    return newClass;
+  }
+  private createUser(user: any): User {
+    const new_user: User = new User(user.id, user.email, user.firstName, user.lastName, user.type, '');
+    return new_user;
+  }
   private createExam(exam): Exam {
     const examnew = new Exam( exam.name, exam.beginDate, exam.duration);
     examnew.id = exam.id;
@@ -239,7 +230,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       );
     }
   }
-
   public goToExamOnGoing(exam: Exam): void {
     if (this.isTeacher()) {
       this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id]);
