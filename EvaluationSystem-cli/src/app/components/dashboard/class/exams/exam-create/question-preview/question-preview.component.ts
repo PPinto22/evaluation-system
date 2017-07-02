@@ -8,11 +8,23 @@ import {Question} from 'app/models/question';
 })
 export class QuestionPreviewComponent implements OnInit {
   @Input() question: Question;
-
+  @Input() choiseanswersId: number;
 
   constructor() { }
 
   ngOnInit() {
+    console.log(this.question);
+  }
+
+  getDifficulty(): string {
+    if (this.question.dificulty === 1 ) {
+      return 'Easy';
+    } else {
+      if ( this.question.dificulty === 2) {
+        return 'Normal';
+      }
+      return 'Hard';
+    }
   }
 
 }

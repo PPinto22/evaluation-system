@@ -123,7 +123,7 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
         this.getAllExamsOfGroup(this.groupId);
       },
       error => {
-        this.exception.errorHandlingInvalidToken(error);
+        // this.exception.errorHandlingInvalidToken(error);
       }
     );
   }

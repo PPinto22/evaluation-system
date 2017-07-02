@@ -56,14 +56,15 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   private putDateNowOnEvent(): void {
     const date = new Date();
     if ( date.getUTCMonth() < 9) {
-      if ( date.getUTCDay() < 10) {
-        this.calendarOptions.defaultDate = date.getFullYear() + '-0' + (date.getUTCMonth() + 1)  + '-0' + date.getUTCDay();
+      if ( date.getUTCDate() < 10) {
+        this.calendarOptions.defaultDate = date.getFullYear() + '-0' + (date.getUTCMonth() + 1)  + '-0' + date.getUTCDate();
       }else {
-        this.calendarOptions.defaultDate = date.getFullYear() + '-0' + (date.getUTCMonth() + 1) + '-' + date.getUTCDay();
+        this.calendarOptions.defaultDate = date.getFullYear() + '-0' + (date.getUTCMonth() + 1) + '-' + date.getUTCDate();
       }
     }else {
-      this.calendarOptions.defaultDate = date.getFullYear() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCDay();
+      this.calendarOptions.defaultDate = date.getFullYear() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCDate();
     }
+    console.log(this.calendarOptions.defaultDate);
   }
 
   private getAllExams(): void {
