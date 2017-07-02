@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="form-group" [ngClass]="{ 'has-error': f_createExam.submitted && !dateExam.valid }">
+      <div class="form-group" [ngClass]="{ 'has-error': (f_createExam.submitted && !dateExam.valid) || (f_createExam.submitted && invalidDate) }">
         <label class="col-md-3 control-label">Date</label>
         <div class="col-md-9">
           <div class="input-group">
@@ -43,6 +43,7 @@
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
           </div>
           <div *ngIf="f_createExam.submitted && !dateExam.valid" class="help-block">Date is required</div>
+          <div *ngIf="f_createExam.submitted && invalidDate" class="help-block">Exam date must be higher than today</div>
           <span class="help-block"></span>
         </div>
       </div>

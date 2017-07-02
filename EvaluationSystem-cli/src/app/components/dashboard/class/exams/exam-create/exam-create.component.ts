@@ -26,6 +26,7 @@ export class ExamCreateComponent implements OnInit {
   private allGenerateNow: Map<string, Map<number, Array<number>>>;
   private saveAll = false;
   private generateAll = false;
+  private invalidDate = false;
 
   private questionsIds: number[];
 
@@ -79,29 +80,37 @@ export class ExamCreateComponent implements OnInit {
   }
 
   public createExam(): void {
-    if ( this.examCreate.nameExam && this.examCreate.questionNumber && this.examCreate.duration && this.examCreate.dateExam && this.examCreate.hourExam ) {
-      if ( this.examCreate.duration > 0) {
-        // const dateNow = new Date();
-        // const dateExameChoise = new Date(this.examCreate.dateExam);
-        const dateExameChoise = new Date();
-        // FIXME alterar isto
-        // if (dateNow < dateExameChoise) {
-          if (this.validateAllQuestions()) {
-            this.exam.createExamByGroupId(this.groupId, dateExameChoise.getTime(), this.examCreate.duration, this.examCreate.nameExam, this.questionsIds).subscribe(
-              resultado => {
-                this.location.back();
-              },
-              error => {
-                console.log(error);
-              }
-            );
+    this.invalidDate = false;
+    // if ( this.examCreate.dateExam ) {
+     // const dateNow = new Date();
+     // const dateExameChoise = new Date(this.examCreate.dateExam);
+     // if (dateNow < dateExameChoise) {
+        if (this.examCreate.nameExam && this.examCreate.questionNumber && this.examCreate.duration && this.examCreate.dateExam && this.examCreate.hourExam) {
+          if (this.examCreate.duration > 0) {
+            // const hour = this.examCreate.hourExam[0] + '' + this.examCreate.hourExam[1];
+            // const minu = this.examCreate.hourExam[3] + '' + this.examCreate.hourExam[4];
+            // dateExameChoise.setMinutes( +minu);
+            // dateExameChoise.setHours( +hour);
+            const dateExameChoise = new Date();
+            // FIXME alterar isto
+
+            if (this.validateAllQuestions()) {
+              this.exam.createExamByGroupId(this.groupId, dateExameChoise.getTime(), this.examCreate.duration, this.examCreate.nameExam, this.questionsIds).subscribe(
+                resultado => {
+                  this.location.back();
+                },
+                error => {
+                  console.log(error);
+                }
+              );
+            }
           }
-        // } else {
-        //   // TODO avisar data errada
-        // }
-      } else {
-        console.log('dada');
-      }
+       // }
+      // } else {
+      //  console.log(this.invalidDate)
+      //  this.invalidDate = true;
+        // TODO avisar data errada
+      // }
     }
   }
 
