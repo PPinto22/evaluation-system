@@ -32,4 +32,5 @@ export class UserService {
       ), this.httpUtil.headers(this.authentication.getToken()))
       .map(this.httpUtil.extrairDados);
   }
+
 }

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {BreadCrumbService} from '../../services/breadcrumb.service';
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
@@ -25,7 +25,7 @@ declare var xn_panel_dragging: any;
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
+export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   private nameInToggleNavigation: string;
   private page_navigation_toggled: boolean;
@@ -33,6 +33,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
   private notifications: Notification[];
   private examsOnGoing: Exam[];
+
+  private intervalExamsOnGoing: any;
+  private intervalNotification: any;
 
   constructor(
     private router: Router,
@@ -65,6 +68,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     this.breadCrumb.setBreadCrum(['Dashboard']);
   }
 
+  ngOnDestroy(): void {
+    clearInterval(this.intervalExamsOnGoing);
+    clearInterval(this.intervalNotification);
+  }
 
   ngAfterViewInit() {
     x_navigation();
@@ -81,13 +88,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
   private initExamsOnGoing(): void {
     this.getExamsOnGoing();
-    setInterval( () => {
+    this.intervalExamsOnGoing = setInterval( () => {
       this.getExamsOnGoing();
     }, 1000 * 60);
   }
   private initNotification(): void {
     this.getNotifications();
-    setInterval( () => {
+    this.intervalNotification = setInterval( () => {
       this.getNotifications();
     }, 1000 * 60);
   }

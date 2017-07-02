@@ -87,4 +87,8 @@ export class User {
   set lastName(value: string) {
     this._lastName = value;
   }
+
+  getName(): string {
+    return this.firstName + ' ' + this.lastName;
+  }
 }
