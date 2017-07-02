@@ -175,7 +175,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
     );
   }
   private getGroups(class_dash: any, class_id: number): void {
-    this.groupsService.getGroupByClass(class_id).subscribe(
+    this.groupsService.getGroupsClassByUser(class_id, this.authentication.getUserId()).subscribe(
       result => {
         for (const group of result) {
           const group_dash = class_dash.children.find(obj => group.id === obj.id);
