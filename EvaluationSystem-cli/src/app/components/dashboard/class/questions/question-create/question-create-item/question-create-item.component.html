@@ -7,7 +7,7 @@
         <div class="col-md-3 col-sm-3 col-xs-5">
           <label class="control-label">Category:</label>
         </div>
-        <div class="input-group col-md-9 col-sm-9 col-xs-7">
+        <div class="input-group col-md-9 col-sm-9 col-xs-7" [ngClass]="{ 'has-error': f_createQuestion.submitted && !category.valid }">
           <input type="text" name="category" [(ngModel)]="quest.category" #category="ngModel" value="" class="form-control" autocomplete="off" list="categories" required>
           <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
           <datalist id="categories">
@@ -42,7 +42,7 @@
           <div class="col-md-3 col-sm-3 col-xs-5">
             <label class="control-label">Question:</label>
           </div>
-          <div class="col-md-9 col-sm-9 col-xs-7">
+          <div class="col-md-9 col-sm-9 col-xs-7" [ngClass]="{ 'has-error': f_createQuestion.submitted && !questionText.valid }">
             <textarea name="questionText" #questionText="ngModel" [(ngModel)]="quest.questionText" type="text" class="form-control" rows="2" required></textarea>
             <span class="help-block"></span>
             <div *ngIf="f_createQuestion.submitted && !questionText.valid" class="help-block">Question is required</div>

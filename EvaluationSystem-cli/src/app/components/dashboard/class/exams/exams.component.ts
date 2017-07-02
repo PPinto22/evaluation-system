@@ -21,7 +21,7 @@ export class ExamsComponent implements OnInit {
   private examId: number;
   private groupId: number;
   private exam: Exam;
-  private questions: Question;
+  private questions: Question[];
 
   constructor(
     private router: Router,
@@ -30,7 +30,9 @@ export class ExamsComponent implements OnInit {
     private groupsServices: GroupService,
     private authentication: AuthenticationService,
     private breadcrumbService: BreadCrumbService
-  ) { }
+  ) {
+    this.questions = [];
+  }
 
   ngOnInit() {
     this.exam = new Exam( '', new Date().getMilliseconds(), 120);
@@ -57,25 +59,14 @@ export class ExamsComponent implements OnInit {
   private getExamById(examId: number): void {
     this.examsServices.getExamById( examId ).subscribe(
       result => {
+        console.log(result);
         this.exam.name = result.name;
         this.exam.beginDate = result.beginDate;
         this.exam.duration = result.duration;
-        for ( const question_res of result.question ) {
-          const question = new Question(question_res.difficulty, question_res.category);
-          question.id = question_res.id;
-          question.text = question_res.text;
-          const answers: Answer[] = [];
-          for ( const answer_res of question_res.answers ){
-            const answer: Answer = new Answer( answer_res.correct, answer_res.text );
-            answer.id = answer_res.id;
-            answer.order = answer_res.order;
-            answers.push( answer );
-          }
-          this.questions.answers = answers;
+        for ( const question_res of result.questions ) {
+          this.questions.push(question_res);
+          console.log(this.questions);
         }
-        // TODO verificar isto
-        console.log(this.exam);
-        console.log(this.questions);
       },
       error => {
         console.log(error);
@@ -86,7 +77,7 @@ export class ExamsComponent implements OnInit {
   private getGroupById(groupId: number): void {
     this.groupsServices.getGroupById( groupId ).subscribe(
       result => {
-
+        console.log(result)
         this.exam.group = new Group( result.name );
         this.exam.group.id = result.id;
         this.exam.group.class = new Class( result._class.name, result._class.abbreviation);
@@ -130,6 +121,7 @@ export class ExamsComponent implements OnInit {
   public getTeacher(): string {
     return this.exam.group ? this.exam.group.class.user.firstName + '' + this.exam.group.class.user.lastName + '(' + this.exam.group.class.user.email + ')'  : '';
    }
+
 
 }
 

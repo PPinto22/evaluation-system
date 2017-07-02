@@ -9,12 +9,12 @@
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
       <form class="form-horizontal" (ngSubmit)="f_newClass.form.valid && addClass()" #f_newClass="ngForm" novalidate>
 
-          <div class="col-lg-3 col-sm-3">
+          <div class="abbreviation form-group col-lg-3 col-sm-3" [ngClass]="{ 'has-error': f_newClass.submitted && !abbrev.valid }">
             <input type="text" class="form-control" name="abbrev" [(ngModel)]="new_class_add.abbrev" placeholder="Abbreviation" #abbrev="ngModel" required/>
             <div *ngIf="f_newClass.submitted && !abbrev.valid" class="help-block">Abbreviation is required</div>
           </div>
 
-          <div class="col-md-6 col-sm-6">
+          <div class="form-group col-md-6 col-sm-6" [ngClass]="{ 'has-error': f_newClass.submitted && !nameClass.valid }">
             <input (click)="changeAlreadyExists()" type="text" class="form-control" name="nameClass" [(ngModel)]="new_class_add.nameClass" placeholder="Class Name" #nameClass="ngModel" required/>
             <div *ngIf="f_newClass.submitted && !nameClass.valid" class="help-block">New Class is required</div>
             <label *ngIf="classAlreadyExists && nameClass.valid"  class="control-label classAlreadyExists">Class already exists</label>
