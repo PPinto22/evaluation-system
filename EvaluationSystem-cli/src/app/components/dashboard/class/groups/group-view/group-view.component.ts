@@ -225,8 +225,18 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     if (this.isTeacher()) {
       this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'results']);
     } else {
-      // TODO Tenho de ir subcar a submição
-      this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'submission']);
+      this.examsService.getSubmissionsByExam(exam.id, this.authentication.getUserId()).subscribe(
+        result => {
+          console.log('submission by exam_id');
+          console.log(result);
+          if (result && result[0]) {
+            this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'submission', result[0].id]);
+          }
+        },
+        error => {
+          console.log(error);
+        }
+      );
     }
   }
 

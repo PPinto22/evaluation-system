@@ -60,7 +60,7 @@
 
 
           <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
-          <tr *ngFor="let upComing of upComingExams.reverse()"[routerLink]="['/dashboard','classes',upComing.group.class.id,'groups',upComing.group.id,'exams',upComing.id]">
+          <tr *ngFor="let upComing of upComingExams.reverse()" [routerLink]="['/dashboard','classes',upComing.group.class.id,'groups',upComing.group.id,'exams',upComing.id]">
             <td class="text-center"><strong>{{upComing.name}}</strong></td>
             <td class="text-center"><strong>{{upComing.group.class.name}}</strong></td>
             <td class="text-center"><strong>{{upComing.group.name}}</strong></td>

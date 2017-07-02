@@ -70,6 +70,24 @@ export class ExamsService {
       .map( this.httpUtil.extrairDados );
   }
 
+  // GET /api/users/{user_id}/submissions?exam=exam_id
+  getSubmissionsByExam(exam_id: number, user_id: number ): Observable<any> {
+    const headersParams = {
+      'Content-Type': 'application/json;charset=UTF-8'
+      // 'Content-Type': 'application/x-www-form-urlencoded'
+    };
+    if (this.authentication.getToken()) {
+      headersParams['Authorization'] = 'Bearer ' + this.authentication.getToken();
+    }
+    var search = new URLSearchParams();
+    search.set('exam', '' + exam_id);
+    const headers = new Headers(headersParams);
+    const options = new RequestOptions({ headers: headers, search: search});
+    return this.http.get( this.httpUtil.url('/api/users/' + user_id + '/submissions')
+      , options )
+      .map( this.httpUtil.extrairDados );
+  }
+
   // POST /api/exams/{exam_id}/submissions
   createExameSubmission( examId: number): Observable<any> {
     return this.http.post( this.httpUtil.url('/api/exams/' + examId + '/submissions'), JSON.stringify({}), this.httpUtil.headers(this.authentication.getToken()))

@@ -58,6 +58,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
     this.page_navigation_toggled = false;
     this.getClasses();
     this.initExamsOnGoing();
+    // TODO altualizar a navbar
     // this.router.events
     //   .filter(event => event instanceof NavigationStart)
     //   .subscribe( (event: NavigationStart) => {
@@ -298,7 +299,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
   public isStudent(): boolean {
     return this.authentication.isSudent();
   }
-
 
   private getOngoing (exams): void {
     for (const exam of exams) {

@@ -45,7 +45,7 @@
     </div>
     <div class="panel-body scroll list-exames">
       <!-- Coloquei o div externo porque penso que ajuda a fazer o ngFor caso contrario tirar-->
-      <div *ngFor="let exam of historyExams">
+      <div *ngFor="let exam of historyExams" >
         <h6>{{exam.name}}</h6>
         <p>
           {{exam.group.class.name}} - {{exam.group.name}} - {{exam.group.class.user.firstName}} {{exam.group.class.user.lastName}}
