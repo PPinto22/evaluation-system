@@ -59,7 +59,7 @@
             <td class="text-center"><strong>{{onGoing.group.class.name}}</strong></td>
             <td class="text-center"><strong>{{onGoing.group.name}}</strong></td>
             <td class="text-center"><strong>{{onGoing.group.class.user.getName()}}</strong></td>
-            <td class="text-center"><strong>{{onGoing.beginDate | date:'dd-mm-yyyy HH:mm'}}</strong></td>
+            <td class="text-center"><strong>{{onGoing.beginDate | date:'dd-MM-yyyy HH:mm'}}</strong></td>
           </tr>
 
 
@@ -69,7 +69,7 @@
             <td class="text-center"><strong>{{upComing.group.class.name}}</strong></td>
             <td class="text-center"><strong>{{upComing.group.name}}</strong></td>
             <td class="text-center"><strong>{{upComing.group.class.user.getName()}}</strong></td>
-            <td class="text-center"><strong>{{upComing.beginDate | date:'dd-mm-yyyy'}}</strong></td>
+            <td class="text-center"><strong>{{upComing.beginDate | date:'dd-MM-yyyy'}}</strong></td>
           </tr>
 
 
@@ -111,7 +111,7 @@
             <td class="text-center"><strong>{{historyExam.group.class.name}}</strong></td>
             <td class="text-center"><strong>{{historyExam.group.name}}</strong></td>
             <td class="text-center"><strong>{{historyExam.group.class.user.getName()}}</strong></td>
-            <td class="text-center"><strong>{{historyExam.beginDate | date:'dd-mm-yyyy'}}</strong></td>
+            <td class="text-center"><strong>{{historyExam.beginDate | date:'dd-MM-yyyy'}}</strong></td>
           </tr>
 
           </tbody>
@@ -145,7 +145,7 @@
     <div class="panel-body scroll list">
       <ul *ngFor="let student of allStudentsOfGroup | StudentsFilterGroup: model.search" class="list-group border-bottom">
         <li class="list-group-item">{{student.email}}
-          <span (click)="removeStudent(student.id)" class="glyphicon glyphicon-remove pull-right text-danger"></span>
+          <span *ngIf="isTeacher()" (click)="removeStudent(student.id)" class="glyphicon glyphicon-remove pull-right text-danger"></span>
         </li>
       </ul>
     </div>

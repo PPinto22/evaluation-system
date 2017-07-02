@@ -41,7 +41,9 @@ export class ExamsComponent implements OnInit {
       this.exam.id = +params['exam_id'];
       this.groupId = +params['group_id'];
 
-      this.getExamById(this.examId);
+      if ( this.isTeacher() ) {
+        this.getExamById(this.examId);
+      }
       this.getGroupById(this.groupId);
     });
   }
