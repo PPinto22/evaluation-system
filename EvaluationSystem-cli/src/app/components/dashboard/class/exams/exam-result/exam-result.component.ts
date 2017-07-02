@@ -16,6 +16,8 @@ export class ExamResultComponent implements OnInit {
   private nameExam = '';
   private questions: Question[];
   private choiseanswersId: number [];
+  private score: number;
+  private scoreExam: number;
 
   constructor(
     private location: Location,
@@ -35,6 +37,8 @@ export class ExamResultComponent implements OnInit {
     this.examsService.getBySubmission(this.submissionId).subscribe(
       result => {
         this.exam = result;
+        console.log(result);
+        this.scoreExam = result.score;
         this.nameExam = result.exam.name;
         this.getAllQuestions(this.exam.questions);
       },
@@ -53,6 +57,7 @@ export class ExamResultComponent implements OnInit {
         this.choiseanswersId.push(-1);
       }
       console.log(quest);
+      // if ( ques.question. quest.question.answers.find( x => x.correct === true).id )
       quest.question.dificulty = quest.question.difficulty;
       this.questions.push(quest.question);
     }
