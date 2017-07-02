@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.emailOrPasswordWrong = false;
     let res: boolean;
-    console.log(this.user);
     if ( this.validateEmail(this.user.email) && this.user.password ) {
       this.invalidEmail = false;
       this.authentication.login(this.user.email, this.user.password).subscribe(

@@ -114,8 +114,6 @@ export class ListExameComponent implements OnInit, AfterViewInit {
     } else {
       this.examsService.getSubmissionsByExam(exam.id, this.authentication.getUserId()).subscribe(
         result => {
-          console.log('submission by exam_id');
-          console.log(result);
           if (result && result[0]) {
             this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'submission', result[0].id]);
           }

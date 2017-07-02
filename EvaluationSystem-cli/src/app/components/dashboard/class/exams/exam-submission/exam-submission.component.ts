@@ -43,8 +43,6 @@ export class ExamSubmissionComponent implements OnInit {
     this.route.params.subscribe( params => {
       this.examId = +params['exam_id'];
       this.groupId = +params['group_id']
-      console.log('Exam id: ' + this.examId);
-      console.log('grou id: ' + this.groupId);
       this.getExam( this.examId );
       this.breadCrumb.setBreadCrum(['Exam OnGoing']); // FIXME alterações
     });

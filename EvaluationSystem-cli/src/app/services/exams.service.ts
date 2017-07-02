@@ -105,7 +105,6 @@ export class ExamsService {
   putExamAnswerSubmission( submissionId: number, questionId: number, answerId: number): Observable<any> {
     const json: any = {}
     json[questionId] = answerId;
-    console.log(json);
     return this.http.put( this.httpUtil.url('/api/submissions/' + submissionId),
         JSON.stringify(json), this.httpUtil.headers(this.authentication.getToken()))
       .map(this.httpUtil.extrairDados);

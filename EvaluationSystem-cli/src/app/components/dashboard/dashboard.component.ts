@@ -13,7 +13,8 @@ import {ExamsService} from '../../services/exams.service';
 import {Exception} from '../../execption/exception';
 import {Exam} from '../../models/exam';
 import 'rxjs/add/operator/filter';
-import {NavbarService} from "../../services/navbar.service";
+import {NavbarService} from '../../services/navbar.service';
+import {pureObjectDef} from '@angular/core/src/view';
 
 
 declare var $: any;
@@ -109,8 +110,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
       result => {
         this.examsOnGoing = [];
         this.getOngoing(result);
-        console.log('teste exames on going');
-        console.log(this.examsOnGoing);
       },
       error => {
         this.exception.errorHandlingInvalidToken(error);
@@ -120,7 +119,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
   private getNotifications(): void {
     this.notificationsService.getUserNotification( this.authentication.getUserId() ).subscribe(
       result => {
-        console.log(result);
         this.notifications = [];
         for ( const not of result ){
           const notification = new Notification();
@@ -141,8 +139,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
             ''
           );
           this.notifications.push(not);
-          console.log(this.notifications);
-
         }
       },
       error => {
@@ -154,6 +150,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
     this.classesService.getAllClassesByUser( this.authentication.getUserId() ).subscribe(
       result => {
         const classes_dash = this.collapse_struture[3];
+        // add class
         for (const resul_class of result ){
           const class_dash = classes_dash.children.find( obj => resul_class.id === obj.id );
           if (class_dash) { // já existe a class criada
@@ -181,6 +178,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
   private getGroups(class_dash: any, class_id: number): void {
     this.groupsService.getGroupsClassByUser(class_id, this.authentication.getUserId()).subscribe(
       result => {
+        class_dash.children = class_dash.children.filter( obj_class => result.filter(obj_res => obj_res.id === obj_class.id).length > 0  );
+
         for (const group of result) {
           const group_dash = class_dash.children.find(obj => group.id === obj.id);
           if (!group_dash) { // não existe o grupo

@@ -45,8 +45,6 @@ export class QuestionSubmitComponent implements OnInit, OnChanges {
         this.examService.putExamAnswerSubmission(this.submissionId, this.question.id, this.correctAnswer.correta).subscribe(
           result => {
             this.saveOk = true;
-            console.log(this.saveOk);
-            console.log(result);
           },
           error => {
             console.log(error);

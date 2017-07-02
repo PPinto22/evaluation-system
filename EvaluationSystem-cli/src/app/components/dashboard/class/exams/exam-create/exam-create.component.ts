@@ -55,7 +55,6 @@ export class ExamCreateComponent implements OnInit {
   }
 
   public focusOutQuestionNumber(): void {
-    console.log('vou tentar');
     if ( this.examCreate.questionNumber > this.number_questions ) {
       let addQuestions = this.examCreate.questionNumber - this.number_questions;
       while ( addQuestions > 0 ) {
@@ -107,7 +106,6 @@ export class ExamCreateComponent implements OnInit {
           }
        // }
       // } else {
-      //  console.log(this.invalidDate)
       //  this.invalidDate = true;
         // TODO avisar data errada
       // }
@@ -213,17 +211,15 @@ export class ExamCreateComponent implements OnInit {
     let allok = true;
     setTimeout( () => {
       for (const quest of this.questions) {
-        console.log(quest);
         if (( (quest.dificulty + '') !== '-1' && quest.dificulty) && quest.category) {
-          console.log('entrei  aqui');
+          // FIXME OLHA COMO etá isto é necessário
+          // console.log('entrei  aqui');
         } else {
-          console.log(' lixo com esta');
+          // console.log(' lixo com esta');
           allok = false;
           break;
         }
       }
-      console.log(allok)
-      console.log('all ok')
       if ( allok ) {
         this.generateAll = true;
       }

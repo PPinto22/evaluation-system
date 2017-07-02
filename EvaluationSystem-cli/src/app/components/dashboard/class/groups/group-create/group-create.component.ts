@@ -6,6 +6,7 @@ import {Exception} from '../../../../../execption/exception';
 import {User} from '../../../../../models/user';
 import {StudentsFilter} from '../../../../../filters/students_filter';
 import {BreadCrumbService} from '../../../../../services/breadcrumb.service';
+import {NavbarService} from "../../../../../services/navbar.service";
 
 declare var $: any;
 declare var x_navigation: any;
@@ -33,7 +34,8 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
               private route: ActivatedRoute,
               private students: StudentsService,
               private exception: Exception,
-              private breadCrumb: BreadCrumbService
+              private breadCrumb: BreadCrumbService,
+              private navbarService: NavbarService
   ) {
     this.route.parent.params.subscribe(params => {
       this.classId = +params['class_id'];
@@ -82,6 +84,7 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
       resultado => {
         this.haveCreateGroup = true;
         this.groupId = resultado.id;
+        this.navbarService.sendUpdate(true);
         this.addStudents();
       },
       error => {
@@ -110,7 +113,6 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
       const separators = [',', ';', '\n'];
       const allNewStudents: string[] = [];
       for (const email of this.groupCreate.students.toString().split(new RegExp(separators.join('|')))) {
-        console.log(email);
         if (!this.validateEmail(email)) {
           if (this.wrongEmail === '') {
             this.wrongEmail = email;

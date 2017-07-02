@@ -5,6 +5,7 @@ import {Group} from '../../../../models/group';
 import {Class} from '../../../../models/class';
 import {User} from '../../../../models/user';
 import {Exception} from '../../../../execption/exception';
+import {NavbarService} from "../../../../services/navbar.service";
 
 declare var onReady: any;
 
@@ -20,7 +21,8 @@ export class ListClassComponent implements OnInit, AfterViewInit {
 
   constructor(private groupsService: GroupService,
               private authentication: AuthenticationService,
-              private exception: Exception
+              private exception: Exception,
+              private navbarService: NavbarService
   ) {
     this.allGroups = new Array<Group>();
   }
@@ -64,6 +66,7 @@ export class ListClassComponent implements OnInit, AfterViewInit {
     this.groupsService.deleteGroupById( group_id ).subscribe(
       result => {
         this.allGroups = this.allGroups.filter( obj => obj.id !== group_id );
+        this.navbarService.sendUpdate(true);
       },
       error => {
         console.log(error);

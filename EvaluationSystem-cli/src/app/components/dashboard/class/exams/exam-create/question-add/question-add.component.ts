@@ -43,7 +43,6 @@ export class QuestionAddComponent implements OnInit, OnChanges {
     this.questionModel.dificult = '-1';
     if ( this.categories.length === 0) {
       setTimeout(() => {
-        console.log(this.categories);
         this.questionModel.category = this.categories[0];
         this.selectDificultyAvailable();
       }, 1000);
@@ -139,7 +138,6 @@ export class QuestionAddComponent implements OnInit, OnChanges {
           allExclude = this.allGenerateNow.get(this.questionModel.category).get(+this.questionModel.dificult);
         }
       }
-      console.log(allExclude);
       this.quest.createQuestionByGenerate(this.groupId, this.questionModel.category, this.questionModel.dificult, allExclude).subscribe(
         resultado => {
           this.question.category = resultado.category;

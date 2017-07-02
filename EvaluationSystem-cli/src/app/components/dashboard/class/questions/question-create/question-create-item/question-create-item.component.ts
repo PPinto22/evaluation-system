@@ -34,7 +34,6 @@ export class QuestionCreateItemComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.quest.dificulty = Question._Easy;
-    console.log(this.quest);
     this.answers = [];
     this.saveanswer = false;
     this.changeSave = false;
@@ -128,7 +127,6 @@ export class QuestionCreateItemComponent implements OnInit, OnChanges {
   }
 
   public addQuestion(): void {
-    console.log(this.question);
     this.questionService.createQuestionByClasse(this.classId, this.question.text, this.question.category, this.question.dificulty, this.question.answers).subscribe(
       resultado => {
         if ( this.saveAll === true ) {

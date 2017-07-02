@@ -23,7 +23,6 @@ export class AnswerCreateComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.i);
     this.oldsaveanswer = this.saveanswer;
   }
 

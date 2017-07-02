@@ -44,7 +44,6 @@ export class ResultsComponent implements OnInit {
   public getResults(): void {
     this.scoresService.getUserScore(this.authentication.getUserId()).subscribe(
       result => {
-        console.log(result);
         this.submissionResults = [];
         for (const group of result.groups) {
           const new_group: Group =  this.createGroup(group.group);
@@ -55,7 +54,6 @@ export class ResultsComponent implements OnInit {
             this.submissionResults.push( new_submission );
           }
         }
-        console.log(this.submissionResults);
       },
       error => {
         console.log(error);

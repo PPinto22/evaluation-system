@@ -23,8 +23,6 @@ export class StudentsService {
 
   // POST /api/groups/{group_id}/students TODO nao tenho acerteza disto
   postStudentByGroup(groupId: number, allEmailsStudents: string[] ): Observable<any> {
-    console.log(allEmailsStudents);
-    console.log(JSON.stringify(allEmailsStudents));
     return this.http.post( this.httpUtil.url('/api/groups/' + groupId + '/students'),
       JSON.stringify(
         allEmailsStudents
