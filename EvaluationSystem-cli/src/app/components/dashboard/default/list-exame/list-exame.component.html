@@ -15,7 +15,7 @@
         <h6>{{exam.name}}</h6>
         <p>
           {{exam.group.class.name}} - {{exam.group.name}} - {{exam.group.class.user.firstName}} {{exam.group.class.user.lastName}}
-          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{exam.beginDate | date:'EEEE, d MMMM y j:m'}} </span>
+          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{exam.beginDate | date:'EEEE, d MMMM y hh:mm a'}} </span>
         </p>
       </div>
 
@@ -42,7 +42,7 @@
         <h6>{{exam.name}}</h6>
         <p>
           {{exam.group.class.name}} - {{exam.group.name}} - {{exam.group.class.user.firstName}} {{exam.group.class.user.lastName}}
-          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{exam.beginDate | date:'EEEE, d MMMM y m:j'}} </span>
+          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{exam.beginDate | date:'EEEE, d MMMM y hh:mm a'}} </span>
         </p>
       </div>
     </div>
