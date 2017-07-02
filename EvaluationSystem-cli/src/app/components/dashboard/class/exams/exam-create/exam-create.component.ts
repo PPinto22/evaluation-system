@@ -4,6 +4,8 @@ import {CategoriesService} from '../../../../../services/categories.service';
 import {ActivatedRoute} from '@angular/router';
 import {QuestionsService} from '../../../../../services/questions.service';
 import {ExamsService} from '../../../../../services/exams.service';
+import {BreadCrumbService} from '../../../../../services/breadcrumb.service';
+import {Location} from '@angular/common';
 
 declare var page_content_onresize: any;
 
@@ -30,7 +32,9 @@ export class ExamCreateComponent implements OnInit {
   constructor(
     private question: QuestionsService,
     private route: ActivatedRoute,
-    private exam: ExamsService
+    private exam: ExamsService,
+    private breadCrumb: BreadCrumbService,
+    private location: Location
   ) {
     this.route.params.subscribe(params => {
       this.groupId = +params['group_id'];
@@ -46,6 +50,7 @@ export class ExamCreateComponent implements OnInit {
     this.examCreate.questionNumber = 1;
     this.questions.push( new Question( Question._Normal, ''));
     this.getAllQuestionsAvailable();
+    this.breadCrumb.setBreadCrum(['Class > Group > Exam > New']);
   }
 
   public focusOutQuestionNumber(): void {
@@ -84,8 +89,7 @@ export class ExamCreateComponent implements OnInit {
           if (this.validateAllQuestions()) {
             this.exam.createExamByGroupId(this.groupId, dateExameChoise.getTime(), this.examCreate.duration, this.examCreate.nameExam, this.questionsIds).subscribe(
               resultado => {
-                console.log(resultado);
-                console.log('resultado EXAME COMPLETO');
+                this.location.back();
               },
               error => {
                 console.log(error);

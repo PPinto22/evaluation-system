@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Question} from '../../../../../models/question';
 import {CategoriesService} from '../../../../../services/categories.service';
+import {BreadCrumbService} from '../../../../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-question-create',
@@ -21,9 +22,11 @@ export class QuestionCreateComponent implements OnInit {
   constructor(
     private router: Router,
     private categorie: CategoriesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private breadCrumb: BreadCrumbService
   ) {
     this.categories = [];
+    this.breadCrumb.setBreadCrum(['Class > Question > New']);
   }
 
   ngOnInit() {

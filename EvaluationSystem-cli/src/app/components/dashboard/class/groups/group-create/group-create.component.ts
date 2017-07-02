@@ -5,6 +5,7 @@ import {StudentsService} from '../../../../../services/students.service';
 import {Exception} from '../../../../../execption/exception';
 import {User} from '../../../../../models/user';
 import {StudentsFilter} from '../../../../../filters/students_filter';
+import {BreadCrumbService} from '../../../../../services/breadcrumb.service';
 
 declare var $: any;
 declare var x_navigation: any;
@@ -31,12 +32,14 @@ export class GroupCreateComponent implements OnInit, AfterViewInit {
               private router: Router,
               private route: ActivatedRoute,
               private students: StudentsService,
-              private exception: Exception
+              private exception: Exception,
+              private breadCrumb: BreadCrumbService
   ) {
     this.route.parent.params.subscribe(params => {
       this.classId = +params['class_id'];
     });
     this.allStudentsOfGroup = [];
+    this.breadCrumb.setBreadCrum(['Class > Group > New']);
   }
 
   ngOnInit() {
