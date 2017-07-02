@@ -6,7 +6,9 @@
         <label class="control-label">Category:</label>
       </div>
       <div class="input-group col-md-9 col-sm-9 col-xs-7">
-        <input type="text" class="form-control" autocomplete="off"/>
+        <select (ngModelChange)="getQuestion()"  class="form-control select" name="category" [(ngModel)]="questionModel.category" required>
+          <option *ngFor="let categorie of categoriesName" [value]="categorie">{{categorie}}</option>
+        </select>
         <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
       </div>
       <span class="help-block"></span>
@@ -18,7 +20,9 @@
         <label class="control-label">Dificulty:</label>
       </div>
       <div class="input-group col-md-9 col-sm-9 col-xs-7">
-        <input type="text" class="form-control" autocomplete="off"/>
+        <select  (ngModelChange)="getQuestion()" class="form-control select" name="difi" [(ngModel)]="questionModel.difi" required>
+          <option *ngFor="let dificult of dificultys" [value]="dificult.value" >{{dificult.dificulty}}</option>
+        </select>
         <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
       </div>
       <span class="help-block"></span>
