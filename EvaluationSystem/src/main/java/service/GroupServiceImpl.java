@@ -245,7 +245,7 @@ public class GroupServiceImpl implements GroupService{
     @Override
     public boolean studentInGroup(Student student, Group group) {
         for(GroupStudent groupStudent: group._students.toArray()) {
-            if (groupStudent.get_student().getID() == student.getID())
+            if (groupStudent.get_student().getID() == student.getID() && groupStudent.isAccepted())
                 return true;
         }
         return false;

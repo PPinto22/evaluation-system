@@ -2,9 +2,11 @@ package service;
 
 import exception.*;
 import model.*;
+import model.Class;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -17,6 +19,8 @@ public interface UserService {
     User getUserByID(PersistentSession session, int userID) throws PersistentException, NonExistentEntityException;
     User getUserByEmail(PersistentSession session, String email, String type) throws NonExistentEntityException, PersistentException, InvalidUserTypeException;
 
+    List<Group> getUserGroupsByClass(User user, Class cl);
+    List<Group> getUserGroups(User user);
     Map<Group, Map<Exam, Score>> getUserScores(PersistentSession session, User user) throws PersistentException;
     Map<Exam, Score> getUserScoresByGroup(PersistentSession session, User user, Group group) throws UserNotInGroupException, PersistentException;
     Score getExamScore(PersistentSession session, User user, Exam exam) throws PersistentException, UserNotInGroupException, InvalidExamException;
