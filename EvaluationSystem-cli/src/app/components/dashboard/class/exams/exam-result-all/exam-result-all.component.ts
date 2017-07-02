@@ -31,13 +31,14 @@ export class ExamResultAllComponent implements OnInit {
       this.group_id = +params['group_id'];
       this.exam_id = +params['exam_id'];
 
-      this.getExamResults(this.class_id);
+      this.getExamResults(this.exam_id);
     });
   }
 
-  public getExamResults(class_id: number): void {
-    this.scoresService.getExamScore( class_id ).subscribe(
+  public getExamResults(exam_id: number): void {
+    this.scoresService.getExamScore( exam_id ).subscribe(
       result => {
+        console.log(result);
         this.submissionResults = [];
         for (const student of result.students) {
           const new_submission: Submission = this.createSubmission(student.score);
@@ -54,6 +55,7 @@ export class ExamResultAllComponent implements OnInit {
 
   private createUser(user: any): User {
     const new_user: User = new User(user.id, user.email, user.firstName, user.lastName, user.type, '');
+    new_user.active = user.active;
     return new_user;
   }
 
@@ -63,6 +65,6 @@ export class ExamResultAllComponent implements OnInit {
   }
 
   public refreshExamResult(): void {
-    this.getExamResults(this.class_id);
+    this.getExamResults(this.exam_id);
   }
 }

@@ -91,4 +91,8 @@ export class User {
   getName(): string {
     return this.firstName + ' ' + this.lastName;
   }
+
+  getNameActive(): string {
+    return this.active ? this.firstName + ' ' + this.lastName + ' ( ' + this.email + ' )' : this.email;
+  }
 }

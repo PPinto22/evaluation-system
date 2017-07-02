@@ -176,6 +176,9 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   public getAllExamsOfGroup( group_id: number): void {
     this.examsService.getExamsByGroupId(group_id).subscribe(
       result => {
+        this.upComingExams = [];
+        this.onGoingExams = [];
+        this.historyExams = [];
         console.log(result);
         if (result.exams.History) {
           this.getAllHistory(result.exams.History);
