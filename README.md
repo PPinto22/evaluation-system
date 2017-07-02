@@ -1067,12 +1067,13 @@ ___
 
 #### GET /api/submissions/{submission_id}
 ### Response
-> Se o aluno não tiver respondido a alguma questão, o campo *answer* não aparece.
-> Se o exame já tiver terminado, então também é indicado se as respostas estão certas ou não.
+Se o aluno não tiver respondido a alguma questão, o campo *answer* não aparece.
+Se o exame já tiver terminado, então também é indicado se as respostas estão certas ou não e o *score*
 
 ```json
 {
   "id": 1,
+  "score": 2.5,
   "questions": [
     {
       "question": {
