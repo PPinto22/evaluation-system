@@ -26,4 +26,11 @@ export class ScoresService {
       this.httpUtil.headers(this.authentication.getToken()) )
       .map( this.httpUtil.extrairDados );
   }
+
+  // GET /api/groups/{group_id}/scores
+  getGroupScores(group_id: number): Observable<any> {
+    return this.http.get( this.httpUtil.url('/api/groups/' + group_id + '/scores'),
+      this.httpUtil.headers(this.authentication.getToken()) )
+      .map( this.httpUtil.extrairDados );
+  }
 }

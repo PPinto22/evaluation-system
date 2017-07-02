@@ -52,7 +52,7 @@ export class GroupScoreComponent implements OnInit {
       }
       export_scores.push(line);
     }
-    new Angular2Csv( export_scores, 'My Report');
+    new Angular2Csv( export_scores, 'Result ' + this.class_id + ' ' + this.group_id);
   }
 
   public getGroupScores(group_id: number): void {

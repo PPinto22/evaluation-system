@@ -48,9 +48,9 @@ import { ExamSubmissionComponent } from './components/dashboard/class/exams/exam
 import { QuestionSubmitComponent } from './components/dashboard/class/exams/exam-submission/question-submit/question-submit.component';
 import { ExamResultComponent } from './components/dashboard/class/exams/exam-result/exam-result.component';
 import { ExamResultAllComponent } from './components/dashboard/class/exams/exam-result-all/exam-result-all.component';
-import { ClassScoreComponent } from './components/dashboard/class/class-score/class-score.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import {ScoresService} from "./services/scores.service";
+import {ScoresService} from './services/scores.service';
+import { GroupScoreComponent } from './components/dashboard/class/groups/group-score/group-score.component';
 
 @NgModule({
   declarations: [
@@ -84,8 +84,8 @@ import {ScoresService} from "./services/scores.service";
     QuestionSubmitComponent,
     ExamResultComponent,
     ExamResultAllComponent,
-    ClassScoreComponent,
-    ProfileComponent
+    ProfileComponent,
+    GroupScoreComponent
   ],
   imports: [
     BrowserModule,

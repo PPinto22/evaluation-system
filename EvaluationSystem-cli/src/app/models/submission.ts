@@ -9,12 +9,30 @@ export class Submission {
   private _score: number;
   private _exam: Exam;
   private _user: User;
+  private _total: number;
+  private _correct: number;
 
   constructor(id: number, score: number) {
     this._id = id;
     this._score = score;
   }
 
+
+  get total(): number {
+    return this._total;
+  }
+
+  set total(value: number) {
+    this._total = value;
+  }
+
+  get correct(): number {
+    return this._correct;
+  }
+
+  set correct(value: number) {
+    this._correct = value;
+  }
 
   get id(): number {
     return this._id;
