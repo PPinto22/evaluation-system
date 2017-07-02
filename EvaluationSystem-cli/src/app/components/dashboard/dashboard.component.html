@@ -23,8 +23,8 @@
       <!-- FIXME Ver isto melhor-->
       <li class="xn-title">Exams OnGoing</li>
       <li *ngFor="let exam of examsOnGoing">
-        <a *ngIf="isStudent()" [routerLink]="['/dashboard','classes',exam.group._class.id,'groups',exam.group.id,'exams',exam.id,'submit']" routerLinkActive=""><span class="fa fa-desktop text-danger"></span> <span class="xn-text text-danger">{{exam.name}}</span></a>
-        <a *ngIf="isTeacher()" [routerLink]="['/dashboard','classes',exam.group._class.id,'groups',exam.group.id,'exams',exam.id]" routerLinkActive=""><span class="fa fa-desktop text-danger"></span> <span class="xn-text text-danger">{{exam.name}}</span></a>
+        <a *ngIf="isStudent()" [routerLink]="['/dashboard','classes',exam.group._class.id,'groups',exam.group.id,'exams',exam.id,'submit']"><span class="fa fa-desktop text-danger"></span> <span class="xn-text text-danger">{{exam.name}}</span></a>
+        <a *ngIf="isTeacher()" [routerLink]="['/dashboard','classes',exam.group._class.id,'groups',exam.group.id,'exams',exam.id]"><span class="fa fa-desktop text-danger"></span> <span class="xn-text text-danger">{{exam.name}}</span></a>
       </li>
 
 
