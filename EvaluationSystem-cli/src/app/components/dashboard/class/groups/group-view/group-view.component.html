@@ -27,7 +27,10 @@
   <div class="panel panel-default">
 
     <div class="panel-heading">
-      <h3 class="panel-title">Exams</h3>
+      <h3 class="panel-title">Ongoiing/UpComing</h3>
+      <ul class="panel-controls">
+        <li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+      </ul>
     </div>
 
     <div class="panel-body panel-body-table">
@@ -45,17 +48,9 @@
           </thead>
           <tbody>
 
-          <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
-          <tr *ngFor="let upComing of upComingExams"[routerLink]="['/dashboard','classes',upComing.group.class.id,'groups',upComing.group.id,'exams',upComing.id]">
-            <td class="text-center"><strong>{{upComing.name}}</strong></td>
-            <td class="text-center"><strong>{{upComing.group.class.name}}</strong></td>
-            <td class="text-center"><strong>{{upComing.group.name}}</strong></td>
-            <td class="text-center"><strong>{{upComing.group.class.user.getName()}}</strong></td>
-            <td class="text-center"><strong>{{upComing.beginDate | date:'dd-mm-yyyy'}}</strong></td>
-          </tr>
 
           <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
-          <tr *ngFor="let onGoing of onGoingExams" (click)="goToExamOnGoing(onGoing)">
+          <tr *ngFor="let onGoing of onGoingExams.reverse()" (click)="goToExamOnGoing(onGoing)">
             <td class="text-center"><strong>{{onGoing.name}}</strong></td>
             <td class="text-center"><strong>{{onGoing.group.class.name}}</strong></td>
             <td class="text-center"><strong>{{onGoing.group.name}}</strong></td>
@@ -63,6 +58,49 @@
             <td class="text-center"><strong>{{onGoing.beginDate | date:'dd-mm-yyyy HH:mm'}}</strong></td>
           </tr>
 
+
+          <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
+          <tr *ngFor="let upComing of upComingExams.reverse()"[routerLink]="['/dashboard','classes',upComing.group.class.id,'groups',upComing.group.id,'exams',upComing.id]">
+            <td class="text-center"><strong>{{upComing.name}}</strong></td>
+            <td class="text-center"><strong>{{upComing.group.class.name}}</strong></td>
+            <td class="text-center"><strong>{{upComing.group.name}}</strong></td>
+            <td class="text-center"><strong>{{upComing.group.class.user.getName()}}</strong></td>
+            <td class="text-center"><strong>{{upComing.beginDate | date:'dd-mm-yyyy'}}</strong></td>
+          </tr>
+
+
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+  <!-- END RESPONSIVE TABLES -->
+
+  <!-- START RESPONSIVE TABLES -->
+  <div class="panel panel-default">
+
+    <div class="panel-heading">
+      <h3 class="panel-title">History</h3>
+      <ul class="panel-controls">
+        <li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+      </ul>
+    </div>
+
+    <div class="panel-body panel-body-table">
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-actions">
+          <thead>
+          <tr>
+            <th class="text-center">Name</th>
+            <th class="text-center">Class</th>
+            <th class="text-center">Group</th>
+            <th class="text-center">Teacher</th>
+            <th class="text-center" width="150">Date</th>
+          </tr>
+          </thead>
+          <tbody>
           <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
           <tr *ngFor="let historyExam of historyExams" (click)="goToExamResult(historyExam)">
             <td class="text-center"><strong>{{historyExam.name}}</strong></td>
