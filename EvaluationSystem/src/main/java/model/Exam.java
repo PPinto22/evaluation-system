@@ -32,7 +32,7 @@ public class Exam implements Comparable<Exam>{
 			if(this.getID() > o.getID())
 				return 1;
 			else if(this.getID() < o.getID())
-				return 1;
+				return -1;
 			else
 				return 0;
 		}

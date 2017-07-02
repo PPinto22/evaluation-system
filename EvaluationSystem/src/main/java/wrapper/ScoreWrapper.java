@@ -16,18 +16,13 @@ public class ScoreWrapper {
 
     public ScoreWrapper(Score score){
         Submission submission = score.getSubmission();
-        if(submission != null) {
-            this.score = submission.getScore();
+        this.score = score.getScore();
+        this.total = score.getTotal();
+        this.correct = score.getCorrect();
+
+        if (score.getSubmission()!=null)
             this.submissionID = submission.getID();
-            this.total = score.getTotal();
-            this.correct = score.getCorrect();
-        }
-        else{
-            this.score = 0.0f;
-            this.submissionID = null;
-            this.total = null;
-            this.correct = null;
-        }
+
     }
 
     public float getScore() {

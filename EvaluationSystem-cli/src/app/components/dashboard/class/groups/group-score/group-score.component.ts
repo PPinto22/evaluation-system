@@ -58,9 +58,10 @@ export class GroupScoreComponent implements OnInit {
   public getGroupScores(group_id: number): void {
     this.scoresService.getGroupScores(group_id).subscribe(
       result => {
+        console.log(result)
         for (const student of result.students) {
           const studentScore: any = {};
-          studentScore.name = student.student.firstName + ' ' + student.student.lastName;
+          student.student.active ? studentScore.name = student.student.firstName + ' ' + student.student.lastName : studentScore.name = '';
           studentScore.email = student.student.email;
           studentScore.exams = [];
           for (const studentExam of student.exams) {
