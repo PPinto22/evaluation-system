@@ -36,43 +36,40 @@
         <table class="table table-bordered table-striped table-actions">
           <thead>
           <tr>
-            <th class="text-center" width="150">Name</th>
+            <th class="text-center">Name</th>
             <th class="text-center">Class</th>
-            <th class="text-center" width="100">Group</th>
-            <th class="text-center" width="150">Teacher</th>
-            <th class="text-center" width="100">Date</th>
+            <th class="text-center">Group</th>
+            <th class="text-center">Teacher</th>
+            <th class="text-center" width="150">Date</th>
           </tr>
           </thead>
           <tbody>
 
           <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
-          <tr id="trow_1" [routerLink]="['/dashboard','classes','1','groups','1','exams','1']">
-            <td class="text-center"><strong>Teste 1 de AA</strong></td>
-            <td class="text-center"><strong>Arquiteturas Aplicacionais</strong></td>
-            <td class="text-center"><strong>2016/2017</strong></td>
-            <td class="text-center"><strong>Antonio Nestor</strong></td>
-            <td class="text-center"><strong>04-02-2018</strong></td>
+          <tr *ngFor="let upComing of upComingExams"[routerLink]="['/dashboard','classes',upComing.group.class.id,'groups',upComing.group.id,'exams',upComing.id]">
+            <td class="text-center"><strong>{{upComing.name}}</strong></td>
+            <td class="text-center"><strong>{{upComing.group.class.name}}</strong></td>
+            <td class="text-center"><strong>{{upComing.group.name}}</strong></td>
+            <td class="text-center"><strong>{{upComing.group.class.user.getName()}}</strong></td>
+            <td class="text-center"><strong>{{upComing.beginDate | date:'dd-mm-yyyy'}}</strong></td>
           </tr>
-          <tr id="trow_2" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submit']">
-            <td class="text-center"><strong>Teste 1 de AA</strong></td>
-            <td class="text-center"><strong>Arquiteturas Aplicacionais</strong></td>
-            <td class="text-center"><strong>2016/2017</strong></td>
-            <td class="text-center"><strong>Antonio Nestor</strong></td>
-            <td class="text-center"><strong>04-02-2018</strong></td>
+
+          <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
+          <tr *ngFor="let onGoing of onGoingExams" (click)="goToExamOnGoing(onGoing)">
+            <td class="text-center"><strong>{{onGoing.name}}</strong></td>
+            <td class="text-center"><strong>{{onGoing.group.class.name}}</strong></td>
+            <td class="text-center"><strong>{{onGoing.group.name}}</strong></td>
+            <td class="text-center"><strong>{{onGoing.group.class.user.getName()}}</strong></td>
+            <td class="text-center"><strong>{{onGoing.beginDate | date:'dd-mm-yyyy HH:mm'}}</strong></td>
           </tr>
-          <tr id="trow_3" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submission','1']">
-            <td class="text-center"><strong>Teste 1 de AA</strong></td>
-            <td class="text-center"><strong>Arquiteturas Aplicacionais</strong></td>
-            <td class="text-center"><strong>2016/2017</strong></td>
-            <td class="text-center"><strong>Antonio Nestor</strong></td>
-            <td class="text-center"><strong>04-02-2018</strong></td>
-          </tr>
-          <tr id="trow_4" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','results']">
-            <td class="text-center"><strong>Teste 1 de AA</strong></td>
-            <td class="text-center"><strong>Arquiteturas Aplicacionais</strong></td>
-            <td class="text-center"><strong>2016/2017</strong></td>
-            <td class="text-center"><strong>Antonio Nestor</strong></td>
-            <td class="text-center"><strong>04-02-2018</strong></td>
+
+          <!-- Ter em atenção aqui inverter a ordem de inserção para mostrar os mais recentes primeiro-->
+          <tr *ngFor="let historyExam of historyExams" (click)="goToExamResult(historyExam)">
+            <td class="text-center"><strong>{{historyExam.name}}</strong></td>
+            <td class="text-center"><strong>{{historyExam.group.class.name}}</strong></td>
+            <td class="text-center"><strong>{{historyExam.group.name}}</strong></td>
+            <td class="text-center"><strong>{{historyExam.group.class.user.getName()}}</strong></td>
+            <td class="text-center"><strong>{{historyExam.beginDate | date:'dd-mm-yyyy'}}</strong></td>
           </tr>
 
           </tbody>

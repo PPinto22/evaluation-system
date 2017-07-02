@@ -19,4 +19,11 @@ export class ScoresService {
       this.httpUtil.headers(this.authentication.getToken()) )
         .map( this.httpUtil.extrairDados );
   }
+
+  // GET /api/exams/{exam_id}/scores
+  getExamScore(exam_id: number): Observable<any> {
+    return this.http.get( this.httpUtil.url('/api/exams/' + exam_id + '/scores'),
+      this.httpUtil.headers(this.authentication.getToken()) )
+      .map( this.httpUtil.extrairDados );
+  }
 }

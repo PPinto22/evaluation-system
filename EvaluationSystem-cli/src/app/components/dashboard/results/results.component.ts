@@ -25,6 +25,7 @@ export class ResultsComponent implements OnInit {
 
   ngOnInit() {
     this.submissionResults = [];
+    this.getResults();
     this.setBreadCrumb();
   }
 
@@ -40,43 +41,10 @@ export class ResultsComponent implements OnInit {
     return this.authentication.isSudent();
   }
 
-// {
-//   "groups": [
-//     {
-//       "group": {
-//         "id": 1,
-//         "name": "Name1",
-//         "_class": {
-//           "name": "Name1",
-//           "abbreviation": "Abbreviation1",
-//           "teacher": {
-//             "..."
-//           },
-//           "id": 1
-//         }
-//       },
-//       "exams": [
-//         {
-//           "exam": {
-//             "id": 1,
-//             "name": "Exam 8",
-//             "beginDate": 1498908600000,
-//             "duration": 60
-//           },
-//           "score": {
-//             "submissionID": 1,
-//             "score": 0
-//           }
-//         }
-//         ]
-//     }
-//     ]
-// }
-
   public getResults(): void {
     this.scoresService.getUserScore(this.authentication.getUserId()).subscribe(
       result => {
-        console.log(result);
+        this.submissionResults = [];
         for (const group of result.groups) {
           const new_group: Group =  this.createGroup(group.group);
           for (const exam of group.exams) {
@@ -104,7 +72,7 @@ export class ResultsComponent implements OnInit {
   private createClass(class_r: any): Class {
     const new_class: Class = new Class(class_r.name, class_r.abbreviation);
     new_class.id = class_r.id;
-    new_class.user = this.createUser(class_r.user);
+    new_class.user = this.createUser(class_r.teacher);
     return new_class;
   }
 
@@ -125,6 +93,7 @@ export class ResultsComponent implements OnInit {
   }
 
   public refresResults(): void {
-    // TODO fazer o refhres do exames
+    this.getResults();
   }
+
 }
