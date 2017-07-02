@@ -28,7 +28,9 @@
       </li>
 
 
-      <li class="xn-title">Navigation</li>
+      <li class="xn-title">Navigation
+        <span (click)="updateNavbar()" class="pull-right fa fa-refresh"></span>
+      </li>
 
       <li *ngFor="let col_node of collapse_struture; let col_node_pos = index" [ngClass]="{'xn-openable': col_node.children, 'active': col_node.isCollapsed}" >
         <a (click)="navigateRoute(col_node.route, col_node, [col_node.id])" ><span class="fa fa-desktop"></span> <span class="xn-text">{{col_node.name}}</span></a>

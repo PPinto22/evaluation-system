@@ -43,7 +43,6 @@ export class ProfileComponent implements OnInit {
 
   public updateProfile(): void {
     // TODO fazer o service do update do user
-    console.log(this.user);
     this.usersService.updateUserById(this.autentication.getUserId(), this.user.firstName, this.user.lastName, this.user.password).subscribe(
       result => {
         this.autentication.userLogged.firstName = result.firstName;

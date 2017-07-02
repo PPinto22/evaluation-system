@@ -23,7 +23,6 @@ export class NotificationService {
   }
   // GET /api/invitations/{invitation_id}/accept
   acceptNotification( invitation_id: number ): Observable<any> {
-    console.log('accept');
     return this.http.post( this.httpUtil.url('/api/invitations/' + invitation_id + '/accept'), JSON.stringify({}),
       this.httpUtil.headers(this.authentication.getToken()) )
       .map( this.httpUtil.extrairDados );
@@ -31,7 +30,6 @@ export class NotificationService {
 
   // GET /api/invitations/{invitation_id}/decline
   declineNotification( invitation_id: number ): Observable<any> {
-    console.log('decline');
     return this.http.post( this.httpUtil.url('/api/invitations/' + invitation_id + '/decline'), JSON.stringify({}),
       this.httpUtil.headers(this.authentication.getToken()) )
       .map( this.httpUtil.extrairDados );

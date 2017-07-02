@@ -30,8 +30,6 @@ export class NotificationComponent implements OnInit {
     this.notificationsService.getUserNotification( this.authentication.getUserId() ).subscribe(
       result => {
         this.notifications = [];
-        console.log("result");
-        console.log(result);
         for ( const not of result ){
           const notification = new Notification();
           notification.id = not.id;
@@ -51,8 +49,6 @@ export class NotificationComponent implements OnInit {
             ''
           );
           this.notifications.push(not);
-          console.log('Notificaton');
-          console.log(this.notifications);
         }
       },
       error => {

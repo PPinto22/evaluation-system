@@ -40,7 +40,6 @@ export class AuthenticationService {
             const user: any = data.user;
             this.userLogged = new User(user.id, user.email, user.firstName, user.lastName, user.type, data.token );
             localStorage.setItem('currentUser', JSON.stringify( this.userLogged ) );
-            console.log(JSON.stringify( this.userLogged ));
           }
         }
       );

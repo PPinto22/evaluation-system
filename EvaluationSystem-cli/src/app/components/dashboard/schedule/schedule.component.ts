@@ -64,7 +64,6 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     }else {
       this.calendarOptions.defaultDate = date.getFullYear() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCDate();
     }
-    console.log(this.calendarOptions.defaultDate);
   }
 
   private getAllExams(): void {

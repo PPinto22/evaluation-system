@@ -8,9 +8,10 @@ import {GroupService} from '../../../../../services/group.service';
 import {Exception} from '../../../../../execption/exception';
 import {Group} from '../../../../../models/group';
 import {Class} from '../../../../../models/class';
-import {Exam} from "../../../../../models/exam";
-import {ExamsService} from "../../../../../services/exams.service";
-import {User} from "../../../../../models/user";
+import {Exam} from '../../../../../models/exam';
+import {ExamsService} from '../../../../../services/exams.service';
+import {User} from '../../../../../models/user';
+import {NavbarService} from '../../../../../services/navbar.service';
 
 
 declare var $: any;
@@ -30,7 +31,7 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   private groupId: number;
   private group: Group;
   private allStudentsOfGroup: Array<any>;
-  private model: any = {}
+  private model: any = {};
 
   private upComingExams: Exam[];
   private onGoingExams: Exam[];
@@ -44,7 +45,8 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     private groupsService: GroupService,
     private breadCrumbService: BreadCrumbService,
     private exception: Exception,
-    private examsService: ExamsService
+    private examsService: ExamsService,
+    private navbarService: NavbarService
   ) {
     this.allStudentsOfGroup = new Array<any>();
   }
@@ -60,7 +62,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
 
       this.route.params.subscribe( params => {
         this.groupId = +params['group_id'];
-        console.log(this.classId + '->' + this.groupId);
         this.getGroup();
         this.getAllStudentsOfGroup();
         this.setBreadCrumb();
@@ -96,14 +97,10 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     // TODO fazer função para mudar a ordem dos exames
   }
 
-  private isTeacher(): boolean {
-    return this.authentication.isTeacher();
-  }
 
   private removeStudent(id: number): void {
     this.students.deleteStudentById(this.groupId, id).subscribe(
       resultado => {
-        console.log(resultado);
         const student = this.allStudentsOfGroup.find( x => x.id === id);
         const studentIndex = this.allStudentsOfGroup.indexOf(student);
         this.allStudentsOfGroup.splice(studentIndex, 1);
@@ -118,7 +115,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     this.groupsService.getGroupById(this.groupId).subscribe(
       result => {
         this.group = this.createGroup(result);
-        console.log(result);
         // FIXME isto não devia ser feito aqui mas por causa dos nulls está aqui
         this.getAllExamsOfGroup(this.groupId);
       },
@@ -128,26 +124,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     );
   }
 
-  private createGroup(group: any): Group {
-    const new_group = new Group(group.name);
-    new_group.id = group.id;
-    new_group.class = this.createClass(group._class);
-    return new_group;
-  }
-
-  private createClass(class_r: any): Class {
-    const newClass = new Class(class_r.name, class_r.abbreviation);
-    newClass.id = class_r.id;
-    newClass.user = this.createUser(class_r.teacher);
-    return newClass;
-  }
-
-  private createUser(user: any): User {
-    const new_user: User = new User(user.id, user.email, user.firstName, user.lastName, user.type, '');
-    return new_user;
-  }
-
-
   private getAllStudentsOfGroup(): void {
      this.allStudentsOfGroup = new Array<any>();
      this.students.getUserByGroupId(this.groupId).subscribe(
@@ -156,7 +132,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
           const studen = { id: student.user.id, email: student.user.email, active: student.user.active, accepted: student.accepted};
           this.allStudentsOfGroup.push(studen);
          }
-         console.log(this.allStudentsOfGroup);
        },
        error => {
         console.log(error);
@@ -168,18 +143,12 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     return this.group ? this.group.name : '';
   }
 
-// <tr id="trow_1" [routerLink]="['/dashboard','classes','1','groups','1','exams','1']">
-// <tr id="trow_2" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submit']">
-// <tr id="trow_3" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submission','1']">
-// <tr id="trow_4" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','results']">
-
   public getAllExamsOfGroup( group_id: number): void {
     this.examsService.getExamsByGroupId(group_id).subscribe(
       result => {
         this.upComingExams = [];
         this.onGoingExams = [];
         this.historyExams = [];
-        console.log(result);
         if (result.exams.History) {
           this.getAllHistory(result.exams.History);
         }
@@ -195,30 +164,48 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       }
     );
   }
-
   private getAllHistory (exams): void {
     for ( const exam of exams){
       this.historyExams.push(this.createExam(exam));
     }
   }
-
   private getAllOngoing (exams): void {
     for (const exam of exams) {
       this.onGoingExams.push(this.createExam(exam));
     }
   }
-
   private getAllUpcoming (exams): void {
     for (const exam of exams) {
       this.upComingExams.push(this.createExam(exam));
     }
   }
 
+
+  private createGroup(group: any): Group {
+    const new_group = new Group(group.name);
+    new_group.id = group.id;
+    new_group.class = this.createClass(group._class);
+    return new_group;
+  }
+  private createClass(class_r: any): Class {
+    const newClass = new Class(class_r.name, class_r.abbreviation);
+    newClass.id = class_r.id;
+    newClass.user = this.createUser(class_r.teacher);
+    return newClass;
+  }
+  private createUser(user: any): User {
+    const new_user: User = new User(user.id, user.email, user.firstName, user.lastName, user.type, '');
+    return new_user;
+  }
   private createExam(exam): Exam {
     const examnew = new Exam( exam.name, exam.beginDate, exam.duration);
     examnew.id = exam.id;
     examnew.group = this.group;
     return examnew;
+  }
+
+  private isTeacher(): boolean {
+    return this.authentication.isTeacher();
   }
 
   public goToExamResult( exam: Exam): void {
@@ -227,8 +214,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     } else {
       this.examsService.getSubmissionsByExam(exam.id, this.authentication.getUserId()).subscribe(
         result => {
-          console.log('submission by exam_id');
-          console.log(result);
           if (result && result[0]) {
             this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'submission', result[0].id]);
           }
@@ -239,7 +224,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       );
     }
   }
-
   public goToExamOnGoing(exam: Exam): void {
     if (this.isTeacher()) {
       this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id]);
@@ -251,6 +235,7 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   public removeGroup(): void {
     this.groupsService.deleteGroupById(this.groupId).subscribe(
       result => {
+        this.navbarService.sendUpdate(true);
         this.router.navigate(['/dashboard']);
       },
       error => {
@@ -266,7 +251,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       this.students.postStudentByGroup(this.groupId, addStudentNow).subscribe(
         resultado => {
           this.allStudentsOfGroup.push({ email: addStudentNow[0]});
-          console.log(resultado);
         },
         error => {
           console.log(error);

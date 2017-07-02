@@ -40,15 +40,12 @@ export class ExamResultAllComponent implements OnInit {
   public getExamResults(exam_id: number): void {
     this.scoresService.getExamScore( exam_id ).subscribe(
       result => {
-        console.log('results all');
-        console.log(result);
         this.submissionResults = [];
         for (const student of result.students) {
           const new_submission: Submission = this.createSubmission(student.score);
           new_submission.user = this.createUser(student.student);
           this.submissionResults.push( new_submission );
         }
-        console.log(this.submissionResults);
       },
       error => {
         console.log(error);

@@ -10,7 +10,6 @@ export class StudentsFilterResultAll implements PipeTransform {
   transform(value: any, input: string) {
     if (input) {
       input = input.toLowerCase();
-      console.log(value);
       return value.filter(function (el: any) {
         const pos = el.user.email.indexOf('@');
         const aux = el.user.email.substring(0, pos);

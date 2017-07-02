@@ -61,13 +61,11 @@ export class ExamsComponent implements OnInit {
   private getExamById(examId: number): void {
     this.examsServices.getExamById( examId ).subscribe(
       result => {
-        console.log(result);
         this.exam.name = result.name;
         this.exam.beginDate = result.beginDate;
         this.exam.duration = result.duration;
         for ( const question_res of result.questions ) {
           this.questions.push(question_res);
-          console.log(this.questions);
         }
       },
       error => {
@@ -79,7 +77,6 @@ export class ExamsComponent implements OnInit {
   private getGroupById(groupId: number): void {
     this.groupsServices.getGroupById( groupId ).subscribe(
       result => {
-        console.log(result)
         this.exam.group = new Group( result.name );
         this.exam.group.id = result.id;
         this.exam.group.class = new Class( result._class.name, result._class.abbreviation);
