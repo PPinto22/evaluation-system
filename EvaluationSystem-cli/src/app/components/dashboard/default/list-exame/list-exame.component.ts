@@ -7,6 +7,7 @@ import {Exam} from '../../../../models/exam';
 import {User} from '../../../../models/user';
 import {Class} from '../../../../models/class';
 import {Group} from '../../../../models/group';
+import {Route, Router} from "@angular/router";
 
 declare var panels: any;
 
@@ -23,7 +24,8 @@ export class ListExameComponent implements OnInit, AfterViewInit {
 
   constructor(
     private authentication: AuthenticationService,
-    private exams: ExamsService
+    private examsService: ExamsService,
+    private router: Router
     ) {
     this.cleanAllArray();
   }
@@ -44,7 +46,7 @@ export class ListExameComponent implements OnInit, AfterViewInit {
 
   private getHistoryAndUpComming(): void {
     this.cleanAllArray();
-    this.exams.getExamsByUserId( this.authentication.getUserId() ).subscribe(
+    this.examsService.getExamsByUserId( this.authentication.getUserId() ).subscribe(
       resultado => {
         if (resultado.exams.History) {
           this.getAllHistory(resultado.exams.History);
@@ -100,6 +102,29 @@ export class ListExameComponent implements OnInit, AfterViewInit {
 
   private refreshHistory(): void {
     this.getHistoryAndUpComming();
+  }
+
+  public isTeacher(): boolean {
+    return this.authentication.isTeacher();
+  }
+
+  public goToExamResult( exam: Exam): void {
+    if (this.isTeacher()) {
+      this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'results']);
+    } else {
+      this.examsService.getSubmissionsByExam(exam.id, this.authentication.getUserId()).subscribe(
+        result => {
+          console.log('submission by exam_id');
+          console.log(result);
+          if (result && result[0]) {
+            this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'submission', result[0].id]);
+          }
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
   }
 
 }

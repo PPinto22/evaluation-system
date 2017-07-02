@@ -175,6 +175,16 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    public List<Group> getStudentGroupsByClass(Student student, Class cl) {
+        List<Group> groups = new ArrayList<>();
+        for(Group group: cl._groups.toArray()){
+            if(groupService.studentInGroup(student, group))
+                groups.add(group);
+        }
+        return groups;
+    }
+
+    @Override
     public List<Class> getStudentClasses(Student student) {
         List<Class> classes = new ArrayList<>();
         List<Group> groups = getStudentGroups(student);

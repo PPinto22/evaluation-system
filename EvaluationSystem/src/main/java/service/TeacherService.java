@@ -15,6 +15,7 @@ public interface TeacherService {
     Teacher getTeacherByID(PersistentSession session, int ID) throws PersistentException, NonExistentEntityException;
     Teacher getTeacherByEmail(PersistentSession session, String email) throws NonExistentEntityException, PersistentException;
     List<Class> getClasses(Teacher teacher);
+    List<Group> getGroupsByClass(Class cl);
     List<Group> getGroups(Teacher teacher);
     Class addClassToTeacher(PersistentSession session, Teacher teacher, Class cl) throws PersistentException, MissingInformationException, ExistentEntityException;
 

@@ -72,6 +72,11 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
+    public List<Group> getGroupsByClass(Class cl) {
+        return Arrays.asList(cl._groups.toArray());
+    }
+
+    @Override
     public Map<Group, Map<Exam, Score>> getScores(PersistentSession session, Teacher teacher) {
         Map<Group, Map<Exam, Score>> groupMap = new TreeMap<>();
         for(Class cl: teacher._classes.toArray()){

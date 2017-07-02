@@ -15,6 +15,7 @@ public interface StudentService {
     Student getStudentByID(PersistentSession session, int ID) throws PersistentException, NonExistentEntityException;
     Student getStudentByEmail(PersistentSession session, String email) throws NonExistentEntityException, PersistentException;
     List<Group> getStudentGroups(Student student);
+    List<Group> getStudentGroupsByClass(Student student, Class cl);
     List<Class> getStudentClasses(Student student);
 
     Map<Group, Map<Exam, Score>> getStudentScores(PersistentSession session, Student student) throws PersistentException;

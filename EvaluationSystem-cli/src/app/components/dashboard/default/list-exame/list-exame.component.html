@@ -11,14 +11,7 @@
     </div>
     <div class="panel-body scroll list-exames" >
       <!-- Coloquei o div externo porque penso que ajuda a fazer o ngFor caso contrario tirar-->
-      <div class="ongoing" *ngFor="let exam of onGoingExams">
-        <h6 class="ongoing">{{exam.name}}</h6>
-        <p>
-          {{exam.group.class.name}} - {{exam.group.name}} - {{exam.group.class.user.firstName}} {{exam.group.class.user.lastName}}
-          <span style="margin-right: 5px" class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{exam.beginDate | date:'EEEE, d MMMM y m:j'}} </span>
-        </p>
-      </div>
-      <div *ngFor="let exam of upComingExams">
+      <div *ngFor="let exam of upComingExams.reverse()" [routerLink]="['/dashboard', 'classes', exam.group.class.id]">
         <h6>{{exam.name}}</h6>
         <p>
           {{exam.group.class.name}} - {{exam.group.name}} - {{exam.group.class.user.firstName}} {{exam.group.class.user.lastName}}
@@ -45,7 +38,7 @@
     </div>
     <div class="panel-body scroll list-exames">
       <!-- Coloquei o div externo porque penso que ajuda a fazer o ngFor caso contrario tirar-->
-      <div *ngFor="let exam of historyExams" >
+      <div *ngFor="let exam of historyExams" (click)="goToExamResult(exam)">
         <h6>{{exam.name}}</h6>
         <p>
           {{exam.group.class.name}} - {{exam.group.name}} - {{exam.group.class.user.firstName}} {{exam.group.class.user.lastName}}

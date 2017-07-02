@@ -3,11 +3,13 @@ package service;
 import dao.*;
 import exception.*;
 import model.*;
+import model.Class;
 import org.orm.PersistentException;
 import org.orm.PersistentSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -77,6 +79,28 @@ public class UserServiceImpl implements UserService{
                 return teacherService.getScores(session, (Teacher)user);
         }
         throw new PersistentException();
+    }
+
+    @Override
+    public List<Group> getUserGroupsByClass(User user, Class cl) {
+        switch (user.getClass().getSimpleName()){
+            case "Student":
+                return studentService.getStudentGroupsByClass((Student)user, cl);
+            case "Teacher":
+                return teacherService.getGroupsByClass(cl);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Group> getUserGroups(User user) {
+        switch (user.getClass().getSimpleName()){
+            case "Student":
+                return studentService.getStudentGroups((Student)user);
+            case "Teacher":
+                return teacherService.getGroups((Teacher) user);
+        }
+        return null;
     }
 
     @Override

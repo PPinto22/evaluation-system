@@ -2,7 +2,7 @@ package controller;
 
 public class ErrorMessages {
 
-    public static final String INVALID_TOKEN = "Invalid authentication token";
+    public static final String INVALID_TOKEN = "Invalid token";
     public static final String INTERNAL_ERROR = "Internal error";
     public static final String PERSISTENT_ERROR = "Internal error";
     public static final String UNCONFIRMED_EMAIL = "Unconfirmed email";

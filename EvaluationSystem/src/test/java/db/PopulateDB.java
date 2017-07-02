@@ -151,7 +151,7 @@ public class PopulateDB implements CommandLineRunner {
             try{
                 GroupStudent groupStudent = groupSrv.addStudentToGroupByEmail(getSession(),
                         group,
-                        "email"+this.students.size()+this.teachers.size()+1);
+                        "email"+(this.students.size()+this.teachers.size()+1)+"@gmail.com");
                 Student student = groupStudent.get_student();
                 this.students.put(student.getID(),student);
             } catch (Exception e){ e.printStackTrace(); }
