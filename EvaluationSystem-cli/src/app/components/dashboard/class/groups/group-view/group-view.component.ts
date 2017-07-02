@@ -8,6 +8,9 @@ import {GroupService} from '../../../../../services/group.service';
 import {Exception} from '../../../../../execption/exception';
 import {Group} from '../../../../../models/group';
 import {Class} from '../../../../../models/class';
+import {Exam} from "../../../../../models/exam";
+import {ExamsService} from "../../../../../services/exams.service";
+import {User} from "../../../../../models/user";
 
 
 declare var $: any;
@@ -27,30 +30,39 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   private groupId: number;
   private group: Group;
   private allStudentsOfGroup: Array<any>;
-  private model: any = {};
+  private model: any = {}
+
+  private upComingExams: Exam[];
+  private onGoingExams: Exam[];
+  private historyExams: Exam[];
 
   constructor(
-    private router: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private authentication: AuthenticationService,
     private students: StudentsService,
     private groupsService: GroupService,
     private breadCrumbService: BreadCrumbService,
-    private exception: Exception
+    private exception: Exception,
+    private examsService: ExamsService
   ) {
     this.allStudentsOfGroup = new Array<any>();
   }
 
   ngOnInit() {
+    this.upComingExams = [];
+    this.onGoingExams = [];
+    this.historyExams = [];
     this.order_date = true;
     this.order_date_text = 'most recent frist';
-    this.router.parent.params.subscribe( parent_params => {
+    this.route.parent.params.subscribe( parent_params => {
       this.classId = +parent_params['class_id'];
 
-      this.router.params.subscribe( params => {
+      this.route.params.subscribe( params => {
         this.groupId = +params['group_id'];
         console.log(this.classId + '->' + this.groupId);
         this.getGroup();
-        this.getAllGroupStudents();
+        this.getAllStudentsOfGroup();
         this.setBreadCrumb();
       });
 
@@ -107,6 +119,8 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       result => {
         this.group = this.createGroup(result);
         console.log(result);
+        // FIXME isto não devia ser feito aqui mas por causa dos nulls está aqui
+        this.getAllExamsOfGroup(this.groupId);
       },
       error => {
         // this.exception.errorHandlingInvalidToken(error);
@@ -124,11 +138,17 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   private createClass(class_r: any): Class {
     const newClass = new Class(class_r.name, class_r.abbreviation);
     newClass.id = class_r.id;
+    newClass.user = this.createUser(class_r.teacher);
     return newClass;
   }
 
+  private createUser(user: any): User {
+    const new_user: User = new User(user.id, user.email, user.firstName, user.lastName, user.type, '');
+    return new_user;
+  }
 
-  private getAllGroupStudents(): void {
+
+  private getAllStudentsOfGroup(): void {
      this.allStudentsOfGroup = new Array<any>();
      this.students.getUserByGroupId(this.groupId).subscribe(
        resultado => {
@@ -148,5 +168,70 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     return this.group ? this.group.name : '';
   }
 
+// <tr id="trow_1" [routerLink]="['/dashboard','classes','1','groups','1','exams','1']">
+// <tr id="trow_2" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submit']">
+// <tr id="trow_3" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','submission','1']">
+// <tr id="trow_4" [routerLink]="['/dashboard','classes','1','groups','1','exams','1','results']">
 
+  public getAllExamsOfGroup( group_id: number): void {
+    this.examsService.getExamsByGroupId(group_id).subscribe(
+      result => {
+        console.log(result);
+        if (result.exams.History) {
+          this.getAllHistory(result.exams.History);
+        }
+        if (result.exams.Ongoing) {
+          this.getAllOngoing(result.exams.Ongoing);
+        }
+        if (result.exams.Upcoming) {
+          this.getAllUpcoming(result.exams.Upcoming);
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  private getAllHistory (exams): void {
+    for ( const exam of exams){
+      this.historyExams.push(this.createExam(exam));
+    }
+  }
+
+  private getAllOngoing (exams): void {
+    for (const exam of exams) {
+      this.onGoingExams.push(this.createExam(exam));
+    }
+  }
+
+  private getAllUpcoming (exams): void {
+    for (const exam of exams) {
+      this.upComingExams.push(this.createExam(exam));
+    }
+  }
+
+  private createExam(exam): Exam {
+    const examnew = new Exam( exam.name, exam.beginDate, exam.duration);
+    examnew.id = exam.id;
+    examnew.group = this.group;
+    return examnew;
+  }
+
+  public goToExamResult( exam: Exam): void {
+    if (this.isTeacher()) {
+      this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'results']);
+    } else {
+      // TODO Tenho de ir subcar a submição
+      this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'submission']);
+    }
+  }
+
+  public goToExamOnGoing(exam: Exam): void {
+    if (this.isTeacher()) {
+      this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id]);
+    } else {
+      this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'submit']);
+    }
+  }
 }

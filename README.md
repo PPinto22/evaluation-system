@@ -10,6 +10,9 @@
 - [x] - Register
 
 ### Dashboard (/dashboard)
+```
+Falta fazer a parte de atualizar a navbar
+```
 - [] Profile
 - [x] Schedule
 - [] Results
@@ -1070,7 +1073,7 @@ Se o exame já tiver terminado, então também é indicado se as respostas estã
 ```json
 {
   "id": 1,
-  "score": 2.5,
+  "score": 20,
   "questions": [
     {
       "question": {
