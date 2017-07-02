@@ -78,7 +78,7 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
 
   private setBreadCrumb(): void {
     // FIXME adiconar o nome do grupo
-    this.breadCrumbService.setBreadCrum(['Class', , 'Group']);
+      this.breadCrumbService.setBreadCrum(['Class', this.getGroupName(), 'Group']);
   }
 
   private scroll(): void {
@@ -236,5 +236,37 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     } else {
       this.router.navigate(['/dashboard', 'classes', exam.group.class.id, 'groups', exam.group.id, 'exams', exam.id, 'submit']);
     }
+  }
+
+  public removeGroup(): void {
+    this.groupsService.deleteGroupById(this.groupId).subscribe(
+      result => {
+        this.router.navigate(['/dashboard']);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  public addStudent() {
+    if ( this.model.search && this.validateEmail(this.model.search) ) {
+      const addStudentNow: string[] = [];
+      addStudentNow.push(this.model.search);
+      this.students.postStudentByGroup(this.groupId, addStudentNow).subscribe(
+        resultado => {
+          this.allStudentsOfGroup.push({ email: addStudentNow[0]});
+          console.log(resultado);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
+  }
+
+  public validateEmail(email: any): boolean {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
   }
 }

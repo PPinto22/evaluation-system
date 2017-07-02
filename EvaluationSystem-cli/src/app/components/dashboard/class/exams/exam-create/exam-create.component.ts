@@ -4,6 +4,8 @@ import {CategoriesService} from '../../../../../services/categories.service';
 import {ActivatedRoute} from '@angular/router';
 import {QuestionsService} from '../../../../../services/questions.service';
 import {ExamsService} from '../../../../../services/exams.service';
+import {BreadCrumbService} from '../../../../../services/breadcrumb.service';
+import {Location} from '@angular/common';
 
 declare var page_content_onresize: any;
 
@@ -24,13 +26,16 @@ export class ExamCreateComponent implements OnInit {
   private allGenerateNow: Map<string, Map<number, Array<number>>>;
   private saveAll = false;
   private generateAll = false;
+  private invalidDate = false;
 
   private questionsIds: number[];
 
   constructor(
     private question: QuestionsService,
     private route: ActivatedRoute,
-    private exam: ExamsService
+    private exam: ExamsService,
+    private breadCrumb: BreadCrumbService,
+    private location: Location
   ) {
     this.route.params.subscribe(params => {
       this.groupId = +params['group_id'];
@@ -46,6 +51,7 @@ export class ExamCreateComponent implements OnInit {
     this.examCreate.questionNumber = 1;
     this.questions.push( new Question( Question._Normal, ''));
     this.getAllQuestionsAvailable();
+    this.breadCrumb.setBreadCrum(['Class > Group > Exam > New']);
   }
 
   public focusOutQuestionNumber(): void {
@@ -74,30 +80,37 @@ export class ExamCreateComponent implements OnInit {
   }
 
   public createExam(): void {
-    if ( this.examCreate.nameExam && this.examCreate.questionNumber && this.examCreate.duration && this.examCreate.dateExam && this.examCreate.hourExam ) {
-      if ( this.examCreate.duration > 0) {
-        // const dateNow = new Date();
-        // const dateExameChoise = new Date(this.examCreate.dateExam);
-        const dateExameChoise = new Date();
-        // FIXME alterar isto
-        // if (dateNow < dateExameChoise) {
-          if (this.validateAllQuestions()) {
-            this.exam.createExamByGroupId(this.groupId, dateExameChoise.getTime(), this.examCreate.duration, this.examCreate.nameExam, this.questionsIds).subscribe(
-              resultado => {
-                console.log(resultado);
-                console.log('resultado EXAME COMPLETO');
-              },
-              error => {
-                console.log(error);
-              }
-            );
+    this.invalidDate = false;
+    // if ( this.examCreate.dateExam ) {
+     // const dateNow = new Date();
+     // const dateExameChoise = new Date(this.examCreate.dateExam);
+     // if (dateNow < dateExameChoise) {
+        if (this.examCreate.nameExam && this.examCreate.questionNumber && this.examCreate.duration && this.examCreate.dateExam && this.examCreate.hourExam) {
+          if (this.examCreate.duration > 0) {
+            // const hour = this.examCreate.hourExam[0] + '' + this.examCreate.hourExam[1];
+            // const minu = this.examCreate.hourExam[3] + '' + this.examCreate.hourExam[4];
+            // dateExameChoise.setMinutes( +minu);
+            // dateExameChoise.setHours( +hour);
+            const dateExameChoise = new Date();
+            // FIXME alterar isto
+
+            if (this.validateAllQuestions()) {
+              this.exam.createExamByGroupId(this.groupId, dateExameChoise.getTime(), this.examCreate.duration, this.examCreate.nameExam, this.questionsIds).subscribe(
+                resultado => {
+                  this.location.back();
+                },
+                error => {
+                  console.log(error);
+                }
+              );
+            }
           }
-        // } else {
-        //   // TODO avisar data errada
-        // }
-      } else {
-        console.log('dada');
-      }
+       // }
+      // } else {
+      //  console.log(this.invalidDate)
+      //  this.invalidDate = true;
+        // TODO avisar data errada
+      // }
     }
   }
 

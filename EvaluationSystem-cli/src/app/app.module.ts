@@ -51,7 +51,9 @@ import { ExamResultAllComponent } from './components/dashboard/class/exams/exam-
 import { ProfileComponent } from './components/profile/profile.component';
 import {ScoresService} from './services/scores.service';
 import { GroupScoreComponent } from './components/dashboard/class/groups/group-score/group-score.component';
-import {NavbarService} from "./services/navbar.service";
+import {NavbarService} from './services/navbar.service';
+import {StudentsFilterGroupScore} from './filters/students_filter_group_score';
+import {StudentsFilterResultAll} from './filters/students_filter_result_all';
 
 @NgModule({
   declarations: [
@@ -86,7 +88,9 @@ import {NavbarService} from "./services/navbar.service";
     ExamResultComponent,
     ExamResultAllComponent,
     ProfileComponent,
-    GroupScoreComponent
+    GroupScoreComponent,
+    StudentsFilterGroupScore,
+    StudentsFilterResultAll
   ],
   imports: [
     BrowserModule,
