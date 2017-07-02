@@ -9,7 +9,12 @@
 <div class="row">
   <div class="col-lg-6 col-md-6 col-lg-offset-6 col-md-offset-6" *ngIf="isTeacher()">
     <form class="form-horizontal" role="form">
-      <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-12">
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <button (click)="removeGroup()" class="btn btn-block btn-danger ">
+          <span class="fa fa-minus-square-o"></span>Remove
+        </button>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
         <button [routerLink]="['/dashboard','classes',classId, 'groups', groupId,'results']" class="btn btn-block btn-primary ">
           <span class="fa fa-eye"></span>Result
         </button>
@@ -69,11 +74,7 @@
             <td class="text-center"><strong>{{upComing.group.class.name}}</strong></td>
             <td class="text-center"><strong>{{upComing.group.name}}</strong></td>
             <td class="text-center"><strong>{{upComing.group.class.user.getName()}}</strong></td>
-<<<<<<< HEAD
-            <td class="text-center"><strong>{{upComing.beginDate | date:'dd-MM-yyyy'}}</strong></td>
-=======
             <td class="text-center"><strong>{{upComing.beginDate | date:'dd-mm-yyyy HH:mm'}}</strong></td>
->>>>>>> origin/master
           </tr>
 
 
@@ -133,7 +134,7 @@
     <div class="panel-heading ui-draggable-handle">
       <h3 class="panel-title">Students</h3>
       <ul class="panel-controls">
-        <li *ngIf="isTeacher()"><a><span class="fa fa-plus"></span></a></li>
+        <li *ngIf="isTeacher()" (click)="addStudent()"><a><span class="fa fa-plus"></span></a></li>
         <li><a class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
       </ul>
       <div class="row">

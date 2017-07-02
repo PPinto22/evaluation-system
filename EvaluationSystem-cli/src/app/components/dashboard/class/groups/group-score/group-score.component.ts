@@ -16,6 +16,7 @@ export class GroupScoreComponent implements OnInit {
   private group_id: number;
   private studentsScores: any[];
   private header: string[];
+  private model: any = {};
 
   constructor(
     private scoresService: ScoresService,

@@ -4,6 +4,7 @@ import {Question} from '../../../../models/question';
 import {Answer} from '../../../../models/answer';
 import {QuestionsService} from '../../../../services/questions.service';
 import {CategoriesService} from '../../../../services/categories.service';
+import {BreadCrumbService} from '../../../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-questions',
@@ -24,7 +25,8 @@ export class QuestionsComponent implements OnInit {
     private router: Router,
     private question: QuestionsService,
     private route: ActivatedRoute,
-    private categorie: CategoriesService
+    private categorie: CategoriesService,
+    private breadCrumb: BreadCrumbService
   ) {
     this.route.params.subscribe(params => {
       this.classId = +params['class_id'];
@@ -32,6 +34,7 @@ export class QuestionsComponent implements OnInit {
     this.dificultys = [];
     this.categoriesName = [];
     this.allQuestion = new Map< string, Map<number, Question[]>>();
+    this.breadCrumb.setBreadCrum(['Class > Question > View']);
   }
 
   ngOnInit() {

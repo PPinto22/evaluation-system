@@ -17,6 +17,7 @@ export class ExamResultAllComponent implements OnInit {
   private group_id: number;
   private exam_id: number;
   private submissionResults: Submission[];
+  private model: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +34,7 @@ export class ExamResultAllComponent implements OnInit {
 
       this.getExamResults(this.exam_id);
     });
+    this.breadCrumbService.setBreadCrum(['Class > Group > Exam > Result']);
   }
 
   public getExamResults(exam_id: number): void {
