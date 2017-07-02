@@ -1213,6 +1213,9 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **NOT_FOUND (404)** - *No such user*
 
 #### GET /api/users/{user_id}/groups
+### Parameters
+- \_class=**ID**
+
 ### Response
 ```json
 [

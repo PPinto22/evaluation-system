@@ -30,18 +30,19 @@ public class UserController {
     private StudentService studentService;
     private ExamService examService;
     private GroupService groupService;
+    private ClassService classService;
     private SubmissionService submissionService;
 
-    public UserController(JwtService jwtService, UserService userService,
-                          TeacherService teacherService, StudentService studentService,
-                          ExamService examService, GroupService groupService,
-                          SubmissionService submissionService) {
+    public UserController(JwtService jwtService, UserService userService, TeacherService teacherService,
+                          StudentService studentService, ExamService examService, GroupService groupService,
+                          ClassService classService, SubmissionService submissionService) {
         this.jwtService = jwtService;
         this.userService = userService;
         this.teacherService = teacherService;
         this.studentService = studentService;
         this.examService = examService;
         this.groupService = groupService;
+        this.classService = classService;
         this.submissionService = submissionService;
     }
 
@@ -138,7 +139,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id:[\\d]+}/groups", method = GET)
-    public ResponseEntity<Object> getGroups(@PathVariable int id, HttpServletRequest request) throws PersistentException{
+    public ResponseEntity<Object> getGroups(@PathVariable int id,
+                                            @RequestParam(required = false) Integer _class,
+                                            HttpServletRequest request) throws PersistentException{
         PersistentSession session = null;
         try {
             session = ClassesPersistentManager.instance().getSession();
@@ -147,19 +150,16 @@ public class UserController {
             if(clientUser.getID() != user.getID())
                 return new ResponseEntity<Object>(new ErrorWrapper(NO_PERMISSION), FORBIDDEN);
 
-            Set<GroupWrapper> groups = new TreeSet<>();
-            switch (user.getClass().getSimpleName()){
-                case "Teacher":
-                    Teacher teacher = (Teacher)user;
-                    for(Group group: teacherService.getGroups(teacher))
-                        groups.add(new GroupClassWrapper(group));
-                    break;
-                case "Student":
-                    Student student = (Student)user;
-                    for(Group group: studentService.getStudentGroups(student))
-                        groups.add(new GroupClassWrapper(group));
-                    break;
-            }
+            Set<GroupWrapper> groups = null;
+            if(_class != null){
+                try{
+                    Class cl = classService.getClassByID(session,_class);
+                    groups = getGroupsWrappers(userService.getUserGroupsByClass(user,cl), false);
+                } catch(NonExistentEntityException e){
+                    return new ResponseEntity<Object>(new ErrorWrapper(NO_SUCH_CLASS), NOT_FOUND);
+                }
+            } else
+                groups = getGroupsWrappers(userService.getUserGroups(user), true);
             return new ResponseEntity<Object>(groups, OK);
         } catch (PersistentException e) {
             return new ResponseEntity<Object>(new ErrorWrapper(PERSISTENT_ERROR), INTERNAL_SERVER_ERROR);
@@ -168,6 +168,17 @@ public class UserController {
         } catch (InvalidClaimsException e) {
         }
         return new ResponseEntity<Object>(new ErrorWrapper(INVALID_TOKEN), UNAUTHORIZED);
+    }
+
+    private Set<GroupWrapper> getGroupsWrappers(List<Group> groups, boolean includeClass){
+        Set<GroupWrapper> groupWrapperSet = new TreeSet<>();
+        for(Group group: groups){
+            if(includeClass)
+                groupWrapperSet.add(new GroupClassWrapper(group));
+            else
+                groupWrapperSet.add(new GroupWrapper(group));
+        }
+        return groupWrapperSet;
     }
 
     @RequestMapping(value = "/{studentID:[\\d]+}/groups/{groupID:[\\d]+}", method = DELETE)
