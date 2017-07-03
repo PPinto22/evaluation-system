@@ -7,8 +7,8 @@ import {User} from '../../../../models/user';
 import {Exception} from '../../../../execption/exception';
 import {NavbarService} from "../../../../services/navbar.service";
 
-declare var onReady: any;
-
+declare var x_navigation: any;
+declare var page_content_onresize: any;
 
 @Component({
   selector: 'app-list-class',
@@ -35,12 +35,19 @@ export class ListClassComponent implements OnInit, AfterViewInit {
     // onReady();
   }
 
+  private rezise(): void {
+    x_navigation();
+    page_content_onresize();
+  }
+
+
   private getAllGroups() {
     this.groupsService.getGroupByUser(this.authentication.getUserId()).subscribe(
       resultado => {
         for ( const group of resultado){
           this.allGroups.push(this.createGroup(group));
         }
+        this.rezise();
       },
       error => {
         console.log(error);
@@ -65,8 +72,8 @@ export class ListClassComponent implements OnInit, AfterViewInit {
   protected deleteGroup( group_id: number ): void {
     this.groupsService.deleteGroupById( group_id ).subscribe(
       result => {
-        this.allGroups = this.allGroups.filter( obj => obj.id !== group_id );
         this.navbarService.sendUpdate(true);
+        this.allGroups = this.allGroups.filter( obj => obj.id !== group_id );
       },
       error => {
         console.log(error);
