@@ -1,3 +1,7 @@
+DROP INDEX IF EXISTS idx_user_email;
+DROP INDEX IF EXISTS idx_notification_group_student;
+DROP INDEX IF EXISTS idx_question_class;
+
 ALTER TABLE Class DROP CONSTRAINT "teacher-classes";
 ALTER TABLE Question DROP CONSTRAINT "class-questions";
 ALTER TABLE Answer DROP CONSTRAINT answers;
@@ -116,3 +120,7 @@ ALTER TABLE QuestionSubmission ADD CONSTRAINT "questionSubmission-Answer" FOREIG
 ALTER TABLE Notification ADD CONSTRAINT "user-notifications" FOREIGN KEY (UserID) REFERENCES "User" (ID);
 ALTER TABLE Notification ADD CONSTRAINT groupInvitations FOREIGN KEY (GroupID) REFERENCES "Group" (ID);
 ALTER TABLE GroupStudent ADD CONSTRAINT "student-groups" FOREIGN KEY (UserID) REFERENCES "User" (ID);
+
+create index idx_user_email on "User"(email);
+create index idx_notification_group_student on notification(groupid,userid);
+create index idx_question_class on Question(classid);

@@ -35,4 +35,10 @@ export class ClassesService {
             }), this.httpUtil.headers(this.authentication.getToken()))
             .map(this.httpUtil.extrairDados);
   }
+
+  // DELETE /api/classes/{class_id}
+  deleteClass( classId: number): Observable<any> {
+    return this.http.delete(this.httpUtil.url('/api/classes/' + classId), this.httpUtil.headers(this.authentication.getToken()))
+      .map(this.httpUtil.extrairDados);
+  }
 }

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {AuthenticationService} from '../../../../../services/authentication.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {StudentsService} from '../../../../../services/students.service';
@@ -12,6 +12,7 @@ import {Exam} from '../../../../../models/exam';
 import {ExamsService} from '../../../../../services/exams.service';
 import {User} from '../../../../../models/user';
 import {NavbarService} from '../../../../../services/navbar.service';
+import {Popup} from 'ng2-opd-popup';
 
 
 declare var $: any;
@@ -23,6 +24,8 @@ declare var panels: any;
   styleUrls: ['./group-view.component.css']
 })
 export class GroupViewComponent implements OnInit, AfterViewInit  {
+
+  @ViewChild('popup1') popup1: Popup;
 
   private order_date: boolean; // toggle booblen true if most recent frist or false for oldest frist
   private order_date_text: string;
@@ -73,6 +76,32 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   ngAfterViewInit(): void {
     panels();
     this.scroll();
+  }
+
+  ClickButton(): void {
+    this.popup1.options = {
+      header: "" ,
+      color: "red", // red, blue....
+      widthProsentage: 40, // The with of the popou measured by browser width
+      animationDuration: 1, // in seconds, 0 = no animation
+      showButtons: true, // You can hide this in case you want to use custom buttons
+      confirmBtnContent: "OK", // The text on your confirm button
+      cancleBtnContent: "Cancel", // the text on your cancel button
+      confirmBtnClass: "btn btn-default", // your class for styling the confirm button
+      cancleBtnClass: "btn btn-default", // you class for styling the cancel button
+      animation: "fadeInDown" // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown'
+    };
+
+    this.popup1.show(this.popup1.options);
+  }
+
+  private cancelDelete(): void {
+    console.log('nao aceito!');
+  }
+
+  private confirmDelete(): void {
+    this.removeGroup();
+    console.log('sim tenho acerteza');
   }
 
   private setBreadCrumb(): void {
