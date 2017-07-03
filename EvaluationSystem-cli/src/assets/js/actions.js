@@ -5,8 +5,6 @@ function progress_start() {
 }
 
 function widget_remove() {
-  console.log("widget_remove");
-
   /* WIDGETS (DEMO)*/
   $(".widget-remove").on("click",function(){
     $(this).parents(".widget").fadeOut(400,function(){
@@ -19,7 +17,6 @@ function widget_remove() {
 }
 
 function gallery_items() {
-  console.log("gallery_items");
 
   /* Gallery Items */
   $(".gallery-item .iCheck-helper").on("click",function(){
@@ -59,7 +56,6 @@ function gallery_items() {
 }
 
 function xn_panel_dragging() {
-  console.log("xn_panel_dragging");
 
   var html_click_avail = true;
 
@@ -105,7 +101,6 @@ function xn_panel_dragging() {
 }
 
 function dropdown_toggle() {
-  console.log("dropdown_toggle");
   /* DROPDOWN TOGGLE */
   $(".dropdown-toggle").on("click",function(){
     onresize();
@@ -114,7 +109,6 @@ function dropdown_toggle() {
 }
 
 function message_box() {
-  console.log("message_box");
 
   /* MESSAGE BOX */
   $(".mb-control").on("click",function(){
@@ -141,7 +135,6 @@ function message_box() {
 }
 
 function content_frame() {
-  console.log("content_frame");
 
   /* CONTENT FRAME */
   $(".content-frame-left-toggle").on("click",function(){
@@ -160,7 +153,6 @@ function content_frame() {
 }
 
 function mailbox() {
-  console.log("mailbox");
 
   /* MAILBOX */
   $(".mail .mail-star").on("click",function(){
@@ -181,7 +173,6 @@ function mailbox() {
 }
 
 function panels() {
-  console.log("panels");
 
   /* PANELS */
 
@@ -217,7 +208,6 @@ function panels() {
 }
 
 function accordion() {
-  console.log("accordion");
 
   $(".accordion .panel-title a").on("click",function(){
 
@@ -252,18 +242,15 @@ function accordion() {
 }
 
 function datatables_content_height_fix() {
-  console.log("datatables_content_height_fix");
 
   /* DATATABLES/CONTENT HEIGHT FIX */
   $(".dataTables_length select").on("change",function(){
-    console.log("dataTables_length");
     onresize();
   });
   /* END DATATABLES/CONTENT HEIGHT FIX */
 }
 
 function toggle_function() {
-  console.log("toggle_function");
 
   /* TOGGLE FUNCTION */
   $(".toggle").on("click",function(){
@@ -279,7 +266,6 @@ function toggle_function() {
 }
 
 function messages_loading() {
-  console.log("messages_loading");
 
   /* MESSAGES LOADING */
   $(".messages .item").each(function(index){
@@ -293,7 +279,6 @@ function messages_loading() {
 
 function onReady() {
   // progress_start();
-  console.log("onReady");
 
   $(".x-navigation-horizontal .panel").on("click",function(e){
     e.stopPropagation();
@@ -345,20 +330,16 @@ $(document).ready(function(){
 
 // TODO on window resize
 $(window).resize(function(){
-  console.log("resize");
   x_navigation_onresize();
-    page_content_onresize();
+  page_content_onresize();
 });
 
 function onload(){
-  console.log("onload");
-
   x_navigation_onresize();
-    page_content_onresize();
+  page_content_onresize();
 }
 
 function page_content_onresize(){
-  console.log("page_content_onresize");
     $(".page-content,.content-frame-body,.content-frame-right,.content-frame-left").css("width","").css("height","");
 
     var content_minus = 0;
@@ -416,8 +397,6 @@ function page_content_onresize(){
 
 /* PANEL FUNCTIONS */
 function panel_fullscreen(panel){
-  console.log("panel_fullscreen");
-
     if(panel.hasClass("panel-fullscreened")){
         panel.removeClass("panel-fullscreened").unwrap();
         panel.find(".panel-body,.chart-holder").css("height","");
@@ -450,8 +429,6 @@ function panel_fullscreen(panel){
     }
 }
 function panel_collapse(panel,action,callback){
-  console.log("resize");
-
     if(panel.hasClass("panel-toggled")){
         panel.removeClass("panel-toggled");
 
@@ -475,8 +452,6 @@ function panel_collapse(panel,action,callback){
     }
 }
 function panel_refresh(panel,action,callback){
-  console.log("resize");
-
   if(!panel.hasClass("panel-refreshing")){
         panel.append('<div class="panel-refresh-layer"><img src="img/loaders/default.gif"/></div>');
         panel.find(".panel-refresh-layer").width(panel.width()).height(panel.height());
@@ -494,7 +469,6 @@ function panel_refresh(panel,action,callback){
     onload();
 }
 function panel_remove(panel,action,callback){
-  console.log("resize");
 
   if(action && action === "before" && typeof callback === "function")
         callback();
@@ -514,8 +488,6 @@ function panel_remove(panel,action,callback){
 
 /* X-NAVIGATION CONTROL FUNCTIONS */
 function x_navigation_onresize(){
-  console.log("resize");
-
 
   var inner_port = window.innerWidth || $(document).width();
 
@@ -542,8 +514,6 @@ function x_navigation_onresize(){
 
 }
 function x_navigation_minimize(action){
-  console.log("resize");
-
 
   if(action == 'open'){
         $(".page-container").removeClass("page-container-wide");
@@ -563,7 +533,6 @@ function x_navigation_minimize(action){
 
 }
 function x_navigation(){
-  console.log("resize");
 
     $(".x-navigation-control").click(function(){
         $(this).parents(".x-navigation").toggleClass("x-navigation-open");
@@ -634,7 +603,6 @@ function x_navigation(){
 
 /* PAGE ON RESIZE WITH TIMEOUT */
 function onresize(timeout){
-  console.log("resize");
 
   timeout = timeout ? timeout : 200;
 

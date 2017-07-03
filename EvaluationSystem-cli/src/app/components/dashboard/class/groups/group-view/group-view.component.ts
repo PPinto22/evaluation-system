@@ -250,7 +250,6 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       addStudentNow.push(this.model.search);
       this.students.postStudentByGroup(this.groupId, addStudentNow).subscribe(
         resultado => {
-          console.log(resultado);
           if (resultado[0].user) {
             const studen = { id: resultado[0].user.id, email: resultado[0].user.email, active: resultado[0].user.active, accepted: resultado[0].accepted};
             this.allStudentsOfGroup.push(studen);
