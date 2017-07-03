@@ -162,6 +162,17 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
+    public List<Student> getAcceptedStudents(Group group) {
+        List<Student> students = new ArrayList<>();
+        for(GroupStudent groupStudent: group._students.toArray()){
+            if(groupStudent.isAccepted()){
+                students.add(groupStudent.get_student());
+            }
+        }
+        return students;
+    }
+
+    @Override
     public GroupStudent addStudentToGroupByEmail(PersistentSession session, Group group, String email)
             throws PersistentException, InvalidUserTypeException, ExistentEntityException {
         Student student = null;

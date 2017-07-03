@@ -1,17 +1,22 @@
 <div class="row">
-  <div class="col-lg-6 col-md-6 col-lg-offset-6 col-md-offset-6" *ngIf="isTeacher()">
+  <div class="col-lg-8 col-md-8 col-lg-offset-4 col-md-offset-4" *ngIf="isTeacher()">
     <form class="form-horizontal" role="form">
-      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+        <button (click)="clickRemoveClass()" class="btn btn-block btn-danger ">
+          <span class="fa fa-minus-square-o"></span>Class
+        </button>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <button [routerLink]="['/dashboard','classes',this.classId,'questions' ]" class="btn btn-block btn-primary ">
           <span class="fa fa-eye"></span>Questions
         </button>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <button [routerLink]="['/dashboard','classes',this.classId,'questions','new' ]" class="btn btn-block btn-primary ">
           <span class="fa fa-plus-square"></span>Questions
         </button>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <button [routerLink]="['/dashboard','classes',this.classId,'groups','new']" class="btn btn-block btn-primary ">
           <span class="fa fa-plus-square"></span>Group
         </button>
@@ -43,6 +48,10 @@
 </div>
 
 <br>
+
+<popup #popup2 (confirmClick)="confirmDeleteClass()" (cancelClick)="cancelDeleteClass()">
+  Are you sure you want to delete the Class?
+</popup>
 
 <app-groups></app-groups>
 

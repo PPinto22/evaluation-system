@@ -20,6 +20,7 @@ public interface GroupService {
     boolean exists(PersistentSession session, Class cl, String name) throws PersistentException;
     boolean groupHasSubmissions(PersistentSession session, Group group) throws PersistentException;
     List<GroupStudent> getGroupStudents(Group group);
+    List<Student> getAcceptedStudents(Group group);
     GroupStudent addStudentToGroupByEmail(PersistentSession session, Group group, String email) throws PersistentException, InvalidUserTypeException, ExistentEntityException;
     void removeStudentFromGroup(PersistentSession session, Group group, Student student) throws PersistentException, NonExistentEntityException, EntityNotRemovableException;
     boolean userHasAccess(Group group, User user);
