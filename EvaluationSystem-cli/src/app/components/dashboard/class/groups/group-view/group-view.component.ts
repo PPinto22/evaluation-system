@@ -96,12 +96,10 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   }
 
   private cancelDelete(): void {
-    console.log('nao aceito!');
   }
 
   private confirmDelete(): void {
     this.removeGroup();
-    console.log('sim tenho acerteza');
   }
 
   private setBreadCrumb(): void {

@@ -71,7 +71,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
     }
   }
   ngOnChanges() {
-    console.log('changed');
   }
 
   private rezise(): void {
@@ -83,7 +82,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
     this.createNavbarStructure();
     this.updateNavbar();
     this.navbarService.navbarObservable.subscribe( value => {
-      console.log('teste');
       this.updateNavbar();
       }
     );
