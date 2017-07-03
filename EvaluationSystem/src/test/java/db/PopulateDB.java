@@ -1,9 +1,7 @@
 package db;
 
 import dao.ClassesPersistentManager;
-import exception.ExistentEntityException;
-import exception.MissingInformationException;
-import exception.UnconfirmedRegistrationException;
+import exception.*;
 import model.*;
 import model.Class;
 import org.orm.PersistentException;
@@ -15,42 +13,30 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import service.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"controller", "dao", "service", "security"})
 public class PopulateDB implements CommandLineRunner {
 
-    @Autowired
-    UserService userSrv;
-    @Autowired
-    StudentService studentSrv;
-    @Autowired
-    TeacherService teacherSrv;
-    @Autowired
-    ClassService classSrv;
-    @Autowired
-    GroupService groupSrv;
-    @Autowired
-    NotificationService notifSrv;
-
     private static PersistentSession session = null;
 
-    public static final int N_TEACHERS = 10;
-    public static final int N_STUDENTS = 10;
-    public static final int N_TEACHER_CLASSES = 2;
-    public static final int N_CLASS_GROUPS = 2;
-    public static final int N_GROUPS_STUDENTS = 5;
-    public static final int N_QUESTIONS_CLASS = 45;
-    public static final int N_CATEGORIES = 5;
+    public static final int N_TEACHERS = 20;
+    public static final int N_STUDENTS = 1000;
+    public static final int N_CLASSES_PER_TEACHER = 2;
+    public static final int N_GROUPS_PER_CLASS = 5;
+    public static final int N_STUDENTS_PER_GROUP = 20;
+    public static final int N_QUESTIONS_PER_CLASS = 50;
+    public static final int N_CATEGORIES_PER_CLASS = 5;
+    public static final int N_EXAMS_PER_GROUP = 2;
+    public static final int N_QUESTIONS_PER_EXAM = 20;
 
     private Map<Integer, Student> students = new HashMap<>();
     private Map<Integer, Teacher> teachers = new HashMap<>();
     private Map<Integer, Class> classes = new HashMap<>();
     private Map<Integer, Group> groups = new HashMap<>();
+    private Map<Integer, Exam> exams = new HashMap<>();
 
 
     public static void main(String[] args) throws Exception {
@@ -65,15 +51,64 @@ public class PopulateDB implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws PersistentException {
+    public void run(String... args) throws Exception {
+        System.out.println("Creating students...");
         addStudents();
+        System.out.println("Creating teachers...");
         addTeachers();
+        System.out.println("Adding classes to teachers...");
         addClasses();
+        System.out.println("Adding groups to classes...");
         addGroups();
+        System.out.println("Adding students to groups...");
         addStudentsToGroups();
+        System.out.println("Accepting group invitations...");
         acceptGroupInvitations();
+        System.out.println("Adding questions to classes...");
         addQuestionsToClasses();
+        System.out.println("Creating exams and submissions...");
+        addExamsAndSubmissions();
     }
+
+    private void addExamsAndSubmissions() throws Exception {
+        for(Group group: this.groups.values()){
+            List<Question> classQuestions = Arrays.asList(group.get_class()._question.toArray());
+            for(int i=0; i<N_EXAMS_PER_GROUP; i++){
+                int exam_i = this.exams.size()+1;
+                String name = "Exam"+exam_i;
+                long date = System.currentTimeMillis();
+                int duration = 10;
+                List<Integer> questionIDs = new ArrayList<>();
+                for(int qi = 0; qi<N_QUESTIONS_PER_EXAM; qi++){
+                    Question question = classQuestions.get(qi*i+qi);
+                    questionIDs.add(question.getID());
+                }
+                Exam exam = examService.createExam(session, name, duration, date, questionIDs, group);
+                examService.addExamToGroup(session,group,exam);
+                this.exams.put(exam.getID(), exam);
+                addSubmissionsToExam(exam);
+            }
+        }
+    }
+
+    private void addSubmissionsToExam(Exam exam) throws Exception{
+        List<Student> groupStudents = groupSrv.getAcceptedStudents(exam.get_group());
+        for(Student student: groupStudents){
+            addSubmissionToExam(student, exam);
+        }
+    }
+
+    private void addSubmissionToExam(Student student, Exam exam) throws Exception {
+        Map<Question, Answer> answerMap = new HashMap<>();
+        for(QuestionScore questionScore: exam._questions.toArray()){
+            Question question = questionScore.get_question();
+            List<Answer> questionAnswers = question.getAnswers();
+            int randomAnswer_i = ThreadLocalRandom.current().nextInt(0, questionAnswers.size());
+            answerMap.put(question, questionAnswers.get(randomAnswer_i));
+        }
+        submissionService.submit(session, student, exam, answerMap);
+    }
+
 
     private void addQuestionsToClasses() {
         for(Class cl: this.classes.values()){
@@ -90,8 +125,8 @@ public class PopulateDB implements CommandLineRunner {
     private List<Question> getQuestions(){
         List<Question> questions = new ArrayList<>();
 
-        for(int i = 0; i<N_QUESTIONS_CLASS; i++) {
-            int category_i = i%N_CATEGORIES + 1;
+        for(int i = 0; i<N_QUESTIONS_PER_CLASS; i++) {
+            int category_i = i%N_CATEGORIES_PER_CLASS + 1;
             int difficulty = i%3 + 1;
             Question question = new Question();
             question.setCategory("Category"+category_i);
@@ -137,8 +172,8 @@ public class PopulateDB implements CommandLineRunner {
     private void addStudentsToGroups() {
         int group_i = 0;
         for(Group group: this.groups.values()){
-            for(int i = 0; i<N_GROUPS_STUDENTS - 1; i++){
-                int j = (group_i*(N_GROUPS_STUDENTS-1) + i) % (N_STUDENTS-1) + 1;
+            for(int i = 0; i<N_STUDENTS_PER_GROUP - 1; i++){
+                int j = (group_i*(N_STUDENTS_PER_GROUP-1) + i) % (N_STUDENTS-1) + 1;
                 try {
                     Student student = this.students.get(j);
                     GroupStudent groupStudent = groupSrv.addStudentToGroupByEmail(getSession(),
@@ -161,7 +196,7 @@ public class PopulateDB implements CommandLineRunner {
 
     private void addGroups() {
         for(Class cl: this.classes.values()){
-            for(int i = 0; i<N_CLASS_GROUPS; i++){
+            for(int i = 0; i<N_GROUPS_PER_CLASS; i++){
                 try {
                     this.addGroupToClass(cl);
                 }
@@ -182,7 +217,7 @@ public class PopulateDB implements CommandLineRunner {
 
     private void addClasses() {
         for(Teacher teacher: this.teachers.values()){
-            for(int i = 0; i<N_TEACHER_CLASSES; i++)
+            for(int i = 0; i<N_CLASSES_PER_TEACHER; i++)
                 try {
                     this.addClassToTeacher(teacher);
                 }
@@ -225,7 +260,7 @@ public class PopulateDB implements CommandLineRunner {
     public void addUser(String type) throws Exception {
         int i = this.students.size()+this.teachers.size()+1;
         User signup = new User();
-        signup.setEmail("email"+i);
+        signup.setEmail("email"+i+"@gmail.com");
         signup.setPassword("password");
         signup.setFirstName("firstName"+i);
         signup.setLastName("lastName"+i);
@@ -244,4 +279,21 @@ public class PopulateDB implements CommandLineRunner {
         }
     }
 
+
+    @Autowired
+    UserService userSrv;
+    @Autowired
+    StudentService studentSrv;
+    @Autowired
+    TeacherService teacherSrv;
+    @Autowired
+    ClassService classSrv;
+    @Autowired
+    GroupService groupSrv;
+    @Autowired
+    NotificationService notifSrv;
+    @Autowired
+    ExamService examService;
+    @Autowired
+    SubmissionService submissionService;
 }
