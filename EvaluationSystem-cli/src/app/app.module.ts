@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import {PopupModule} from 'ng2-opd-popup';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -96,7 +97,8 @@ import {StudentsFilterResultAll} from './filters/students_filter_result_all';
     BrowserModule,
     FormsModule,
     HttpModule,
-    routing
+    routing,
+    PopupModule.forRoot()
   ],
   providers: [
     HttpUtilService,

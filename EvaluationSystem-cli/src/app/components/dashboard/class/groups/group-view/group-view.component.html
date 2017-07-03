@@ -10,8 +10,8 @@
   <div class="col-lg-6 col-md-6 col-lg-offset-6 col-md-offset-6" *ngIf="isTeacher()">
     <form class="form-horizontal" role="form">
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-        <button (click)="removeGroup()" class="btn btn-block btn-danger ">
-          <span class="fa fa-minus-square-o"></span>Remove
+        <button (click)="ClickButton()" class="btn btn-block btn-danger ">
+          <span class="fa fa-minus-square-o"></span>Group
         </button>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -156,3 +156,7 @@
     </div>
   </div>
 </div>
+
+<popup #popup1 (confirmClick)="confirmDelete()" (cancelClick)="cancelDelete()">
+  Are you sure you want to delete the group?
+</popup>
