@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prod": "ng serve -prod",
+    "prod": "ng serve --host 0.0.0.0 -prod",
     "bluid_prod": "ng build -aot -prod",
     "express": "node Serve.js"
   },
