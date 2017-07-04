@@ -6,7 +6,6 @@ import {ClassesService} from '../../../services/classes.service';
 import {Class} from '../../../models/class';
 import {User} from '../../../models/user';
 import {Exception} from "../../../execption/exception";
-import {Popup} from 'ng2-opd-popup';
 import {NavbarService} from '../../../services/navbar.service';
 
 declare var $: any;
@@ -32,10 +31,8 @@ export class ClassComponent implements OnInit, AfterViewInit {
     private _class: ClassesService,
     private exception: Exception,
     private router: Router,
-    private navbar: NavbarService,
-    private popup: Popup
+    private navbar: NavbarService
   ) {
-    console.log(this.popup)
     this.classInformation = new Class('', '');
     this.teacherClass = new User(-1, '', '', '', '', '');
   }
@@ -81,22 +78,22 @@ export class ClassComponent implements OnInit, AfterViewInit {
     this.classInformation = _classe;
   }
 
-  clickRemoveClass(): void {
-    this.popup.options = {
-      header: "" ,
-      color: "red", // red, blue....
-      widthProsentage: 40, // The with of the popou measured by browser width
-      animationDuration: 1, // in seconds, 0 = no animation
-      showButtons: true, // You can hide this in case you want to use custom buttons
-      confirmBtnContent: "OK", // The text on your confirm button
-      cancleBtnContent: "Cancel", // the text on your cancel button
-      confirmBtnClass: "btn btn-default", // your class for styling the confirm button
-      cancleBtnClass: "btn btn-default", // you class for styling the cancel button
-      animation: "fadeInDown" // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown'
-    };
-
-    this.popup.show(this.popup.options);
-  }
+  // clickRemoveClass(): void {
+  //   this.popup.options = {
+  //     header: "" ,
+  //     color: "red", // red, blue....
+  //     widthProsentage: 40, // The with of the popou measured by browser width
+  //     animationDuration: 1, // in seconds, 0 = no animation
+  //     showButtons: true, // You can hide this in case you want to use custom buttons
+  //     confirmBtnContent: "OK", // The text on your confirm button
+  //     cancleBtnContent: "Cancel", // the text on your cancel button
+  //     confirmBtnClass: "btn btn-default", // your class for styling the confirm button
+  //     cancleBtnClass: "btn btn-default", // you class for styling the cancel button
+  //     animation: "fadeInDown" // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown'
+  //   };
+  //
+  //   this.popup.show(this.popup.options);
+  // }
 
   private cancelDeleteClass(): void {
   }
