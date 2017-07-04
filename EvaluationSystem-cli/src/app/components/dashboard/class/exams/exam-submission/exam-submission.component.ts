@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Question} from '../../../../../models/question';
 import {ExamsService} from '../../../../../services/exams.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -10,7 +10,7 @@ import {BreadCrumbService} from '../../../../../services/breadcrumb.service';
   templateUrl: './exam-submission.component.html',
   styleUrls: ['./exam-submission.component.css']
 })
-export class ExamSubmissionComponent implements OnInit {
+export class ExamSubmissionComponent implements OnInit, OnDestroy {
 
   private examId: number;
   private exam: any = {};
@@ -20,6 +20,8 @@ export class ExamSubmissionComponent implements OnInit {
   private submissionId: number;
   private nameExam: string;
   private saveAll: boolean;
+  private countDown: string;
+  private interval;
 
   constructor(
     private breadCrumb: BreadCrumbService,
@@ -65,10 +67,19 @@ export class ExamSubmissionComponent implements OnInit {
       );
   }
 
+  ngOnDestroy(): void {
+    clearInterval(this.interval);
+  }
+
   public getExamSubmission(): void {
     this.examsService.getBySubmission(this.submissionId).subscribe(
       result => {
+        console.log(result);
         this.exam = result;
+        this.createTime();
+        this.interval = setInterval(() => {
+          this.atualizarexame();
+        }, 60000);
         this.nameExam = result.exam.name;
         this.getAllQuestions(this.exam.questions);
       },
@@ -76,6 +87,26 @@ export class ExamSubmissionComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  public atualizarexame(): void {
+    const count = parseInt(this.countDown, 10);
+    console.log(count)
+    if ( parseInt(this.countDown, 10) - 1 > 0) {
+      this.countDown = (parseInt(this.countDown, 10) - 1) + '';
+    } else {
+      clearInterval(this.interval);
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
+  public createTime(): void {
+    const datafinal = this.exam.exam.beginDate + this.exam.exam.duration * 60 * 1000;
+    const datanow = new Date();
+    datanow.setMilliseconds(0);
+    console.log(datanow.getTime());
+    this.countDown = Math.floor(((datafinal - datanow.getTime()) / (1000)) / 100) + '';
+
   }
 
   public createExamSubmission(): void {
