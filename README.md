@@ -1377,7 +1377,6 @@ Caso o utilizador seja um professor, nao e enviado o professor.
 - **UNAUTHORIZED (401)**
 
 #### GET /api/users/{user_id}/scores
-Este método só funciona com utilizadores do tipo *student*. Para os professores saberem as notas dos alunos, utilizar [GET /api/groups/{group_id}/scores](#get-apigroupsgroup_idscores) ou [GET /api/exams/{exam_id}/scores](#get-apiexamsexam_idscores).
 
 ### Parameters
 - exam=ID

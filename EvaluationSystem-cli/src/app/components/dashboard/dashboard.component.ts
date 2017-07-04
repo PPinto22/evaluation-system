@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, ElementRef, HostListener} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {BreadCrumbService} from '../../services/breadcrumb.service';
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
@@ -16,11 +16,9 @@ import 'rxjs/add/operator/filter';
 import {NavbarService} from '../../services/navbar.service';
 import {pureObjectDef} from '@angular/core/src/view';
 
-
-declare var $: any;
 declare var x_navigation: any;
 declare var page_content_onresize: any;
-declare var xn_panel_dragging: any;
+
 
 @Component({
   selector: 'app-dashboard',
@@ -67,13 +65,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
     clearInterval(this.intervalNotification);
   }
   ngAfterViewInit() {
-    x_navigation();
-    page_content_onresize();
+    this.rezise();
     if ( this.isStudent() ) {
       this.initNotification();
     }
   }
   ngOnChanges() {
+  }
+
+  private rezise(): void {
     x_navigation();
     page_content_onresize();
   }
@@ -234,6 +234,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
 
     collapse_node.isCollapsed = true;
 
+    this.rezise();
+
     if (route.length > 0 ) {
       this.router.navigate(route);
     }
@@ -249,7 +251,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges, OnD
       }
       case 2: {
         this.collapse_struture.map( obj_parent => {
-          if ( obj_parent.children ){
+          if ( obj_parent.children ) {
             obj_parent.children.map( obj => {
               obj.id === noclear ? obj.isCollapsed = true : obj.isCollapsed = false;
             });

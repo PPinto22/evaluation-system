@@ -3,13 +3,13 @@ import {AuthenticationService} from '../../../services/authentication.service';
 import {BreadCrumbService} from '../../../services/breadcrumb.service';
 import {ClassesService} from '../../../services/classes.service';
 import {Exception} from '../../../execption/exception';
-import {Router} from "@angular/router";
-import {NavbarService} from "../../../services/navbar.service";
+import {Router} from '@angular/router';
+import {NavbarService} from '../../../services/navbar.service';
 
 declare var $: any;
 declare var x_navigation: any;
 declare var page_content_onresize: any;
-declare var onReady: any;
+
 
 @Component({
   selector: 'app-default',
@@ -43,10 +43,13 @@ export class DefaultComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   ngAfterViewInit() {
-    // onReady();
-    // x_navigation();
-    // page_content_onresize();
+    this.rezise();
     this.scroll();
+  }
+
+  private rezise(): void {
+    x_navigation();
+    page_content_onresize();
   }
 
 

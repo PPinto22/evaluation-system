@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {BreadCrumbService} from '../../../services/breadcrumb.service';
 import {Exam} from '../../../models/exam';
@@ -8,12 +8,15 @@ import {Class} from '../../../models/class';
 import {User} from '../../../models/user';
 import {Submission} from '../../../models/submission';
 
+declare var x_navigation: any;
+declare var page_content_onresize: any;
+
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css']
 })
-export class ResultsComponent implements OnInit {
+export class ResultsComponent implements OnInit, AfterViewInit {
 
   private submissionResults: Submission[];
 
@@ -27,6 +30,15 @@ export class ResultsComponent implements OnInit {
     this.submissionResults = [];
     this.getResults();
     this.setBreadCrumb();
+  }
+
+  ngAfterViewInit(): void {
+    this.rezise();
+  }
+
+  private rezise(): void {
+    x_navigation();
+    page_content_onresize();
   }
 
   private setBreadCrumb(): void {

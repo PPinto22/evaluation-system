@@ -29,30 +29,30 @@
       <form (ngSubmit)="onSubmit()" class="form-horizontal" method="post" #f_register="ngForm">
         <div class="form-group">
           <div class="col-md-12">
-            <input type="text" name="firstName" class="form-control" [(ngModel)]="user.firstName" placeholder="First Name"  #firstName="ngModel" required/>
+            <input type="text" name="firstName" class="form-control" [(ngModel)]="user.firstName"  #firstName="ngModel" required/>
             <div *ngIf="f_register.submitted && !firstName.valid" class="help-block">First Name is required</div>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-12">
-            <input type="text" name="lastName" class="form-control" [(ngModel)]="user.lastName" placeholder="Last Name" #lastName="ngModel" required/>
+            <input type="text" name="lastName" class="form-control" [(ngModel)]="user.lastName" #lastName="ngModel" required/>
             <div *ngIf="f_register.submitted && !lastName.valid" class="help-block">Last Name is required</div>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-12">
-            <input type="text" name="email" class="form-control" [(ngModel)]="user.email" placeholder="Email" #email="ngModel" disabled="true"/>
+            <input type="text" name="email" class="form-control" [(ngModel)]="user.email" #email="ngModel" disabled="true"/>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-12">
-            <input type="password" name="password" class="form-control" [(ngModel)]="user.password" placeholder="Password" #password="ngModel" required/>
+            <input type="password" name="password" class="form-control" [(ngModel)]="user.password" placeholder="New Password" #password="ngModel" required/>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-12">
-            <input type="password" name="confirmPassword" class="form-control" [(ngModel)]="user.confirmPassword" placeholder="Confirm Password" #confirmPassword="ngModel"/>
-            <div *ngIf="f_register.submitted && this.user.password && !confirmPassword.valid" class="help-block">Confirm Password is required</div>
+            <input type="password" name="confirmPassword" class="form-control" [(ngModel)]="user.confirmPassword" placeholder="Confirm New Password" #confirmPassword="ngModel"/>
+            <div *ngIf="f_register.submitted && this.user.password && !confirmPassword.valid" class="help-block">Confirm New Password is required</div>
           </div>
         </div>
         <div class="form-group typeUser">
