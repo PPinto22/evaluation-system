@@ -4,7 +4,6 @@ FROM node:boron
 RUN apt-get install git
 RUN npm install -g @angular/cli
 
-
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

@@ -23,8 +23,8 @@ docker network create -d bridge evalsys-bridge
 docker create --net evalsys-bridge -p 5432:5432 --name evalsys-pg evalsys-pg
 docker create --net evalsys-bridge -p 8081:8080 --name evalsys-app1 evalsys-app
 docker create --net evalsys-bridge -p 8082:8080 --name evalsys-app2 evalsys-app
-docker create --net evalsys-bridge -p 8080:80 --name evalsys-proxy evalsys-proxy
+docker create --net evalsys-bridge -p 80:80 --name evalsys-proxy evalsys-proxy
 
-docker create --net evalsys-bridge -p 4201:4200 --name angular-web1 angular-image
-docker create --net evalsys-bridge -p 4202:4200 --name angular-web2 angular-image
-docker create --net evalsys-bridge -p 80:80 --name evalsys-angular-proxy evalsys-angular-proxy
+docker create --net evalsys-bridge -p 4200:4200 --name angular-web angular-image
+# docker create --net evalsys-bridge -p 4202:4200 --name angular-web2 angular-image
+# docker create --net evalsys-bridge -p 80:80 --name evalsys-angular-proxy evalsys-angular-proxy
