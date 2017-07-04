@@ -80,17 +80,18 @@ export class ExamCreateComponent implements OnInit {
 
   public createExam(): void {
     this.invalidDate = false;
-    // if ( this.examCreate.dateExam ) {
+    console.log('aqui')
+    if ( this.examCreate.dateExam ) {
      // const dateNow = new Date();
-     // const dateExameChoise = new Date(this.examCreate.dateExam);
+     const dateExameChoise = new Date(this.examCreate.dateExam);
      // if (dateNow < dateExameChoise) {
         if (this.examCreate.nameExam && this.examCreate.questionNumber && this.examCreate.duration && this.examCreate.dateExam && this.examCreate.hourExam) {
           if (this.examCreate.duration > 0) {
-            // const hour = this.examCreate.hourExam[0] + '' + this.examCreate.hourExam[1];
-            // const minu = this.examCreate.hourExam[3] + '' + this.examCreate.hourExam[4];
-            // dateExameChoise.setMinutes( +minu);
-            // dateExameChoise.setHours( +hour);
-            const dateExameChoise = new Date();
+            const hour = this.examCreate.hourExam[0] + '' + this.examCreate.hourExam[1];
+            const minu = this.examCreate.hourExam[3] + '' + this.examCreate.hourExam[4];
+            dateExameChoise.setMinutes( +minu);
+            dateExameChoise.setHours( +hour);
+            // const dateExameChoise = new Date();
             // FIXME alterar isto
 
             if (this.validateAllQuestions()) {
@@ -105,10 +106,7 @@ export class ExamCreateComponent implements OnInit {
             }
           }
        // }
-      // } else {
-      //  this.invalidDate = true;
-        // TODO avisar data errada
-      // }
+      }
     }
   }
 

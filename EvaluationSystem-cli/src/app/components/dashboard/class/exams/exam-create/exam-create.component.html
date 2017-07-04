@@ -1,8 +1,4 @@
-<div class="row">
-  <div class="col-md-12">
-    <h2 class="title-line">Exam Create</h2>
-  </div>
-</div>
+
 
 <br>
 
@@ -65,7 +61,7 @@
         <div class="col-md-7">
 
           <div class="input-group">
-            <input class="form-control" type="number" placeholder="6" min="1" step="1" value ="1" name="duration" [(ngModel)]="examCreate.duration" #duration="ngModel" required>
+            <input class="form-control" type="number" placeholder="60" min="10" step="1" value ="1" name="duration" [(ngModel)]="examCreate.duration" #duration="ngModel" required>
             <!-- Colocar no placeholder o numero de questions acitvas -->
           </div>
           <div *ngIf="f_createExam.submitted && !duration.valid" class="help-block">Number of questions is required</div>

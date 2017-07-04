@@ -21,8 +21,6 @@ declare var page_content_onresize: any;
 })
 export class ClassComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('popup2') popup2: Popup;
-
   classId: number;
   classInformation: Class;
   teacherClass: User;
@@ -34,8 +32,10 @@ export class ClassComponent implements OnInit, AfterViewInit {
     private _class: ClassesService,
     private exception: Exception,
     private router: Router,
-    private navbar: NavbarService
+    private navbar: NavbarService,
+    private popup: Popup
   ) {
+    console.log(this.popup)
     this.classInformation = new Class('', '');
     this.teacherClass = new User(-1, '', '', '', '', '');
   }
@@ -82,7 +82,7 @@ export class ClassComponent implements OnInit, AfterViewInit {
   }
 
   clickRemoveClass(): void {
-    this.popup2.options = {
+    this.popup.options = {
       header: "" ,
       color: "red", // red, blue....
       widthProsentage: 40, // The with of the popou measured by browser width
@@ -95,7 +95,7 @@ export class ClassComponent implements OnInit, AfterViewInit {
       animation: "fadeInDown" // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown'
     };
 
-    this.popup2.show(this.popup2.options);
+    this.popup.show(this.popup.options);
   }
 
   private cancelDeleteClass(): void {

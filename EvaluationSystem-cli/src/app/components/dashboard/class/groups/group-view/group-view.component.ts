@@ -25,8 +25,6 @@ declare var panels: any;
 })
 export class GroupViewComponent implements OnInit, AfterViewInit  {
 
-  @ViewChild('popup1') popup1: Popup;
-
   private order_date: boolean; // toggle booblen true if most recent frist or false for oldest frist
   private order_date_text: string;
 
@@ -49,7 +47,8 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
     private breadCrumbService: BreadCrumbService,
     private exception: Exception,
     private examsService: ExamsService,
-    private navbarService: NavbarService
+    private navbarService: NavbarService,
+    private popup: Popup
   ) {
     this.allStudentsOfGroup = new Array<any>();
   }
@@ -79,20 +78,20 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   }
 
   ClickButton(): void {
-    this.popup1.options = {
-      header: "" ,
-      color: "red", // red, blue....
+    this.popup.options = {
+      header: '' ,
+      color: 'red', // red, blue....
       widthProsentage: 40, // The with of the popou measured by browser width
       animationDuration: 1, // in seconds, 0 = no animation
       showButtons: true, // You can hide this in case you want to use custom buttons
-      confirmBtnContent: "OK", // The text on your confirm button
-      cancleBtnContent: "Cancel", // the text on your cancel button
-      confirmBtnClass: "btn btn-default", // your class for styling the confirm button
-      cancleBtnClass: "btn btn-default", // you class for styling the cancel button
-      animation: "fadeInDown" // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown'
+      confirmBtnContent: 'OK', // The text on your confirm button
+      cancleBtnContent: 'Cancel', // the text on your cancel button
+      confirmBtnClass: 'btn btn-default', // your class for styling the confirm button
+      cancleBtnClass: 'btn btn-default', // you class for styling the cancel button
+      animation: 'fadeInDown' // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown'
     };
 
-    this.popup1.show(this.popup1.options);
+    this.popup.show(this.popup.options);
   }
 
   private cancelDelete(): void {
@@ -279,6 +278,7 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
       addStudentNow.push(this.model.search);
       this.students.postStudentByGroup(this.groupId, addStudentNow).subscribe(
         resultado => {
+          console.log('adiciona');
           this.allStudentsOfGroup.push({ email: addStudentNow[0]});
         },
         error => {
