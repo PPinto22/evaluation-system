@@ -1,6 +1,8 @@
 # Base de dados
 BD/evalsys/
 
+Relatorio/*.zip
+
 # Visual Paradigm
 .vpprefdata/
 *.vpp~*
