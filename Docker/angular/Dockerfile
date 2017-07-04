@@ -14,5 +14,5 @@ RUN git clone https://github.com/uNmasK95/EvaluationSystem.git
 WORKDIR /usr/src/app/EvaluationSystem/EvaluationSystem-cli
 RUN npm install
 
-EXPOSE 4201
+EXPOSE 4200
 CMD [ "npm", "start"]
