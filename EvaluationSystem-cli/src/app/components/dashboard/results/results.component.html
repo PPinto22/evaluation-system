@@ -32,7 +32,8 @@
           <td class="text-center"><strong>{{submission.exam.group.name}}</strong></td>
           <td class="text-center"><strong>{{submission.score}}</strong></td>
           <td>
-            <button [routerLink]="['/dashboard','classes',submission.exam.group._class.id,'groups',submission.exam.group._class.id,'exams',submission.exam.id,'submission',submission.id]" type="button" class="btn btn-primary btn-rounded btn-sm" *ngIf="isStudent()">View Details</button>
+            <strong  *ngIf="isStudent() && !submission.id" class="text-danger" >No Submission</strong>
+            <button  *ngIf="isStudent() && submission.id" [routerLink]="['/dashboard','classes',submission.exam.group._class.id,'groups',submission.exam.group._class.id,'exams',submission.exam.id,'submission',submission.id]" type="button" class="btn btn-primary btn-rounded btn-sm">View Details</button>
             <button [routerLink]="['/dashboard','classes',submission.exam.group._class.id,'groups',submission.exam.group._class.id,'exams',submission.exam.id,'results']" type="button" class="btn btn-primary btn-rounded btn-sm" *ngIf="isTeacher()">View Details</button>
           </td>
         </tr>
