@@ -95,12 +95,12 @@ export class ClassComponent implements OnInit, AfterViewInit {
   //   this.popup.show(this.popup.options);
   // }
 
-  private cancelDeleteClass(): void {
-  }
+  // private cancelDeleteClass(): void {
+  // }
 
-  private confirmDeleteClass(): void {
-    this.removeClass();
-  }
+  // private confirmDeleteClass(): void {
+  //   this.removeClass();
+  // }
 
   private removeClass (): void {
     this._class.deleteClass( this.classId).subscribe(

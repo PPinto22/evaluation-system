@@ -92,12 +92,12 @@ export class GroupViewComponent implements OnInit, AfterViewInit  {
   //   this.popup.show(this.popup.options);
   // }
 
-  private cancelDelete(): void {
-  }
-
-  private confirmDelete(): void {
-    this.removeGroup();
-  }
+  // private cancelDelete(): void {
+  // }
+  //
+  // private confirmDelete(): void {
+  //   this.removeGroup();
+  // }
 
   private setBreadCrumb(): void {
     // FIXME adiconar o nome do grupo
